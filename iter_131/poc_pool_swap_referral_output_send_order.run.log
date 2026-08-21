@@ -1,0 +1,1 @@
+AE1 send-order edge check passed: referral and normal output legs are token/amount bound, reserve delta equals output plus protocol/referral fees, and vault withdrawal returns the exact stored tuple; downstream delivery failure is liveness-only in the model

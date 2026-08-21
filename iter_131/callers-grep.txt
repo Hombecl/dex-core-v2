@@ -1,0 +1,121 @@
+contracts/vault.fc-18-
+contracts/vault.fc:19:() storage::save() impure inline_ref {
+contracts/vault.fc-20-    set_data(begin_cell()
+--
+contracts/vault.fc-43-        storage::deposited_amount += in_msg_body~load_coins();
+contracts/vault.fc:44:        storage::save();
+contracts/vault.fc-45-        reserves::max_balance(storage_fee::vault);
+--
+contracts/vault.fc-68-        storage::deposited_amount = 0;    
+contracts/vault.fc:69:        storage::save();
+contracts/vault.fc-70-        return ();
+--
+contracts/common/contracts.fc-145-
+contracts/common/contracts.fc:146:(cell) router::pay_to(
+contracts/common/contracts.fc-147-    slice _original_caller,
+--
+contracts/common/contracts.fc-185-
+contracts/common/contracts.fc:186:(cell) router::pay_vault(
+contracts/common/contracts.fc-187-    slice _to_address, 
+--
+contracts/common/contracts.fc-193-) inline {
+contracts/common/contracts.fc:194:    return begin_message(op::pay_vault)
+contracts/common/contracts.fc-195-        .store_slice(_to_address)
+--
+contracts/common/contracts.fc-288-
+contracts/common/contracts.fc:289:(cell) vault::deposit_ref_fee(
+contracts/common/contracts.fc-290-    int _amount, 
+--
+contracts/router/dex.fc-59-                + storage_fee::pool + gas::pool::swap
+contracts/router/dex.fc:60:                + gas::router::pay_to
+contracts/router/dex.fc:61:                + storage_fee::vault + gas::router::pay_vault + gas::vault::deposit_ref_fee
+contracts/router/dex.fc-62-                + storage_fee::est_jetton_wallet + gas::jetton_wallet::est_transfer)
+--
+contracts/pool/msgs/router.fc-57-                ctx.at(SENDER), 
+contracts/pool/msgs/router.fc:58:                router::pay_to(
+contracts/pool/msgs/router.fc-59-                    from_user_address,
+--
+contracts/pool/msgs/router.fc-86-            int protocol_fee_out = 0; 
+contracts/pool/msgs/router.fc:87:            int ref_fee_out0 = 0; 
+contracts/pool/msgs/router.fc:88:            int ref_fee_out1 = 0;
+contracts/pool/msgs/router.fc-89-            ;; if no ref address - set fee value to 0
+--
+contracts/pool/msgs/router.fc-93-                ;; swap token0 for token1
+contracts/pool/msgs/router.fc:94:                (out1, protocol_fee_out, ref_fee_out1) = pool::get_swap_out(true, ref_value, amount0, storage::reserve0, storage::reserve1);
+contracts/pool/msgs/router.fc-95-                storage::reserve0 += amount0;
+contracts/pool/msgs/router.fc:96:                storage::reserve1 -= (out1 + protocol_fee_out + ref_fee_out1);
+contracts/pool/msgs/router.fc-97-                storage::collected_token1_protocol_fee += protocol_fee_out;
+--
+contracts/pool/msgs/router.fc-100-                ;; swap token1 for token0
+contracts/pool/msgs/router.fc:101:                (out0, protocol_fee_out, ref_fee_out0) = pool::get_swap_out(false, ref_value, amount1, storage::reserve1, storage::reserve0);
+contracts/pool/msgs/router.fc:102:                storage::reserve0 -= (out0 + protocol_fee_out + ref_fee_out0);
+contracts/pool/msgs/router.fc-103-                storage::reserve1 += amount1;
+--
+contracts/pool/msgs/router.fc-120-            reserves::max_balance(storage_fee::pool);
+contracts/pool/msgs/router.fc:121:            if (ref_address.preload_uint(2) != 0) & (ref_fee_out0 + ref_fee_out1 > 0) { ;; 2 messages, pay referral, check ref_fee_out
+contracts/pool/msgs/router.fc:122:                msgs::send_simple(ctx.at(FWD_FEE) * 3 + storage_fee::vault + gas::router::pay_vault + gas::vault::deposit_ref_fee, 
+contracts/pool/msgs/router.fc-123-                    ctx.at(SENDER),
+contracts/pool/msgs/router.fc:124:                    router::pay_vault(
+contracts/pool/msgs/router.fc-125-                        ref_address, 
+contracts/pool/msgs/router.fc-126-                        excesses_address,
+contracts/pool/msgs/router.fc:127:                        ref_fee_out0, 
+contracts/pool/msgs/router.fc-128-                        storage::token0_address, 
+contracts/pool/msgs/router.fc:129:                        ref_fee_out1, 
+contracts/pool/msgs/router.fc-130-                        storage::token1_address), 
+--
+contracts/pool/msgs/router.fc-137-                ctx.at(SENDER), 
+contracts/pool/msgs/router.fc:138:                router::pay_to(
+contracts/pool/msgs/router.fc-139-                    from_user_address,
+--
+contracts/pool/msgs/router.fc-151-            );
+contracts/pool/msgs/router.fc:152:            storage::save();
+contracts/pool/msgs/router.fc-153-        } catch(err_arg, err_code) {
+--
+contracts/pool/msgs/router.fc-159-                ctx.at(SENDER), 
+contracts/pool/msgs/router.fc:160:                router::pay_to(
+contracts/pool/msgs/router.fc-161-                    from_user_address,
+--
+contracts/pool/msgs/router.fc-218-                ctx.at(SENDER), 
+contracts/pool/msgs/router.fc:219:                router::pay_to(
+contracts/pool/msgs/router.fc-220-                    from_user,
+--
+contracts/pool/msgs/router.fc-269-                ctx.at(SENDER), 
+contracts/pool/msgs/router.fc:270:                router::pay_to(
+contracts/pool/msgs/router.fc-271-                    from_user,
+--
+contracts/pool/msgs/router.fc-295-        storage::is_locked = storage::is_locked ? false : true; 
+contracts/pool/msgs/router.fc:296:        storage::save();
+contracts/pool/msgs/router.fc-297-        reserves::max_balance(storage_fee::pool);
+--
+contracts/pool/msgs/router.fc-316-
+contracts/pool/msgs/router.fc:317:        storage::save();
+contracts/pool/msgs/router.fc-318-        
+--
+contracts/router/msgs/pool.fc-44-
+contracts/router/msgs/pool.fc:45:        int used_gas = ctx.at(FWD_FEE) + gas::router::pay_to;
+contracts/router/msgs/pool.fc-46-        if (fwd_opcode == op::cross_swap) 
+--
+contracts/router/msgs/pool.fc-93-
+contracts/router/msgs/pool.fc:94:    if ctx.at(OPCODE) == op::pay_vault { 
+contracts/router/msgs/pool.fc-95-        slice owner = in_msg_body~load_msg_addr();
+--
+contracts/router/msgs/pool.fc-130-            vault~state_init(), 
+contracts/router/msgs/pool.fc:131:            vault::deposit_ref_fee(
+contracts/router/msgs/pool.fc-132-                amount0_out + amount1_out,
+--
+contracts/pool/msgs/protocolfee.fc-9-            + storage_fee::pool + gas::pool::collect_fees 
+contracts/pool/msgs/protocolfee.fc:10:            + storage_fee::router + gas::router::pay_to 
+contracts/pool/msgs/protocolfee.fc:11:            + gas::router::pay_to 
+contracts/pool/msgs/protocolfee.fc-12-            + storage_fee::est_jetton_wallet + gas::jetton_wallet::est_transfer            
+--
+contracts/pool/msgs/protocolfee.fc-24-            storage::router_address, 
+contracts/pool/msgs/protocolfee.fc:25:            router::pay_to(
+contracts/pool/msgs/protocolfee.fc-26-                storage::protocol_fee_address, 
+--
+contracts/pool/msgs/protocolfee.fc-41-            storage::router_address, 
+contracts/pool/msgs/protocolfee.fc:42:            router::pay_to(
+contracts/pool/msgs/protocolfee.fc-43-                storage::protocol_fee_address, 
+--
+contracts/pool/msgs/protocolfee.fc-59-        
+contracts/pool/msgs/protocolfee.fc:60:        storage::save();
+contracts/pool/msgs/protocolfee.fc-61-        return ();

@@ -134,6 +134,7 @@ Scope is limited to the five selected entrypoint assets recorded in `R1-SURFACE-
 | AD3 | router_nested_route_payload_tail_boundary | nested_route | Trailing or nested payload cells could alter the selected pool/token wallet or caller across cross-swap recursion while preserving the Router sender check. | 128 | deadend_with_proof |
 | AD4 | vault_deposited_amount_coin_serialization_limit | coin_width | Repeated router referral-fee deposits could cross the 120-bit coin serialization boundary and leave a vault unable to withdraw or redirect a stored fee. | 129 | deadend_with_proof |
 | AD5 | lp_account_mint_destroy_save_order | callback_lifecycle | LP-account minting with `DESTROY_IF_ZERO` and a subsequent save could resurrect stale amounts or duplicate a callback after pool rejection. | 130 | deadend_with_proof |
+| AE1 | pool_swap_referral_output_send_order | message_ordering_fees | A swap referral-vault message and normal output message could diverge in amount, token side, or completion while Pool saves reserves after both sends. | 131 | deadend_with_proof |
 
 ## Cell execution contract
 
