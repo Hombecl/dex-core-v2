@@ -1,0 +1,17 @@
+COMMAND:
+rg -n --no-heading -i 'lp_account.*bounce|bounce.*lp_account|is_bounced|dont handle bounced|empty_not_allowed|bounced messages' CHAIN_HYPOTHESIS_TABLE.md iter_*/STATUS.yaml
+
+RELEVANT PRIOR RESULTS:
+iter_60 shared_bounce_handling: DEADEND_WITH_PROOF
+  Router, Pool, LPAccount, and Vault return immediately on protocol-marked bounced messages; LPWallet separately restores only its own balance for bounced internal_transfer or burn_notification_ext bodies. No attacker-controlled state mutation or asset delta was demonstrated.
+iter_93 lp_account_bounce_query_id_alias: DEADEND_WITH_PROOF
+  LPAccount refund/add-liquidity callbacks carry explicit amounts and optional per-leg payloads rather than query-keyed mutable state. Root bounced messages are ignored by design, but no attacker-controlled bounce reaches victim state or substitutes a callback leg.
+iter_163 pool_root_bounce_state_order: DEADEND_WITH_PROOF
+  Pool rejects empty bodies before context, ignores nonempty bounced messages before storage and sender handlers, and leaves reserves/supply unchanged.
+iter_214 vault_deposit_ref_fee_tail_response_isolation: DEADEND_WITH_PROOF
+  Vault uses the same empty-body and bounced-message ordering; bounced messages return before storage and value-bearing branches.
+iter_239 lp_account_getter_data_response_carry_destroy: PRE_KILLED_DUPLICATE
+  LPAccount getter responses and carry are read-only/response behavior; no stateful bounce route exists through the getter branch.
+
+CONCLUSION:
+BA2 is a root-dispatch duplicate. Empty bounced bodies fail before state initialization and nonempty bounced bodies return before storage or handler mutation. The behavior is fail-closed and already covered by shared root-bounce audits.

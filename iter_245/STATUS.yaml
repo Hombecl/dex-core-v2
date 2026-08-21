@@ -1,0 +1,182 @@
+schema_version: shadow-v1
+iteration: 245
+phase: completed
+cell_id: BA2
+cell_label: lp_account_root_bounce_empty_body_precedence
+final_verdict: PRE_KILLED_DUPLICATE
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: BA2
+  final_verdict: PRE_KILLED_DUPLICATE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/lp_account.fc
+        line: 7
+        text: 'throw_if(error::empty_not_allowed, in_msg_body.slice_empty?());'
+      - file: contracts/lp_account.fc
+        line: 9
+        text: 'ctx::init(my_balance, msg_value, in_msg_full, in_msg_body);'
+      - file: contracts/lp_account.fc
+        line: 10
+        text: 'if ctx.at(IS_BOUNCED)'
+      - file: contracts/lp_account.fc
+        line: 11
+        text: ';; dont handle bounced messages'
+      - file: contracts/lp_account.fc
+        line: 16
+        text: 'storage::load();'
+      - file: contracts/pool.fc
+        line: 7
+        text: 'throw_if(error::empty_not_allowed, in_msg_body.slice_empty?());'
+      - file: contracts/pool.fc
+        line: 11
+        text: 'if ctx.at(IS_BOUNCED)'
+      - file: contracts/pool.fc
+        line: 13
+        text: 'return ();'
+      - file: contracts/router.fc
+        line: 7
+        text: 'throw_if(error::empty_not_allowed, in_msg_body.slice_empty?());'
+      - file: contracts/router.fc
+        line: 11
+        text: 'if ctx.at(IS_BOUNCED)'
+      - file: contracts/vault.fc
+        line: 29
+        text: 'throw_if(error::empty_not_allowed, in_msg_body.slice_empty?());'
+      - file: contracts/vault.fc
+        line: 32
+        text: 'if ctx.at(IS_BOUNCED)'
+      - file: contracts/lp_wallet.fc
+        line: 150
+        text: 'if (in_msg_body.slice_empty?())'
+      - file: contracts/lp_wallet.fc
+        line: 156
+        text: 'if (flags & 1)'
+      - file: contracts/lp_wallet.fc
+        line: 157
+        text: 'on_bounce(in_msg_body);'
+      - file: contracts/lp_wallet.fc
+        line: 167
+        text: 'int op = in_msg_body~load_uint(32);'
+      - file: contracts/lp_wallet.fc
+        line: 174
+        text: 'if (op == op::internal_transfer)'
+      - file: contracts/lp_wallet.fc
+        line: 179
+        text: 'if (op == op::burn)'
+      - file: contracts/lp_wallet.fc
+        line: 184
+        text: 'throw(error::wrong_op);'
+      - file: tests/System.spec.ts
+        line: 251
+        text: "it('should handle invalid transfers', async () => {"
+      - file: tests/LPAccount.spec.ts
+        line: 52
+        text: "it('should return valid data', async () => {"
+  source_scope_restricted: true
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  required_evidence_complete: true
+  no_fabrication: true
+  scope_assets_only: true
+  methodology_audit_exit: NOT_AVAILABLE
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_DEADEND
+  shippable: false
+  rejection_reason: 'LPAccount rejects empty bodies before context initialization, and a nonempty bounced message returns before workchain checks, storage load, sender authorization, or handler mutation. The equivalent Pool, Router, and Vault roots are ordered the same way; LPWallet returns on empty bodies and only restores its own balance for typed bounce operations. No attacker-positive asset or persistent state delta exists.'
+  duplicate_family: 'iter_60/shared_bounce_handling, iter_93/W3 lp_account_bounce_query_id_alias, iter_163/pool_root_bounce_state_order, iter_214/vault root bounce ordering, and iter_239/AX14 getter response carry family'
+  caller_match_count: 145
+  caller_unique_files: 46
+  cascade_verbatim_hit_count: 21
+  cross_file_anchor_count: 11
+  caller_paths:
+    - contracts/lp_account.fc
+    - contracts/lp_account/msgs/getter.fc
+    - contracts/lp_account/msgs/pool.fc
+    - contracts/lp_account/msgs/user.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/pool/msgs/getter.fc
+    - contracts/pool/msgs/lp_account.fc
+    - contracts/pool/msgs/lp_wallet.fc
+    - contracts/router.fc
+    - contracts/router/msgs/getter.fc
+    - contracts/router/msgs/jetton.fc
+    - contracts/vault.fc
+    - contracts/common/op.fc
+  callers_grep_artifact: iter_245/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_245/poc_lp_account_root_bounce_empty_body.test.js
+    poc_run_log: iter_245/poc_lp_account_root_bounce_empty_body.run.log
+    live_regression_log: iter_245/live-lp-account-root-bounce-regression.run.log
+    prior_audit: iter_245/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_245/poc_lp_account_root_bounce_empty_body.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_245/poc_lp_account_root_bounce_empty_body.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.2s static; 6.293s integration'
+    result: 'PASS (11 cross-file anchors; four empty/bounce dispatch cases; two exact order checks; targeted LPAccount/System regressions)'
+  prior_art_check:
+    queries:
+      - 'cell_label lp_account/bounce/is_bounced/empty_not_allowed/shared root ordering scan across iter_*/STATUS.yaml'
+    results:
+      - 'iter_60 shared_bounce_handling: DEADEND_WITH_PROOF'
+      - 'iter_93 lp_account_bounce_query_id_alias: DEADEND_WITH_PROOF'
+      - 'iter_163 pool_root_bounce_state_order: DEADEND_WITH_PROOF'
+      - 'iter_214 vault root bounce ordering: DEADEND_WITH_PROOF'
+      - 'iter_239 lp_account_getter_data_response_carry_destroy: PRE_KILLED_DUPLICATE'
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "in_msg_body.slice_empty?" "IS_BOUNCED" lp_account is:issue'
+      - 'repo:ston-fi/dex-core-v2 "in_msg_body.slice_empty?" "IS_BOUNCED" lp_account is:pr'
+      - 'repo:ston-fi/dex-core-v2 "empty_not_allowed" "dont handle bounced messages" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "empty_not_allowed" "dont handle bounced messages" is:pr'
+    gh_search_hits: 0
+    evidence_files:
+      - iter_245/r15-lp-account-empty-bounce-issue.json
+      - iter_245/r15-lp-account-empty-bounce-pr.json
+      - iter_245/r15-empty-not-allowed-bounced-issue.json
+      - iter_245/r15-empty-not-allowed-bounced-pr.json
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: PRE_KILLED_DUPLICATE
+  shadow_mode: true
+  caller_path: iter_245/callers-grep.txt
+  caller_match_count: 145
+  caller_unique_files: 46
+  prior_audit_path: iter_245/prior-audit-git.log
+  prior_family_matches: [iter60, iter93, iter163, iter214, iter239]
+  r15_evidence_files:
+    - iter_245/r15-lp-account-empty-bounce-issue.json
+    - iter_245/r15-lp-account-empty-bounce-pr.json
+    - iter_245/r15-empty-not-allowed-bounced-issue.json
+    - iter_245/r15-empty-not-allowed-bounced-pr.json
+  source_conclusion: 'BA2 is a shared root-dispatch duplicate. The only empty-body behavior is an early rejection without state initialization; nonempty bounced messages are ignored before storage and all value-bearing handlers. LPWallet separately restores only amounts encoded in typed bounced outbound operations. No victim state, token/LP balance, or TON value becomes attacker-controlled.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_245/poc_lp_account_root_bounce_empty_body.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_245/poc_lp_account_root_bounce_empty_body.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_245/live-lp-account-root-bounce-regression.run.log
+    result: PASS

@@ -1,0 +1,12 @@
+$ node iter_245/poc_lp_account_root_bounce_empty_body.test.js
+{
+  "result": "PASS",
+  "classification": "PRE_KILLED_DUPLICATE",
+  "cell": "BA2",
+  "cross_file_anchors": 11,
+  "dispatch_cases": 4,
+  "state_mutation_before_bounce": false,
+  "exact_order_checks": 2,
+  "reason": "an empty body is rejected before context initialization, while a nonempty bounced body returns before workchain, storage load, sender gates, or handler mutation; Pool, Router, Vault, and LPWallet use the same fail-closed ordering, and prior bounce audits cover the behavior"
+}
+exit=0
