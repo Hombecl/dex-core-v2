@@ -1,0 +1,1 @@
+AF3 reset-pool-gas edge check passed: only the stored admin reaches the Router branch, the pool sender is fixed to the stored Router, workchains and deterministic pool tuple are checked, and the operation moves TON excess only
