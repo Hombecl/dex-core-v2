@@ -1,0 +1,1 @@
+AE5 LP-wallet edge check passed: owner/balance checks precede a single debit save, destination wallet identity is deterministic, response/forward fields carry TON only, and protocol bounce restoration returns the exact debited amount

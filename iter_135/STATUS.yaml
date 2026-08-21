@@ -1,0 +1,74 @@
+schema_version: shadow-v1
+iteration: 135
+phase: completed
+cell_id: AE5
+cell_label: lp_wallet_transfer_response_excess_commit
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AE5
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - 'contracts/lp_wallet.fc:18: balance -= jetton_amount;'
+      - 'contracts/lp_wallet.fc:20: throw_unless(705, equal_slices(owner_address, sender_address));'
+      - 'contracts/lp_wallet.fc:23: cell state_init = calculate_jetton_lp_wallet_state_init(to_owner_address, jetton_master_address, jetton_wallet_code);'
+      - 'contracts/lp_wallet.fc:40: .store_slice(owner_address)'
+      - 'contracts/lp_wallet.fc:41: .store_slice(response_address)'
+      - 'contracts/lp_wallet.fc:50: send_raw_message(msg.end_cell(), 64);'
+      - 'contracts/lp_wallet.fc:51: storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);'
+      - 'contracts/lp_wallet.fc:62: throw_unless(707, equal_slices(jetton_master_address, sender_address)'
+      - 'contracts/lp_wallet.fc:145: balance += jetton_amount;'
+      - 'contracts/lp_wallet.fc:146: storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);'
+      - 'contracts/lp_wallet.fc:141: throw_unless(709, (op == op::internal_transfer) | (op == op::burn_notification_ext));'
+      - 'contracts/lp_wallet/jetton-utils.fc:26: slice calculate_user_jetton_lp_wallet_address(slice owner_address, slice jetton_master_address, cell jetton_wallet_code) inline {'
+      - 'contracts/pool/msgs/lp_account.fc:123: jetton_wallet::mint('
+  poc_execution:
+    test_file_path: iter_135/poc_lp_wallet_transfer_response_excess_commit.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_135/poc_lp_wallet_transfer_response_excess_commit.run.log,iter_135/integration.run.log
+    run_log_exists_on_disk: true
+    test_runtime: '47.042s integration; model passed'
+    result: 'PASSED (integration: 28 passed, 110 skipped, 138 total across 5 suites; model: passed)'
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 "send_tokens" "response_address" "on_bounce" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "send_tokens" "response_address" "on_bounce" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "internal_transfer" "forward_ton_amount" "storage::save" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "internal_transfer" "forward_ton_amount" "storage::save" is:pr'
+    results: all four returned total_count 0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'LP-wallet transfer response bounce repository issue search'
+      - 'LP-wallet transfer response bounce repository pull-request search'
+      - 'LP-wallet forward TON debit repository issue search'
+      - 'LP-wallet forward TON debit repository pull-request search'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_135/callers-grep.txt
+  caller_grep_match_count: 169
+  caller_grep_unique_files: 6
+  prior_audit_path: iter_135/prior-audit-git.log
+  prior_audit_bytes: 29
+  r15_search_files:
+    - iter_135/R15-GH-lp-wallet-transfer-response-bounce-issue.json
+    - iter_135/R15-GH-lp-wallet-transfer-response-bounce-pr.json
+    - iter_135/R15-GH-lp-wallet-forward-ton-debit-issue.json
+    - iter_135/R15-GH-lp-wallet-forward-ton-debit-pr.json
+  source_conclusion: 'LP-wallet send_tokens checks the owner and nonnegative post-debit balance, derives the destination wallet from destination owner/master/code, sends one internal transfer carrying the exact amount plus separate response/forward TON fields, and saves once. receive_tokens credits only from the master or deterministic source wallet; protocol bounce handling accepts only internal_transfer or burn_notification_ext and restores the exact encoded amount. The LP mint path supplies deterministic wallet state-init and pool burn path validates the originating wallet. Integration and model evidence found no duplicate credit, wrong token wallet, or response-field jetton mutation.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_135-AE5.md
