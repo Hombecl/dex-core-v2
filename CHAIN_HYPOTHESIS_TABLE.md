@@ -122,6 +122,7 @@ Scope is limited to the five selected entrypoint assets recorded in `R1-SURFACE-
 | AB1 | pool_max_coins_invariant_boundary | arithmetic_boundary | Maximum-width reserves or LP supply could make invariant/fee arithmetic release unbacked tokens before the post-operation bound check. | 116 | deadend_with_proof |
 | AB2 | pool_lp_supply_minimum_lock_boundary | minimum_supply | The required locked LP minimum could make a near-empty pool burn or provide path pass with zero/negative effective supply and misaccount reserves. | 117 | deadend_with_proof |
 | AB3 | router_cross_router_original_caller_binding | cross_router_identity | Across two routers, the mid-hop `original_caller` and refund/excess fields could diverge so the second router pays a different account. | 118 | deadend_with_proof |
+| AB4 | lp_wallet_master_credit_debit_conservation | token_conservation | An LP-wallet internal transfer accepted from the master or a user wallet could credit without a matching source debit under state-init or bounce ordering. | 119 | deadend_with_proof |
 
 ## Cell execution contract
 
