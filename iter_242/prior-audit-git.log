@@ -1,0 +1,8 @@
+Command: rg -n -i --no-heading 'refund_me|reset_gas|DESTROY_IF_ZERO|cb_refund_me|lp_account_idata' iter_*/STATUS.yaml
+Relevant prior records:
+iter_123 lp_account_refund_then_direct_add_lifecycle: DEADEND_WITH_PROOF; refund clears both stored amounts and saves before any later lifecycle, direct-add cannot replay stale liquidity.
+iter_202 lp_account_refund_destroy_redeploy_identity: DEADEND_WITH_PROOF; refund is user-gated, clears/saves, and redeployment starts zero; Pool callback re-derives the same identity.
+iter_229 lp_account_reset_gas_user_destination_carry: DEADEND_WITH_PROOF; reset is stored-user-only, carries only post-reserve TON, and a second call has no excess.
+iter_232 lp_account_reset_gas_storage_floor_boundary: DEADEND_WITH_PROOF; exact reserve/carry floor already tested.
+
+Conclusion: AX20 is the refund/reset/destroy-redeploy intersection already covered by iter_123, iter_202, iter_229, and iter_232; no replayable token state or attacker-positive payout was found.

@@ -1,0 +1,11 @@
+$ node iter_242/poc_lp_account_reset_gas_reentry_lifecycle.test.js
+{
+  "result": "PASS",
+  "classification": "PRE_KILLED_DUPLICATE",
+  "cell": "AX20",
+  "cross_file_anchors": 23,
+  "lifecycle_cases": 4,
+  "exact_boundary_checks": 7,
+  "reason": "refund emits the stored two-leg amounts before one atomic clear/save, reset carries only residual TON without touching token state, second refunds require positive stored liquidity, and redeployment reconstructs zero balances from deterministic StateInit data"
+}
+exit=0

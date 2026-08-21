@@ -1,0 +1,175 @@
+schema_version: shadow-v1
+iteration: 242
+phase: completed
+cell_id: AX20
+cell_label: lp_account_reset_gas_reentry_lifecycle
+final_verdict: PRE_KILLED_DUPLICATE
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AX20
+  final_verdict: PRE_KILLED_DUPLICATE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/lp_account.fc
+        line: 15
+        text: 'throw_unless(error::wrong_workchain, ctx.at(SENDER).address::check_workchain(params::workchain));'
+      - file: contracts/lp_account.fc
+        line: 26
+        text: 'if equal_slices(ctx.at(SENDER), storage::user_address) {'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 4
+        text: 'if ctx.at(OPCODE) == op::refund_me {'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 7
+        text: 'in_msg_body.end_parse();'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 10
+        text: 'throw_unless(error::no_liquidity, (storage::amount0 > 0) | (storage::amount1 > 0));'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 24
+        text: 'pool::cb_refund_me('
+      - file: contracts/lp_account/msgs/user.fc
+        line: 30
+        text: 'CARRY_ALL_BALANCE | DESTROY_IF_ZERO'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 33
+        text: 'storage::amount0 = 0;'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 34
+        text: 'storage::amount1 = 0;'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 36
+        text: 'storage::save();'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 104
+        text: 'if ctx.at(OPCODE) == op::reset_gas {'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 105
+        text: 'reserves::exact(storage_fee::lp_account);'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 106
+        text: 'msgs::send_empty(0, storage::user_address, CARRY_ALL_BALANCE);'
+      - file: contracts/lp_account/storage.fc
+        line: 19
+        text: '.store_coins(storage::amount0)'
+      - file: contracts/common/contracts.fc
+        line: 29
+        text: '(cell) pool::cb_refund_me(int _left_amount, int _right_amount, cell _left_maybe_payload, cell _right_maybe_payload) inline {'
+      - file: contracts/common/contracts.fc
+        line: 33
+        text: '.store_slice(ctx.at(SENDER))'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 138
+        text: 'if ctx.at(OPCODE) == op::cb_refund_me {'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 147
+        text: 'lp_account_idata(my_address(), user_address),'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 151
+        text: 'throw_unless(error::invalid_caller, equal_slices(lp_account~address(params::workchain), ctx.at(SENDER)));'
+      - file: node_modules/@ston-fi/funcbox/contracts/consts.fc
+        line: 37
+        text: 'const DESTROY_IF_ZERO = 32;'
+      - file: node_modules/@ston-fi/funcbox/contracts/consts.fc
+        line: 47
+        text: 'const CARRY_ALL_BALANCE = 128;'
+      - file: tests/System.spec.ts
+        line: 180
+        text: "it('should handle refund partial liquidity', async () => {"
+  source_scope_restricted: true
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  required_evidence_complete: true
+  no_fabrication: true
+  scope_assets_only: true
+  methodology_audit_exit: NOT_AVAILABLE
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_DEADEND
+  shippable: false
+  rejection_reason: 'Refund clears and saves both LP amounts before lifecycle completion; reset only carries residual TON and does not mutate token state. The same user gate, deterministic Pool callback identity, no-liquidity check, and fresh zero StateInit redeploy are already covered by iter_123, iter_202, iter_229, and iter_232.'
+  duplicate_family: 'iter_123/AC3, iter_202/AT2, iter_229/AX16, and iter_232/AX19 LPAccount refund/reset/destroy/carry lifecycle family'
+  caller_match_count: 18
+  caller_unique_files: 5
+  cascade_verbatim_hit_count: 23
+  cross_file_anchor_count: 23
+  caller_paths:
+    - contracts/common/contracts.fc
+    - contracts/common/op.fc
+    - contracts/pool/msgs/lp_account.fc
+    - contracts/lp_account/msgs/pool.fc
+    - contracts/lp_account/msgs/user.fc
+  callers_grep_artifact: iter_242/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_242/poc_lp_account_reset_gas_reentry_lifecycle.test.js
+    poc_run_log: iter_242/poc_lp_account_reset_gas_reentry_lifecycle.run.log
+    live_regression_log: iter_242/live-lp-account-reset-reentry-lifecycle-regression.run.log
+    prior_audit: iter_242/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_242/poc_lp_account_reset_gas_reentry_lifecycle.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_242/poc_lp_account_reset_gas_reentry_lifecycle.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.1s static; 6.733s integration'
+    result: 'PASS (23 cross-file anchors; four lifecycle cases; seven exact boundary checks; partial-refund regression)'
+  prior_art_check:
+    queries:
+      - 'cell_label refund/reset/destroy/redeploy/carry/lp_account scan across iter_*/STATUS.yaml'
+    results:
+      - 'iter_123 lp_account_refund_then_direct_add_lifecycle: DEADEND_WITH_PROOF'
+      - 'iter_202 lp_account_refund_destroy_redeploy_identity: DEADEND_WITH_PROOF'
+      - 'iter_229 lp_account_reset_gas_user_destination_carry: DEADEND_WITH_PROOF'
+      - 'iter_232 lp_account_reset_gas_storage_floor_boundary: DEADEND_WITH_PROOF'
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "refund_me" "reset_gas" "DESTROY_IF_ZERO" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "refund_me" "reset_gas" "DESTROY_IF_ZERO" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "lp_account_idata" "cb_refund_me" redeploy is:issue'
+      - 'repo:ston-fi/dex-core-v2 "lp_account_idata" "cb_refund_me" redeploy is:pr'
+    gh_search_hits: 0
+    evidence_files:
+      - iter_242/r15-lp-account-refund-reset-destroy-issue.json
+      - iter_242/r15-lp-account-refund-reset-destroy-pr.json
+      - iter_242/r15-lp-account-callback-redeploy-issue.json
+      - iter_242/r15-lp-account-callback-redeploy-pr.json
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: PRE_KILLED_DUPLICATE
+  shadow_mode: true
+  caller_path: iter_242/callers-grep.txt
+  caller_match_count: 18
+  caller_unique_files: 5
+  prior_audit_path: iter_242/prior-audit-git.log
+  prior_family_matches: [iter123, iter202, iter229, iter232]
+  r15_evidence_files:
+    - iter_242/r15-lp-account-refund-reset-destroy-issue.json
+    - iter_242/r15-lp-account-refund-reset-destroy-pr.json
+    - iter_242/r15-lp-account-callback-redeploy-issue.json
+    - iter_242/r15-lp-account-callback-redeploy-pr.json
+  source_conclusion: 'AX20 is the already audited refund/reset/destroy-redeploy lifecycle. Refund emits the current two-leg amounts, clears both fields, and saves in one transaction with CARRY_ALL_BALANCE | DESTROY_IF_ZERO; reset reserves the storage floor and sends only residual TON to stored user without saving; a second refund fails no_liquidity; and a redeployed LPAccount receives zero StateInit amounts and must pass the deterministic Pool callback sender check.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_242/poc_lp_account_reset_gas_reentry_lifecycle.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_242/poc_lp_account_reset_gas_reentry_lifecycle.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_242/live-lp-account-reset-reentry-lifecycle-regression.run.log
+    result: PASS
