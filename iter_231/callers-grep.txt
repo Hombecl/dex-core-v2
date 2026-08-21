@@ -1,0 +1,35 @@
+$ rg -n -i "receive_tokens|op::internal_transfer|jetton_wallet::mint|forward_ton_amount|transfer_notification|storage::save\(\)|msg_value -= \(storage_fee \+ REQUIRED_GAS\)" contracts/lp_wallet.fc contracts/common/contracts.fc contracts/pool/msgs/lp_account.fc contracts/router.fc contracts/pool.fc contracts/vault.fc tests/System.spec.ts tests/ConstProduct.spec.ts
+contracts/vault.fc:19:() storage::save() impure inline_ref {
+contracts/vault.fc:44:        storage::save();
+contracts/vault.fc:69:        storage::save();
+contracts/common/contracts.fc:206:(cell) jetton_wallet::mint(
+contracts/common/contracts.fc:213:    return begin_message(op::internal_transfer)
+contracts/common/contracts.fc:217:        .store_coins(_fwd_amount) ;; forward_ton_amount
+contracts/pool/msgs/lp_account.fc:115:            ) { ;; do not send transfer_notification, if gas is too low, mint may revert
+contracts/pool/msgs/lp_account.fc:123:                jetton_wallet::mint(
+contracts/pool/msgs/lp_account.fc:132:            storage::save();
+contracts/lp_wallet.fc:27:    int forward_ton_amount = in_msg_body~load_coins();
+contracts/lp_wallet.fc:37:        .store_uint(op::internal_transfer, 32)
+contracts/lp_wallet.fc:42:        .store_coins(forward_ton_amount)
+contracts/lp_wallet.fc:47:    int fwd_count = forward_ton_amount ? 2 : 1;
+contracts/lp_wallet.fc:48:    throw_unless(709, msg_value > forward_ton_amount + fwd_count * fwd_fee + (2 * REQUIRED_GAS + REQUIRED_TON_STORAGE));
+contracts/lp_wallet.fc:54:() receive_tokens (slice in_msg_body, slice sender_address, int my_ton_balance, int fwd_fee, int msg_value) impure {
+contracts/lp_wallet.fc:65:    int forward_ton_amount = in_msg_body~load_coins();
+contracts/lp_wallet.fc:68:    msg_value -= (storage_fee + REQUIRED_GAS);
+contracts/lp_wallet.fc:70:    if(forward_ton_amount) {
+contracts/lp_wallet.fc:71:        msg_value -= (forward_ton_amount + fwd_fee);
+contracts/lp_wallet.fc:74:            .store_uint(op::transfer_notification, 32)
+contracts/lp_wallet.fc:83:            .store_coins(forward_ton_amount)
+contracts/lp_wallet.fc:141:    throw_unless(709, (op == op::internal_transfer) | (op == op::burn_notification_ext));
+contracts/lp_wallet.fc:174:    if (op == op::internal_transfer) {
+contracts/lp_wallet.fc:175:        receive_tokens(in_msg_body, sender_address, my_balance, fwd_fee, msg_value);
+
+caller_grep_done: true
+caller_match_count: 25
+caller_unique_files: 4
+caller_files:
+  - contracts/common/contracts.fc
+  - contracts/lp_wallet.fc
+  - contracts/pool/msgs/lp_account.fc
+  - contracts/vault.fc
+cross_file_requirement: PASS (4 files; tests/System.spec.ts separately exercises the mint/burn caller chain)

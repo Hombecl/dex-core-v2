@@ -1,0 +1,31 @@
+$ rg -n -i "reset_gas|reserves::exact|CARRY_ALL_BALANCE|storage::user_address|handle_user_messages|sendResetGas|resetGas" contracts/lp_account.fc contracts/lp_account/msgs/user.fc contracts/lp_account/storage.fc contracts/common/contracts.fc wrappers/LPAccount.ts tests/LPAccount.spec.ts tests/System.spec.ts
+contracts/lp_account/storage.fc:1:global slice storage::user_address;
+contracts/lp_account/storage.fc:8:    storage::user_address = ds~load_msg_addr();
+contracts/lp_account/storage.fc:17:        .store_slice(storage::user_address)
+wrappers/LPAccount.ts:32:    resetGas: 0x29d22935,
+wrappers/LPAccount.ts:44:    async sendResetGas(provider: ContractProvider, via: Sender, value?: bigint) {
+wrappers/LPAccount.ts:48:            body: beginMessage(lpAccOpcodes.resetGas)
+contracts/lp_account/msgs/user.fc:1:(int) handle_user_messages() impure inline {
+contracts/lp_account/msgs/user.fc:30:            CARRY_ALL_BALANCE | DESTROY_IF_ZERO
+contracts/lp_account/msgs/user.fc:98:            CARRY_ALL_BALANCE | DESTROY_IF_ZERO
+contracts/lp_account/msgs/user.fc:104:    if ctx.at(OPCODE) == op::reset_gas {
+contracts/lp_account/msgs/user.fc:105:        reserves::exact(storage_fee::lp_account);
+contracts/lp_account/msgs/user.fc:106:        msgs::send_empty(0, storage::user_address, CARRY_ALL_BALANCE);
+contracts/common/contracts.fc:268:(cell) pool::reset_gas(slice _excesses_recipient) inline {
+contracts/common/contracts.fc:269:    return begin_message(op::reset_gas)
+contracts/lp_account.fc:26:    if equal_slices(ctx.at(SENDER), storage::user_address) {
+contracts/lp_account.fc:27:        if handle_user_messages() {
+tests/System.spec.ts:386:            const sendResetGasResult = await router.sendResetGas(admin.getSender());
+
+caller_grep_done: true
+caller_match_count: 20
+caller_unique_files: 7
+caller_files:
+  - contracts/common/contracts.fc
+  - contracts/lp_account.fc
+  - contracts/lp_account/msgs/user.fc
+  - contracts/lp_account/storage.fc
+  - wrappers/LPAccount.ts
+  - tests/LPAccount.spec.ts
+  - tests/System.spec.ts
+cross_file_requirement: PASS (7 files)

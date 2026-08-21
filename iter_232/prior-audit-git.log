@@ -1,0 +1,15 @@
+$ rg -n -i 'cell_label:.*(reset.*gas|reserve.*carry|ton_reserve|carry.*value|gas.*floor)' iter_*/STATUS.yaml
+iter_55/STATUS.yaml:5:cell_label: ton_reserve_carry_value_flow
+iter_138/STATUS.yaml:5:cell_label: router_admin_reset_pool_gas_recipient
+iter_139/STATUS.yaml:5:cell_label: pool_reset_gas_body_tail_parse
+iter_167/STATUS.yaml:5:cell_label: lp_mint_carry_value_commit
+iter_229/STATUS.yaml:5:cell_label: lp_account_reset_gas_user_destination_carry
+
+$ git log --all --oneline --decorate -12
+06b78ea (HEAD -> v4flash-soak-ston-dot-fi-dex-smart-contracts-v2, fork/v4flash-soak-ston-dot-fi-dex-smart-contracts-v2) checkpoint: v4flash soak ston-dot-fi-dex-smart-contract-v2 iter230
+ac79f47 shadow: complete iter140 AF5 getter deadend
+1b4c27a shadow: complete iter139 AF4 trusted kill
+5acac98 shadow: complete iter138 AF3 trusted kill
+da2457c shadow: complete iter137 AF2 deadend
+
+prior_audit_conclusion: AX19 is a fresh LPAccount reserve-floor boundary adjacent to, but distinct from, the prior Router/Pool reset-gas and AX16 destination analyses. Exact reserve leaves the configured storage floor; the user-gated branch has no storage save and carries only the remaining surplus.

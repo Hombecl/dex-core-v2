@@ -1,0 +1,9 @@
+$ node iter_231/poc_lp_wallet_receive_master_forward_amount_accounting.test.js
+{
+  "result": "PASS",
+  "classification": "DEADEND_WITH_PROOF",
+  "cell": "AX22",
+  "cross_file_anchors": 16,
+  "exact_boundary_checks": 5,
+  "reason": "master/source authorization, nonnegative value construction, serializer/parser order, and caller-side gas suppression prevent a committed LP credit without the matching forward-value branch"
+}

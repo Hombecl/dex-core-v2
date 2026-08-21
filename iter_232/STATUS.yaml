@@ -1,0 +1,156 @@
+schema_version: shadow-v1
+iteration: 232
+phase: completed
+cell_id: AX19
+cell_label: lp_account_reset_gas_storage_floor_boundary
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AX19
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/lp_account.fc
+        line: 15
+        text: 'throw_unless(error::wrong_workchain, ctx.at(SENDER).address::check_workchain(params::workchain));'
+      - file: contracts/lp_account.fc
+        line: 26
+        text: 'if equal_slices(ctx.at(SENDER), storage::user_address) {'
+      - file: contracts/lp_account.fc
+        line: 27
+        text: 'if handle_user_messages() {'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 104
+        text: 'if ctx.at(OPCODE) == op::reset_gas {'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 105
+        text: 'reserves::exact(storage_fee::lp_account);'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 106
+        text: 'msgs::send_empty(0, storage::user_address, CARRY_ALL_BALANCE);'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 107
+        text: 'return (true);'
+      - file: contracts/lp_account/storage.fc
+        line: 8
+        text: 'storage::user_address = ds~load_msg_addr();'
+      - file: node_modules/@ston-fi/funcbox/contracts/reserves.fc
+        line: 41
+        text: 'raw_reserve(_balance, RESERVE_EXACTLY);'
+      - file: contracts/common/contracts.fc
+        line: 269
+        text: 'return begin_message(op::reset_gas)'
+      - file: wrappers/LPAccount.ts
+        line: 44
+        text: 'async sendResetGas(provider: ContractProvider, via: Sender, value?: bigint) {'
+      - file: wrappers/LPAccount.ts
+        line: 48
+        text: 'body: beginMessage(lpAccOpcodes.resetGas)'
+      - file: tests/LPAccount.spec.ts
+        line: 36
+        text: 'lpAcc = bc.openContract(LPAccount.createFromConfig({'
+      - file: tests/LPAccount.spec.ts
+        line: 52
+        text: "it('should return valid data', async () => {"
+      - file: tests/System.spec.ts
+        line: 386
+        text: 'const sendResetGasResult = await router.sendResetGas(admin.getSender());'
+  source_scope_restricted: true
+  redrill_count: 0
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  required_evidence_complete: true
+  no_fabrication: true
+  scope_assets_only: true
+  methodology_audit_exit: NOT_AVAILABLE
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_DEADEND
+  shippable: false
+  rejection_reason: 'Exact reserve retains the configured LPAccount storage floor and carries only the surplus to the immutable stored user. Below-floor calls fail at reserve; the branch does not mutate LP balances or create a second payout, so no attacker-positive value loss was demonstrated.'
+  caller_match_count: 20
+  caller_unique_files: 7
+  cascade_verbatim_hit_count: 15
+  cross_file_anchor_count: 15
+  caller_paths:
+    - contracts/common/contracts.fc
+    - contracts/lp_account.fc
+    - contracts/lp_account/msgs/user.fc
+    - contracts/lp_account/storage.fc
+    - wrappers/LPAccount.ts
+    - tests/LPAccount.spec.ts
+    - tests/System.spec.ts
+  callers_grep_artifact: iter_232/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_232/poc_lp_account_reset_gas_storage_floor_boundary.test.js
+    poc_run_log: iter_232/poc_lp_account_reset_gas_storage_floor_boundary.run.log
+    live_regression_log: iter_232/live-lp-account-reset-floor-regression.run.log
+    prior_audit: iter_232/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_232/poc_lp_account_reset_gas_storage_floor_boundary.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_232/poc_lp_account_reset_gas_storage_floor_boundary.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.1s static; 2.817s integration'
+    result: 'PASS (15 cross-file anchors; six exact reserve-floor cases; LPAccount integration suite passed)'
+  prior_art_check:
+    queries:
+      - 'cell_label reset/reserve/carry/gas-floor scan across iter_*/STATUS.yaml'
+    results:
+      - 'iter_55 ton_reserve_carry_value_flow: DEADEND_WITH_PROOF'
+      - 'iter_138 router_admin_reset_pool_gas_recipient: closed'
+      - 'iter_139 pool_reset_gas_body_tail_parse: KILLED_TRUSTED_ON_TRUSTED'
+      - 'iter_167 lp_mint_carry_value_commit: closed'
+      - 'iter_229 lp_account_reset_gas_user_destination_carry: DEADEND_WITH_PROOF'
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "reserves::exact" "lp_account" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "reserves::exact" "lp_account" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "CARRY_ALL_BALANCE" "storage::user_address" "reset_gas" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "CARRY_ALL_BALANCE" "storage::user_address" "reset_gas" is:pr'
+    gh_search_hits: 0
+    evidence_files:
+      - iter_232/r15-lp-account-reserve-floor-issue.json
+      - iter_232/r15-lp-account-reserve-floor-pr.json
+      - iter_232/r15-lp-account-reset-user-carry-issue.json
+      - iter_232/r15-lp-account-reset-user-carry-pr.json
+  attacker_privilege:
+    privilege_required: external_auth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  shadow_mode: true
+  caller_path: iter_232/callers-grep.txt
+  caller_match_count: 20
+  caller_unique_files: 7
+  prior_audit_path: iter_232/prior-audit-git.log
+  r15_evidence_files:
+    - iter_232/r15-lp-account-reserve-floor-issue.json
+    - iter_232/r15-lp-account-reserve-floor-pr.json
+    - iter_232/r15-lp-account-reset-user-carry-issue.json
+    - iter_232/r15-lp-account-reset-user-carry-pr.json
+  source_conclusion: 'AX19 has no fund-loss path: the user-gated reset branch calls exact reserve for storage_fee::lp_account, sends only the post-reserve surplus to the stored user, does not save or alter LPAccount token balances, and a second reset has no remaining surplus.'
+  attacker_privilege:
+    privilege_required: external_auth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_232/poc_lp_account_reset_gas_storage_floor_boundary.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_232/poc_lp_account_reset_gas_storage_floor_boundary.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_232/live-lp-account-reset-floor-regression.run.log
+    result: PASS

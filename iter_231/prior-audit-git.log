@@ -1,0 +1,24 @@
+$ rg -n -i 'cell_label:.*(lp_wallet_forward|lp_wallet.*amount|lp_wallet.*payload|master.*credit|master.*source|receive.*master)' iter_*/STATUS.yaml
+iter_9/STATUS.yaml:5:cell_label: provide_lp x bounce_reversal
+iter_22/STATUS.yaml:5:cell_label: lp_wallet_receive x amount_conservation
+iter_63/STATUS.yaml:5:cell_label: lp_wallet_receive_master_alias
+iter_73/STATUS.yaml:5:cell_label: lp_wallet_forward_payload_balance
+iter_87/STATUS.yaml:5:cell_label: lp_wallet_notification_payload_alias
+iter_103/STATUS.yaml:5:cell_label: lp_wallet_forward_payload_dict_boundary
+iter_119/STATUS.yaml:5:cell_label: lp_wallet_master_credit_debit_conservation
+iter_124/STATUS.yaml:5:cell_label: lp_wallet_forward_payload_reference_depth
+iter_135/STATUS.yaml:5:cell_label: lp_wallet_transfer_response_excess_commit
+iter_164/STATUS.yaml:5:cell_label: lp_mint_notification_failure
+iter_167/STATUS.yaml:5:cell_label: lp_mint_carry_value_commit
+iter_169/STATUS.yaml:5:cell_label: lp_wallet_mint_from_address_notification
+iter_215/STATUS.yaml:5:cell_label: lp_wallet_master_source_auth_alias
+iter_230/STATUS.yaml:5:cell_label: lp_wallet_receive_master_from_address_owner_binding
+
+$ git log --all --oneline --decorate -12
+06b78ea (HEAD -> v4flash-soak-ston-dot-fi-dex-smart-contracts-v2, fork/v4flash-soak-ston-dot-fi-dex-smart-contracts-v2) checkpoint: v4flash soak ston-dot-fi-dex-smart-contract-v2 iter230
+ac79f47 shadow: complete iter140 AF5 getter deadend
+1b4c27a shadow: complete iter139 AF4 trusted kill
+5acac98 shadow: complete iter138 AF3 trusted kill
+da2457c shadow: complete iter137 AF2 deadend
+
+prior_audit_conclusion: AX22 is adjacent to previously drilled LPWallet value/payload families, but this cell isolates the master-authorized receive branch's forward-value subtraction and Pool caller threshold. Existing evidence shows failed message construction rolls back before storage::save and successful mint/burn integration passes.

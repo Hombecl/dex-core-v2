@@ -1,0 +1,9 @@
+$ node iter_232/poc_lp_account_reset_gas_storage_floor_boundary.test.js
+{
+  "result": "PASS",
+  "classification": "DEADEND_WITH_PROOF",
+  "cell": "AX19",
+  "cross_file_anchors": 15,
+  "exact_floor_checks": 6,
+  "reason": "exact reserve leaves only the account surplus, below-floor calls fail before payout, destination is immutable stored-user state, and reset does not mutate LP balances"
+}
