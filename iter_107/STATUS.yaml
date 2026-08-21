@@ -1,0 +1,61 @@
+schema_version: shadow-v1
+iteration: 107
+phase: completed
+cell_id: Z2
+cell_label: lp_account_refund_excess_carry_destination
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: Z2
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts,tests/ConstSum.spec.ts,tests/Stableswap.spec.ts,tests/WeightedStableswap.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_107/poc_lp_account_refund_excess_carry_destination.run.log
+    run_log_exists_on_disk: true
+    test_runtime: 24.762s
+    result: PASSED (12 passed, 101 skipped, 113 total)
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 refund_me is:issue'
+      - 'repo:ston-fi/dex-core-v2 refund_me is:pr'
+      - 'repo:ston-fi/dex-core-v2 direct_add_liquidity is:issue'
+      - 'repo:ston-fi/dex-core-v2 direct_add_liquidity is:pr'
+    results: all four returned total_count 0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'refund_me on repository issue page'
+      - 'refund_me on repository pull-request page'
+      - 'direct_add_liquidity on repository issue page'
+      - 'direct_add_liquidity on repository pull-request page'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_107/callers-grep.txt
+  caller_grep_match_count: 116
+  caller_grep_unique_files: 30
+  prior_audit_path: iter_107/prior-audit-git.log
+  prior_audit_bytes: 78
+  r15_search_files:
+    - iter_107/R15-GH-refund-me-issue.json
+    - iter_107/R15-GH-refund-me-pr.json
+    - iter_107/R15-GH-direct-add-liquidity-issue.json
+    - iter_107/R15-GH-direct-add-liquidity-pr.json
+  source_conclusion: 'LP-account refund/direct-add operations are user-gated, workchain-check caller-supplied addresses, clear stored amounts before callbacks, and route token payouts through pool/router logic bound to the stored user. Carried TON does not authorize a cross-user token transfer.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_107-Z2.md
