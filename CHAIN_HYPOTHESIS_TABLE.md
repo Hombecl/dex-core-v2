@@ -106,6 +106,7 @@ Scope is limited to the five selected entrypoint assets recorded in `R1-SURFACE-
 | X5 | getter_payload_ref_shape_boundary | payload_aliasing | Getter response cells with optional refs or address forms can make a read-only response encode a state-bearing field for another consumer. | 100 | deadend_with_proof |
 | Y1 | router_pay_vault_single_side_stateinit | state_init_asset_binding | `pay_vault` sums referral-fee legs and selects a token-derived vault; a two-sided/zero-sided tuple or caller/state-init mismatch could release real token value to an unintended referral address. | 101 | deadend_with_proof |
 | Y2 | router_route_untrusted_notification_binding | sender_binding | An untrusted `transfer_notification` sender/from-address combination could cross the router's token-wallet, pool, or refund identity boundaries into real-asset movement. | 102 | deadend_with_proof |
+| Y3 | lp_wallet_forward_payload_dict_boundary | payload_aliasing | The LP-wallet's ignored custom dictionary and forwarded remainder could alter transfer parsing, destination, balance, or bounce restoration. | 103 | deadend_with_proof |
 
 ## Cell execution contract
 
