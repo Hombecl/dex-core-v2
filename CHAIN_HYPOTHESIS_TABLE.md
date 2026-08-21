@@ -115,6 +115,7 @@ Scope is limited to the five selected entrypoint assets recorded in `R1-SURFACE-
 | Z4 | router_getter_upgrade_code_visibility | state_init_asset_binding | Pending/finalized pool-code getter fields could become stale and feed a different state-init address into a value-bearing caller. | 109 | deadend_with_proof |
 | Z5 | lp_wallet_response_excess_workchain_boundary | destination_binding | LP-wallet response/excess addresses with nonstandard workchains or `addr_none` could alter balance restoration or route a payout to an unintended wallet. | 110 | deadend_with_proof |
 | AA1 | pool_callback_failure_redeploy_refund_binding | state_init_asset_binding | Pool callback failure can redeploy an LP account with both input amounts; a mismatched refund/user identity could redirect or duplicate the stored refund. | 111 | deadend_with_proof |
+| AA2 | lp_account_add_liquidity_storage_merge | state_persistence | Repeated pool `add_liquidity` callbacks could merge amounts across users or mint against another account's stored single-sided balance. | 112 | deadend_with_proof |
 
 ## Cell execution contract
 

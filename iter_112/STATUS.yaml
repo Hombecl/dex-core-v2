@@ -1,0 +1,61 @@
+schema_version: shadow-v1
+iteration: 112
+phase: completed
+cell_id: AA2
+cell_label: lp_account_add_liquidity_storage_merge
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AA2
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts,tests/ConstSum.spec.ts,tests/Stableswap.spec.ts,tests/WeightedStableswap.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_112/poc_lp_account_add_liquidity_storage_merge.run.log
+    run_log_exists_on_disk: true
+    test_runtime: 21.785s
+    result: PASSED (9 passed, 104 skipped, 113 total)
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 lp_account amount merge is:issue'
+      - 'repo:ston-fi/dex-core-v2 lp_account amount merge is:pr'
+      - 'repo:ston-fi/dex-core-v2 both_positive mint is:issue'
+      - 'repo:ston-fi/dex-core-v2 both_positive mint is:pr'
+    results: all four returned total_count 0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'lp_account amount merge on repository issue page'
+      - 'lp_account amount merge on repository pull-request page'
+      - 'both_positive mint on repository issue page'
+      - 'both_positive mint on repository pull-request page'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_112/callers-grep.txt
+  caller_grep_match_count: 121
+  caller_grep_unique_files: 21
+  prior_audit_path: iter_112/prior-audit-git.log
+  prior_audit_bytes: 78
+  r15_search_files:
+    - iter_112/R15-GH-lp-account-amount-merge-issue.json
+    - iter_112/R15-GH-lp-account-amount-merge-pr.json
+    - iter_112/R15-GH-both-positive-mint-issue.json
+    - iter_112/R15-GH-both-positive-mint-pr.json
+  source_conclusion: 'LP-account amount accumulation is isolated by deterministic pool/user state and pool sender authentication. Successful mint clears the same account before callback, while deferred single-sided amounts remain attached to that user only.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_112-AA2.md
