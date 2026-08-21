@@ -1,0 +1,61 @@
+schema_version: shadow-v1
+iteration: 121
+phase: completed
+cell_id: AC1
+cell_label: router_pool_pair_orientation_stateinit
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AC1
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/Router.spec.ts,tests/System.spec.ts,tests/ConstProduct.spec.ts,tests/ConstSum.spec.ts,tests/Stableswap.spec.ts,tests/WeightedCPI.spec.ts,tests/WeightedStableswap.spec.ts,iter_121/poc_router_pool_pair_orientation_stateinit.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_121/poc_router_pool_pair_orientation_stateinit.run.log,iter_121/poc_router_pool_pair_orientation_stateinit.model.run.log
+    run_log_exists_on_disk: true
+    test_runtime: '40.816s integration; model passed'
+    result: 'PASSED (integration: 17 passed, 136 skipped, 153 total; model: passed)'
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 pool_idata pair order token wallet is:issue'
+      - 'repo:ston-fi/dex-core-v2 pool_idata pair order token wallet is:pr'
+      - 'repo:ston-fi/dex-core-v2 token0 token1 orientation pay_to is:issue'
+      - 'repo:ston-fi/dex-core-v2 token0 token1 orientation pay_to is:pr'
+    results: all four returned total_count 0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'pool_idata pair order token wallet on repository issue page'
+      - 'pool_idata pair order token wallet on repository pull-request page'
+      - 'token0 token1 orientation pay_to on repository issue page'
+      - 'token0 token1 orientation pay_to on repository pull-request page'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_121/callers-grep.txt
+  caller_grep_match_count: 227
+  caller_grep_unique_files: 46
+  prior_audit_path: iter_121/prior-audit-git.log
+  prior_audit_bytes: 78
+  r15_search_files:
+    - iter_121/R15-GH-pool-idata-pair-order-issue.json
+    - iter_121/R15-GH-pool-idata-pair-order-pr.json
+    - iter_121/R15-GH-token-orientation-pay-to-issue.json
+    - iter_121/R15-GH-token-orientation-pay-to-pr.json
+  source_conclusion: 'All five pool state_init variants sort the two jetton wallet addresses by slice hash before storing token0/token1. Router getter, route, admin, and pay_to handlers reconstruct the same pool_idata pair, while pool::$route and pool message builders use the same ordering to place amounts. Reverse-order canonicalization therefore resolves to one pool and stable token wallet mapping; normal and cross-swap tests showed no asset inversion.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_121-AC1.md

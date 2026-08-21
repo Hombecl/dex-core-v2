@@ -124,6 +124,7 @@ Scope is limited to the five selected entrypoint assets recorded in `R1-SURFACE-
 | AB3 | router_cross_router_original_caller_binding | cross_router_identity | Across two routers, the mid-hop `original_caller` and refund/excess fields could diverge so the second router pays a different account. | 118 | deadend_with_proof |
 | AB4 | lp_wallet_master_credit_debit_conservation | token_conservation | An LP-wallet internal transfer accepted from the master or a user wallet could credit without a matching source debit under state-init or bounce ordering. | 119 | deadend_with_proof |
 | AB5 | vault_deposit_extra_payload_state_boundary | vault_binding | Extra body fields or excess-recipient forms in router-authenticated vault deposits could change stored fee amount or redeploy a different owner/token vault. | 120 | deadend_with_proof |
+| AC1 | router_pool_pair_orientation_stateinit | pair_orientation | Reversing token-wallet order between router routing, pool state-init, and pay_to could make a valid pool send one asset under the other asset's wallet. | 121 | deadend_with_proof |
 
 ## Cell execution contract
 

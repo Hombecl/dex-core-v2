@@ -1,0 +1,227 @@
+contracts/pool.fc:19:    throw_if(error::invalid_token, equal_slices(storage::token0_address, storage::token1_address));
+contracts/router/dex.fc:1:() route_dex_messages(slice _jetton_address, int _available_gas, int _sent_amount, slice _caller, cell _dex_payload) impure inline {
+contracts/router/dex.fc:60:                + gas::router::pay_to
+contracts/router/dex.fc:79:            pool_idata(my_address(), _jetton_address, token_wallet1, storage::jetton_lp_wallet_code,  storage::lp_account_code),
+contracts/router/get.fc:3:_ get_pool_address(slice token0, slice token1) method_id {
+contracts/router/get.fc:11:        pool_idata(my_address(), token0, token1, storage::jetton_lp_wallet_code,  storage::lp_account_code),
+contracts/pool/headers.fc:15:global slice storage::token0_address;
+contracts/pool/headers.fc:16:global slice storage::token1_address;
+contracts/common/contracts.fc:146:(cell) router::pay_to(
+contracts/common/contracts.fc:154:    slice _token0_address,
+contracts/common/contracts.fc:156:    slice _token1_address
+contracts/common/contracts.fc:158:    return begin_message(op::pay_to)
+contracts/common/contracts.fc:167:            .store_slice(_token0_address)
+contracts/common/contracts.fc:169:            .store_slice(_token1_address)
+contracts/common/contracts.fc:174:(cell) router::vault_pay_to(
+contracts/common/contracts.fc:179:    return begin_message(op::vault_pay_to)
+contracts/common/contracts.fc:190:    slice _token0_address,
+contracts/common/contracts.fc:192:    slice _token1_address
+contracts/common/contracts.fc:199:            .store_slice(_token0_address)
+contracts/common/contracts.fc:201:            .store_slice(_token1_address)
+contracts/common/contracts.fc:233:    if _sender_jetton_address.slice_hash() > _other_jetton_address.slice_hash() {
+contracts/pool/msgs/router.fc:58:                router::pay_to(
+contracts/pool/msgs/router.fc:66:                    storage::token0_address, 
+contracts/pool/msgs/router.fc:68:                    storage::token1_address
+contracts/pool/msgs/router.fc:128:                        storage::token0_address, 
+contracts/pool/msgs/router.fc:130:                        storage::token1_address), 
+contracts/pool/msgs/router.fc:138:                router::pay_to(
+contracts/pool/msgs/router.fc:146:                    storage::token0_address, 
+contracts/pool/msgs/router.fc:148:                    storage::token1_address
+contracts/pool/msgs/router.fc:160:                router::pay_to(
+contracts/pool/msgs/router.fc:168:                    storage::token0_address, 
+contracts/pool/msgs/router.fc:170:                    storage::token1_address
+contracts/pool/msgs/router.fc:219:                router::pay_to(
+contracts/pool/msgs/router.fc:227:                    storage::token0_address, 
+contracts/pool/msgs/router.fc:229:                    storage::token1_address
+contracts/pool/msgs/router.fc:270:                router::pay_to(
+contracts/pool/msgs/router.fc:278:                    storage::token0_address, 
+contracts/pool/msgs/router.fc:280:                    storage::token1_address
+contracts/common/op.fc:10:const op::pay_to                          = "pay_to query_id:uint64 to_address:MsgAddress excesses_address:MsgAddress original_caller:MsgAddress exit_code:uint32 custom_payload:(Maybe ^Cell) additional_info:^[fwd_ton_amount:Coins amount0_out:Coins token0_address:MsgAddress amount1_out:Coins token1_address:MsgAddress] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:25:const op::pay_vault                       = "pay_vault query_id:uint64 owner:MsgAddress excesses_address:MsgAddress additional_info:^[amount0_out:Coins token0_address:MsgAddress amount1_out:Coins token1_address:MsgAddress] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:26:const op::vault_pay_to                    = "vault_pay_to query_id:uint64 amount_out:Coins token_address:MsgAddress to_address:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+contracts/pool/msgs/getter.fc:15:            storage::token0_address,
+contracts/pool/msgs/getter.fc:16:            storage::token1_address,
+contracts/pool/msgs/lp_wallet.fc:41:            + storage_fee::router + gas::router::pay_to 
+contracts/pool/msgs/lp_wallet.fc:42:            + gas::router::pay_to  ;; do not sum again storage_fee::router
+contracts/pool/msgs/lp_wallet.fc:62:            router::pay_to(
+contracts/pool/msgs/lp_wallet.fc:70:                storage::token0_address, 
+contracts/pool/msgs/lp_wallet.fc:72:                storage::token1_address
+contracts/pool/msgs/lp_wallet.fc:80:            router::pay_to(
+contracts/pool/msgs/lp_wallet.fc:88:                storage::token0_address, 
+contracts/pool/msgs/lp_wallet.fc:90:                storage::token1_address
+contracts/router/msgs/vault.fc:3:    if ctx.at(OPCODE) == op::vault_pay_to {
+contracts/common/gas.fc:3:const gas::router::pay_to = 16000000;
+contracts/common/gas.fc:4:const gas::router::vault_pay_to = 20000000;
+contracts/pool/msgs/protocolfee.fc:10:            + storage_fee::router + gas::router::pay_to 
+contracts/pool/msgs/protocolfee.fc:11:            + gas::router::pay_to 
+contracts/pool/msgs/protocolfee.fc:25:            router::pay_to(
+contracts/pool/msgs/protocolfee.fc:33:                storage::token0_address,
+contracts/pool/msgs/protocolfee.fc:35:                storage::token1_address
+contracts/pool/msgs/protocolfee.fc:42:            router::pay_to(
+contracts/pool/msgs/protocolfee.fc:50:                storage::token0_address,
+contracts/pool/msgs/protocolfee.fc:52:                storage::token1_address
+contracts/router/msgs/admin.fc:35:            pool_idata(my_address(), jetton_wallet0, jetton_wallet1, storage::jetton_lp_wallet_code,  storage::lp_account_code),
+contracts/router/msgs/admin.fc:71:            pool_idata(my_address(), jetton_wallet0, jetton_wallet1, storage::jetton_lp_wallet_code,  storage::lp_account_code),
+contracts/router/msgs/admin.fc:102:            pool_idata(my_address(), jetton_wallet0, jetton_wallet1, storage::jetton_lp_wallet_code, storage::lp_account_code),
+contracts/router/msgs/admin.fc:133:            pool_idata(my_address(), jetton_wallet0, jetton_wallet1, storage::jetton_lp_wallet_code, storage::lp_account_code),
+contracts/pool/msgs/lp_account.fc:162:                router::pay_to(
+contracts/pool/msgs/lp_account.fc:170:                    storage::token0_address, 
+contracts/pool/msgs/lp_account.fc:172:                    storage::token1_address
+contracts/pool/msgs/lp_account.fc:182:                router::pay_to(
+contracts/pool/msgs/lp_account.fc:190:                    storage::token0_address, 
+contracts/pool/msgs/lp_account.fc:192:                    storage::token1_address
+contracts/router/msgs/getter.fc:17:            pool_idata(my_address(), token0, token1, storage::jetton_lp_wallet_code,  storage::lp_account_code),
+contracts/router/msgs/pool.fc:5:    if ctx.at(OPCODE) == op::pay_to { 
+contracts/router/msgs/pool.fc:14:        slice token0_address = additional_info~load_msg_addr();
+contracts/router/msgs/pool.fc:16:        slice token1_address = additional_info~load_msg_addr();
+contracts/router/msgs/pool.fc:19:            pool_idata(
+contracts/router/msgs/pool.fc:21:                token0_address, 
+contracts/router/msgs/pool.fc:22:                token1_address, 
+contracts/router/msgs/pool.fc:45:        int used_gas = ctx.at(FWD_FEE) + gas::router::pay_to;
+contracts/router/msgs/pool.fc:50:            slice sent_jetton_address = amount0_out > 0 ? token0_address : token1_address;
+contracts/router/msgs/pool.fc:55:            route_dex_messages(sent_jetton_address, gas, swap_amount, original_caller, custom_payload);
+contracts/router/msgs/pool.fc:73:                    token0_address, 
+contracts/router/msgs/pool.fc:82:                    token1_address, 
+contracts/router/msgs/pool.fc:99:        slice token0_address = additional_info~load_msg_addr();
+contracts/router/msgs/pool.fc:101:        slice token1_address = additional_info~load_msg_addr();
+contracts/router/msgs/pool.fc:104:            pool_idata(
+contracts/router/msgs/pool.fc:106:                token0_address, 
+contracts/router/msgs/pool.fc:107:                token1_address, 
+contracts/router/msgs/pool.fc:121:                amount0_out > 0 ? token0_address : token1_address, 
+contracts/router/msgs/jetton.fc:24:        route_dex_messages(
+tests/System.spec.ts:458:                    leftWalletAddress: (await pool.getPoolData()).leftJettonAddress,
+tests/System.spec.ts:459:                    rightWalletAddress: (await pool.getPoolData()).rightJettonAddress,
+tests/System.spec.ts:468:                    otherTokenWallet: (await pool.getPoolData()).rightJettonAddress,
+contracts/pool/pools/weighted_const_product/storage.fc:19:    storage::token0_address = static_data~load_msg_addr();
+contracts/pool/pools/weighted_const_product/storage.fc:20:    storage::token1_address = static_data~load_msg_addr();
+contracts/router/pools/weighted_const_product/ext_admin.fc:34:            pool_idata(my_address(), left_jetton_wallet, right_jetton_wallet, storage::jetton_lp_wallet_code, storage::lp_account_code),
+contracts/pool/pools/weighted_const_product/get.fc:9:        storage::token0_address,
+contracts/pool/pools/weighted_const_product/get.fc:10:        storage::token1_address,
+tests/WeightedStableswap.spec.ts:582:                expect(poolData.leftReserve).toEqual(poolData.leftJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2);
+tests/WeightedStableswap.spec.ts:583:                expect(poolData.rightReserve).toEqual(poolData.rightJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2);
+tests/WeightedStableswap.spec.ts:590:                const isLeft = routerWallet1.address.equals(poolData.leftJettonAddress);
+tests/WeightedStableswap.spec.ts:676:                const isLeft = routerWallet1.address.equals(oldPoolData.leftJettonAddress);
+tests/WeightedStableswap.spec.ts:682:                const isLeft = routerWallet2.address.equals(oldPoolData.leftJettonAddress);
+tests/WeightedStableswap.spec.ts:785:                        //expect(poolData.leftReserve).toEqual(oldPoolData.leftReserve + (poolData.leftJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2));
+tests/WeightedStableswap.spec.ts:786:                        //expect(poolData.rightReserve).toEqual(oldPoolData.rightReserve + (poolData.rightJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2));
+tests/WeightedStableswap.spec.ts:796:                const isLeft = routerWallet1.address.equals(oldPoolData.leftJettonAddress);
+tests/WeightedStableswap.spec.ts:1131:                const isLeft = routerWallet1.address.equals(oldPoolData.leftJettonAddress);
+tests/WeightedStableswap.spec.ts:1164:                expect(poolData.w0).toEqual(sideWallet.equals(poolData.leftJettonAddress) ? params.newW : ONE_DEC - params.newW);
+contracts/router/pools/weighted_stableswap/ext_admin.fc:39:            pool_idata(my_address(), left_jetton_wallet, right_jetton_wallet, storage::jetton_lp_wallet_code, storage::lp_account_code),
+contracts/pool/pools/weighted_const_product/state_init.fc:17:(slice) _pool_idata() inline asm "<b <%= defaultIsLocked %> 1 u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, b{00} s, <%= defaultLPFee %> 16 u, <%= defaultProtocolFee %> 16 u, 0 64 u, b> <s PUSHSLICE";
+contracts/pool/pools/weighted_const_product/state_init.fc:19:(cell) pool_idata(slice _router_address, slice _first_jetton_address, slice _second_jetton_address, cell _jetton_lp_wallet_code, cell _lp_account_code) inline {    
+contracts/pool/pools/weighted_const_product/state_init.fc:22:    if _first_jetton_address.slice_hash() > _second_jetton_address.slice_hash() {
+contracts/pool/pools/weighted_const_product/state_init.fc:24:            .store_slice(_first_jetton_address)   ;; storage::token0_address
+contracts/pool/pools/weighted_const_product/state_init.fc:25:            .store_slice(_second_jetton_address); ;; storage::token1_address
+contracts/pool/pools/weighted_const_product/state_init.fc:28:            .store_slice(_second_jetton_address) ;; storage::token0_address
+contracts/pool/pools/weighted_const_product/state_init.fc:29:            .store_slice(_first_jetton_address); ;; storage::token1_address
+contracts/pool/pools/weighted_const_product/state_init.fc:36:        .store_slice(_pool_idata())
+contracts/pool/pools/weighted_const_product/ext_router.fc:15:            if equal_slices(side, storage::token0_address) {
+contracts/router/pools/stableswap/ext_admin.fc:32:            pool_idata(
+wrappers/Router.ts:519:        const result = await provider.get('get_pool_address', [
+contracts/pool/pools/constant_product/state_init.fc:16:(slice) _pool_idata() inline asm "<b <%= defaultIsLocked %> 1 u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, b{00} s, <%= defaultLPFee %> 16 u, <%= defaultProtocolFee %> 16 u, b> <s PUSHSLICE";
+contracts/pool/pools/constant_product/state_init.fc:18:(cell) pool_idata(slice _router_address, slice _first_jetton_address, slice _second_jetton_address, cell _jetton_lp_wallet_code, cell _lp_account_code) inline {    
+contracts/pool/pools/constant_product/state_init.fc:21:    if _first_jetton_address.slice_hash() > _second_jetton_address.slice_hash() {
+contracts/pool/pools/constant_product/state_init.fc:23:            .store_slice(_first_jetton_address)   ;; storage::token0_address
+contracts/pool/pools/constant_product/state_init.fc:24:            .store_slice(_second_jetton_address); ;; storage::token1_address
+contracts/pool/pools/constant_product/state_init.fc:27:            .store_slice(_second_jetton_address) ;; storage::token0_address
+contracts/pool/pools/constant_product/state_init.fc:28:            .store_slice(_first_jetton_address); ;; storage::token1_address
+contracts/pool/pools/constant_product/state_init.fc:34:        .store_slice(_pool_idata())
+contracts/pool/pools/constant_product/storage.fc:16:    storage::token0_address = static_data~load_msg_addr();
+contracts/pool/pools/constant_product/storage.fc:17:    storage::token1_address = static_data~load_msg_addr();
+wrappers/Pool.ts:322:            leftJettonAddress: result.stack.readAddress(),
+wrappers/Pool.ts:323:            rightJettonAddress: result.stack.readAddress(),
+wrappers/Pool.ts:337:            leftJettonAddress: result.stack.readAddress(),
+wrappers/Pool.ts:338:            rightJettonAddress: result.stack.readAddress(),
+wrappers/Pool.ts:414:            leftJettonAddress: result.stack.readAddress(),
+wrappers/Pool.ts:415:            rightJettonAddress: result.stack.readAddress(),
+wrappers/Pool.ts:490:            leftJettonAddress: result.stack.readAddress(),
+wrappers/Pool.ts:491:            rightJettonAddress: result.stack.readAddress(),
+wrappers/Pool.ts:582:            leftJettonAddress: result.stack.readAddress(),
+wrappers/Pool.ts:583:            rightJettonAddress: result.stack.readAddress(),
+wrappers/Pool.ts:603:            leftJettonAddress: HOLE_ADDRESS,
+wrappers/Pool.ts:604:            rightJettonAddress: HOLE_ADDRESS,
+wrappers/Pool.ts:724:            leftJettonAddress: result.stack.readAddress(),
+wrappers/Pool.ts:725:            rightJettonAddress: result.stack.readAddress(),
+wrappers/Pool.ts:758:            leftJettonAddress: HOLE_ADDRESS,
+wrappers/Pool.ts:759:            rightJettonAddress: HOLE_ADDRESS,
+wrappers/Pool.ts:841:            leftJettonAddress: result.stack.readAddress(),
+wrappers/Pool.ts:842:            rightJettonAddress: result.stack.readAddress(),
+wrappers/Pool.ts:860:            leftJettonAddress: HOLE_ADDRESS,
+wrappers/Pool.ts:861:            rightJettonAddress: HOLE_ADDRESS,
+contracts/pool/pools/stableswap/storage.fc:19:    storage::token0_address = static_data~load_msg_addr();
+contracts/pool/pools/stableswap/storage.fc:20:    storage::token1_address = static_data~load_msg_addr();
+contracts/pool/pools/constant_sum/storage.fc:16:    storage::token0_address = static_data~load_msg_addr();
+contracts/pool/pools/constant_sum/storage.fc:17:    storage::token1_address = static_data~load_msg_addr();
+tests/WeightedCPI.spec.ts:570:                expect(poolData.leftReserve).toEqual(poolData.leftJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2);
+tests/WeightedCPI.spec.ts:571:                expect(poolData.rightReserve).toEqual(poolData.rightJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2);
+tests/WeightedCPI.spec.ts:577:                const isLeft = routerWallet1.address.equals(poolData.leftJettonAddress);
+tests/WeightedCPI.spec.ts:662:                const isLeft = routerWallet1.address.equals(oldPoolData.leftJettonAddress);
+tests/WeightedCPI.spec.ts:668:                const isLeft = routerWallet2.address.equals(oldPoolData.leftJettonAddress);
+tests/WeightedCPI.spec.ts:766:                        //expect(poolData.leftReserve).toEqual(oldPoolData.leftReserve + (poolData.leftJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2));
+tests/WeightedCPI.spec.ts:767:                        //expect(poolData.rightReserve).toEqual(oldPoolData.rightReserve + (poolData.rightJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2));
+tests/WeightedCPI.spec.ts:778:                const isLeft = routerWallet1.address.equals(oldPoolData.leftJettonAddress);
+tests/WeightedCPI.spec.ts:1111:                const isLeft = routerWallet1.address.equals(oldPoolData.leftJettonAddress);
+tests/WeightedCPI.spec.ts:1138:                expect(poolData.w0).toEqual(sideWallet.equals(poolData.leftJettonAddress) ? params.newW : ONE_DEC - params.newW);
+contracts/pool/pools/stableswap/get.fc:9:        storage::token0_address,
+contracts/pool/pools/stableswap/get.fc:10:        storage::token1_address,
+contracts/pool/pools/weighted_stableswap/storage.fc:28:    storage::token0_address = static_data~load_msg_addr();
+contracts/pool/pools/weighted_stableswap/storage.fc:29:    storage::token1_address = static_data~load_msg_addr();
+contracts/pool/pools/constant_sum/state_init.fc:16:(slice) _pool_idata() inline asm "<b <%= defaultIsLocked %> 1 u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, b{00} s, <%= defaultLPFee %> 16 u, <%= defaultProtocolFee %> 16 u, b> <s PUSHSLICE";
+contracts/pool/pools/constant_sum/state_init.fc:18:(cell) pool_idata(slice _router_address, slice _first_jetton_address, slice _second_jetton_address, cell _jetton_lp_wallet_code, cell _lp_account_code) inline {    
+contracts/pool/pools/constant_sum/state_init.fc:21:    if _first_jetton_address.slice_hash() > _second_jetton_address.slice_hash() {
+contracts/pool/pools/constant_sum/state_init.fc:23:            .store_slice(_first_jetton_address)   ;; storage::token0_address
+contracts/pool/pools/constant_sum/state_init.fc:24:            .store_slice(_second_jetton_address); ;; storage::token1_address
+contracts/pool/pools/constant_sum/state_init.fc:27:            .store_slice(_second_jetton_address) ;; storage::token0_address
+contracts/pool/pools/constant_sum/state_init.fc:28:            .store_slice(_first_jetton_address); ;; storage::token1_address
+contracts/pool/pools/constant_sum/state_init.fc:34:        .store_slice(_pool_idata())
+contracts/pool/pools/constant_sum/get.fc:9:        storage::token0_address,
+contracts/pool/pools/constant_sum/get.fc:10:        storage::token1_address,
+contracts/pool/pools/constant_product/get.fc:9:        storage::token0_address,
+contracts/pool/pools/constant_product/get.fc:10:        storage::token1_address,
+contracts/pool/pools/weighted_stableswap/get.fc:9:        storage::token0_address,
+contracts/pool/pools/weighted_stableswap/get.fc:10:        storage::token1_address,
+contracts/pool/pools/stableswap/state_init.fc:17:(slice) _pool_idata() inline asm "<b <%= defaultIsLocked %> 1 u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, b{00} s, <%= defaultLPFee %> 16 u, <%= defaultProtocolFee %> 16 u, 1 32 u, b> <s PUSHSLICE";
+contracts/pool/pools/stableswap/state_init.fc:19:(cell) pool_idata(slice _router_address, slice _first_jetton_address, slice _second_jetton_address, cell _jetton_lp_wallet_code, cell _lp_account_code) inline {    
+contracts/pool/pools/stableswap/state_init.fc:22:    if _first_jetton_address.slice_hash() > _second_jetton_address.slice_hash() {
+contracts/pool/pools/stableswap/state_init.fc:24:            .store_slice(_first_jetton_address)   ;; storage::token0_address
+contracts/pool/pools/stableswap/state_init.fc:25:            .store_slice(_second_jetton_address); ;; storage::token1_address
+contracts/pool/pools/stableswap/state_init.fc:28:            .store_slice(_second_jetton_address) ;; storage::token0_address
+contracts/pool/pools/stableswap/state_init.fc:29:            .store_slice(_first_jetton_address); ;; storage::token1_address
+contracts/pool/pools/stableswap/state_init.fc:36:        .store_slice(_pool_idata())
+tests/ConstSum.spec.ts:513:                expect(poolData.leftReserve).toEqual(poolData.leftJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2);
+tests/ConstSum.spec.ts:514:                expect(poolData.rightReserve).toEqual(poolData.rightJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2);
+tests/ConstSum.spec.ts:599:                const isLeft = routerWallet1.address.equals(oldPoolData.leftJettonAddress);
+tests/ConstSum.spec.ts:605:                const isLeft = routerWallet2.address.equals(oldPoolData.leftJettonAddress);
+tests/ConstSum.spec.ts:703:                        //expect(poolData.leftReserve).toEqual(oldPoolData.leftReserve + (poolData.leftJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2));
+tests/ConstSum.spec.ts:704:                        //expect(poolData.rightReserve).toEqual(oldPoolData.rightReserve + (poolData.rightJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2));
+tests/ConstSum.spec.ts:715:                const isLeft = routerWallet1.address.equals(oldPoolData.leftJettonAddress);
+contracts/pool/pools/weighted_stableswap/ext_router.fc:20:            if equal_slices(side, storage::token0_address) {
+tests/Stableswap.spec.ts:568:                expect(poolData.leftReserve).toEqual(poolData.leftJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2);
+tests/Stableswap.spec.ts:569:                expect(poolData.rightReserve).toEqual(poolData.rightJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2);
+tests/Stableswap.spec.ts:576:                const isLeft = routerWallet1.address.equals(poolData.leftJettonAddress);
+tests/Stableswap.spec.ts:663:                const isLeft = routerWallet1.address.equals(oldPoolData.leftJettonAddress);
+tests/Stableswap.spec.ts:667:                const isLeft = routerWallet2.address.equals(oldPoolData.leftJettonAddress);
+tests/Stableswap.spec.ts:767:                //expect(poolData.leftReserve).toEqual(oldPoolData.leftReserve + (poolData.leftJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2));
+tests/Stableswap.spec.ts:768:                //expect(poolData.rightReserve).toEqual(oldPoolData.rightReserve + (poolData.rightJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2));
+tests/Stableswap.spec.ts:777:                const isLeft = routerWallet1.address.equals(oldPoolData.leftJettonAddress);
+contracts/pool/pools/weighted_stableswap/state_init.fc:16:(slice) _pool_idata() inline asm "<b <%= defaultIsLocked %> 1 u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, b{00} s, <%= defaultLPFee %> 16 u, <%= defaultProtocolFee %> 16 u, b> <s PUSHSLICE";
+contracts/pool/pools/weighted_stableswap/state_init.fc:27:(cell) _pool_idata2() inline asm "<b 1000000000000000000 128 u, 0 128 u, 0 128 u, b{00} s, b> PUSHREF";
+contracts/pool/pools/weighted_stableswap/state_init.fc:29:(cell) pool_idata(slice _router_address, slice _first_jetton_address, slice _second_jetton_address, cell _jetton_lp_wallet_code, cell _lp_account_code) inline {    
+contracts/pool/pools/weighted_stableswap/state_init.fc:32:    if _first_jetton_address.slice_hash() > _second_jetton_address.slice_hash() {
+contracts/pool/pools/weighted_stableswap/state_init.fc:34:            .store_slice(_first_jetton_address)   ;; storage::token0_address
+contracts/pool/pools/weighted_stableswap/state_init.fc:35:            .store_slice(_second_jetton_address); ;; storage::token1_address
+contracts/pool/pools/weighted_stableswap/state_init.fc:38:            .store_slice(_second_jetton_address) ;; storage::token0_address
+contracts/pool/pools/weighted_stableswap/state_init.fc:39:            .store_slice(_first_jetton_address); ;; storage::token1_address
+contracts/pool/pools/weighted_stableswap/state_init.fc:46:        .store_slice(_pool_idata())
+contracts/pool/pools/weighted_stableswap/state_init.fc:47:        .store_ref(_pool_idata2())
+contracts/pool/pools/README.md:6:(cell) pool_idata(slice _router_address, slice _first_jetton_address, slice _second_jetton_address, cell _jetton_lp_wallet_code, cell _lp_account_code);
+tests/ConstProduct.spec.ts:537:                expect(poolData.leftReserve).toEqual(poolData.leftJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2);
+tests/ConstProduct.spec.ts:538:                expect(poolData.rightReserve).toEqual(poolData.rightJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2);
+tests/ConstProduct.spec.ts:623:                const isLeft = routerWallet1.address.equals(oldPoolData.leftJettonAddress);
+tests/ConstProduct.spec.ts:629:                const isLeft = routerWallet2.address.equals(oldPoolData.leftJettonAddress);
+tests/ConstProduct.spec.ts:731:                        //expect(poolData.leftReserve).toEqual(oldPoolData.leftReserve + (poolData.leftJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2));
+tests/ConstProduct.spec.ts:732:                        //expect(poolData.rightReserve).toEqual(oldPoolData.rightReserve + (poolData.rightJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2));
+tests/ConstProduct.spec.ts:742:                const isLeft = routerWallet1.address.equals(oldPoolData.leftJettonAddress);
+tests/ConstProduct.spec.ts:765:                const isLeft = routerWalletIn.address.equals(oldPoolData.leftJettonAddress);
+tests/ConstProduct.spec.ts:1841:                        otherTokenWallet: poolData.rightJettonAddress,
