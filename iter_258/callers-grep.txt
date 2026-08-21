@@ -1,0 +1,15 @@
+106
+7
+contracts/common/contracts.fc
+contracts/pool/msgs/router.fc
+contracts/router.fc
+contracts/router/msgs/vault.fc
+contracts/vault.fc
+tests/ConstProduct.spec.ts
+tests/System.spec.ts
+
+Command:
+matches=$(rg -n --no-heading 'vault_idata|owner_address|token_address|router_address|deposited_amount|storage::load|storage::save|load_msg_addr|load_coins|end_parse|deposit_ref_fee|withdraw_fee|CARRY_ALL_BALANCE|DESTROY_IF_ZERO|QCARRY_ALL_BALANCE|vault_pay_to|send_excesses|equal_slices(vault~address|should collect ref fee from vault|should collect fees' contracts/vault.fc contracts/common/contracts.fc contracts/pool/msgs/router.fc contracts/router/msgs/vault.fc contracts/router.fc tests/System.spec.ts tests/ConstProduct.spec.ts)
+printf '%s\\n' "$matches" | wc -l
+printf '%s\\n' "$matches" | cut -d: -f1 | sort -u | wc -l
+printf '%s\\n' "$matches" | cut -d: -f1 | sort -u

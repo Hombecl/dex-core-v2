@@ -1,0 +1,16 @@
+npm test -- --runInBand tests/ConstProduct.spec.ts -t 'should collect ref fee from vault|should collect fees'
+
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/ConstProduct.spec.ts -t should collect ref fee from vault|should collect fees
+
+PASS tests/ConstProduct.spec.ts (9.437 s)
+  Const Product
+    Fees
+      ✓ should collect fees (1333 ms)
+      ✓ should collect ref fee from vault (3219 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       34 skipped, 2 passed, 36 total
+Snapshots:   0 total
+Time:        9.619 s
+Ran all test suites matching /tests\\/ConstProduct.spec.ts/i with tests matching "should collect ref fee from vault|should collect fees".

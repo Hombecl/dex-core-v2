@@ -1,0 +1,200 @@
+schema_version: shadow-v1
+iteration: 258
+phase: completed
+cell_id: CC5
+cell_label: vault_storage_schema_end_parse_coin_tail
+final_verdict: PRE_KILLED_DUPLICATE
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: CC5
+  final_verdict: PRE_KILLED_DUPLICATE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/vault.fc
+        line: 5
+        text: 'global slice storage::owner_address;'
+      - file: contracts/vault.fc
+        line: 6
+        text: 'global slice storage::token_address;'
+      - file: contracts/vault.fc
+        line: 7
+        text: 'global slice storage::router_address;'
+      - file: contracts/vault.fc
+        line: 8
+        text: 'global int storage::deposited_amount;'
+      - file: contracts/vault.fc
+        line: 12
+        text: 'storage::owner_address = ds~load_msg_addr();'
+      - file: contracts/vault.fc
+        line: 15
+        text: 'storage::deposited_amount = ds~load_coins();'
+      - file: contracts/vault.fc
+        line: 16
+        text: 'ds.end_parse();'
+      - file: contracts/vault.fc
+        line: 24
+        text: '.store_coins(storage::deposited_amount)'
+      - file: contracts/vault.fc
+        line: 40
+        text: 'if (ctx.at(OPCODE) == op::deposit_ref_fee) & equal_slices(ctx.at(SENDER), storage::router_address) {'
+      - file: contracts/vault.fc
+        line: 43
+        text: 'storage::deposited_amount += in_msg_body~load_coins();'
+      - file: contracts/vault.fc
+        line: 52
+        text: 'throw_unless(error::zero_output, storage::deposited_amount > 0);'
+      - file: contracts/vault.fc
+        line: 62
+        text: 'router::vault_pay_to('
+      - file: contracts/vault.fc
+        line: 66
+        text: 'CARRY_ALL_BALANCE | DESTROY_IF_ZERO);'
+      - file: contracts/vault.fc
+        line: 68
+        text: 'storage::deposited_amount = 0;'
+      - file: contracts/common/contracts.fc
+        line: 1
+        text: '(cell) vault_idata(slice _user_address, slice _token_address, slice _router_address) inline {'
+      - file: contracts/common/contracts.fc
+        line: 174
+        text: '(cell) router::vault_pay_to('
+      - file: contracts/router/msgs/vault.fc
+        line: 10
+        text: 'vault_idata(to_address, token_address, my_address()),'
+      - file: contracts/router/msgs/vault.fc
+        line: 13
+        text: 'throw_unless(error::invalid_caller, equal_slices(vault~address(params::workchain), ctx.at(SENDER)));'
+      - file: tests/ConstProduct.spec.ts
+        line: 1390
+        text: "it('should collect ref fee from vault', async () => {"
+      - file: tests/System.spec.ts
+        line: 443
+        text: "it('should collect fees', async () => {"
+  source_scope_restricted: true
+  scope_assets_only: true
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  methodology_audit_exit: NOT_AVAILABLE
+  required_evidence_complete: true
+  no_fabrication: true
+  shippable: false
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_DEADEND
+  rejection_reason: 'Vault storage serializes owner, token, router, and deposited Coins in a fixed tuple and requires end_parse. Router-only deposits add the exact coin amount and save; malformed tails, malformed coin widths, and non-router senders fail before a commit. Public withdrawal sends the stored amount through the deterministic Router vault check, clears once, and saves; CARRY_ALL_BALANCE and DESTROY_IF_ZERO affect only TON/account lifecycle. The six-case PoC and two live referral/collection regressions show no attacker-positive delta.'
+  duplicate_family: 'iter_36 Vault sender binding, iter_37 referral amount conservation, iter_38 referral state persistence, iter_39 referral bounce reversal, iter_40 referral message ordering, iter_61 withdraw replay, iter_62 vault tuple identity, iter_69 referral arithmetic boundary, iter_78 referral vault replay identity, iter_83 second deposit/withdraw lifecycle, iter_88 carry/destroy balance, iter_94 Coins limit boundary, and iter_95 addr_none semantics'
+  caller_match_count: 106
+  caller_unique_files: 7
+  cascade_verbatim_hit_count: 20
+  cross_file_anchor_count: 20
+  caller_paths:
+    - contracts/common/contracts.fc
+    - contracts/pool/msgs/router.fc
+    - contracts/router.fc
+    - contracts/router/msgs/vault.fc
+    - contracts/vault.fc
+    - tests/ConstProduct.spec.ts
+    - tests/System.spec.ts
+  callers_grep_artifact: iter_258/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_258/poc_vault_storage_schema_end_parse_coin_tail.test.js
+    poc_run_log: iter_258/poc_vault_storage_schema_end_parse_coin_tail.run.log
+    live_regression_log: iter_258/live-vault-storage-referral-regression.run.log
+    prior_audit: iter_258/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_258/poc_vault_storage_schema_end_parse_coin_tail.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_258/poc_vault_storage_schema_end_parse_coin_tail.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.2s static; 9.619s integration'
+    result: 'PASS (20 cross-file anchors; six schema/deposit/withdraw/replay cases; exact stored and owner deltas; two live referral/collection regressions)'
+  prior_art_check:
+    queries:
+      - 'vault storage/owner/token/router/deposited_amount/end_parse/deposit_ref_fee/withdraw_fee/referral/carry/destroy scan across CHAIN_HYPOTHESIS_TABLE.md and iter_*/STATUS.yaml'
+    results:
+      - 'iter_36 Vault sender binding: DEADEND_WITH_PROOF'
+      - 'iter_37 referral amount conservation: DEADEND_WITH_PROOF'
+      - 'iter_38 referral state persistence: DEADEND_WITH_PROOF'
+      - 'iter_39 referral bounce reversal: DEADEND_WITH_PROOF'
+      - 'iter_40 referral message ordering: DEADEND_WITH_PROOF'
+      - 'iter_61 withdraw replay: DEADEND_WITH_PROOF'
+      - 'iter_62 vault tuple identity: DEADEND_WITH_PROOF'
+      - 'iter_69 referral arithmetic boundary: DEADEND_WITH_PROOF'
+      - 'iter_78 referral vault replay identity: PRE_KILLED_DUPLICATE'
+      - 'iter_83 second deposit/withdraw lifecycle: PRE_KILLED_DUPLICATE'
+      - 'iter_88 carry/destroy balance: PRE_KILLED_DUPLICATE'
+      - 'iter_94 Coins limit boundary: PRE_KILLED_DUPLICATE'
+      - 'iter_95 addr_none semantics: PRE_KILLED_DUPLICATE'
+    r15_disclosure_check:
+      gh_search_terms_used:
+        - 'repo:ston-fi/dex-core-v2 "deposited_amount" "end_parse" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "deposited_amount" "end_parse" is:pr'
+        - 'repo:ston-fi/dex-core-v2 "vault_idata" "withdraw_fee" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "vault_idata" "withdraw_fee" is:pr'
+      gh_search_hits: 0
+      evidence_files:
+        - iter_258/r15-vault-schema-coin-issue.json
+        - iter_258/r15-vault-schema-coin-pr.json
+        - iter_258/r15-vault-tuple-withdraw-issue.json
+        - iter_258/r15-vault-tuple-withdraw-pr.json
+    attacker_privilege:
+      privilege_required: external_unauth
+    fund_loss_demonstrated: false
+    concrete_impact_demonstrated: false
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "deposited_amount" "end_parse" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "deposited_amount" "end_parse" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "vault_idata" "withdraw_fee" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "vault_idata" "withdraw_fee" is:pr'
+    gh_search_hits: 0
+    evidence_files:
+      - iter_258/r15-vault-schema-coin-issue.json
+      - iter_258/r15-vault-schema-coin-pr.json
+      - iter_258/r15-vault-tuple-withdraw-issue.json
+      - iter_258/r15-vault-tuple-withdraw-pr.json
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: PRE_KILLED_DUPLICATE
+  shadow_mode: true
+  caller_path: iter_258/callers-grep.txt
+  caller_match_count: 106
+  caller_unique_files: 7
+  prior_audit_path: iter_258/prior-audit-git.log
+  prior_family_matches: [iter36, iter37, iter38, iter39, iter40, iter61, iter62, iter69, iter78, iter83, iter88, iter94, iter95]
+  r15_evidence_files:
+    - iter_258/r15-vault-schema-coin-issue.json
+    - iter_258/r15-vault-schema-coin-pr.json
+    - iter_258/r15-vault-tuple-withdraw-issue.json
+    - iter_258/r15-vault-tuple-withdraw-pr.json
+  source_conclusion: 'CC5 is the Vault storage schema/coin-tail duplicate. The fixed owner/token/router/Coins tuple, end_parse, Router-only deposit, exact withdrawal, clear/save, and deterministic payout checks prevent a parser-tail or carry boundary from changing selected-asset ownership or amount. No attacker-positive token, TON, or persistent-state delta was demonstrated.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_258/poc_vault_storage_schema_end_parse_coin_tail.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_258/poc_vault_storage_schema_end_parse_coin_tail.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_258/live-vault-storage-referral-regression.run.log
+    result: PASS
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false

@@ -1,0 +1,18 @@
+iter_36: Vault deposit_ref_fee requires the stored Router sender and deterministic vault identity.
+iter_37: referral fee amount is added once and forwarded once; zero/max referral cases conserve amount.
+iter_38: Vault load/deposit/save and withdraw-zero/save state persistence; repeated collection passed.
+iter_39: referral fee bounce/refund ordering and downstream delivery passed.
+iter_40: referral routing, vault deposit/withdrawal, and refund branches have explicit ordering/gas checks.
+iter_61: public withdrawal sends stored amount/owner/token to stored Router, clears once, and second withdrawal is rejected.
+iter_62: vault_idata owner/token/router tuple is reused by getter, deposit construction, and payout verification.
+iter_69: referral arithmetic is fee-bounded and cannot inflate output or fee claims.
+iter_78: deterministic vault tuple, Router-only deposit, stored amount withdrawal, and repeated/mismatched message rejection.
+iter_83: withdrawal clears before save and a later Router-authenticated deposit recreates zero state; no replay claim.
+iter_88: CARRY_ALL_BALANCE | DESTROY_IF_ZERO changes Vault lifecycle/TON only; stored amount and Router validation remain fixed.
+iter_94: Coins coin-width boundary fails in Router-authenticated deposit before save; no external tuple overwrite.
+iter_95: addr_none semantics do not alias owner/token vault identity.
+
+Command:
+rg -n --no-heading -i 'vault.*storage|deposit_ref_fee|withdraw_fee|deposited_amount|schema|end_parse|vault_idata|vault.*withdraw|referral' CHAIN_HYPOTHESIS_TABLE.md iter_*/STATUS.yaml
+
+Conclusion: CC5 is a direct duplicate of the Vault tuple, coin-width, deposit/save, withdrawal/clear, replay, and carry/destroy audit family. No malformed or external path produces a persistent selected-asset delta.
