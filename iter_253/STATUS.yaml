@@ -1,0 +1,167 @@
+schema_version: shadow-v1
+iteration: 253
+phase: completed
+cell_id: BB5
+cell_label: lp_wallet_receive_master_source_or_branch
+final_verdict: PRE_KILLED_DUPLICATE
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: BB5
+  final_verdict: PRE_KILLED_DUPLICATE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/lp_wallet.fc
+        line: 54
+        text: '() receive_tokens (slice in_msg_body, slice sender_address, int my_ton_balance, int fwd_fee, int msg_value) impure {'
+      - file: contracts/lp_wallet.fc
+        line: 58
+        text: 'balance += jetton_amount;'
+      - file: contracts/lp_wallet.fc
+        line: 62
+        text: 'throw_unless(707, equal_slices(jetton_master_address, sender_address)'
+      - file: contracts/lp_wallet.fc
+        line: 63
+        text: '| equal_slices(calculate_user_jetton_lp_wallet_address(from_address, jetton_master_address, jetton_wallet_code), sender_address));'
+      - file: contracts/lp_wallet.fc
+        line: 100
+        text: 'storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);'
+      - file: contracts/lp_wallet/jetton-utils.fc
+        line: 22
+        text: '.store_uint(cell_hash(state_init), 256)'
+      - file: contracts/lp_wallet/jetton-utils.fc
+        line: 26
+        text: 'slice calculate_user_jetton_lp_wallet_address(slice owner_address, slice jetton_master_address, cell jetton_wallet_code) inline {'
+      - file: contracts/lp_wallet/storage.fc
+        line: 9
+        text: 'set_data(pack_jetton_lp_wallet_data(balance, owner_address, jetton_master_address, jetton_wallet_code));'
+      - file: contracts/common/contracts.fc
+        line: 215
+        text: '.store_slice(_from) ;; from_address'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 123
+        text: 'jetton_wallet::mint('
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 20
+        text: 'throw_unless(error::invalid_caller, equal_slices(lp_wallet~address(params::workchain), ctx.at(SENDER)));'
+      - file: tests/System.spec.ts
+        line: 132
+        text: "it('should handle mint & burn liquidity', async () => {"
+  source_scope_restricted: true
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  required_evidence_complete: true
+  no_fabrication: true
+  scope_assets_only: true
+  methodology_audit_exit: NOT_AVAILABLE
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_DEADEND
+  shippable: false
+  rejection_reason: 'LPWallet receive credits only a working balance before an OR authorization gate and saves after all optional forwarding. The master branch requires the stored master sender; the alternate branch requires the exact StateInit address derived from from_address, stored master, and stored wallet code. Changing any tuple component changes the full state hash and throws before save, while valid branches persist only the encoded amount. No weaker branch, cross-user credit, or attacker-positive asset delta was demonstrated.'
+  duplicate_family: 'iter_73 lp_wallet_forward_payload_balance, iter_84 lp_wallet_codecell_sender_collision, iter_87 lp_wallet_notification_payload_alias, iter_119 lp_wallet_master_credit_debit_conservation, iter_215 lp_wallet_master_source_auth_alias, and iter_233 lp_wallet_receive_user_wallet_stateinit_collision'
+  caller_match_count: 78
+  caller_unique_files: 9
+  cascade_verbatim_hit_count: 12
+  cross_file_anchor_count: 22
+  caller_paths:
+    - contracts/common/contracts.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_wallet/jetton-utils.fc
+    - contracts/lp_wallet/storage.fc
+    - contracts/pool/msgs/lp_account.fc
+    - contracts/pool/msgs/lp_wallet.fc
+    - contracts/router/msgs/jetton.fc
+    - tests/ConstProduct.spec.ts
+    - tests/System.spec.ts
+  callers_grep_artifact: iter_253/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_253/poc_lp_wallet_receive_master_source_branch.test.js
+    poc_run_log: iter_253/poc_lp_wallet_receive_master_source_branch.run.log
+    live_regression_log: iter_253/live-lp-wallet-receive-branch-regression.run.log
+    prior_audit: iter_253/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_253/poc_lp_wallet_receive_master_source_branch.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_253/poc_lp_wallet_receive_master_source_branch.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.5s static; 10.433s integration'
+    result: 'PASS (22 PoC anchors; seven master/source/malformed tuple cases; two exact accepted branches; five rejected branches; three live regressions)'
+  prior_art_check:
+    queries:
+      - 'master/source/receive_tokens/throw_unless(707)/deterministic StateInit/mint/sender/credit/save scan across CHAIN_HYPOTHESIS_TABLE.md and iter_*/STATUS.yaml'
+    results:
+      - 'iter_73 lp_wallet_forward_payload_balance: DEADEND_WITH_PROOF'
+      - 'iter_84 lp_wallet_codecell_sender_collision: DEADEND_WITH_PROOF'
+      - 'iter_87 lp_wallet_notification_payload_alias: DEADEND_WITH_PROOF'
+      - 'iter_119 lp_wallet_master_credit_debit_conservation: DEADEND_WITH_PROOF'
+      - 'iter_215 lp_wallet_master_source_auth_alias: DEADEND_WITH_PROOF'
+      - 'iter_233 lp_wallet_receive_user_wallet_stateinit_collision: DEADEND_WITH_PROOF'
+    r15_disclosure_check:
+      gh_search_terms_used:
+        - 'repo:ston-fi/dex-core-v2 "throw_unless(707" "calculate_user_jetton_lp_wallet_address" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "throw_unless(707" "calculate_user_jetton_lp_wallet_address" is:pr'
+        - 'repo:ston-fi/dex-core-v2 "pack_jetton_lp_wallet_data" "receive_tokens" "sender_address" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "pack_jetton_lp_wallet_data" "receive_tokens" "sender_address" is:pr'
+      gh_search_hits: 0
+      evidence_files:
+        - iter_253/r15-lp-wallet-source-auth-issue.json
+        - iter_253/r15-lp-wallet-source-auth-pr.json
+        - iter_253/r15-lp-wallet-tuple-credit-issue.json
+        - iter_253/r15-lp-wallet-tuple-credit-pr.json
+    attacker_privilege:
+      privilege_required: external_unauth
+    fund_loss_demonstrated: false
+    concrete_impact_demonstrated: false
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "throw_unless(707" "calculate_user_jetton_lp_wallet_address" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "throw_unless(707" "calculate_user_jetton_lp_wallet_address" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "pack_jetton_lp_wallet_data" "receive_tokens" "sender_address" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "pack_jetton_lp_wallet_data" "receive_tokens" "sender_address" is:pr'
+    gh_search_hits: 0
+    evidence_files:
+      - iter_253/r15-lp-wallet-source-auth-issue.json
+      - iter_253/r15-lp-wallet-source-auth-pr.json
+      - iter_253/r15-lp-wallet-tuple-credit-issue.json
+      - iter_253/r15-lp-wallet-tuple-credit-pr.json
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: PRE_KILLED_DUPLICATE
+  shadow_mode: true
+  caller_path: iter_253/callers-grep.txt
+  caller_match_count: 78
+  caller_unique_files: 9
+  prior_audit_path: iter_253/prior-audit-git.log
+  prior_family_matches: [iter73, iter84, iter87, iter119, iter215, iter233]
+  r15_evidence_files:
+    - iter_253/r15-lp-wallet-source-auth-issue.json
+    - iter_253/r15-lp-wallet-source-auth-pr.json
+    - iter_253/r15-lp-wallet-tuple-credit-issue.json
+    - iter_253/r15-lp-wallet-tuple-credit-pr.json
+  source_conclusion: 'BB5 is the same LPWallet master/source authorization family. The OR gate accepts only the trusted master or exact deterministic source wallet; all changed tuple or malformed cases throw before save, and accepted paths credit only the encoded amount. No attacker-positive token, LP, or TON delta was demonstrated.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_253/poc_lp_wallet_receive_master_source_branch.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_253/poc_lp_wallet_receive_master_source_branch.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_253/live-lp-wallet-receive-branch-regression.run.log
+    result: PASS

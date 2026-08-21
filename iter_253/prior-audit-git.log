@@ -1,0 +1,11 @@
+COMMAND: rg -n --no-heading -i 'master|source|receive_tokens|throw_unless(707|calculate_user_jetton_lp_wallet_address|stateinit|state_init|mint|sender|credit|storage::save' CHAIN_HYPOTHESIS_TABLE.md iter_*/STATUS.yaml
+
+Prior matching audit records:
+iter_73/STATUS.yaml:5:cell_label: lp_wallet_forward_payload_balance; receive_tokens authenticates the master or deterministic source wallet before committing balance, and malformed/underfunded forwarding throws before save.
+iter_84/STATUS.yaml:5:cell_label: lp_wallet_codecell_sender_collision; StateInit orders owner, LP master, and wallet code and receive accepts only the master or deterministic source-owner wallet.
+iter_87/STATUS.yaml:5:cell_label: lp_wallet_notification_payload_alias; receive_tokens accepts only stored master or deterministic wallet for from_address and sends notification to stored owner.
+iter_119/STATUS.yaml:5:cell_label: lp_wallet_master_credit_debit_conservation; receive credit is from the stored master or deterministic wallet and no unmatched credit/debit was found.
+iter_215/STATUS.yaml:5:cell_label: lp_wallet_master_source_auth_alias; the tuple-hashed source address and failures before storage::save block alternate owner credit.
+iter_233/STATUS.yaml:5:cell_label: lp_wallet_receive_user_wallet_stateinit_collision; owner/master/code are committed by the full StateInit hash and no identity collision exists.
+
+Conclusion: BB5 is the same LPWallet master/source authorization family. The OR gate accepts only the trusted master or exact deterministic source wallet; all changed tuple or malformed cases throw before save, so no weaker branch or persistent unauthorized credit exists.

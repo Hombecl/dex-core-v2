@@ -1,0 +1,11 @@
+{
+  "result": "PASS",
+  "classification": "PRE_KILLED_DUPLICATE",
+  "cell": "BB5",
+  "cross_file_anchors": 22,
+  "branch_cases": 7,
+  "persistent_deltas": [25, 25, 0, 0, 0, 0, 0],
+  "accepted_branches": ["configured_master", "exact_deterministic_source_wallet"],
+  "rejected_branches": ["wrong_source_wallet", "wrong_master_tuple", "attacker_sender", "malformed_body", "wrong_code_tuple"],
+  "reason": "receive_tokens credits a working balance before an OR authorization gate but saves only after the gate and optional forwarding. The master branch requires the stored master sender; the alternate branch requires the exact StateInit address derived from from_address, stored master, and stored wallet code. Changing any tuple component changes the address and throws before save; valid branches persist only the encoded amount"
+}
