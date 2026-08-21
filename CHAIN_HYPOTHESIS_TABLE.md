@@ -111,6 +111,7 @@ Scope is limited to the five selected entrypoint assets recorded in `R1-SURFACE-
 | Y5 | router_upgrade_parallel_finalize_cancel | privileged_state | Parallel router code/admin/pool-code upgrade timers or cancellation order could overwrite unrelated state or bypass a delay. | 105 | deadend_with_proof (privileged kill) |
 | Z1 | lp_account_burn_state_clear_before_payout | bounce_accounting | LP burn reserve/supply clearance before two payout legs could strand or duplicate assets after a bounce or partial leg. | 106 | deadend_with_proof |
 | Z2 | lp_account_refund_excess_carry_destination | destination_binding | LP-account refund/excess addresses and carried TON could redirect token value or couple a partial-liquidity refund to another user's state. | 107 | deadend_with_proof |
+| Z3 | pool_lp_account_callback_leg_identity | sender_binding | LP-account callbacks carrying two legs could swap token0/token1 or user/excess identities after one callback leg committed. | 108 | deadend_with_proof |
 
 ## Cell execution contract
 

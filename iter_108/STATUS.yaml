@@ -1,0 +1,61 @@
+schema_version: shadow-v1
+iteration: 108
+phase: completed
+cell_id: Z3
+cell_label: pool_lp_account_callback_leg_identity
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: Z3
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts,tests/ConstSum.spec.ts,tests/Stableswap.spec.ts,tests/WeightedStableswap.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_108/poc_pool_lp_account_callback_leg_identity.run.log
+    run_log_exists_on_disk: true
+    test_runtime: 20.147s
+    result: PASSED (8 passed, 105 skipped, 113 total)
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 cb_add_liquidity is:issue'
+      - 'repo:ston-fi/dex-core-v2 cb_add_liquidity is:pr'
+      - 'repo:ston-fi/dex-core-v2 cb_refund_me is:issue'
+      - 'repo:ston-fi/dex-core-v2 cb_refund_me is:pr'
+    results: all four returned total_count 0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'cb_add_liquidity on repository issue page'
+      - 'cb_add_liquidity on repository pull-request page'
+      - 'cb_refund_me on repository issue page'
+      - 'cb_refund_me on repository pull-request page'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_108/callers-grep.txt
+  caller_grep_match_count: 228
+  caller_grep_unique_files: 54
+  prior_audit_path: iter_108/prior-audit-git.log
+  prior_audit_bytes: 78
+  r15_search_files:
+    - iter_108/R15-GH-cb-add-liquidity-issue.json
+    - iter_108/R15-GH-cb-add-liquidity-pr.json
+    - iter_108/R15-GH-cb-refund-me-issue.json
+    - iter_108/R15-GH-cb-refund-me-pr.json
+  source_conclusion: 'Pool LP-account callbacks re-derive the sender from the pool and user, preserve token0/token1 side ordering, and use caller-supplied refund addresses only for the caller-owned failed operation. No callback leg substitution or cross-user asset path was shown.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_108-Z3.md
