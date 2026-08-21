@@ -1,0 +1,22 @@
+$ rg -n -i 'cell_label:.*(getter|carry|response|destroy|reserve)' iter_*/STATUS.yaml
+iter_55/STATUS.yaml:5:cell_label: ton_reserve_carry_value_flow
+iter_82/STATUS.yaml:5:cell_label: async_getter_response_address_confusion
+iter_99/STATUS.yaml:5:cell_label: callback_carry_remaining_gas_reentry
+iter_107/STATUS.yaml:5:cell_label: lp_account_refund_excess_carry_destination
+iter_110/STATUS.yaml:5:cell_label: lp_wallet_response_excess_workchain_boundary
+iter_135/STATUS.yaml:5:cell_label: lp_wallet_transfer_response_excess_commit
+iter_140/STATUS.yaml:5:cell_label: getter_response_state_alias
+iter_171/STATUS.yaml:5:cell_label: lp_wallet_response_address_workchain
+iter_202/STATUS.yaml:5:cell_label: lp_account_refund_destroy_redeploy_identity
+iter_206/STATUS.yaml:5:cell_label: pool_getter_fee_counter_visibility
+iter_223/STATUS.yaml:5:cell_label: pool_getter_lp_account_address_user_stateinit
+iter_228/STATUS.yaml:5:cell_label: lp_account_getter_data_tuple_identity
+iter_229/STATUS.yaml:5:cell_label: lp_account_reset_gas_user_destination_carry
+
+$ git log --all --oneline --decorate -8
+901296b (HEAD -> v4flash-soak-ston-dot-fi-dex-smart-contracts-v2, fork/v4flash-soak-ston-dot-fi-dex-smart-contracts-v2) checkpoint: v4flash soak ston-dot-fi-dex-smart-contract-v2 iter230
+06b78ea checkpoint: v4flash soak ston-dot-fi-dex-smart-contract-v2 iter230
+ac79f47 shadow: complete iter140 AF5 getter deadend
+1b4c27a shadow: complete iter139 AF4 trusted kill
+
+prior_audit_conclusion: AX13 is a distinct LPAccount read-only carry boundary adjacent to iter82 getter response confusion and iter229/reset carry. The getter reserves the storage floor, sends only surplus to ctx.at(SENDER), and has no save or DESTROY_IF_ZERO path; no drain or destruction route exists.

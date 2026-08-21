@@ -1,0 +1,31 @@
+$ rg -n -i "response_address|excess_address|excesses_address|op::excesses|jetton_wallet::mint|cb_add_liquidity|store_slice\\(_response_address\\)|store_slice\\(_excess_address\\)|storage::save\\(" contracts/lp_wallet.fc contracts/common/contracts.fc contracts/pool/msgs/lp_account.fc contracts/lp_account/msgs/user.fc contracts/pool/msgs/lp_wallet.fc tests/System.spec.ts tests/ConstProduct.spec.ts
+contracts/lp_account/msgs/user.fc:56:        slice excesses_address = additional_fields~load_msg_addr();
+contracts/lp_account/msgs/user.fc:64:            & excesses_address.address::check_workchain(params::workchain));
+contracts/lp_account/msgs/user.fc:87:            pool::cb_add_liquidity(
+contracts/lp_account/msgs/user.fc:96:                excesses_address
+contracts/lp_wallet.fc:60:    slice response_address = in_msg_body~load_msg_addr();
+contracts/lp_wallet.fc:89:    if ((response_address.preload_uint(2) != 0) & (msg_value > 0)) {
+contracts/lp_wallet.fc:92:        .store_slice(response_address)
+contracts/lp_wallet.fc:95:        .store_uint(op::excesses, 32)
+contracts/lp_wallet.fc:100:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/common/contracts.fc:39:(cell) pool::cb_add_liquidity(
+contracts/common/contracts.fc:60:        .store_slice(_excess_address)
+contracts/common/contracts.fc:206:(cell) jetton_wallet::mint(
+contracts/common/contracts.fc:216:        .store_slice(_response_address) ;; response_address
+contracts/pool/msgs/lp_account.fc:16:        slice excess_address = additional_data~load_msg_addr();
+contracts/pool/msgs/lp_account.fc:123:                jetton_wallet::mint(
+contracts/pool/msgs/lp_account.fc:125:                    excess_address,
+contracts/pool/msgs/lp_account.fc:132:            storage::save();
+contracts/pool/msgs/lp_wallet.fc:8:        slice response_address = in_msg_body~load_msg_addr();
+contracts/pool/msgs/lp_wallet.fc:23:        throw_unless(error::wrong_address, response_address.preload_uint(2) == 0);
+
+caller_grep_done: true
+caller_match_count: 46
+caller_unique_files: 5
+caller_files:
+  - contracts/common/contracts.fc
+  - contracts/lp_account/msgs/user.fc
+  - contracts/lp_wallet.fc
+  - contracts/pool/msgs/lp_account.fc
+  - contracts/pool/msgs/lp_wallet.fc
+cross_file_requirement: PASS (5 files; tests/ConstProduct.spec.ts has the different-recipient integration case)

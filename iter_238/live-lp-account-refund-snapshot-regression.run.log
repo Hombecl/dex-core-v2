@@ -1,0 +1,15 @@
+$ npm test -- --runInBand tests/System.spec.ts -t 'should handle refund partial liquidity'
+
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/System.spec.ts -t should handle refund partial liquidity
+
+PASS tests/System.spec.ts
+  System
+    Dex
+      ✓ should handle refund partial liquidity (443 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       10 skipped, 1 passed, 11 total
+Snapshots:   0 total
+Time:        4.972 s
+Ran all test suites matching /tests\/System.spec.ts/i with tests matching "should handle refund partial liquidity".

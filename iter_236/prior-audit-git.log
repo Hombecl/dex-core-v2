@@ -1,0 +1,18 @@
+$ rg -n -i 'cell_label:.*(getter|tuple|schema|lp_account.*data|coin.*width)' iter_*/STATUS.yaml
+iter_41/STATUS.yaml:5:cell_label: getter_quote x sender_binding
+iter_75/STATUS.yaml:5:cell_label: getter_static_code_identity
+iter_82/STATUS.yaml:5:cell_label: async_getter_response_address_confusion
+iter_140/STATUS.yaml:5:cell_label: getter_response_state_alias
+iter_197/STATUS.yaml:5:cell_label: getter_wallet_address_code_identity
+iter_206/STATUS.yaml:5:cell_label: pool_getter_fee_counter_visibility
+iter_223/STATUS.yaml:5:cell_label: pool_getter_lp_account_address_user_stateinit
+iter_224/STATUS.yaml:5:cell_label: pool_getter_data_tuple_field_alignment
+iter_228/STATUS.yaml:5:cell_label: lp_account_getter_data_tuple_identity
+
+$ git log --all --oneline --decorate -8
+901296b (HEAD -> v4flash-soak-ston-dot-fi-dex-smart-contracts-v2, fork/v4flash-soak-ston-dot-fi-dex-smart-contracts-v2) checkpoint: v4flash soak ston-dot-fi-dex-smart-contract-v2 iter232
+06b78ea checkpoint: v4flash soak ston-dot-fi-dex-smart-contract-v2 iter230
+ac79f47 shadow: complete iter140 AF5 getter deadend
+1b4c27a shadow: complete iter139 AF4 trusted kill
+
+prior_audit_conclusion: AX12 is an exact schema/tuple extension of iter_140/AF5 and iter_228/AX11. Both persistent storage and the asynchronous getter response use Coins in the same order, and the synchronous getter plus wrappers/tests read the same four-field tuple.

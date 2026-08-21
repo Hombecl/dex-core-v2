@@ -1,0 +1,18 @@
+$ rg -n -i 'cell_label:.*(state.?init|wallet.*collision|invalid.*owner|owner.*state|wallet.*identity)' iter_*/STATUS.yaml
+iter_52/STATUS.yaml:5:cell_label: state_init_identity_collision
+iter_84/STATUS.yaml:5:cell_label: lp_wallet_codecell_sender_collision
+iter_149/STATUS.yaml:5:cell_label: lp_wallet_state_init_encoding
+iter_166/STATUS.yaml:5:cell_label: lp_wallet_invalid_owner_state_init
+iter_192/STATUS.yaml:5:cell_label: router_notification_existing_wallet_collision
+iter_197/STATUS.yaml:5:cell_label: getter_wallet_address_code_identity
+iter_208/STATUS.yaml:5:cell_label: lp_wallet_send_tokens_stateinit_bounce_debit_restore
+iter_216/STATUS.yaml:5:cell_label: pool_root_lp_wallet_lp_account_opcode_collision
+iter_223/STATUS.yaml:5:cell_label: pool_getter_lp_account_address_user_stateinit
+
+$ git log --all --oneline --decorate -8
+901296b (HEAD -> v4flash-soak-ston-dot-fi-dex-smart-contracts-v2, fork/v4flash-soak-ston-dot-fi-dex-smart-contracts-v2) checkpoint: v4flash soak ston-dot-fi-dex-smart-contract-v2 iter232
+06b78ea checkpoint: v4flash soak ston-dot-fi-dex-smart-contract-v2 iter230
+ac79f47 shadow: complete iter140 AF5 getter deadend
+1b4c27a shadow: complete iter139 AF4 trusted kill
+
+prior_audit_conclusion: AX23 is adjacent to earlier StateInit/code-cell and Pool getter identity analyses, but this cell checks the alternate LPWallet receive sender against the same owner/master/code tuple used by send, Pool mint/burn reconstruction, and getters. No tuple alias or cross-wallet credit path remains.

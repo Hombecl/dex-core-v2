@@ -1,0 +1,153 @@
+schema_version: shadow-v1
+iteration: 234
+phase: completed
+cell_id: AX24
+cell_label: lp_wallet_receive_response_excess_destination
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AX24
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/lp_wallet.fc
+        line: 60
+        text: 'slice response_address = in_msg_body~load_msg_addr();'
+      - file: contracts/lp_wallet.fc
+        line: 62
+        text: 'throw_unless(707, equal_slices(jetton_master_address, sender_address)'
+      - file: contracts/lp_wallet.fc
+        line: 68
+        text: 'msg_value -= (storage_fee + REQUIRED_GAS);'
+      - file: contracts/lp_wallet.fc
+        line: 89
+        text: 'if ((response_address.preload_uint(2) != 0) & (msg_value > 0)) {'
+      - file: contracts/lp_wallet.fc
+        line: 92
+        text: '.store_slice(response_address)'
+      - file: contracts/lp_wallet.fc
+        line: 95
+        text: '.store_uint(op::excesses, 32)'
+      - file: contracts/lp_wallet.fc
+        line: 100
+        text: 'storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);'
+      - file: contracts/common/contracts.fc
+        line: 39
+        text: '(cell) pool::cb_add_liquidity('
+      - file: contracts/common/contracts.fc
+        line: 60
+        text: '.store_slice(_excess_address)'
+      - file: contracts/common/contracts.fc
+        line: 206
+        text: '(cell) jetton_wallet::mint('
+      - file: contracts/common/contracts.fc
+        line: 216
+        text: '.store_slice(_response_address) ;; response_address'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 56
+        text: 'slice excesses_address = additional_fields~load_msg_addr();'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 64
+        text: '& excesses_address.address::check_workchain(params::workchain));'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 16
+        text: 'slice excess_address = additional_data~load_msg_addr();'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 125
+        text: 'excess_address,'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 23
+        text: 'throw_unless(error::wrong_address, response_address.preload_uint(2) == 0);'
+  source_scope_restricted: true
+  redrill_count: 0
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  required_evidence_complete: true
+  no_fabrication: true
+  scope_assets_only: true
+  methodology_audit_exit: NOT_AVAILABLE
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_DEADEND
+  shippable: false
+  rejection_reason: 'The response_address is used only for residual TON excess after sender authorization and storage/forward deductions. It does not select the LP wallet, token amount, or stored balance; direct-add input also validates the excess address workchain. No attacker-positive value loss was demonstrated.'
+  caller_match_count: 46
+  caller_unique_files: 5
+  cascade_verbatim_hit_count: 16
+  cross_file_anchor_count: 16
+  caller_paths:
+    - contracts/common/contracts.fc
+    - contracts/lp_account/msgs/user.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool/msgs/lp_account.fc
+    - contracts/pool/msgs/lp_wallet.fc
+  callers_grep_artifact: iter_234/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_234/poc_lp_wallet_receive_response_excess_destination.test.js
+    poc_run_log: iter_234/poc_lp_wallet_receive_response_excess_destination.run.log
+    live_regression_log: iter_234/live-lp-wallet-response-excess-regression.run.log
+    prior_audit: iter_234/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_234/poc_lp_wallet_receive_response_excess_destination.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_234/poc_lp_wallet_receive_response_excess_destination.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.1s static; 6.073s integration'
+    result: 'PASS (16 cross-file anchors; six excess-routing cases; different-recipient LP regression passed)'
+  prior_art_check:
+    queries:
+      - 'cell_label response/excess/workchain/notification/forward/master-credit scan across iter_*/STATUS.yaml'
+    results:
+      - 'iter_73, iter_87, iter_103, iter_110, iter_119, iter_124, iter_135, iter_171, iter_185, iter_210: adjacent LPWallet response/payload/value families closed'
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "response_address" "op::excesses" "LPWallet" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "response_address" "op::excesses" "LPWallet" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "cb_add_liquidity" "excess_address" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "cb_add_liquidity" "excess_address" is:pr'
+    gh_search_hits: 0
+    evidence_files:
+      - iter_234/r15-lp-wallet-response-excess-issue.json
+      - iter_234/r15-lp-wallet-response-excess-pr.json
+      - iter_234/r15-pool-cb-add-excess-issue.json
+      - iter_234/r15-pool-cb-add-excess-pr.json
+  attacker_privilege:
+    privilege_required: external_auth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  shadow_mode: true
+  caller_path: iter_234/callers-grep.txt
+  caller_match_count: 46
+  caller_unique_files: 5
+  prior_audit_path: iter_234/prior-audit-git.log
+  r15_evidence_files:
+    - iter_234/r15-lp-wallet-response-excess-issue.json
+    - iter_234/r15-lp-wallet-response-excess-pr.json
+    - iter_234/r15-pool-cb-add-excess-issue.json
+    - iter_234/r15-pool-cb-add-excess-pr.json
+  source_conclusion: 'AX24 is destination-only: after the sender gate and cost deductions, LPWallet optionally sends residual TON with op::excesses to response_address, then saves the minted LP balance. The response address does not alter wallet identity or token amount, and direct-add validates its workchain.'
+  attacker_privilege:
+    privilege_required: external_auth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_234/poc_lp_wallet_receive_response_excess_destination.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_234/poc_lp_wallet_receive_response_excess_destination.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_234/live-lp-wallet-response-excess-regression.run.log
+    result: PASS

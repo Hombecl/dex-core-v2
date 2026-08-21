@@ -1,0 +1,9 @@
+$ node iter_234/poc_lp_wallet_receive_response_excess_destination.test.js
+{
+  "result": "PASS",
+  "classification": "DEADEND_WITH_PROOF",
+  "cell": "AX24",
+  "cross_file_anchors": 16,
+  "excess_routing_cases": 6,
+  "reason": "response_address selects only the residual TON excess after authorization and cost deductions; token amount, LP wallet identity, and stored LP balance remain independent, so arbitrary destination choice is not attacker-positive value loss"
+}

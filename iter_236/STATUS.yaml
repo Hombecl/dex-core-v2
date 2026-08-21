@@ -1,0 +1,164 @@
+schema_version: shadow-v1
+iteration: 236
+phase: completed
+cell_id: AX12
+cell_label: lp_account_getter_data_coin_width_boundary
+final_verdict: PRE_KILLED_DUPLICATE
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AX12
+  final_verdict: PRE_KILLED_DUPLICATE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/lp_account/msgs/getter.fc
+        line: 6
+        text: 'if (ctx.at(OPCODE) == op::getter_lp_account_data) {'
+      - file: contracts/lp_account/msgs/getter.fc
+        line: 11
+        text: 'anyone::getter_lp_account_data('
+      - file: contracts/lp_account/msgs/getter.fc
+        line: 14
+        text: 'storage::amount0,'
+      - file: contracts/lp_account/msgs/getter.fc
+        line: 15
+        text: 'storage::amount1'
+      - file: contracts/lp_account/msgs/getter.fc
+        line: 17
+        text: 'CARRY_ALL_BALANCE | IGNORE_ERRORS'
+      - file: contracts/lp_account/storage.fc
+        line: 10
+        text: 'storage::amount0 = ds~load_coins();'
+      - file: contracts/lp_account/storage.fc
+        line: 11
+        text: 'storage::amount1 = ds~load_coins();'
+      - file: contracts/lp_account/storage.fc
+        line: 19
+        text: '.store_coins(storage::amount0)'
+      - file: contracts/lp_account/storage.fc
+        line: 20
+        text: '.store_coins(storage::amount1)'
+      - file: contracts/common/contracts.fc
+        line: 66
+        text: '(cell) anyone::getter_lp_account_data(slice _user_address, slice _pool_address, int _left_amount, int _right_amount) inline {'
+      - file: contracts/common/contracts.fc
+        line: 70
+        text: '.store_coins(_left_amount)'
+      - file: contracts/common/contracts.fc
+        line: 71
+        text: '.store_coins(_right_amount)'
+      - file: contracts/lp_account/get.fc
+        line: 3
+        text: 'return (storage::user_address, storage::pool_address, storage::amount0, storage::amount1);'
+      - file: wrappers/LPAccount.ts
+        line: 109
+        text: 'leftAmount: result.stack.readBigNumber(),'
+      - file: wrappers/LPAccount.ts
+        line: 110
+        text: 'rightAmount: result.stack.readBigNumber(),'
+      - file: tests/LPAccount.spec.ts
+        line: 62
+        text: 'body.loadCoins() == getLPData.leftAmount &&'
+      - file: tests/LPAccount.spec.ts
+        line: 63
+        text: 'body.loadCoins() == getLPData.rightAmount;'
+      - file: tests/System.spec.ts
+        line: 148
+        text: 'expect(lpAccountData.rightAmount).toBe(toNano(1));'
+  source_scope_restricted: true
+  redrill_count: 0
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  required_evidence_complete: true
+  no_fabrication: true
+  scope_assets_only: true
+  methodology_audit_exit: NOT_AVAILABLE
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_DUPLICATE
+  shippable: false
+  rejection_reason: 'AX12 exactly reproduces iter_140/AF5 and iter_228/AX11 LPAccount getter tuple/identity behavior: storage and getter builders use the same Coins fields and order, overflow rejects instead of truncating, and no value-bearing state transition occurs.'
+  caller_match_count: 70
+  caller_unique_files: 7
+  cascade_verbatim_hit_count: 18
+  cross_file_anchor_count: 18
+  caller_paths:
+    - contracts/common/contracts.fc
+    - contracts/lp_account/get.fc
+    - contracts/lp_account/msgs/getter.fc
+    - contracts/lp_account/storage.fc
+    - wrappers/LPAccount.ts
+    - tests/LPAccount.spec.ts
+    - tests/System.spec.ts
+  callers_grep_artifact: iter_236/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_236/poc_lp_account_getter_data_coin_width_boundary.test.js
+    poc_run_log: iter_236/poc_lp_account_getter_data_coin_width_boundary.run.log
+    live_regression_log: iter_236/live-lp-account-getter-width-regression.run.log
+    prior_audit: iter_236/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_236/poc_lp_account_getter_data_coin_width_boundary.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_236/poc_lp_account_getter_data_coin_width_boundary.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.1s static; 2.995s integration'
+    result: 'PASS (18 cross-file anchors; six Coins width cases; getter integration regression)'
+  prior_art_check:
+    queries:
+      - 'cell_label getter/tuple/schema/lp_account_data/coin_width scan across iter_*/STATUS.yaml'
+    results:
+      - 'iter_140 AF5 getter_response_state_alias: closed'
+      - 'iter_228 AX11 lp_account_getter_data_tuple_identity: PRE_KILLED_DUPLICATE'
+      - 'iter_41-45, iter_75, iter_82, iter_100, iter_197, iter_206, iter_223, iter_224: adjacent getter families closed'
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "getter_lp_account_data" "load_coins" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "getter_lp_account_data" "load_coins" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "LPAccount" "store_coins" "amount0" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "LPAccount" "store_coins" "amount0" is:pr'
+    gh_search_hits: 0
+    evidence_files:
+      - iter_236/r15-lp-account-getter-coins-issue.json
+      - iter_236/r15-lp-account-getter-coins-pr.json
+      - iter_236/r15-lp-account-tuple-issue.json
+      - iter_236/r15-lp-account-tuple-pr.json
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: PRE_KILLED_DUPLICATE
+  shadow_mode: true
+  caller_path: iter_236/callers-grep.txt
+  caller_match_count: 70
+  caller_unique_files: 7
+  prior_audit_path: iter_236/prior-audit-git.log
+  prior_family_matches: [iter41, iter42, iter43, iter44, iter45, iter75, iter82, iter100, iter140, iter197, iter206, iter223, iter224, iter228]
+  r15_evidence_files:
+    - iter_236/r15-lp-account-getter-coins-issue.json
+    - iter_236/r15-lp-account-getter-coins-pr.json
+    - iter_236/r15-lp-account-tuple-issue.json
+    - iter_236/r15-lp-account-tuple-pr.json
+  source_conclusion: 'AX12 is an exact getter schema duplicate: persistent Coins fields are loaded and saved in left/right order, the asynchronous response serializes those same values, the synchronous getter and wrapper read the same tuple, and zero/max/overflow boundaries do not alter state.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_236/poc_lp_account_getter_data_coin_width_boundary.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_236/poc_lp_account_getter_data_coin_width_boundary.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_236/live-lp-account-getter-width-regression.run.log
+    result: PASS

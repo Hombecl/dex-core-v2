@@ -1,0 +1,161 @@
+schema_version: shadow-v1
+iteration: 238
+phase: completed
+cell_id: AX14
+cell_label: lp_account_getter_data_post_refund_snapshot
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AX14
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/lp_account.fc
+        line: 16
+        text: 'storage::load();'
+      - file: contracts/lp_account.fc
+        line: 33
+        text: 'if handle_getter_messages() {'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 4
+        text: 'if ctx.at(OPCODE) == op::refund_me {'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 33
+        text: 'storage::amount0 = 0;'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 34
+        text: 'storage::amount1 = 0;'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 36
+        text: 'storage::save();'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 40
+        text: 'if ctx.at(OPCODE) == op::direct_add_liquidity {'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 72
+        text: 'storage::amount0 -= am0;'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 73
+        text: 'storage::amount1 -= am1;'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 100
+        text: 'storage::save();'
+      - file: contracts/lp_account/msgs/getter.fc
+        line: 11
+        text: 'anyone::getter_lp_account_data('
+      - file: contracts/lp_account/msgs/getter.fc
+        line: 14
+        text: 'storage::amount0,'
+      - file: contracts/lp_account/msgs/getter.fc
+        line: 15
+        text: 'storage::amount1'
+      - file: contracts/lp_account/storage.fc
+        line: 10
+        text: 'storage::amount0 = ds~load_coins();'
+      - file: contracts/lp_account/storage.fc
+        line: 11
+        text: 'storage::amount1 = ds~load_coins();'
+      - file: tests/System.spec.ts
+        line: 216
+        text: 'let lpAccountData = await lpAccount.getLPAccountData();'
+  source_scope_restricted: true
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  required_evidence_complete: true
+  no_fabrication: true
+  scope_assets_only: true
+  methodology_audit_exit: NOT_AVAILABLE
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_DEADEND
+  shippable: false
+  rejection_reason: 'Refund and direct-add paths commit both balance fields through one storage cell before later messages; each getter reloads the committed cell and emits the same tuple. No stale cross-user or mixed-field snapshot is reachable.'
+  caller_match_count: 62
+  caller_unique_files: 8
+  cascade_verbatim_hit_count: 16
+  cross_file_anchor_count: 16
+  caller_paths:
+    - contracts/common/contracts.fc
+    - contracts/lp_account.fc
+    - contracts/lp_account/msgs/getter.fc
+    - contracts/lp_account/msgs/user.fc
+    - contracts/lp_account/storage.fc
+    - wrappers/LPAccount.ts
+    - tests/LPAccount.spec.ts
+    - tests/System.spec.ts
+  callers_grep_artifact: iter_238/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_238/poc_lp_account_getter_data_post_refund_snapshot.test.js
+    poc_run_log: iter_238/poc_lp_account_getter_data_post_refund_snapshot.run.log
+    live_regression_log: iter_238/live-lp-account-refund-snapshot-regression.run.log
+    prior_audit: iter_238/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_238/poc_lp_account_getter_data_post_refund_snapshot.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_238/poc_lp_account_getter_data_post_refund_snapshot.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.1s static; 4.972s integration'
+    result: 'PASS (16 cross-file anchors; four atomic snapshot cases; partial-refund integration regression)'
+  prior_art_check:
+    queries:
+      - 'cell_label getter/snapshot/refund/direct_add/state_persistence/tuple scan across iter_*/STATUS.yaml'
+    results:
+      - 'iter_82 async_getter_response_address_confusion: closed'
+      - 'iter_123 lp_account_refund_then_direct_add_lifecycle: closed'
+      - 'iter_140 getter_response_state_alias: closed'
+      - 'iter_202 lp_account_refund_destroy_redeploy_identity: closed'
+      - 'iter_221 lp_account_direct_add_post_send_commit_order: DEADEND_WITH_PROOF'
+      - 'iter_228 lp_account_getter_data_tuple_identity: PRE_KILLED_DUPLICATE'
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "getter_lp_account_data" "refund_me" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "getter_lp_account_data" "refund_me" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "direct_add_liquidity" "LPAccount" "getter" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "direct_add_liquidity" "LPAccount" "getter" is:pr'
+    gh_search_hits: 0
+    evidence_files:
+      - iter_238/r15-lp-account-getter-refund-issue.json
+      - iter_238/r15-lp-account-getter-refund-pr.json
+      - iter_238/r15-lp-account-direct-add-snapshot-issue.json
+      - iter_238/r15-lp-account-direct-add-snapshot-pr.json
+  attacker_privilege:
+    privilege_required: external_auth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  shadow_mode: true
+  caller_path: iter_238/callers-grep.txt
+  caller_match_count: 62
+  caller_unique_files: 8
+  prior_audit_path: iter_238/prior-audit-git.log
+  prior_family_matches: [iter82, iter107, iter123, iter140, iter198, iter202, iter221, iter228]
+  r15_evidence_files:
+    - iter_238/r15-lp-account-getter-refund-issue.json
+    - iter_238/r15-lp-account-getter-refund-pr.json
+    - iter_238/r15-lp-account-direct-add-snapshot-issue.json
+    - iter_238/r15-lp-account-direct-add-snapshot-pr.json
+  source_conclusion: 'AX14 has atomic snapshot semantics: every recv_internal reloads storage, refund zeroes both amount fields before one save, direct-add updates and saves the same tuple, and the getter reads the committed cell. A getter can observe before or after a transaction, never a mixed or another-user state.'
+  attacker_privilege:
+    privilege_required: external_auth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_238/poc_lp_account_getter_data_post_refund_snapshot.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_238/poc_lp_account_getter_data_post_refund_snapshot.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_238/live-lp-account-refund-snapshot-regression.run.log
+    result: PASS

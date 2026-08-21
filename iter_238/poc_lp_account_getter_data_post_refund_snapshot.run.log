@@ -1,0 +1,9 @@
+$ node iter_238/poc_lp_account_getter_data_post_refund_snapshot.test.js
+{
+  "result": "PASS",
+  "classification": "DEADEND_WITH_PROOF",
+  "cell": "AX14",
+  "cross_file_anchors": 16,
+  "snapshot_cases": 4,
+  "reason": "refund/direct-add handlers commit both balances through one storage cell before the next message; getter loads the committed tuple atomically, so it cannot expose a stale cross-user or mixed transition snapshot"
+}

@@ -1,0 +1,17 @@
+$ rg -n -i 'cell_label:.*(getter|snapshot|refund|direct_add|state_persistence|tuple)' iter_*/STATUS.yaml
+iter_82/STATUS.yaml:5:cell_label: async_getter_response_address_confusion
+iter_107/STATUS.yaml:5:cell_label: lp_account_refund_excess_carry_destination
+iter_123/STATUS.yaml:5:cell_label: lp_account_refund_then_direct_add_lifecycle
+iter_140/STATUS.yaml:5:cell_label: getter_response_state_alias
+iter_198/STATUS.yaml:5:cell_label: lp_account_direct_add_zero_selector_residual
+iter_202/STATUS.yaml:5:cell_label: lp_account_refund_destroy_redeploy_identity
+iter_221/STATUS.yaml:5:cell_label: lp_account_direct_add_post_send_commit_order
+iter_228/STATUS.yaml:5:cell_label: lp_account_getter_data_tuple_identity
+
+$ git log --all --oneline --decorate -8
+901296b (HEAD -> v4flash-soak-ston-dot-fi-dex-smart-contracts-v2, fork/v4flash-soak-ston-dot-fi-dex-smart-contracts-v2) checkpoint: v4flash soak ston-dot-fi-dex-smart-contract-v2 iter230
+06b78ea checkpoint: v4flash soak ston-dot-fi-dex-smart-contract-v2 iter230
+ac79f47 shadow: complete iter140 AF5 getter deadend
+1b4c27a shadow: complete iter139 AF4 trusted kill
+
+prior_audit_conclusion: AX14 is adjacent to the prior refund/direct-add lifecycle and getter snapshot analyses, but this cell proves the storage tuple is committed atomically: both refund fields are zeroed and saved together, while every subsequent getter reloads one committed cell. No stale cross-user or mixed-field snapshot is reachable.

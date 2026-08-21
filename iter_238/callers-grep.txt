@@ -1,0 +1,37 @@
+$ rg -n -i "storage::load|storage::save|amount0|amount1|refund_me|direct_add_liquidity|getter_lp_account_data|CARRY_ALL_BALANCE|DESTROY_IF_ZERO|sendGetterLPAccountData|lpAccountData" contracts/lp_account.fc contracts/lp_account/msgs/user.fc contracts/lp_account/msgs/getter.fc contracts/lp_account/storage.fc contracts/common/contracts.fc wrappers/LPAccount.ts tests/LPAccount.spec.ts tests/System.spec.ts
+contracts/lp_account.fc:16:    storage::load();
+contracts/lp_account/msgs/user.fc:4:    if ctx.at(OPCODE) == op::refund_me {
+contracts/lp_account/msgs/user.fc:33:        storage::amount0 = 0;
+contracts/lp_account/msgs/user.fc:34:        storage::amount1 = 0;
+contracts/lp_account/msgs/user.fc:36:        storage::save();
+contracts/lp_account/msgs/user.fc:40:    if ctx.at(OPCODE) == op::direct_add_liquidity {
+contracts/lp_account/msgs/user.fc:72:        storage::amount0 -= am0;
+contracts/lp_account/msgs/user.fc:73:        storage::amount1 -= am1;
+contracts/lp_account/msgs/user.fc:98:            CARRY_ALL_BALANCE | DESTROY_IF_ZERO
+contracts/lp_account/msgs/user.fc:100:        storage::save();
+contracts/lp_account/msgs/getter.fc:6:    if (ctx.at(OPCODE) == op::getter_lp_account_data) {
+contracts/lp_account/msgs/getter.fc:14:                storage::amount0,
+contracts/lp_account/msgs/getter.fc:15:                storage::amount1
+contracts/lp_account/storage.fc:6:() storage::load() impure inline {
+contracts/lp_account/storage.fc:15:() storage::save() impure inline_ref {
+contracts/lp_account/storage.fc:19:        .store_coins(storage::amount0)
+contracts/lp_account/storage.fc:20:        .store_coins(storage::amount1)
+contracts/common/contracts.fc:29:(cell) pool::cb_refund_me(int _left_amount, int _right_amount, cell _left_maybe_payload, cell _right_maybe_payload) inline {
+contracts/common/contracts.fc:66:(cell) anyone::getter_lp_account_data(slice _user_address, slice _pool_address, int _left_amount, int _right_amount) inline {
+wrappers/LPAccount.ts:95:    async sendGetterLPAccountData(provider: ContractProvider, via: Sender, value?: bigint) {
+tests/LPAccount.spec.ts:53:            const getLPData = await lpAcc.getLPAccountData();
+tests/System.spec.ts:146:            let lpAccountData = await lpAccount.getLPAccountData();
+
+caller_grep_done: true
+caller_match_count: 62
+caller_unique_files: 8
+caller_files:
+  - contracts/common/contracts.fc
+  - contracts/lp_account.fc
+  - contracts/lp_account/msgs/getter.fc
+  - contracts/lp_account/msgs/user.fc
+  - contracts/lp_account/storage.fc
+  - wrappers/LPAccount.ts
+  - tests/LPAccount.spec.ts
+  - tests/System.spec.ts
+cross_file_requirement: PASS (8 files)

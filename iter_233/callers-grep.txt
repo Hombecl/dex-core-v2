@@ -1,0 +1,34 @@
+$ rg -n -i "calculate_user_jetton_lp_wallet_address|calculate_jetton_lp_wallet_state_init|lp_wallet_idata|jetton_wallet_code|throw_unless\\(705|invalid_caller|state_init|cell_hash\\(state_init\\)|get_wallet_address" contracts/lp_wallet.fc contracts/lp_wallet/jetton-utils.fc contracts/common/contracts.fc contracts/pool/msgs/lp_wallet.fc contracts/pool/msgs/lp_account.fc contracts/pool/get.fc tests/System.spec.ts tests/ConstProduct.spec.ts wrappers/LPWallet.ts
+contracts/pool/msgs/lp_wallet.fc:12:            lp_wallet_idata(
+contracts/pool/msgs/lp_wallet.fc:20:        throw_unless(error::invalid_caller, equal_slices(lp_wallet~address(params::workchain), ctx.at(SENDER)));
+contracts/lp_wallet/jetton-utils.fc:10:cell calculate_jetton_lp_wallet_state_init(slice owner_address, slice jetton_master_address, cell jetton_wallet_code) inline {
+contracts/lp_wallet/jetton-utils.fc:14:    .store_dict(pack_jetton_lp_wallet_data(0, owner_address, jetton_master_address, jetton_wallet_code))
+contracts/lp_wallet/jetton-utils.fc:19:slice calculate_jetton_lp_wallet_address(cell state_init) inline {
+contracts/lp_wallet/jetton-utils.fc:22:    .store_uint(cell_hash(state_init), 256)
+contracts/lp_wallet/jetton-utils.fc:26:slice calculate_user_jetton_lp_wallet_address(slice owner_address, slice jetton_master_address, cell jetton_wallet_code) inline {
+contracts/common/contracts.fc:19:(cell) lp_wallet_idata(slice _owner_address, slice _jetton_master_address, cell _jetton_wallet_code) inline {
+contracts/common/contracts.fc:24:        .store_ref(_jetton_wallet_code)
+contracts/pool/msgs/lp_account.fc:103:                lp_wallet_idata(
+contracts/pool/msgs/lp_account.fc:122:                lp_wallet~state_init(),
+contracts/pool/get.fc:39:slice get_wallet_address(slice owner_address) method_id {
+contracts/pool/get.fc:45:        lp_wallet_idata(owner_address, my_address(), storage::jetton_lp_wallet_code),
+contracts/lp_wallet.fc:20:    throw_unless(705, equal_slices(owner_address, sender_address));
+contracts/lp_wallet.fc:23:    cell state_init = calculate_jetton_lp_wallet_state_init(to_owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:24:    slice to_wallet_address = calculate_jetton_lp_wallet_address(state_init);
+contracts/lp_wallet.fc:35:        .store_ref(state_init);
+contracts/lp_wallet.fc:63:        | equal_slices(calculate_user_jetton_lp_wallet_address(from_address, jetton_master_address, jetton_wallet_code), sender_address));
+contracts/lp_wallet.fc:100:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+tests/ConstProduct.spec.ts:276:                jettonWalletCode: DEFAULT_JETTON_WALLET_CODE
+
+caller_grep_done: true
+caller_match_count: 37
+caller_unique_files: 7
+caller_files:
+  - contracts/common/contracts.fc
+  - contracts/lp_wallet.fc
+  - contracts/lp_wallet/jetton-utils.fc
+  - contracts/pool/get.fc
+  - contracts/pool/msgs/lp_account.fc
+  - contracts/pool/msgs/lp_wallet.fc
+  - tests/ConstProduct.spec.ts
+cross_file_requirement: PASS (7 files)

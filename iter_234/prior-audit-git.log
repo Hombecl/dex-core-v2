@@ -1,0 +1,19 @@
+$ rg -n -i 'cell_label:.*(response.*excess|excess.*workchain|response.*address|notification.*payload|forward.*payload|master.*credit)' iter_*/STATUS.yaml
+iter_73/STATUS.yaml:5:cell_label: lp_wallet_forward_payload_balance
+iter_87/STATUS.yaml:5:cell_label: lp_wallet_notification_payload_alias
+iter_103/STATUS.yaml:5:cell_label: lp_wallet_forward_payload_dict_boundary
+iter_110/STATUS.yaml:5:cell_label: lp_wallet_response_excess_workchain_boundary
+iter_119/STATUS.yaml:5:cell_label: lp_wallet_master_credit_debit_conservation
+iter_124/STATUS.yaml:5:cell_label: lp_wallet_forward_payload_reference_depth
+iter_135/STATUS.yaml:5:cell_label: lp_wallet_transfer_response_excess_commit
+iter_171/STATUS.yaml:5:cell_label: lp_wallet_response_address_workchain
+iter_185/STATUS.yaml:5:cell_label: pool_lp_mint_zero_forward_payload_commit
+iter_210/STATUS.yaml:5:cell_label: router_notification_ref_forward_payload_boundary
+
+$ git log --all --oneline --decorate -8
+901296b (HEAD -> v4flash-soak-ston-dot-fi-dex-smart-contracts-v2, fork/v4flash-soak-ston-dot-fi-dex-smart-contracts-v2) checkpoint: v4flash soak ston-dot-fi-dex-smart-contract-v2 iter232
+06b78ea checkpoint: v4flash soak ston-dot-fi-dex-smart-contract-v2 iter230
+ac79f47 shadow: complete iter140 AF5 getter deadend
+1b4c27a shadow: complete iter139 AF4 trusted kill
+
+prior_audit_conclusion: AX24 is adjacent to prior response/excess and payload analyses, but isolates the LPWallet receive response_address branch. It is a destination-only residual TON path after authorization and cost deductions; the LP amount and wallet state remain independent, and the direct-add caller validates the excess address workchain.

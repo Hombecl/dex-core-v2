@@ -1,0 +1,10 @@
+$ node iter_236/poc_lp_account_getter_data_coin_width_boundary.test.js
+{
+  "result": "PASS",
+  "classification": "PRE_KILLED_DUPLICATE",
+  "cell": "AX12",
+  "cross_file_anchors": 18,
+  "coin_width_cases": 6,
+  "duplicate_family": "iter_140/AF5 and iter_228/AX11 LPAccount getter tuple/identity family",
+  "reason": "both storage and getter response consume/store the same nonnegative Coins fields in the same order; zero/max boundaries are preserved and overflow rejects before any alternate value can be observed"
+}

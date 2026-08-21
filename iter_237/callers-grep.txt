@@ -1,0 +1,27 @@
+$ rg -n -i "handle_getter_messages|getter_lp_account_data|CARRY_ALL_BALANCE|IGNORE_ERRORS|reserves::max_balance|ctx.at\\(SENDER\\)|get_lp_account_data|sendGetterLPAccountData|storage::save|DESTROY_IF_ZERO" contracts/lp_account.fc contracts/lp_account/msgs/getter.fc contracts/lp_account/storage.fc contracts/common/contracts.fc wrappers/LPAccount.ts tests/LPAccount.spec.ts tests/System.spec.ts
+tests/LPAccount.spec.ts:54:            const sendGetterLPAccData = await lpAcc.sendGetterLPAccountData(user.getSender());
+wrappers/LPAccount.ts:95:    async sendGetterLPAccountData(provider: ContractProvider, via: Sender, value?: bigint) {
+wrappers/LPAccount.ts:105:        const result = await provider.get('get_lp_account_data', []);
+contracts/lp_account/msgs/getter.fc:3:(int) handle_getter_messages() impure inline {
+contracts/lp_account/msgs/getter.fc:6:    if (ctx.at(OPCODE) == op::getter_lp_account_data) {
+contracts/lp_account/msgs/getter.fc:7:        reserves::max_balance(storage_fee::lp_account);
+contracts/lp_account/msgs/getter.fc:10:            ctx.at(SENDER),
+contracts/lp_account/msgs/getter.fc:17:            CARRY_ALL_BALANCE | IGNORE_ERRORS
+contracts/lp_account/storage.fc:15:() storage::save() impure inline_ref {
+contracts/common/contracts.fc:66:(cell) anyone::getter_lp_account_data(slice _user_address, slice _pool_address, int _left_amount, int _right_amount) inline {
+contracts/lp_account.fc:15:    throw_unless(error::wrong_workchain, ctx.at(SENDER).address::check_workchain(params::workchain));
+contracts/lp_account.fc:19:    if equal_slices(ctx.at(SENDER), storage::pool_address) {
+contracts/lp_account.fc:26:    if equal_slices(ctx.at(SENDER), storage::user_address) {
+contracts/lp_account.fc:33:    if handle_getter_messages() {
+
+caller_grep_done: true
+caller_match_count: 17
+caller_unique_files: 6
+caller_files:
+  - contracts/common/contracts.fc
+  - contracts/lp_account.fc
+  - contracts/lp_account/msgs/getter.fc
+  - contracts/lp_account/storage.fc
+  - wrappers/LPAccount.ts
+  - tests/LPAccount.spec.ts
+cross_file_requirement: PASS (6 files)

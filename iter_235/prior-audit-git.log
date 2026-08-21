@@ -1,0 +1,19 @@
+$ rg -n -i 'cell_label:.*(payload|notification|forward)' iter_*/STATUS.yaml
+iter_73/STATUS.yaml:5:cell_label: lp_wallet_forward_payload_balance
+iter_87/STATUS.yaml:5:cell_label: lp_wallet_notification_payload_alias
+iter_103/STATUS.yaml:5:cell_label: lp_wallet_forward_payload_dict_boundary
+iter_124/STATUS.yaml:5:cell_label: lp_wallet_forward_payload_reference_depth
+iter_164/STATUS.yaml:5:cell_label: lp_mint_notification_failure
+iter_169/STATUS.yaml:5:cell_label: lp_wallet_mint_from_address_notification
+iter_185/STATUS.yaml:5:cell_label: pool_lp_mint_zero_forward_payload_commit
+iter_201/STATUS.yaml:5:cell_label: router_notification_no_ref_wallet_refund
+iter_210/STATUS.yaml:5:cell_label: router_notification_ref_forward_payload_boundary
+iter_225/STATUS.yaml:5:cell_label: router_jetton_notification_empty_ref_bounce_payload_tail
+
+$ git log --all --oneline --decorate -8
+901296b (HEAD -> v4flash-soak-ston-dot-fi-dex-smart-contracts-v2, fork/v4flash-soak-ston-dot-fi-dex-smart-contracts-v2) checkpoint: v4flash soak ston-dot-fi-dex-smart-contract-v2 iter230
+06b78ea checkpoint: v4flash soak ston-dot-fi-dex-smart-contract-v2 iter230
+ac79f47 shadow: complete iter140 AF5 getter deadend
+1b4c27a shadow: complete iter139 AF4 trusted kill
+
+prior_audit_conclusion: AX25 exactly reproduces iter_87/V2 and iter_103/Y3. LPWallet preserves the remaining Maybe-ref payload convention; Router deterministically refunds notifications without a ref or consumes one ref for routing. No new sender, amount, or asset-binding behavior is introduced.

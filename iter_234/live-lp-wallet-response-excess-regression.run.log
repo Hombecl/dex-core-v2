@@ -1,0 +1,15 @@
+$ npm test -- --runInBand tests/ConstProduct.spec.ts -t 'should provide lp with payload to a different address'
+
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/ConstProduct.spec.ts -t should provide lp with payload to a different address
+
+PASS tests/ConstProduct.spec.ts (5.882 s)
+  Const Product
+    Dex
+      ✓ should provide lp with payload to a different address (1133 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       35 skipped, 1 passed, 36 total
+Snapshots:   0 total
+Time:        6.073 s
+Ran all test suites matching /tests\/ConstProduct.spec.ts/i with tests matching "should provide lp with payload to a different address".

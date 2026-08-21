@@ -1,0 +1,35 @@
+$ rg -n -i "getter_lp_account_data|load_coins|store_coins|amount0|amount1|CARRY_ALL_BALANCE|IGNORE_ERRORS|get_lp_account_data|readBigNumber|leftAmount|rightAmount" contracts/lp_account.fc contracts/lp_account/msgs/getter.fc contracts/lp_account/get.fc contracts/lp_account/storage.fc contracts/common/contracts.fc wrappers/LPAccount.ts tests/LPAccount.spec.ts tests/System.spec.ts
+contracts/lp_account/get.fc:1:_ get_lp_account_data() method_id {
+contracts/lp_account/get.fc:3:    return (storage::user_address, storage::pool_address, storage::amount0, storage::amount1);
+contracts/lp_account/msgs/getter.fc:6:    if (ctx.at(OPCODE) == op::getter_lp_account_data) {
+contracts/lp_account/msgs/getter.fc:11:            anyone::getter_lp_account_data(
+contracts/lp_account/msgs/getter.fc:14:                storage::amount0,
+contracts/lp_account/msgs/getter.fc:15:                storage::amount1
+contracts/lp_account/msgs/getter.fc:17:            CARRY_ALL_BALANCE | IGNORE_ERRORS
+contracts/lp_account/storage.fc:10:    storage::amount0 = ds~load_coins();
+contracts/lp_account/storage.fc:11:    storage::amount1 = ds~load_coins();
+contracts/lp_account/storage.fc:19:        .store_coins(storage::amount0)
+contracts/lp_account/storage.fc:20:        .store_coins(storage::amount1)
+contracts/common/contracts.fc:66:(cell) anyone::getter_lp_account_data(slice _user_address, slice _pool_address, int _left_amount, int _right_amount) inline {
+contracts/common/contracts.fc:70:        .store_coins(_left_amount)
+contracts/common/contracts.fc:71:        .store_coins(_right_amount)
+wrappers/LPAccount.ts:105:        const result = await provider.get('get_lp_account_data', []);
+wrappers/LPAccount.ts:109:            leftAmount: result.stack.readBigNumber(),
+wrappers/LPAccount.ts:110:            rightAmount: result.stack.readBigNumber(),
+tests/LPAccount.spec.ts:62:                        body.loadCoins() == getLPData.leftAmount &&
+tests/LPAccount.spec.ts:63:                        body.loadCoins() == getLPData.rightAmount;
+tests/System.spec.ts:147:            expect(lpAccountData.leftAmount).toBe(toNano(0));
+tests/System.spec.ts:148:            expect(lpAccountData.rightAmount).toBe(toNano(1));
+
+caller_grep_done: true
+caller_match_count: 70
+caller_unique_files: 7
+caller_files:
+  - contracts/common/contracts.fc
+  - contracts/lp_account/get.fc
+  - contracts/lp_account/msgs/getter.fc
+  - contracts/lp_account/storage.fc
+  - wrappers/LPAccount.ts
+  - tests/LPAccount.spec.ts
+  - tests/System.spec.ts
+cross_file_requirement: PASS (7 files)

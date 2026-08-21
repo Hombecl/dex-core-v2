@@ -1,0 +1,10 @@
+$ node iter_235/poc_lp_wallet_receive_forward_payload_notification_alias.test.js
+{
+  "result": "PASS",
+  "classification": "PRE_KILLED_DUPLICATE",
+  "cell": "AX25",
+  "cross_file_anchors": 14,
+  "ref_shape_cases": 4,
+  "duplicate_family": "iter_87/V2 and iter_103/Y3 LPWallet notification/forward-payload family",
+  "reason": "the remaining body slice preserves the Maybe-ref payload convention; Router deterministically refunds no-ref notifications or consumes one payload ref for routing, with no unauthorized wallet credit or victim asset selection"
+}

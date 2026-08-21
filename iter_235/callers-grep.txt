@@ -1,0 +1,29 @@
+$ rg -n -i "either_forward_payload|transfer_notification|forward_payload|load_ref\\(\\)|load_maybe_ref|slice_refs_empty|route_dex_messages|storage::save\\(" contracts/lp_wallet.fc contracts/common/contracts.fc contracts/router/msgs/jetton.fc contracts/router/dex.fc contracts/router/msgs/pool.fc tests/System.spec.ts tests/ConstProduct.spec.ts
+contracts/router/dex.fc:1:() route_dex_messages(slice _jetton_address, int _available_gas, int _sent_amount, slice _caller, cell _dex_payload) impure inline {
+contracts/router/msgs/pool.fc:10:        cell custom_payload = in_msg_body~load_maybe_ref();
+contracts/router/msgs/pool.fc:55:            route_dex_messages(sent_jetton_address, gas, swap_amount, original_caller, custom_payload);
+contracts/common/contracts.fc:218:        .store_maybe_ref(_either_ref) ;; either_forward_payload
+contracts/router/msgs/jetton.fc:5:    if ctx.at(OPCODE) == op::ft::transfer_notification {
+contracts/router/msgs/jetton.fc:9:        if in_msg_body.slice_refs_empty?() {
+contracts/router/msgs/jetton.fc:24:        route_dex_messages(
+contracts/router/msgs/jetton.fc:29:            in_msg_body~load_ref()
+contracts/lp_wallet.fc:28:    slice either_forward_payload = in_msg_body;
+contracts/lp_wallet.fc:43:        .store_slice(either_forward_payload)
+contracts/lp_wallet.fc:72:        slice either_forward_payload = in_msg_body;
+contracts/lp_wallet.fc:74:            .store_uint(op::transfer_notification, 32)
+contracts/lp_wallet.fc:78:            .store_slice(either_forward_payload)
+contracts/lp_wallet.fc:100:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:108:        cell custom_payload = in_msg_body~load_maybe_ref();
+contracts/lp_wallet.fc:133:        storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:165:    int fwd_fee = muldiv(cs~load_coins(), 3, 2); ;; we use message fwd_fee for estimation of forward_payload costs
+
+caller_grep_done: true
+caller_match_count: 20
+caller_unique_files: 5
+caller_files:
+  - contracts/common/contracts.fc
+  - contracts/lp_wallet.fc
+  - contracts/router/dex.fc
+  - contracts/router/msgs/jetton.fc
+  - contracts/router/msgs/pool.fc
+cross_file_requirement: PASS (5 files; System and ConstProduct regressions separately executed)

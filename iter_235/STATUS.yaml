@@ -1,0 +1,150 @@
+schema_version: shadow-v1
+iteration: 235
+phase: completed
+cell_id: AX25
+cell_label: lp_wallet_receive_forward_payload_notification_alias
+final_verdict: PRE_KILLED_DUPLICATE
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AX25
+  final_verdict: PRE_KILLED_DUPLICATE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/common/contracts.fc
+        line: 218
+        text: '.store_maybe_ref(_either_ref) ;; either_forward_payload'
+      - file: contracts/lp_wallet.fc
+        line: 72
+        text: 'slice either_forward_payload = in_msg_body;'
+      - file: contracts/lp_wallet.fc
+        line: 74
+        text: '.store_uint(op::transfer_notification, 32)'
+      - file: contracts/lp_wallet.fc
+        line: 78
+        text: '.store_slice(either_forward_payload)'
+      - file: contracts/router/msgs/jetton.fc
+        line: 5
+        text: 'if ctx.at(OPCODE) == op::ft::transfer_notification {'
+      - file: contracts/router/msgs/jetton.fc
+        line: 9
+        text: 'if in_msg_body.slice_refs_empty?() {'
+      - file: contracts/router/msgs/jetton.fc
+        line: 24
+        text: 'route_dex_messages('
+      - file: contracts/router/msgs/jetton.fc
+        line: 29
+        text: 'in_msg_body~load_ref()'
+      - file: contracts/router/dex.fc
+        line: 1
+        text: '() route_dex_messages(slice _jetton_address, int _available_gas, int _sent_amount, slice _caller, cell _dex_payload) impure inline {'
+      - file: contracts/router/msgs/pool.fc
+        line: 10
+        text: 'cell custom_payload = in_msg_body~load_maybe_ref();'
+      - file: contracts/router/msgs/pool.fc
+        line: 55
+        text: 'route_dex_messages(sent_jetton_address, gas, swap_amount, original_caller, custom_payload);'
+      - file: tests/System.spec.ts
+        line: 132
+        text: "it('should handle mint & burn liquidity', async () => {"
+      - file: tests/ConstProduct.spec.ts
+        line: 1594
+        text: "it('should provide lp with payload to a different address', async () => {"
+      - file: contracts/lp_wallet.fc
+        line: 100
+        text: 'storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);'
+  source_scope_restricted: true
+  redrill_count: 0
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  required_evidence_complete: true
+  no_fabrication: true
+  scope_assets_only: true
+  methodology_audit_exit: NOT_AVAILABLE
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_DUPLICATE
+  shippable: false
+  rejection_reason: 'AX25 exactly reproduces the earlier LPWallet notification/forward-payload family in iter_87/V2 and iter_103/Y3: Maybe-ref shape is preserved, Router refunds no-ref notifications or consumes one ref for routing, and no unauthorized wallet credit or victim asset selection exists.'
+  caller_match_count: 20
+  caller_unique_files: 5
+  cascade_verbatim_hit_count: 14
+  cross_file_anchor_count: 14
+  caller_paths:
+    - contracts/common/contracts.fc
+    - contracts/lp_wallet.fc
+    - contracts/router/dex.fc
+    - contracts/router/msgs/jetton.fc
+    - contracts/router/msgs/pool.fc
+  callers_grep_artifact: iter_235/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_235/poc_lp_wallet_receive_forward_payload_notification_alias.test.js
+    poc_run_log: iter_235/poc_lp_wallet_receive_forward_payload_notification_alias.run.log
+    live_regression_log: iter_235/live-lp-wallet-notification-payload-regression.run.log
+    prior_audit: iter_235/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_235/poc_lp_wallet_receive_forward_payload_notification_alias.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_235/poc_lp_wallet_receive_forward_payload_notification_alias.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.1s static; 11.384s integration'
+    result: 'PASS (14 cross-file anchors; four ref-shape cases; two live regressions)'
+  prior_art_check:
+    queries:
+      - 'cell_label payload/notification/forward scan across iter_*/STATUS.yaml'
+    results:
+      - 'iter_87 V2 lp_wallet_notification_payload_alias: DEADEND_WITH_PROOF'
+      - 'iter_103 Y3 lp_wallet_forward_payload_dict_boundary: DEADEND_WITH_PROOF'
+      - 'iter_124, iter_169, iter_201, iter_210, iter_225: adjacent payload/notification families closed'
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "either_forward_payload" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "either_forward_payload" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "transfer_notification" "LPWallet" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "transfer_notification" "LPWallet" is:pr'
+    gh_search_hits: 0
+    evidence_files:
+      - iter_235/r15-lp-wallet-either-forward-issue.json
+      - iter_235/r15-lp-wallet-either-forward-pr.json
+      - iter_235/r15-lp-wallet-transfer-notification-issue.json
+      - iter_235/r15-lp-wallet-transfer-notification-pr.json
+  attacker_privilege:
+    privilege_required: external_auth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: PRE_KILLED_DUPLICATE
+  shadow_mode: true
+  caller_path: iter_235/callers-grep.txt
+  caller_match_count: 20
+  caller_unique_files: 5
+  prior_audit_path: iter_235/prior-audit-git.log
+  prior_family_matches: [iter87, iter103, iter124, iter169, iter201, iter210, iter225]
+  r15_evidence_files:
+    - iter_235/r15-lp-wallet-either-forward-issue.json
+    - iter_235/r15-lp-wallet-either-forward-pr.json
+    - iter_235/r15-lp-wallet-transfer-notification-issue.json
+    - iter_235/r15-lp-wallet-transfer-notification-pr.json
+  source_conclusion: 'AX25 is an exact duplicate of the closed LPWallet notification/forward-payload family: the remaining Maybe-ref slice is intentionally passed through, Router has a deterministic no-ref refund or one-ref route branch, and wallet authorization/state persistence remain unchanged.'
+  attacker_privilege:
+    privilege_required: external_auth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_235/poc_lp_wallet_receive_forward_payload_notification_alias.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_235/poc_lp_wallet_receive_forward_payload_notification_alias.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_235/live-lp-wallet-notification-payload-regression.run.log
+    result: PASS

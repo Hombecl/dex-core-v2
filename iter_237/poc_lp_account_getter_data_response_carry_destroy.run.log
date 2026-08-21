@@ -1,0 +1,9 @@
+$ node iter_237/poc_lp_account_getter_data_response_carry_destroy.test.js
+{
+  "result": "PASS",
+  "classification": "DEADEND_WITH_PROOF",
+  "cell": "AX13",
+  "cross_file_anchors": 14,
+  "carry_cases": 4,
+  "reason": "getter reserves the storage floor, sends surplus only to the requesting sender, does not save or destroy the LPAccount, and IGNORE_ERRORS cannot alter read-only state"
+}

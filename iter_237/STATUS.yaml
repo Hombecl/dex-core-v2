@@ -1,0 +1,151 @@
+schema_version: shadow-v1
+iteration: 237
+phase: completed
+cell_id: AX13
+cell_label: lp_account_getter_data_response_carry_destroy
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AX13
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/lp_account.fc
+        line: 33
+        text: 'if handle_getter_messages() {'
+      - file: contracts/lp_account/msgs/getter.fc
+        line: 6
+        text: 'if (ctx.at(OPCODE) == op::getter_lp_account_data) {'
+      - file: contracts/lp_account/msgs/getter.fc
+        line: 7
+        text: 'reserves::max_balance(storage_fee::lp_account);'
+      - file: contracts/lp_account/msgs/getter.fc
+        line: 10
+        text: 'ctx.at(SENDER),'
+      - file: contracts/lp_account/msgs/getter.fc
+        line: 17
+        text: 'CARRY_ALL_BALANCE | IGNORE_ERRORS'
+      - file: contracts/lp_account/storage.fc
+        line: 10
+        text: 'storage::amount0 = ds~load_coins();'
+      - file: contracts/lp_account/storage.fc
+        line: 15
+        text: '() storage::save() impure inline_ref {'
+      - file: contracts/common/contracts.fc
+        line: 66
+        text: '(cell) anyone::getter_lp_account_data(slice _user_address, slice _pool_address, int _left_amount, int _right_amount) inline {'
+      - file: contracts/common/contracts.fc
+        line: 70
+        text: '.store_coins(_left_amount)'
+      - file: wrappers/LPAccount.ts
+        line: 95
+        text: 'async sendGetterLPAccountData(provider: ContractProvider, via: Sender, value?: bigint) {'
+      - file: wrappers/LPAccount.ts
+        line: 105
+        text: "const result = await provider.get('get_lp_account_data', []);"
+      - file: tests/LPAccount.spec.ts
+        line: 54
+        text: 'const sendGetterLPAccData = await lpAcc.sendGetterLPAccountData(user.getSender());'
+      - file: tests/LPAccount.spec.ts
+        line: 66
+        text: '});'
+      - file: tests/System.spec.ts
+        line: 146
+        text: 'let lpAccountData = await lpAccount.getLPAccountData();'
+  source_scope_restricted: true
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  required_evidence_complete: true
+  no_fabrication: true
+  scope_assets_only: true
+  methodology_audit_exit: NOT_AVAILABLE
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_DEADEND
+  shippable: false
+  rejection_reason: 'The async getter reserves only the configured storage floor, sends surplus to ctx.at(SENDER), and has no storage save or DESTROY_IF_ZERO flag. IGNORE_ERRORS changes outbound failure handling only; it cannot drain or destroy LPAccount token state.'
+  caller_match_count: 17
+  caller_unique_files: 6
+  cascade_verbatim_hit_count: 14
+  cross_file_anchor_count: 14
+  caller_paths:
+    - contracts/common/contracts.fc
+    - contracts/lp_account.fc
+    - contracts/lp_account/msgs/getter.fc
+    - contracts/lp_account/storage.fc
+    - wrappers/LPAccount.ts
+    - tests/LPAccount.spec.ts
+  callers_grep_artifact: iter_237/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_237/poc_lp_account_getter_data_response_carry_destroy.test.js
+    poc_run_log: iter_237/poc_lp_account_getter_data_response_carry_destroy.run.log
+    live_regression_log: iter_237/live-lp-account-getter-carry-regression.run.log
+    prior_audit: iter_237/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_237/poc_lp_account_getter_data_response_carry_destroy.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_237/poc_lp_account_getter_data_response_carry_destroy.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.1s static; 5.005s integration'
+    result: 'PASS (14 cross-file anchors; four carry/floor cases; LPAccount integration regression)'
+  prior_art_check:
+    queries:
+      - 'cell_label getter/carry/response/destroy/reserve scan across iter_*/STATUS.yaml'
+    results:
+      - 'iter_82 async_getter_response_address_confusion: closed'
+      - 'iter_140 getter_response_state_alias: closed'
+      - 'iter_228 lp_account_getter_data_tuple_identity: PRE_KILLED_DUPLICATE'
+      - 'iter_229 lp_account_reset_gas_user_destination_carry: DEADEND_WITH_PROOF'
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "getter_lp_account_data" "CARRY_ALL_BALANCE" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "getter_lp_account_data" "CARRY_ALL_BALANCE" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "LPAccount" "IGNORE_ERRORS" getter is:issue'
+      - 'repo:ston-fi/dex-core-v2 "LPAccount" "IGNORE_ERRORS" getter is:pr'
+    gh_search_hits: 0
+    evidence_files:
+      - iter_237/r15-lp-account-getter-carry-issue.json
+      - iter_237/r15-lp-account-getter-carry-pr.json
+      - iter_237/r15-lp-account-getter-ignore-issue.json
+      - iter_237/r15-lp-account-getter-ignore-pr.json
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  shadow_mode: true
+  caller_path: iter_237/callers-grep.txt
+  caller_match_count: 17
+  caller_unique_files: 6
+  prior_audit_path: iter_237/prior-audit-git.log
+  prior_family_matches: [iter82, iter99, iter107, iter110, iter135, iter140, iter171, iter202, iter228, iter229]
+  r15_evidence_files:
+    - iter_237/r15-lp-account-getter-carry-issue.json
+    - iter_237/r15-lp-account-getter-carry-pr.json
+    - iter_237/r15-lp-account-getter-ignore-issue.json
+    - iter_237/r15-lp-account-getter-ignore-pr.json
+  source_conclusion: 'AX13 is a read-only carry path: the getter reserves the LPAccount storage floor, sends the remaining TON only to the requesting sender, and returns without saving or destroying state. An outbound failure under IGNORE_ERRORS does not create a token or LP balance mutation.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_237/poc_lp_account_getter_data_response_carry_destroy.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_237/poc_lp_account_getter_data_response_carry_destroy.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_237/live-lp-account-getter-carry-regression.run.log
+    result: PASS
