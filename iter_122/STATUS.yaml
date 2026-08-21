@@ -1,0 +1,61 @@
+schema_version: shadow-v1
+iteration: 122
+phase: completed
+cell_id: AC2
+cell_label: pool_swap_fee_rounding_zero_output
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AC2
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts,tests/ConstSum.spec.ts,tests/Stableswap.spec.ts,tests/WeightedCPI.spec.ts,tests/WeightedStableswap.spec.ts,iter_122/poc_pool_swap_fee_rounding_zero_output.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_122/poc_pool_swap_fee_rounding_zero_output.run.log,iter_122/poc_pool_swap_fee_rounding_zero_output.model.run.log
+    run_log_exists_on_disk: true
+    test_runtime: '34.508s integration; model passed'
+    result: 'PASSED (integration: 20 passed, 118 skipped, 138 total; model: passed)'
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 fee rounding zero output swap is:issue'
+      - 'repo:ston-fi/dex-core-v2 fee rounding zero output swap is:pr'
+      - 'repo:ston-fi/dex-core-v2 divc ref_fee protocol_fee swap refund is:issue'
+      - 'repo:ston-fi/dex-core-v2 divc ref_fee protocol_fee swap refund is:pr'
+    results: all four returned total_count 0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'fee rounding zero output swap on repository issue page'
+      - 'fee rounding zero output swap on repository pull-request page'
+      - 'divc ref_fee protocol_fee swap refund on repository issue page'
+      - 'divc ref_fee protocol_fee swap refund on repository pull-request page'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_122/callers-grep.txt
+  caller_grep_match_count: 273
+  caller_grep_unique_files: 40
+  prior_audit_path: iter_122/prior-audit-git.log
+  prior_audit_bytes: 78
+  r15_search_files:
+    - iter_122/R15-GH-fee-rounding-zero-output-issue.json
+    - iter_122/R15-GH-fee-rounding-zero-output-pr.json
+    - iter_122/R15-GH-divc-ref-fee-swap-issue.json
+    - iter_122/R15-GH-divc-ref-fee-swap-pr.json
+  source_conclusion: 'Ceil-rounded protocol/referral fees can make a transient small-output result zero or negative, but swap_refund_0_out runs before referral or pay_to success messages and the only storage save is skipped when the try block throws. The catch sends the original amount0/amount1 back through the validated refund path. Four-family zero/max/refund tests and the numeric edge model showed no persistent reserve or fee-counter delta.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_122-AC2.md

@@ -1,0 +1,1 @@
+AC2 fee-rounding edge check passed: zero/negative output is rejected and original input is refunded
