@@ -1,0 +1,72 @@
+schema_version: shadow-v1
+iteration: 133
+phase: completed
+cell_id: AE3
+cell_label: router_notification_without_ref_refund_source
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AE3
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - 'contracts/router/msgs/jetton.fc:5: if ctx.at(OPCODE) == op::ft::transfer_notification {'
+      - 'contracts/router/msgs/jetton.fc:9: if in_msg_body.slice_refs_empty?() {'
+      - 'contracts/router/msgs/jetton.fc:14: ctx.at(SENDER),'
+      - 'contracts/router/msgs/jetton.fc:15: jetton_wallet::transfer(0, jetton_amount, from_address, from_address)'
+      - 'contracts/router/msgs/jetton.fc:24: route_dex_messages('
+      - 'contracts/router/dex.fc:33: jetton_wallet::transfer(0, _sent_amount, _caller, _caller)'
+      - 'contracts/router/dex.fc:47: throw_arg_if(op::transfer_bounce_invalid_pool, 1, equal_slices(_jetton_address, token_wallet1));'
+      - 'contracts/router/dex.fc:78: var pool = contracts::from_sources('
+      - 'contracts/lp_wallet.fc:62: throw_unless(707, equal_slices(jetton_master_address, sender_address)'
+      - 'contracts/lp_wallet.fc:100: storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);'
+      - 'contracts/router.fc:18: if handle_jetton_messages() {'
+  poc_execution:
+    test_file_path: iter_133/poc_router_notification_without_ref_refund_source.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_133/poc_router_notification_without_ref_refund_source.run.log,iter_133/integration.run.log
+    run_log_exists_on_disk: true
+    test_runtime: '20.733s integration; model passed'
+    result: 'PASSED (integration: 13 passed, 34 skipped, 47 total in 1 executed suite; model: passed)'
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 "transfer_notification" "slice_refs_empty" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "transfer_notification" "slice_refs_empty" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "invalid_request" "route_dex_messages" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "invalid_request" "route_dex_messages" is:pr'
+    results: all four returned total_count 0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'router no-reference notification refund repository issue search'
+      - 'router no-reference notification refund repository pull-request search'
+      - 'router invalid request sender wallet repository issue search'
+      - 'router invalid request sender wallet repository pull-request search'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_133/callers-grep.txt
+  caller_grep_match_count: 125
+  caller_grep_unique_files: 6
+  prior_audit_path: iter_133/prior-audit-git.log
+  prior_audit_bytes: 29
+  r15_search_files:
+    - iter_133/R15-GH-router-notification-no-ref-refund-issue.json
+    - iter_133/R15-GH-router-notification-no-ref-refund-pr.json
+    - iter_133/R15-GH-router-refund-sender-wallet-issue.json
+    - iter_133/R15-GH-router-refund-sender-wallet-pr.json
+  source_conclusion: 'A no-reference transfer notification sends an exact refund message to ctx.at(SENDER), while referenced notifications enter route_dex_messages. The destination is either a foreign wallet, which cannot debit Router-owned tokens, or the deterministic Router token wallet, which can only have issued the refund after receiving the same amount through its validated transfer path. The LP-wallet sender checks and deterministic pool route checks prevent a forged notification from creating an external asset delta.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_133-AE3.md

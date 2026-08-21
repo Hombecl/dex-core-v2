@@ -136,6 +136,7 @@ Scope is limited to the five selected entrypoint assets recorded in `R1-SURFACE-
 | AD5 | lp_account_mint_destroy_save_order | callback_lifecycle | LP-account minting with `DESTROY_IF_ZERO` and a subsequent save could resurrect stale amounts or duplicate a callback after pool rejection. | 130 | deadend_with_proof |
 | AE1 | pool_swap_referral_output_send_order | message_ordering_fees | A swap referral-vault message and normal output message could diverge in amount, token side, or completion while Pool saves reserves after both sends. | 131 | deadend_with_proof |
 | AE2 | pool_protocol_fee_dual_payload_delivery | payload_aliasing | Protocol-fee collection’s two optional payloads or sequential one-sided payout messages could alter fee-leg identity or counter clearing after one downstream leg fails. | 132 | killed_trusted_on_trusted |
+| AE3 | router_notification_without_ref_refund_source | error_refund | A no-reference jetton notification could make Router refund to an attacker-shaped sender/from tuple without a valid Router token-wallet identity. | 133 | deadend_with_proof |
 
 ## Cell execution contract
 

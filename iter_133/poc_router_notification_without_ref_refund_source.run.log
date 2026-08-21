@@ -1,0 +1,1 @@
+AE3 no-reference edge check passed: malformed notifications refund only to their sender, a real Router wallet can refund only the amount it received, foreign senders cannot debit Router-owned jettons, and referenced notifications enter the existing sender/pool validation path

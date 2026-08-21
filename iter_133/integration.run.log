@@ -1,0 +1,54 @@
+
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/System.spec.ts tests/ConstProduct.spec.ts -t should refund|should provide lp
+
+PASS tests/ConstProduct.spec.ts (18.787 s)
+  Const Product
+    wip
+      ○ skipped 123
+    Pool code upgrade
+      ○ skipped should init new pool code
+      ○ skipped should cancel new pool code
+      ○ skipped should finalize new pool code
+      ○ skipped should not finalize new pool code if time not passed
+      ○ skipped should set new pool code on pool
+      ○ skipped should not set new pool code if empty
+    Fees
+      ○ skipped should set fees
+      ○ skipped should collect fees
+      ○ skipped should collect ref fee from vault
+    Dex
+      ✓ should provide lp (1526 ms)
+      ✓ should provide lp with payload (1137 ms)
+      ✓ should provide lp with payload to a different address (1036 ms)
+      ✓ should provide lp (single side) (1463 ms)
+      ✓ should provide lp (single side) with protocol fees (977 ms)
+      ✓ should refund swap if tx is expired (900 ms)
+      ○ skipped should deploy dex
+      ○ skipped should swap
+      ○ skipped should handle more complex scenarios
+      ○ skipped should burn lp and swap
+      ○ skipped should burn liquidity
+      ○ skipped should cross-swap on the same router
+      ○ skipped should cross-swap on 2 routers
+      ○ skipped should direct add liquidity (all)
+      ○ skipped should direct add liquidity (partial)
+      ○ skipped should swap with 0 ref fee
+      ○ skipped should swap with max ref fee
+    Refund
+      ✓ should refund partial liquidity (992 ms)
+      ✓ should refund both lp tokens (1022 ms)
+      ✓ should refund swap (873 ms)
+      ✓ should refund cross-swap on the same router (1389 ms)
+      ✓ should refund cross-swap on 2 routers (in) (1771 ms)
+      ✓ should refund cross-swap on 2 routers (mid) (2000 ms)
+      ✓ should refund swap if fee more than max (911 ms)
+    Bounce
+      ○ skipped should bounce set fees if not admin
+      ○ skipped should bounce collect fees if no fee
+
+Test Suites: 1 skipped, 1 passed, 1 of 2 total
+Tests:       34 skipped, 13 passed, 47 total
+Snapshots:   0 total
+Time:        20.733 s
+Ran all test suites matching /tests\/System.spec.ts|tests\/ConstProduct.spec.ts/i with tests matching "should refund|should provide lp".
