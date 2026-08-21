@@ -1,0 +1,19 @@
+COMMAND: rg -n --no-heading 'pay_vault|deposit_ref_fee|ref_fee_out0|ref_fee_out1|amount0_out|amount1_out|vault_idata|vault~state_init|storage::deposited_amount|storage::save|equal_slices(ctx.at(SENDER)|should collect ref fee from vault|should handle cross swap' contracts/router/msgs/pool.fc contracts/common/contracts.fc contracts/pool/msgs/router.fc contracts/vault.fc contracts/common/op.fc tests/ConstProduct.spec.ts tests/System.spec.ts
+MATCH_COUNT: 60
+UNIQUE_FILE_COUNT: 7
+contracts/common/contracts.fc
+contracts/common/op.fc
+contracts/pool/msgs/router.fc
+contracts/router/msgs/pool.fc
+contracts/vault.fc
+tests/ConstProduct.spec.ts
+tests/System.spec.ts
+KEY_CALLER_HITS:
+contracts/pool/msgs/router.fc:87-104: ref_fee_out0/ref_fee_out1 are initialized and populated on opposite swap input branches.
+contracts/pool/msgs/router.fc:121-130: referral guard and router::pay_vault call pass both legs from the Pool.
+contracts/router/msgs/pool.fc:94-113: pay_vault parses both legs and authenticates the deterministic Pool.
+contracts/router/msgs/pool.fc:118-135: Vault StateInit selects token0 only for positive amount0, otherwise token1, and deposit amount is amount0 + amount1.
+contracts/common/contracts.fc:186-203: router::pay_vault serializes the same two amount/token legs.
+contracts/vault.fc:40-46: Vault accepts deposit_ref_fee only from Router and adds the parsed amount once.
+tests/ConstProduct.spec.ts:1390: should collect ref fee from vault.
+tests/System.spec.ts:263: should handle cross swap.

@@ -1,0 +1,202 @@
+schema_version: shadow-v1
+iteration: 261
+phase: completed
+cell_id: DD3
+cell_label: router_pay_vault_dual_side_selector_sum
+final_verdict: PRE_KILLED_DUPLICATE
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: DD3
+  final_verdict: PRE_KILLED_DUPLICATE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/router/msgs/pool.fc
+        line: 94
+        text: 'if ctx.at(OPCODE) == op::pay_vault {'
+      - file: contracts/router/msgs/pool.fc
+        line: 98
+        text: 'int amount0_out = additional_info~load_coins();'
+      - file: contracts/router/msgs/pool.fc
+        line: 99
+        text: 'slice token0_address = additional_info~load_msg_addr();'
+      - file: contracts/router/msgs/pool.fc
+        line: 100
+        text: 'int amount1_out = additional_info~load_coins();'
+      - file: contracts/router/msgs/pool.fc
+        line: 101
+        text: 'slice token1_address = additional_info~load_msg_addr();'
+      - file: contracts/router/msgs/pool.fc
+        line: 113
+        text: 'throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER))); ;; check if its a valid pool'
+      - file: contracts/router/msgs/pool.fc
+        line: 121
+        text: 'amount0_out > 0 ? token0_address : token1_address'
+      - file: contracts/router/msgs/pool.fc
+        line: 130
+        text: 'vault~state_init()'
+      - file: contracts/router/msgs/pool.fc
+        line: 131
+        text: 'vault::deposit_ref_fee('
+      - file: contracts/router/msgs/pool.fc
+        line: 132
+        text: 'amount0_out + amount1_out'
+      - file: contracts/router/msgs/pool.fc
+        line: 135
+        text: 'QCARRY_ALL_BALANCE'
+      - file: contracts/common/contracts.fc
+        line: 186
+        text: '(cell) router::pay_vault('
+      - file: contracts/common/contracts.fc
+        line: 194
+        text: 'return begin_message(op::pay_vault)'
+      - file: contracts/common/contracts.fc
+        line: 198
+        text: '.store_coins(_amount0_out)'
+      - file: contracts/common/contracts.fc
+        line: 200
+        text: '.store_coins(_amount1_out)'
+      - file: contracts/pool/msgs/router.fc
+        line: 87
+        text: 'int ref_fee_out0 = 0;'
+      - file: contracts/pool/msgs/router.fc
+        line: 88
+        text: 'int ref_fee_out1 = 0;'
+      - file: contracts/pool/msgs/router.fc
+        line: 94
+        text: '(out1, protocol_fee_out, ref_fee_out1) = pool::get_swap_out(true, ref_value, amount0, storage::reserve0, storage::reserve1);'
+      - file: contracts/pool/msgs/router.fc
+        line: 101
+        text: '(out0, protocol_fee_out, ref_fee_out0) = pool::get_swap_out(false, ref_value, amount1, storage::reserve1, storage::reserve0);'
+      - file: contracts/pool/msgs/router.fc
+        line: 121
+        text: 'if (ref_address.preload_uint(2) != 0) & (ref_fee_out0 + ref_fee_out1 > 0) { ;; 2 messages, pay referral, check ref_fee_out'
+      - file: contracts/pool/msgs/router.fc
+        line: 124
+        text: 'router::pay_vault('
+      - file: contracts/vault.fc
+        line: 40
+        text: 'if (ctx.at(OPCODE) == op::deposit_ref_fee) & equal_slices(ctx.at(SENDER), storage::router_address) {'
+      - file: contracts/vault.fc
+        line: 43
+        text: 'storage::deposited_amount += in_msg_body~load_coins();'
+      - file: contracts/vault.fc
+        line: 44
+        text: 'storage::save();'
+      - file: contracts/common/op.fc
+        line: 25
+        text: 'const op::pay_vault                       = "pay_vault query_id:uint64 owner:MsgAddress excesses_address:MsgAddress additional_info:^[amount0_out:Coins token0_address:MsgAddress amount1_out:Coins token1_address:MsgAddress] = InternalMsgBody"c & 0x7fffffff;'
+      - file: tests/ConstProduct.spec.ts
+        line: 1390
+        text: "it('should collect ref fee from vault', async () => {"
+      - file: tests/System.spec.ts
+        line: 263
+        text: "it('should handle cross swap', async () => {"
+  source_scope_restricted: true
+  scope_assets_only: true
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  methodology_audit_exit: NOT_AVAILABLE
+  required_evidence_complete: true
+  no_fabrication: true
+  shippable: false
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_DEADEND
+  rejection_reason: 'The only in-scope pay_vault producer is the Pool swap referral branch, which populates exactly one positive referral leg per swap direction. Router authenticates the deterministic Pool, selects the positive-side token for the Vault StateInit, and deposits the sum once. Dual-positive and dual-zero tuples have no production producer, and Vault accepts deposits only from Router. No attacker-positive wrong-token, inflated-amount, or persistent-state delta is reachable.'
+  duplicate_family: 'iter_37 referral amount conservation, iter_39 bounce reversal, iter_40 referral ordering, iter_69 fee arithmetic, iter_78 Vault identity/replay, iter_88 Vault withdrawal/carry, iter_91 referral rounding, iter_213 pay_vault StateInit bounce, iter_214 and iter_227 deposit parser tails, iter_258 Vault schema, and iter_259 referral payout ordering'
+  caller_match_count: 60
+  caller_unique_files: 7
+  cascade_verbatim_hit_count: 27
+  cross_file_anchor_count: 27
+  caller_paths:
+    - contracts/common/contracts.fc
+    - contracts/common/op.fc
+    - contracts/pool/msgs/router.fc
+    - contracts/router/msgs/pool.fc
+    - contracts/vault.fc
+    - tests/ConstProduct.spec.ts
+    - tests/System.spec.ts
+  callers_grep_artifact: iter_261/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_261/poc_router_pay_vault_dual_side_selector_sum.test.js
+    poc_run_log: iter_261/poc_router_pay_vault_dual_side_selector_sum.run.log
+    live_regression_log: iter_261/live-router-pay-vault-referral-regression.run.log
+    prior_audit: iter_261/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_261/poc_router_pay_vault_dual_side_selector_sum.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_261/poc_router_pay_vault_dual_side_selector_sum.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.4s static; 9.748s integration'
+    result: 'PASS (27 cross-file anchors; five selector/sum/auth cases; exact 7-unit deposits on both one-sided legs; zero persistent deltas; two live regressions)'
+  prior_art_check:
+    queries:
+      - 'pay_vault/amount0_out/amount1_out/ref_fee_out0/ref_fee_out1/Vault StateInit/deposit_ref_fee scan across CHAIN_HYPOTHESIS_TABLE.md and iter_*/STATUS.yaml'
+      - 'git history and prior status scan for referral conservation, Vault identity, StateInit bounce, parser tail, and ordering families'
+    results:
+      - 'iter_37, iter_39, iter_40, iter_69, iter_78, iter_88, iter_91, iter_213, iter_214, iter_227, iter_258, and iter_259: adjacent referral/Vault families closed'
+    r15_disclosure_check:
+      gh_search_terms_used:
+        - 'repo:ston-fi/dex-core-v2 "pay_vault" "amount0_out + amount1_out" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "pay_vault" "amount0_out + amount1_out" is:pr'
+        - 'repo:ston-fi/dex-core-v2 "ref_fee_out0" "ref_fee_out1" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "ref_fee_out0" "ref_fee_out1" is:pr'
+      gh_search_hits: 0
+      evidence_files:
+        - iter_261/r15-pay-vault-sum-issue.json
+        - iter_261/r15-pay-vault-sum-pr.json
+        - iter_261/r15-referral-dual-side-issue.json
+        - iter_261/r15-referral-dual-side-pr.json
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "pay_vault" "amount0_out + amount1_out" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "pay_vault" "amount0_out + amount1_out" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "ref_fee_out0" "ref_fee_out1" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "ref_fee_out0" "ref_fee_out1" is:pr'
+    gh_search_hits: 0
+    evidence_files:
+      - iter_261/r15-pay-vault-sum-issue.json
+      - iter_261/r15-pay-vault-sum-pr.json
+      - iter_261/r15-referral-dual-side-issue.json
+      - iter_261/r15-referral-dual-side-pr.json
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: PRE_KILLED_DUPLICATE
+  shadow_mode: true
+  caller_path: iter_261/callers-grep.txt
+  caller_match_count: 60
+  caller_unique_files: 7
+  prior_audit_path: iter_261/prior-audit-git.log
+  prior_family_matches: [iter37, iter39, iter40, iter69, iter78, iter88, iter91, iter213, iter214, iter227, iter258, iter259]
+  r15_evidence_files:
+    - iter_261/r15-pay-vault-sum-issue.json
+    - iter_261/r15-pay-vault-sum-pr.json
+    - iter_261/r15-referral-dual-side-issue.json
+    - iter_261/r15-referral-dual-side-pr.json
+  source_conclusion: 'DD3 is the direct selector/sum duplicate of the referral conservation and Vault identity families. One-sided Pool referral outputs select the matching token and sum once; invalid dual-side tuples are not produced, and external senders cannot reach the branch. No attacker-positive token, Vault, or persistent-state delta was demonstrated.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_261/poc_router_pay_vault_dual_side_selector_sum.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_261/poc_router_pay_vault_dual_side_selector_sum.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_261/live-router-pay-vault-referral-regression.run.log
+    result: PASS

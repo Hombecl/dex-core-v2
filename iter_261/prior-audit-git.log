@@ -1,0 +1,24 @@
+COMMAND: git log --all --oneline -- CHAIN_HYPOTHESIS_TABLE.md | head -n 12
+LATEST_COMMITS:
+730c8fb shadow: complete iter260 DD2
+8518247 shadow: complete iter259 DD1
+eba2cc6 shadow: complete iter258 CC5
+4393dcb shadow: complete iter257 CC4
+610be24 shadow: complete iter256 CC3
+
+COMMAND: rg -n -i 'cell_label:.*(ref|vault|pay_vault|deposit)|duplicate_family:.*(ref|vault|pay_vault)|source_conclusion:.*(ref|vault|pay_vault)' selected prior STATUS.yaml files
+PRIOR_MATCHES:
+iter_37 referral_fee_deposit x amount_conservation: closed; referral amount is conserved.
+iter_39 referral_fee_deposit x bounce_reversal: closed; bounce path does not persist provisional state.
+iter_40 referral_fee_deposit x message_ordering_fees: closed; referral ordering is bounded by the existing message flow.
+iter_69 referral_fee_arithmetic_overflow: closed; fee arithmetic is bounded and routed through Pool-authorized paths.
+iter_78 referral_vault_deposit_replay_identity: closed; pay_vault validates Pool, derives owner/token/router Vault identity, and deposits exact fee.
+iter_88 vault_withdraw_carry_destroy_balance: closed; Router/Vault tuple and exact withdrawal prevent cross-owner claims.
+iter_91 pool_referral_fee_rounding_dust: closed; rounding does not create a repeatable external fee claim.
+iter_213 router_pay_vault_stateinit_bounce_fee_stranding: closed; StateInit and Router/Pool/Vault gates prevent attacker-forced loss.
+iter_214 vault_deposit_ref_fee_tail_response_isolation: closed; amount/response field order is fixed and Router-only.
+iter_227 vault_deposit_ref_fee_response_tail_replay: closed; trailing data is inert and external deposit is gated.
+iter_258 vault storage schema/withdrawal: PRE_KILLED_DUPLICATE.
+iter_259 pool referral payout ordering: PRE_KILLED_DUPLICATE.
+
+CONCLUSION: DD3 is a direct selector/sum duplicate of the referral amount-conservation, Vault identity, StateInit, and Router-only deposit families. The fresh model adds both positive sides plus unreachable dual-positive/dual-zero and forged-sender cases.

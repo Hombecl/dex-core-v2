@@ -1,0 +1,14 @@
+COMMAND: npm test -- --runInBand tests/ConstProduct.spec.ts tests/System.spec.ts -t 'should collect ref fee from vault|should handle cross swap'
+
+PASS tests/ConstProduct.spec.ts (6.173 s)
+  Fees
+    ✓ should collect ref fee from vault (1336 ms)
+
+PASS tests/System.spec.ts
+  Dex
+    ✓ should handle cross swap (336 ms)
+
+Test Suites: 2 passed, 2 total
+Tests: 45 skipped, 2 passed, 47 total
+Time: 9.748 s
+Result: PASS

@@ -1,0 +1,12 @@
+{
+  "result": "PASS",
+  "classification": "PRE_KILLED_DUPLICATE",
+  "cell": "DD3",
+  "cross_file_anchors": 27,
+  "cases": 5,
+  "branches": ["deposit_ref_fee", "deposit_ref_fee", "unreachable_tuple", "unreachable_tuple", "reject_invalid_pool_sender"],
+  "vault_tokens": ["TOKEN0", "TOKEN1", null, null, null],
+  "deposited_amounts": [7, 7, 0, 0, 0],
+  "persistent_deltas": [0, 0, 0, 0, 0],
+  "reason": "The only in-scope pay_vault producer is the Pool swap referral branch. A token0-input swap produces ref_fee_out1 only; a token1-input swap produces ref_fee_out0 only. Router selects the positive side token and deposits amount0_out + amount1_out into the deterministic Vault, while the Pool sender gate rejects forged tuples. Dual-positive and dual-zero tuples are not producer-reachable, so no wrong-token deposit or amount inflation is reachable."
+}
