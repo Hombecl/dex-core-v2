@@ -1,0 +1,70 @@
+schema_version: shadow-v1
+iteration: 127
+phase: completed
+cell_id: AD2
+cell_label: pool_provide_lp_parser_error_refund_typing
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AD2
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - 'contracts/router/dex.fc:15: transferred_op = dex_payload~load_opcode();'
+      - 'contracts/router/dex.fc:26: } catch(err_arg, err_code) {'
+      - 'contracts/router/dex.fc:33: jetton_wallet::transfer(0, _sent_amount, _caller, _caller)'
+      - 'contracts/pool/msgs/router.fc:189: slice refund_address = dex_payload~load_msg_addr();'
+      - 'contracts/pool/msgs/router.fc:212: } catch(err_arg, err_code) {'
+      - 'contracts/pool/msgs/router.fc:238: throw_arg_unless(op::provide_refund_tx_expired, 1, tx_deadline > now());'
+      - 'contracts/pool/msgs/router.fc:226: amount0,'
+      - 'contracts/pool/msgs/router.fc:228: amount1,'
+      - 'contracts/router/msgs/pool.fc:26: throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER)));'
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/Pool.spec.ts,tests/System.spec.ts,tests/ConstProduct.spec.ts,tests/ConstSum.spec.ts,tests/Stableswap.spec.ts,tests/WeightedCPI.spec.ts,tests/WeightedStableswap.spec.ts,iter_127/poc_pool_provide_lp_parser_error_refund_typing.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_127/poc_pool_provide_lp_parser_error_refund_typing.run.log,iter_127/poc_pool_provide_lp_parser_error_refund_typing.model.run.log
+    run_log_exists_on_disk: true
+    test_runtime: '31.907s integration; model passed'
+    result: 'PASSED (integration: 16 passed, 137 skipped, 153 total; model: passed)'
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 provide_lp parser refund malformed payload is:issue'
+      - 'repo:ston-fi/dex-core-v2 provide_lp parser refund malformed payload is:pr'
+      - 'repo:ston-fi/dex-core-v2 pool provide_refund wrong_workchain pay_to is:issue'
+      - 'repo:ston-fi/dex-core-v2 pool provide_refund wrong_workchain pay_to is:pr'
+    results: all four returned total_count 0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'provide_lp parser refund malformed payload repository issue search'
+      - 'provide_lp parser refund malformed payload repository pull-request search'
+      - 'pool provide_refund wrong_workchain pay_to repository issue search'
+      - 'pool provide_refund wrong_workchain pay_to repository pull-request search'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_127/callers-grep.txt
+  caller_grep_match_count: 424
+  caller_grep_unique_files: 38
+  prior_audit_path: iter_127/prior-audit-git.log
+  prior_audit_bytes: 78
+  r15_search_files:
+    - iter_127/R15-GH-provide-lp-parser-refund-issue.json
+    - iter_127/R15-GH-provide-lp-parser-refund-pr.json
+    - iter_127/R15-GH-provide-refund-wrong-workchain-issue.json
+    - iter_127/R15-GH-provide-refund-wrong-workchain-pr.json
+  source_conclusion: 'Router parses the common provide-LP fields before forwarding and refunds the full sent amount on common-field failure. Pool repeats those fields, catches malformed nested payloads and expired deadlines, and routes the original amount0/amount1 legs through pay_to with parsed refund/excess addresses. The successful branch alone sends exact legs to the deterministic LP account, and Router validates pool-originated pay_to messages. No parser/error-code path caused a committed leg with a wrong refund amount or owner.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_127-AD2.md

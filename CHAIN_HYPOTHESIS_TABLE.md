@@ -130,6 +130,7 @@ Scope is limited to the five selected entrypoint assets recorded in `R1-SURFACE-
 | AC4 | lp_wallet_forward_payload_reference_depth | payload_reference | Nested forward-payload reference depth or trailing bits could alter owner notification while leaving LP debit committed. | 124 | deadend_with_proof |
 | AC5 | vault_concurrent_deposit_withdraw_transition | vault_lifecycle | Interleaved referral-fee deposits and permissionless withdrawals could reuse a stale deposited amount, lose a post-withdraw deposit, or route a payout through a destroyed/redeployed vault incorrectly. | 125 | deadend_with_proof |
 | AD1 | lp_account_both_positive_flag_mint_gate | mint_gate | A caller-controlled `both_positive` bit could cross router → pool → LP-account boundaries and mint LP against mismatched token legs or bypass the pool’s reserve accounting. | 126 | deadend_with_proof |
+| AD2 | pool_provide_lp_parser_error_refund_typing | parser_refund | Truncated or malformed provide-LP payloads could select a wrong error/refund tuple while the original token legs remain committed in the router/pool chain. | 127 | deadend_with_proof |
 
 ## Cell execution contract
 

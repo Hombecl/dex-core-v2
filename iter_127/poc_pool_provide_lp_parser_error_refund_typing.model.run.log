@@ -1,0 +1,1 @@
+AD2 parser/refund edge check passed: Router catches malformed common fields, Pool catches nested/expiry errors with exact original legs, and successful path alone reaches LP-account commit
