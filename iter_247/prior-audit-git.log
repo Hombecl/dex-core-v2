@@ -1,0 +1,19 @@
+COMMAND:
+rg -n --no-heading -i 'burn.*payload|payload.*burn|custom_payload.*burn|dual.output|maybe_custom_payload' --glob 'iter_*/STATUS.yaml' .
+
+RELEVANT PRIOR RESULTS:
+iter_30 initial LP burn payload coverage: DEADEND_WITH_PROOF
+  Burn custom payloads split into left/right notification payloads; output token amounts derive independently from reserves and LP supply.
+iter_77 burn_dual_output_bounce_accounting: DEADEND_WITH_PROOF
+  LPWallet debits before burn_notification_ext and restores the exact amount on bounce; Pool validates deterministic LPWallet sender and dual positive outputs, then Router validates Pool for each fixed leg. Custom-payload burn tests passed.
+iter_80 router_pay_to_custom_payload_dispatch: DEADEND_WITH_PROOF
+  Cross-swap custom payload routing sums only the one positive output leg; malformed both-positive messages have no in-scope producer or attacker-controlled sender path, and Router derives/authenticates the Pool.
+iter_95 addr_none_recipient_semantics: DEADEND_WITH_PROOF
+  Burn response addr_none is required before Pool payout; payload/recipient semantics do not create a cross-user destination alias.
+iter_137 pool_burn_payload_wrapper_leg_split: PRE_KILLED_DUPLICATE
+  Pool accepts exactly a two-bit wrapper for two optional payload refs. Every malformed wrapper yields null payloads; fixed owner, token, and amount fields remain in both pay_to messages and Router authenticates the Pool.
+iter_194 lp_burn_dual_output_bounce_correlation: DEADEND_WITH_PROOF
+  The same burn/payload/bounce family was rechecked with live burn-liquidity coverage; no attacker-positive delta survived.
+
+CONCLUSION:
+BA4 is a direct duplicate of the burn payload wrapper and dual-output family. The fresh PoC confirms malformed/nested payload shapes affect only optional downstream payload refs; they do not rewrite the burned amount, owner, response tag, token addresses, or Pool/Router sender checks. The fresh R15 issue hit is unrelated PTON code deployment and OOS.

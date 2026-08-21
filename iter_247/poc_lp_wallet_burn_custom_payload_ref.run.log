@@ -1,0 +1,13 @@
+$ node iter_247/poc_lp_wallet_burn_custom_payload_ref.test.js
+{
+  "result": "PASS",
+  "classification": "PRE_KILLED_DUPLICATE",
+  "cell": "BA4",
+  "cross_file_anchors": 23,
+  "payload_cases": 4,
+  "malformed_payloads_neutralized": 2,
+  "fixed_output_legs": 2,
+  "exact_identity_order_checks": 2,
+  "reason": "LPWallet debits its own balance and forwards a maybe-ref; Pool parses from/response identity first, authenticates the deterministic LP wallet, accepts exactly two maybe-ref flags for the two payload legs, computes fixed outputs, and Router reauthenticates the Pool before forwarding custom payload to token transfer. Malformed payload shape does not rewrite owner, amount, or response identity"
+}
+exit=0

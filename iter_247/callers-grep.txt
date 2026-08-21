@@ -1,0 +1,24 @@
+COMMAND:
+rg -n --no-heading 'burn_notification_ext|maybe_custom_payload|custom_payload|left_maybe_payload|right_maybe_payload|maybe_custom_payload_sc|load_maybe_ref|store_maybe_ref|lp_wallet_idata|amount0_out|amount1_out|response_address|original_caller|sendBurnExt' contracts/lp_wallet.fc contracts/lp_wallet contracts/pool.fc contracts/pool contracts/router.fc contracts/router contracts/vault.fc contracts/common/contracts.fc contracts/common/op.fc tests/System.spec.ts tests/ConstProduct.spec.ts
+
+RESULT:
+caller_match_count=117
+caller_unique_files=12
+cross_file_requirement=PASS (12 files > 4)
+
+UNIQUE_CALLER_FILES:
+contracts/common/contracts.fc
+contracts/common/op.fc
+contracts/lp_wallet.fc
+contracts/pool/get.fc
+contracts/pool/msgs/getter.fc
+contracts/pool/msgs/lp_account.fc
+contracts/pool/msgs/lp_wallet.fc
+contracts/pool/msgs/protocolfee.fc
+contracts/pool/msgs/router.fc
+contracts/router/msgs/pool.fc
+tests/ConstProduct.spec.ts
+tests/System.spec.ts
+
+INTERPRETATION:
+The burn payload path crosses LPWallet debit/save, the Pool burn-notification parser and deterministic LP-wallet sender check, fixed two-leg reserve/output construction, Router Pool authentication, token-wallet transfer payload forwarding, and live ordinary/custom-payload burn tests.

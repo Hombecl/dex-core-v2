@@ -1,0 +1,190 @@
+schema_version: shadow-v1
+iteration: 247
+phase: completed
+cell_id: BA4
+cell_label: lp_wallet_burn_custom_payload_ref_forwarding
+final_verdict: PRE_KILLED_DUPLICATE
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: BA4
+  final_verdict: PRE_KILLED_DUPLICATE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/common/op.fc
+        line: 7
+        text: 'const op::burn_notification_ext'
+      - file: contracts/common/op.fc
+        line: 7
+        text: 'maybe_custom_payload:(Maybe ^Cell)'
+      - file: contracts/lp_wallet.fc
+        line: 108
+        text: 'cell custom_payload = in_msg_body~load_maybe_ref();'
+      - file: contracts/lp_wallet.fc
+        line: 116
+        text: '.store_uint(op::burn_notification_ext, 32)'
+      - file: contracts/lp_wallet.fc
+        line: 119
+        text: '.store_slice(owner_address)'
+      - file: contracts/lp_wallet.fc
+        line: 121
+        text: '.store_maybe_ref(custom_payload)'
+      - file: contracts/lp_wallet.fc
+        line: 133
+        text: 'storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 6
+        text: 'int jetton_amount = in_msg_body~load_coins();'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 7
+        text: 'slice from_address = in_msg_body~load_msg_addr();'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 8
+        text: 'slice response_address = in_msg_body~load_msg_addr();'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 9
+        text: 'cell maybe_custom_payload = in_msg_body~load_maybe_ref();'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 20
+        text: 'throw_unless(error::invalid_caller'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 23
+        text: 'response_address.preload_uint(2) == 0'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 25
+        text: 'pool::get_lp_burn_out(jetton_amount)'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 50
+        text: 'if maybe_custom_payload_sc.slice_bits() == 2'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 52
+        text: 'right_maybe_payload = maybe_custom_payload_sc~load_maybe_ref();'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 69
+        text: 'amount0_out'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 89
+        text: 'amount1_out'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 95
+        text: 'storage::save();'
+      - file: contracts/router/msgs/pool.fc
+        line: 10
+        text: 'cell custom_payload = in_msg_body~load_maybe_ref();'
+      - file: contracts/router/msgs/pool.fc
+        line: 28
+        text: 'throw_unless(error::invalid_caller'
+      - file: contracts/router/msgs/pool.fc
+        line: 75
+        text: '.store_maybe_ref(custom_payload)'
+      - file: tests/System.spec.ts
+        line: 175
+        text: 'const sendBurnLPResult = await lpWallet.sendBurnExt(admin.getSender(), {'
+      - file: tests/ConstProduct.spec.ts
+        line: 1799
+        text: 'let msgResult = await lpWallet.sendBurnExt(alice.getSender(), {'
+  source_scope_restricted: true
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  required_evidence_complete: true
+  no_fabrication: true
+  scope_assets_only: true
+  methodology_audit_exit: NOT_AVAILABLE
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_DEADEND
+  shippable: false
+  rejection_reason: 'LPWallet debits its own balance and forwards only a maybe-ref custom payload. Pool parses from_address and response_address before the payload, authenticates the deterministic LPWallet, requires addr_none response, computes fixed dual outputs, and splits a payload only when the wrapper has exactly two bits. Router reauthenticates the Pool before forwarding the optional payload to a token transfer. Malformed/nested shapes cannot rewrite owner, amount, token, or response identity.'
+  duplicate_family: 'iter_30 LP burn payloads, iter_77/T2 burn dual-output bounce accounting, iter_80/router custom payload dispatch, iter_95 addr_none semantics, iter_137/AF2 pool burn payload wrapper leg split, and iter_194/AR4 lp-burn dual-output family'
+  caller_match_count: 117
+  caller_unique_files: 12
+  cascade_verbatim_hit_count: 24
+  cross_file_anchor_count: 23
+  caller_paths:
+    - contracts/common/contracts.fc
+    - contracts/common/op.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool/msgs/lp_wallet.fc
+    - contracts/pool/msgs/lp_account.fc
+    - contracts/pool/msgs/router.fc
+    - contracts/router/msgs/pool.fc
+    - contracts/pool/get.fc
+    - tests/System.spec.ts
+    - tests/ConstProduct.spec.ts
+  callers_grep_artifact: iter_247/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_247/poc_lp_wallet_burn_custom_payload_ref.test.js
+    poc_run_log: iter_247/poc_lp_wallet_burn_custom_payload_ref.run.log
+    live_regression_log: iter_247/live-lp-wallet-burn-payload-regression.run.log
+    prior_audit: iter_247/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_247/poc_lp_wallet_burn_custom_payload_ref.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_247/poc_lp_wallet_burn_custom_payload_ref.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.3s static; 10.527s integration'
+    result: 'PASS (23 cross-file anchors; four payload-shape cases; two malformed payloads neutralized; fixed dual-output model; System/ConstProduct burn regressions)'
+  prior_art_check:
+    queries:
+      - 'cell_label burn/payload/custom_payload/maybe_ref/dual-output scan across iter_*/STATUS.yaml'
+    results:
+      - 'iter_30 LP burn payload coverage: DEADEND_WITH_PROOF'
+      - 'iter_77 burn_dual_output_bounce_accounting: DEADEND_WITH_PROOF'
+      - 'iter_80 router_pay_to_custom_payload_dispatch: DEADEND_WITH_PROOF'
+      - 'iter_95 addr_none_recipient_semantics: DEADEND_WITH_PROOF'
+      - 'iter_137 pool_burn_payload_wrapper_leg_split: PRE_KILLED_DUPLICATE'
+      - 'iter_194 lp_burn_dual_output_bounce_correlation: DEADEND_WITH_PROOF'
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "burn_notification_ext" "maybe_custom_payload" "slice_bits() == 2" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "burn_notification_ext" "maybe_custom_payload" "slice_bits() == 2" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "lp_wallet_idata" "burn_notification_ext" custom_payload is:issue'
+      - 'repo:ston-fi/dex-core-v2 "lp_wallet_idata" "burn_notification_ext" custom_payload is:pr'
+    gh_search_hits: 1
+    unrelated_hits:
+      - 'issue #2: stale PTON_WALLET_CODE_v2 / PTON_MINTER_CODE_v2 causes deployWallet bounce; unrelated PTON wrapper code and outside BA4 path'
+    evidence_files:
+      - iter_247/r15-burn-payload-shape-issue.json
+      - iter_247/r15-burn-payload-shape-pr.json
+      - iter_247/r15-lp-wallet-idata-burn-payload-issue.json
+      - iter_247/r15-lp-wallet-idata-burn-payload-pr.json
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: PRE_KILLED_DUPLICATE
+  shadow_mode: true
+  caller_path: iter_247/callers-grep.txt
+  caller_match_count: 117
+  caller_unique_files: 12
+  prior_audit_path: iter_247/prior-audit-git.log
+  prior_family_matches: [iter30, iter77, iter80, iter95, iter137, iter194]
+  r15_evidence_files:
+    - iter_247/r15-burn-payload-shape-issue.json
+    - iter_247/r15-burn-payload-shape-pr.json
+    - iter_247/r15-lp-wallet-idata-burn-payload-issue.json
+    - iter_247/r15-lp-wallet-idata-burn-payload-pr.json
+  source_conclusion: 'BA4 is the already audited burn-payload wrapper family. Optional custom refs are separated from identity/amount fields; only an exact two-bit wrapper yields two per-leg payload refs. Pool and Router sender checks precede value-bearing mutations/forwarding, and custom payload affects only downstream token-wallet message data. The one fresh GitHub hit is an unrelated OOS PTON deployment issue.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_247/poc_lp_wallet_burn_custom_payload_ref.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_247/poc_lp_wallet_burn_custom_payload_ref.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_247/live-lp-wallet-burn-payload-regression.run.log
+    result: PASS

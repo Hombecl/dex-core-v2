@@ -1,0 +1,16 @@
+{
+  "total_count": 1,
+  "incomplete_results": false,
+  "items": [
+    {
+      "number": 2,
+      "title": "Stale PTON_WALLET_CODE_v2 / PTON_MINTER_CODE_v2 cause deployWallet to bounce (exit 9)",
+      "html_url": "https://github.com/ston-fi/dex-core-v2/issues/2",
+      "state": "open",
+      "body": "The pTON v2 code cells hardcoded in libs/src/wrappers/PTon.ts are out of sync with the current build in ston-fi/pton-contracts. Deploying a pTON v2 minter/wallet using these defaults and calling deployWallet bounces with exit code 9. Affected constants: PTON_MINTER_CODE_v2 and PTON_WALLET_CODE_v2."
+    }
+  ],
+  "search_type": "lexical",
+  "query": "repo:ston-fi/dex-core-v2 \"burn_notification_ext\" \"maybe_custom_payload\" \"slice_bits() == 2\" is:issue",
+  "relevance": "unrelated OOS PTON wrapper deployment issue; not evidence for BA4"
+}

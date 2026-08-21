@@ -1,0 +1,7 @@
+{
+  "total_count": 0,
+  "incomplete_results": false,
+  "items": [],
+  "search_type": "lexical",
+  "query": "repo:ston-fi/dex-core-v2 \\\"lp_wallet_idata\\\" \\\"burn_notification_ext\\\" custom_payload is:pr"
+}
