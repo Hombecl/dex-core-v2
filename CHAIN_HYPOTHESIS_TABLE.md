@@ -299,3 +299,14 @@ Iter 1 executes only `P1xC2`. A surviving candidate needs a production-reachable
 | AX23 | lp_wallet_receive_user_wallet_stateinit_collision | sender_binding / state_init | The alternate receive path authenticates a deterministic wallet from `from_address`, master, and wallet code; a StateInit collision or address-form alias could credit the wrong LP wallet. | 3 | DEADEND_WITH_PROOF |
 | AX24 | lp_wallet_receive_response_excess_destination | destination_binding / carry_value | Receive-token excesses are sent to a body-provided response address after the balance update; an address-form or carry boundary could redirect TON or couple it to minted LP. | 4 | DEADEND_WITH_PROOF |
 | AX25 | lp_wallet_receive_forward_payload_notification_alias | payload_aliasing / notification_identity | The unconsumed receive body becomes a forward notification payload; a malformed tail could make Router parse a different operation or source while the wallet balance is already committed. | 5 | PRE_KILLED_DUPLICATE |
+
+
+## BA fresh post-matrix expansion
+
+| Cell | Production mechanism P | Failure class C | Initial hypothesis | Priority | Status |
+|---|---|---|---|---:|---|
+| BA1 | lp_account_pool_callback_additional_fields_tail_alias | parser_boundary / destination_binding | The Pool `cb_add_liquidity` additional-fields reference loads to_user, refund, and excess addresses without terminal parsing; a trailing or nested tail could shift a value-return destination while preserving the authenticated LPAccount callback. | 1 | in_progress |
+| BA2 | lp_account_root_bounce_empty_body_precedence | bounce_accounting / parser_order | LPAccount rejects an empty body before checking the bounced flag; a bounced zero-body callback could alter failure semantics around pending liquidity or make a downstream bounce distinguishable from a normal malformed call. | 2 | pending |
+| BA3 | lp_wallet_get_data_storage_tuple_staleness | read_only_schema / async_snapshot | LPWallet `get_wallet_data` returns balance, owner, master, and code after asynchronous transfers; a read snapshot or tuple-width boundary could cause an off-chain/stateful caller to bind a stale wallet identity or balance. | 3 | pending |
+| BA4 | lp_wallet_burn_custom_payload_ref_forwarding | payload_reference / burn_identity | LPWallet burn loads a maybe-ref custom payload and forwards it to the master; a nested reference or tail boundary could alter burn owner/response interpretation after the wallet debit. | 4 | pending |
+| BA5 | lp_wallet_bounce_query_id_noncorrelation | bounce_accounting / replay_correlation | LPWallet bounce restores the amount from the bounced body but does not correlate query_id to an outstanding debit; a replayed or cross-operation bounce body could inflate balance after a valid transfer or burn. | 5 | pending |

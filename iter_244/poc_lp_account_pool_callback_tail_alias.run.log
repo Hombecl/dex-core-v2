@@ -1,0 +1,12 @@
+$ node iter_244/poc_lp_account_pool_callback_tail_alias.test.js
+{
+  "result": "PASS",
+  "classification": "PRE_KILLED_DUPLICATE",
+  "cell": "BA1",
+  "cross_file_anchors": 20,
+  "tuple_cases": 2,
+  "tail_fields_ignored": 2,
+  "exact_destination_checks": 6,
+  "reason": "the producer and consumer serialize the same three-address reference order; an appended tail is unconsumed and cannot rewrite earlier fields, while Pool re-derives the LPAccount sender and LPAccount binds the callback user to stored state. Refund/excess remain user-selected destinations and the live provide/getter paths cover the value-bearing flow"
+}
+exit=0

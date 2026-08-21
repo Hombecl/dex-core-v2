@@ -1,0 +1,19 @@
+COMMAND:
+rg -n --no-heading -i 'additional_fields|additional_data|load_slice_ref|cb_add_liquidity|refund_address|excess_address|tail|payload_ref' CHAIN_HYPOTHESIS_TABLE.md iter_*/STATUS.yaml
+
+RELEVANT PRIOR RESULTS:
+iter_147 interface_payload_ref_arity: PRE_KILLED_DUPLICATE
+  The broad reference-arity cell directly covered Pool router, Pool LPAccount, Router pool, and LPAccount user additional-reference producers/consumers and found no novel production path.
+iter_170 lp_callback_refund_excess_identity_split: DEADEND_WITH_PROOF
+  Pool rejection derives the refund LPAccount from refund_address; the LPAccount stores pending token legs under that refund owner, gates actions on the stored user, and sends excess_address only residual TON.
+iter_172 lp_account_callback_replay_query_identity: DEADEND_WITH_PROOF
+  cb_add_liquidity authenticates the deterministic LPAccount from Pool plus user_address; changing the user while retaining the sender fails, and the callback clears/saves pending amounts. The destination tuple is explicit delegation, not an unauthorized claim.
+iter_216 pool_root_lp_wallet_lp_account_opcode_collision: DEADEND_WITH_PROOF
+  Pool handler ordering and exact opcode predicates prevent a callback body from crossing into an unintended LP-wallet or LP-account branch before sender validation.
+iter_234 lp_wallet_receive_response_excess_destination: DEADEND_WITH_PROOF
+  Response/excess routing is residual TON only after sender authorization and cost deductions; it does not select wallet identity or token amount.
+iter_239 lp_account_getter_data_response_carry_destroy: PRE_KILLED_DUPLICATE
+  Getter response and carry behavior preserve the stored LPAccount tuple and do not create a stateful destination substitution.
+
+CONCLUSION:
+BA1 is a fresh tail-focused restatement of the already audited reference-arity and callback destination family. A tail appended after the three address fields is unconsumed; an inserted field would change the explicit user-selected tuple but cannot bypass the deterministic LPAccount sender check or turn residual TON excess into token ownership. Classify as PRE_KILLED_DUPLICATE after evidence gate.

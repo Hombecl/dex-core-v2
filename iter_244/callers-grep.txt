@@ -1,0 +1,41 @@
+COMMAND:
+rg -n --no-heading 'cb_add_liquidity|add_liquidity|additional_(data|fields)|refund_address|excess_address|to_user(_address)?|lp_account_idata|storage::save' contracts/lp_account.fc contracts/lp_account contracts/pool.fc contracts/pool contracts/router.fc contracts/router contracts/vault.fc contracts/common/contracts.fc contracts/common/op.fc tests/System.spec.ts tests/LPAccount.spec.ts
+
+RESULT:
+caller_match_count=123
+caller_unique_files=30
+cross_file_requirement=PASS (30 files > 4)
+
+UNIQUE_CALLER_FILES:
+contracts/common/contracts.fc
+contracts/common/op.fc
+contracts/lp_account/msgs/pool.fc
+contracts/lp_account/msgs/user.fc
+contracts/lp_account/storage.fc
+contracts/pool/get.fc
+contracts/pool/msgs/getter.fc
+contracts/pool/msgs/lp_account.fc
+contracts/pool/msgs/lp_wallet.fc
+contracts/pool/msgs/protocolfee.fc
+contracts/pool/msgs/router.fc
+contracts/pool/pools/README.md
+contracts/pool/pools/constant_product/gas.fc
+contracts/pool/pools/constant_product/storage.fc
+contracts/pool/pools/constant_sum/gas.fc
+contracts/pool/pools/constant_sum/storage.fc
+contracts/pool/pools/stableswap/ext_router.fc
+contracts/pool/pools/stableswap/gas.fc
+contracts/pool/pools/stableswap/storage.fc
+contracts/pool/pools/weighted_const_product/ext_router.fc
+contracts/pool/pools/weighted_const_product/gas.fc
+contracts/pool/pools/weighted_const_product/storage.fc
+contracts/pool/pools/weighted_stableswap/ext_router.fc
+contracts/pool/pools/weighted_stableswap/gas.fc
+contracts/pool/pools/weighted_stableswap/storage.fc
+contracts/router/dex.fc
+contracts/router/msgs/admin.fc
+contracts/router/storage.fc
+contracts/vault.fc
+
+INTERPRETATION:
+The BA1 path crosses the opcode schema, Pool/LPAccount message producers and consumers, deterministic StateInit storage, Router/Vault call context, and live LP provide/refund/getter suites. The focused PoC uses 20 substantive anchors across six production/test areas.
