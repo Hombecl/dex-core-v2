@@ -1,0 +1,31 @@
+tests/System.spec.ts:252:            const sendInvalidResult = await router.sendInvalidReq(secondJettonWallet.getSender(), {
+contracts/router/dex.fc:1:() route_dex_messages(slice _jetton_address, int _available_gas, int _sent_amount, slice _caller, cell _dex_payload) impure inline {
+contracts/router/dex.fc:46:        throw_arg_if(op::transfer_bounce_invalid_request, 1, (transferred_op != op::swap) & (transferred_op != op::provide_lp));
+contracts/router/dex.fc:47:        throw_arg_if(op::transfer_bounce_invalid_pool, 1, equal_slices(_jetton_address, token_wallet1));
+contracts/router/dex.fc:48:        throw_arg_if(op::transfer_bounce_locked, 1, storage::is_locked);
+contracts/router/dex.fc:50:        throw_arg_unless(op::transfer_bounce_wrong_wc, 1, _caller.address::check_workchain(params::workchain));
+contracts/router/dex.fc:51:        throw_arg_unless(op::transfer_bounce_tx_expired, 1, tx_deadline > now());
+contracts/router/dex.fc:56:        throw_arg_if(op::transfer_bounce_low_gas, 1, (transferred_op == op::swap) 
+contracts/router/dex.fc:67:        throw_arg_if(op::transfer_bounce_low_gas, 1, (transferred_op == op::provide_lp) 
+wrappers/Router.ts:74:    transferNotification: 0x7362d09c,
+wrappers/Router.ts:401:            body: beginMessage(routerOpcodes.transferNotification)
+wrappers/Router.ts:423:    async sendInvalidReq(provider: ContractProvider, via: Sender, opts: {
+wrappers/Router.ts:430:            body: beginMessage(routerOpcodes.transferNotification)
+wrappers/Router.ts:453:            body: beginMessage(routerOpcodes.transferNotification)
+contracts/common/contracts.fc:281:    return begin_message(op::ft::transfer)
+contracts/common/op.fc:59:const op::transfer_bounce_locked          = "transfer_bounce_locked"c;
+contracts/common/op.fc:60:const op::transfer_bounce_invalid_pool    = "transfer_bounce_invalid_pool"c;
+contracts/common/op.fc:61:const op::transfer_bounce_wrong_wc        = "transfer_bounce_wrong_wc"c;
+contracts/common/op.fc:62:const op::transfer_bounce_low_gas         = "transfer_bounce_low_gas"c;
+contracts/common/op.fc:63:const op::transfer_bounce_invalid_request = "transfer_bounce_invalid_request"c;
+contracts/common/op.fc:64:const op::transfer_bounce_tx_expired      = "transfer_bounce_tx_expired"c;
+wrappers/Pool.ts:24:    transferNotification: 0x7362d09c,
+wrappers/Pool.ts:221:            body: beginMessage(this.opCodes.transferNotification)
+contracts/lp_wallet.fc:74:            .store_uint(op::transfer_notification, 32)
+contracts/router/msgs/jetton.fc:5:    if ctx.at(OPCODE) == op::ft::transfer_notification {
+contracts/router/msgs/jetton.fc:17:                    .store_uint32(op::transfer_bounce_invalid_request)
+contracts/router/msgs/jetton.fc:24:        route_dex_messages(
+contracts/router/msgs/pool.fc:55:            route_dex_messages(sent_jetton_address, gas, swap_amount, original_caller, custom_payload);
+contracts/router/msgs/pool.fc:64:                ;; do not send transfer_notification, if gas is too low
+contracts/lp_wallet/op.fc:2:const op::transfer_notification = 0x7362d09c;
+contracts/pool/msgs/lp_account.fc:115:            ) { ;; do not send transfer_notification, if gas is too low, mint may revert
