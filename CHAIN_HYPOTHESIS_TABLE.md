@@ -157,7 +157,7 @@ Iter 1 executes only `P1xC2`. A surviving candidate needs a production-reachable
 | AG2 | lp_wallet_identity | state_init_alias | Owner/master/code tuple interpretation may differ across selected LP-wallet producers and consumers. | 2 | pre_killed_duplicate (overlaps U4/R8/AB4) |
 | AG3 | callback_dispatch | operation_typing | A valid callback sender plus a semantically wrong body shape may cross a selected contract boundary. | 3 | deadend_with_proof |
 | AG4 | vault_lifecycle | stale_redeploy_state | Destroy/redeploy ordering may reuse referral amount or beneficiary state. | 4 | pre_killed_duplicate |
-| AG5 | carry_reserve_flow | value_split | Carry/reserve behavior may commit token state while a TON reserve failure changes rollback semantics. | 5 | pending |
+| AG5 | carry_reserve_flow | value_split | Carry/reserve behavior may commit token state while a TON reserve failure changes rollback semantics. | 5 | PRE_KILLED_DUPLICATE |
 
 | AH1 | pool_storage | layout_alias | Pool-family state-init and storage field order may reinterpret reserves, LP supply, or fee counters. | 1 | deadend_with_proof |
 | AH2 | router_storage | upgrade_ref_arity | Router upgrade reference fields may be dropped or aliased across a save/load boundary. | 2 | deadend_with_proof |

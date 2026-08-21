@@ -1,0 +1,33 @@
+$ npm test -- --runInBand tests/LPAccount.spec.ts tests/System.spec.ts -t 'should return valid data|should handle refund partial liquidity|should handle invalid transfers'
+
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/LPAccount.spec.ts tests/System.spec.ts -t should return valid data|should handle refund partial liquidity|should handle invalid transfers
+
+PASS tests/System.spec.ts
+  System
+    Dex
+      ✓ should handle refund partial liquidity (361 ms)
+      ✓ should handle invalid transfers (184 ms)
+      ○ skipped should handle mint & burn liquidity
+      ○ skipped should handle swaps
+      ○ skipped should handle cross swap
+    Governance
+      ○ skipped should reset pool gas
+      ○ skipped should reset pool gas (different address)
+      ○ skipped should reset router gas
+      ○ skipped should reset router gas
+      ○ skipped should lock & unlock pool
+      ○ skipped should set fees
+      ○ skipped should collect fees
+
+PASS tests/LPAccount.spec.ts
+  LPAccount
+    Getters
+      ✓ should return valid data (42 ms)
+
+Test Suites: 2 passed, 2 total
+Tests:       9 skipped, 3 passed, 12 total
+Snapshots:   0 total
+Time:        6.323 s, estimated 9 s
+Ran all test suites matching /tests\/LPAccount.spec.ts|tests\/System.spec.ts/i with tests matching "should return valid data|should handle refund partial liquidity|should handle invalid transfers".
+exit=0

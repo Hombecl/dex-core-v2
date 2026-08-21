@@ -1,0 +1,11 @@
+$ node iter_243/poc_carry_reserve_flow.test.js
+{
+  "result": "PASS",
+  "classification": "PRE_KILLED_DUPLICATE",
+  "cell": "AG5",
+  "cross_file_anchors": 24,
+  "reserve_carry_cases": 5,
+  "exact_boundary_checks": 8,
+  "reason": "reserve helpers retain storage and storage-fee floors before carry modes; carry changes only TON residuals, fixed token fields remain bound, excess destinations are workchain-checked, and success/failure branches save or roll back selected state consistently across LPAccount, Pool, Router, and Vault"
+}
+exit=0

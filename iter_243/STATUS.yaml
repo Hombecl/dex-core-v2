@@ -1,0 +1,206 @@
+schema_version: shadow-v1
+iteration: 243
+phase: completed
+cell_id: AG5
+cell_label: carry_reserve_flow
+final_verdict: PRE_KILLED_DUPLICATE
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AG5
+  final_verdict: PRE_KILLED_DUPLICATE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: node_modules/@ston-fi/funcbox/contracts/reserves.fc
+        line: 26
+        text: 'max((ctx.at(BALANCE) + storage_fees()) - ctx.at(MSG_VALUE),'
+      - file: node_modules/@ston-fi/funcbox/contracts/reserves.fc
+        line: 41
+        text: 'raw_reserve(_balance, RESERVE_EXACTLY);'
+      - file: node_modules/@ston-fi/funcbox/contracts/consts.fc
+        line: 37
+        text: 'const DESTROY_IF_ZERO = 32;'
+      - file: node_modules/@ston-fi/funcbox/contracts/consts.fc
+        line: 38
+        text: 'const CARRY_REMAINING_GAS = 64;'
+      - file: node_modules/@ston-fi/funcbox/contracts/consts.fc
+        line: 39
+        text: 'const CARRY_ALL_BALANCE = 128;'
+      - file: contracts/common/utils.fc
+        line: 2
+        text: '_addr = _addr.address::is_none() ? ctx.at(SENDER) : _addr;'
+      - file: contracts/common/utils.fc
+        line: 3
+        text: 'throw_unless(error::wrong_workchain, _addr.address::check_workchain(params::workchain));'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 30
+        text: 'CARRY_ALL_BALANCE | DESTROY_IF_ZERO'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 81
+        text: 'reserves::max_balance(storage_fee::lp_account);'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 98
+        text: 'CARRY_ALL_BALANCE | DESTROY_IF_ZERO'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 105
+        text: 'reserves::exact(storage_fee::lp_account);'
+      - file: contracts/lp_account/msgs/getter.fc
+        line: 7
+        text: 'reserves::max_balance(storage_fee::lp_account);'
+      - file: contracts/lp_account/msgs/getter.fc
+        line: 17
+        text: 'CARRY_ALL_BALANCE | IGNORE_ERRORS'
+      - file: contracts/pool/msgs/router.fc
+        line: 54
+        text: 'reserves::max_balance(storage_fee::pool);'
+      - file: contracts/pool/msgs/router.fc
+        line: 70
+        text: 'CARRY_ALL_BALANCE'
+      - file: contracts/pool/msgs/router.fc
+        line: 120
+        text: 'reserves::max_balance(storage_fee::pool);'
+      - file: contracts/pool/msgs/router.fc
+        line: 156
+        text: 'reserves::max_balance(storage_fee::pool);'
+      - file: contracts/pool/msgs/router.fc
+        line: 290
+        text: 'utils::send_excesses(0, in_msg_body~load_msg_addr(), QCARRY_ALL_BALANCE);'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 29
+        text: 'reserves::max_balance(storage_fee::pool);'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 99
+        text: 'CARRY_ALL_BALANCE'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 132
+        text: 'storage::save();'
+      - file: contracts/router/dex.fc
+        line: 29
+        text: 'reserves::max_balance(storage_fee::router);'
+      - file: contracts/router/msgs/pool.fc
+        line: 68
+        text: 'reserves::max_balance(storage_fee::router);'
+      - file: contracts/vault.fc
+        line: 45
+        text: 'reserves::max_balance(storage_fee::vault);'
+      - file: contracts/vault.fc
+        line: 66
+        text: 'CARRY_ALL_BALANCE | DESTROY_IF_ZERO);'
+      - file: tests/System.spec.ts
+        line: 205
+        text: "it('should handle refund partial liquidity', async () => {"
+      - file: tests/LPAccount.spec.ts
+        line: 52
+        text: "it('should return valid data', async () => {"
+  source_scope_restricted: true
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  required_evidence_complete: true
+  no_fabrication: true
+  scope_assets_only: true
+  methodology_audit_exit: NOT_AVAILABLE
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_DEADEND
+  shippable: false
+  rejection_reason: 'AG5 only changes residual TON carry after storage-aware or exact reserves. Fixed token amounts and destinations remain bound, workchain gates remain active, and success/failure branches persist or roll back selected state consistently. The same reserve/carry behavior is directly covered by prior audits.'
+  duplicate_family: 'iter_55/Q5, iter_99/X4, iter_107/Z2, iter_167/AC5, iter_173/AD4, iter_194/AR4, iter_199/AT1, iter_202/AT2, iter_229/AX16, and iter_232/AX19 reserve/carry family'
+  caller_match_count: 147
+  caller_unique_files: 33
+  cascade_verbatim_hit_count: 27
+  cross_file_anchor_count: 24
+  caller_paths:
+    - contracts/common/utils.fc
+    - contracts/lp_account/msgs/getter.fc
+    - contracts/lp_account/msgs/pool.fc
+    - contracts/lp_account/msgs/user.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool/msgs/getter.fc
+    - contracts/pool/msgs/lp_account.fc
+    - contracts/pool/msgs/lp_wallet.fc
+    - contracts/pool/msgs/router.fc
+    - contracts/router/dex.fc
+    - contracts/router/msgs/pool.fc
+    - contracts/router/msgs/vault.fc
+    - contracts/vault.fc
+    - node_modules/@ston-fi/funcbox/contracts/consts.fc
+    - node_modules/@ston-fi/funcbox/contracts/reserves.fc
+  callers_grep_artifact: iter_243/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_243/poc_carry_reserve_flow.test.js
+    poc_run_log: iter_243/poc_carry_reserve_flow.run.log
+    live_regression_log: iter_243/live-carry-reserve-flow-regression.run.log
+    prior_audit: iter_243/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_243/poc_carry_reserve_flow.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_243/poc_carry_reserve_flow.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.1s static; 6.323s integration'
+    result: 'PASS (24 substantive cross-file anchors; five reserve/carry cases; eight exact boundary checks; targeted LPAccount/System regressions)'
+  prior_art_check:
+    queries:
+      - 'cell_label reserve/carry/storage-floor/remaining-gas scan across iter_*/STATUS.yaml'
+    results:
+      - 'iter_55 ton_reserve_carry_value_flow: DEADEND_WITH_PROOF'
+      - 'iter_99 callback_carry_remaining_gas_reentry: DEADEND_WITH_PROOF'
+      - 'iter_107 lp_account_refund_excess_carry_destination: DEADEND_WITH_PROOF'
+      - 'iter_167 lp_mint_carry_value_commit: DEADEND_WITH_PROOF'
+      - 'iter_173 pool_swap_trycatch_reserve_rollback: DEADEND_WITH_PROOF'
+      - 'iter_194 lp_burn_dual_output_bounce_correlation: DEADEND_WITH_PROOF'
+      - 'iter_199 pool_callback_minimum_zero_selector: DEADEND_WITH_PROOF'
+      - 'iter_202 lp_account_refund_destroy_redeploy_identity: DEADEND_WITH_PROOF'
+      - 'iter_229 lp_account_reset_gas_user_destination_carry: DEADEND_WITH_PROOF'
+      - 'iter_232 lp_account_reset_gas_storage_floor_boundary: DEADEND_WITH_PROOF'
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "reserves::max_balance" "CARRY_ALL_BALANCE" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "reserves::max_balance" "CARRY_ALL_BALANCE" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "reserves::exact" "QCARRY_ALL_BALANCE" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "reserves::exact" "QCARRY_ALL_BALANCE" is:pr'
+    gh_search_hits: 0
+    evidence_files:
+      - iter_243/r15-reserves-max-carry-issue.json
+      - iter_243/r15-reserves-max-carry-pr.json
+      - iter_243/r15-reserves-exact-qcarry-issue.json
+      - iter_243/r15-reserves-exact-qcarry-pr.json
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: PRE_KILLED_DUPLICATE
+  shadow_mode: true
+  caller_path: iter_243/callers-grep.txt
+  caller_match_count: 147
+  caller_unique_files: 33
+  prior_audit_path: iter_243/prior-audit-git.log
+  prior_family_matches: [iter55, iter99, iter107, iter167, iter173, iter194, iter199, iter202, iter229, iter232]
+  r15_evidence_files:
+    - iter_243/r15-reserves-max-carry-issue.json
+    - iter_243/r15-reserves-max-carry-pr.json
+    - iter_243/r15-reserves-exact-qcarry-issue.json
+    - iter_243/r15-reserves-exact-qcarry-pr.json
+  source_conclusion: 'AG5 is a reserve/carry duplicate. reserves::max_balance and reserves::exact preserve storage floors; CARRY modes affect only remaining TON; LPAccount, Pool, Router, and Vault bind token amounts, source identities, and destinations independently. No attacker-positive token/LP delta, TON drain, state desynchronization, or persistent failure-path mutation was reproduced.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_243/poc_carry_reserve_flow.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_243/poc_carry_reserve_flow.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_243/live-carry-reserve-flow-regression.run.log
+    result: PASS

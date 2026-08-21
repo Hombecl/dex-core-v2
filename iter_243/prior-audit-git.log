@@ -1,0 +1,35 @@
+COMMAND:
+rg -n --no-heading -i 'reserve|carry|remaining gas|all balance|storage floor|storage fee' --glob 'iter_*/STATUS.yaml' --glob 'iter_*/FINDING.md' --glob 'iter_*/notes*' .
+
+RELEVANT PRIOR RESULTS:
+iter_55 ton_reserve_carry_value_flow: DEADEND_WITH_PROOF
+  Getter/refund/callback paths reserve configured storage floors before CARRY/QUICK-CARRY sends; reserves.fc retains pre-call balance plus storage fees and forwards only available surplus. No TON drain, under-reserved contract, or refund value mismatch was demonstrated.
+iter_99 callback_carry_remaining_gas_reentry: DEADEND_WITH_PROOF
+  Carry modes are applied only after fixed token amounts and destinations are assembled. Router pay_to authenticates deterministic Pool/Vault sources and state mutation is saved after message construction; no unauthorized residual-value or reentry effect survived.
+iter_107 lp_account_refund_excess_carry_destination: DEADEND_WITH_PROOF
+  LPAccount refund/direct-add operations are user-gated, caller-supplied addresses are workchain-checked, stored amounts are cleared before callbacks, and carried TON does not authorize a cross-user token transfer.
+iter_131 pool_swap_referral_output_send_order: DEADEND_WITH_PROOF
+  Pool arithmetic and referral/vault delivery remain amount- and token-bound; downstream delivery failure is liveness-only.
+iter_167 lp_mint_carry_value_commit: DEADEND_WITH_PROOF
+  Carried TON and LP token balance are separate accounting domains; residual TON is sent only to validated response/excess destinations.
+iter_173 pool_swap_trycatch_reserve_rollback: DEADEND_WITH_PROOF
+  Failed swap branches refund original inputs and do not storage::save(); no persistent reserve/fee mismatch was demonstrated.
+iter_184 lp_provide_fee_counter_exception_split: DEADEND_WITH_PROOF
+  Fee counters and reserve updates remain same-side and success-save gated; no attacker-positive fee or reserve delta.
+iter_187 lp_provide_max_input_exception: DEADEND_WITH_PROOF
+  MAX_COINS overflow cases fail closed into exact-leg refund/redeposit; no wrapped value or persisted over-bound state.
+iter_194 lp_burn_dual_output_bounce_correlation: DEADEND_WITH_PROOF
+  Fixed burn outputs and Router Pool authentication prevent cross-user payout; carry affects delivery only.
+iter_199 pool_callback_minimum_zero_selector: DEADEND_WITH_PROOF
+  Callback failure redeploys zero-minimum LPAccount, returns exact token legs, and saves/destroys without LP issuance.
+iter_202 lp_account_refund_destroy_redeploy_identity: DEADEND_WITH_PROOF
+  Refund is user-gated, exact amounts are cleared and saved, and a second refund sees zero liquidity.
+iter_214 vault_deposit_ref_fee_tail_response_isolation: DEADEND_WITH_PROOF
+  Vault stores the fixed amount and routes only residual TON through the parsed response; ignored suffix bits cannot rewrite either field.
+iter_229 lp_account_reset_gas_user_destination_carry: DEADEND_WITH_PROOF
+  reset_gas is stored-user-only and carries only balance above the exact LPAccount floor.
+iter_232 lp_account_reset_gas_storage_floor_boundary: DEADEND_WITH_PROOF
+  Exact reserve retains the LPAccount storage floor and carries only surplus TON; below-floor calls fail before state mutation.
+
+CONCLUSION:
+AG5 is a carry/reserve family re-drill with no new attacker-positive state or value edge. Prior coverage is a direct duplicate and supports PRE_KILLED_DUPLICATE.
