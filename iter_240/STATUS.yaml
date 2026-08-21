@@ -1,0 +1,155 @@
+schema_version: shadow-v1
+iteration: 240
+phase: completed
+cell_id: AX17
+cell_label: lp_account_reset_gas_empty_body_tail
+final_verdict: PRE_KILLED_DUPLICATE
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AX17
+  final_verdict: PRE_KILLED_DUPLICATE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/lp_account.fc
+        line: 7
+        text: 'throw_if(error::empty_not_allowed, in_msg_body.slice_empty?());'
+      - file: contracts/lp_account.fc
+        line: 9
+        text: 'ctx::init(my_balance, msg_value, in_msg_full, in_msg_body);'
+      - file: contracts/lp_account.fc
+        line: 15
+        text: 'throw_unless(error::wrong_workchain, ctx.at(SENDER).address::check_workchain(params::workchain));'
+      - file: contracts/lp_account.fc
+        line: 26
+        text: 'if equal_slices(ctx.at(SENDER), storage::user_address) {'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 104
+        text: 'if ctx.at(OPCODE) == op::reset_gas {'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 105
+        text: 'reserves::exact(storage_fee::lp_account);'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 106
+        text: 'msgs::send_empty(0, storage::user_address, CARRY_ALL_BALANCE);'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 107
+        text: 'return (true);'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 110
+        text: 'return (false);'
+      - file: contracts/common/op.fc
+        line: 14
+        text: 'const op::reset_gas                       = "reset_gas query_id:uint64 = InternalMsgBody"c & 0x7fffffff;'
+      - file: contracts/lp_account/storage.fc
+        line: 8
+        text: 'storage::user_address = ds~load_msg_addr();'
+      - file: contracts/lp_account/storage.fc
+        line: 15
+        text: '() storage::save() impure inline_ref {'
+      - file: contracts/lp_account/msgs/getter.fc
+        line: 3
+        text: '(int) handle_getter_messages() impure inline {'
+      - file: wrappers/LPAccount.ts
+        line: 44
+        text: 'async sendResetGas(provider: ContractProvider, via: Sender, value?: bigint) {'
+      - file: wrappers/LPAccount.ts
+        line: 48
+        text: 'body: beginMessage(lpAccOpcodes.resetGas)'
+      - file: tests/LPAccount.spec.ts
+        line: 52
+        text: "it('should return valid data', async () => {"
+  source_scope_restricted: true
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  required_evidence_complete: true
+  no_fabrication: true
+  scope_assets_only: true
+  methodology_audit_exit: NOT_AVAILABLE
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_DEADEND
+  shippable: false
+  rejection_reason: 'AX17 is a duplicate of the already audited LPAccount reset-gas parser/carry family: the root only rejects an actually empty body, the reset branch ignores all tail bits, exact reserve precedes carry, and stored-user sender/destination binding prevents attacker-positive value loss.'
+  duplicate_family: 'iter_229/AX16 and iter_232/AX19 LPAccount reset-gas user-destination/carry and reserve-floor family'
+  caller_match_count: 6
+  caller_unique_files: 4
+  cascade_verbatim_hit_count: 16
+  cross_file_anchor_count: 16
+  caller_paths:
+    - contracts/common/op.fc
+    - contracts/lp_account/msgs/user.fc
+    - wrappers/LPAccount.ts
+    - tests/System.spec.ts
+  callers_grep_artifact: iter_240/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_240/poc_lp_account_reset_gas_empty_body_tail.test.js
+    poc_run_log: iter_240/poc_lp_account_reset_gas_empty_body_tail.run.log
+    live_regression_log: iter_240/live-lp-account-reset-gas-tail-regression.run.log
+    prior_audit: iter_240/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_240/poc_lp_account_reset_gas_empty_body_tail.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_240/poc_lp_account_reset_gas_empty_body_tail.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.1s static; 2.857s integration'
+    result: 'PASS (16 cross-file anchors; five tail cases; six exact boundary checks; LPAccount suite regression)'
+  prior_art_check:
+    queries:
+      - 'cell_label reset_gas/reset/gas/LPAccount/tail scan across iter_*/STATUS.yaml'
+    results:
+      - 'iter_229 lp_account_reset_gas_user_destination_carry: DEADEND_WITH_PROOF — same LPAccount reset branch, no body-controlled destination, stored-user carry'
+      - 'iter_232 lp_account_reset_gas_storage_floor_boundary: DEADEND_WITH_PROOF — same branch, exact reserve and surplus-only carry'
+      - 'iter_139 pool_reset_gas_body_tail_parse: KILLED_TRUSTED_ON_TRUSTED — separate Pool branch'
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "reset_gas" "query_id:uint64" "storage::user_address" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "reset_gas" "query_id:uint64" "storage::user_address" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "reset_gas" "LPAccount" tail is:issue'
+      - 'repo:ston-fi/dex-core-v2 "reset_gas" "LPAccount" tail is:pr'
+    gh_search_hits: 0
+    evidence_files:
+      - iter_240/r15-lp-account-reset-tail-schema-issue.json
+      - iter_240/r15-lp-account-reset-tail-schema-pr.json
+      - iter_240/r15-lp-account-reset-tail-lpaccount-issue.json
+      - iter_240/r15-lp-account-reset-tail-lpaccount-pr.json
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: PRE_KILLED_DUPLICATE
+  shadow_mode: true
+  caller_path: iter_240/callers-grep.txt
+  caller_match_count: 6
+  caller_unique_files: 4
+  prior_audit_path: iter_240/prior-audit-git.log
+  prior_family_matches: [iter139, iter229, iter232]
+  r15_evidence_files:
+    - iter_240/r15-lp-account-reset-tail-schema-issue.json
+    - iter_240/r15-lp-account-reset-tail-schema-pr.json
+    - iter_240/r15-lp-account-reset-tail-lpaccount-issue.json
+    - iter_240/r15-lp-account-reset-tail-lpaccount-pr.json
+  source_conclusion: 'AX17 has no new behavior beyond the existing LPAccount reset-gas family. A nonempty body with arbitrary tail leaves the opcode unchanged; the user-gated branch consumes no tail, reserves the exact storage floor, carries only surplus TON to the stored user, and does not save or alter LP balances.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_240/poc_lp_account_reset_gas_empty_body_tail.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_240/poc_lp_account_reset_gas_empty_body_tail.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_240/live-lp-account-reset-gas-tail-regression.run.log
+    result: PASS

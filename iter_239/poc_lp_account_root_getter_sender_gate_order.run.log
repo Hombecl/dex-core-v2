@@ -1,0 +1,11 @@
+$ node iter_239/poc_lp_account_root_getter_sender_gate_order.test.js
+{
+  "result": "PASS",
+  "classification": "DEADEND_WITH_PROOF",
+  "cell": "AX15",
+  "cross_file_anchors": 21,
+  "dispatch_order_cases": 5,
+  "exact_boundary_checks": 6,
+  "reason": "root rejects wrong-workchain senders before storage load, role handlers consume only their distinct opcodes, and the sender-routed getter is reached only after those handlers without a state save"
+}
+exit=0

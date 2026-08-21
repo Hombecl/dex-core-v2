@@ -1,0 +1,16 @@
+$ npm test -- --runInBand tests/LPAccount.spec.ts
+
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/LPAccount.spec.ts
+
+PASS tests/LPAccount.spec.ts
+  LPAccount
+    Getters
+      ✓ should return valid data (20 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       1 passed, 1 total
+Snapshots:   0 total
+Time:        2.857 s, estimated 4 s
+Ran all test suites matching /tests\/LPAccount.spec.ts/i.
+exit=0

@@ -1,0 +1,23 @@
+Command: rg -n --no-heading 'getter_lp_account_data|handle_getter_messages|sendGetterLPAccountData|getLPAccountData|getterLpAccountData' contracts wrappers tests
+Root: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon
+tests/LPAccount.spec.ts:53:            const getLPData = await lpAcc.getLPAccountData();
+tests/LPAccount.spec.ts:54:            const sendGetterLPAccData = await lpAcc.sendGetterLPAccountData(user.getSender());
+tests/System.spec.ts:146:            let lpAccountData = await lpAccount.getLPAccountData();
+tests/System.spec.ts:216:            let lpAccountData = await lpAccount.getLPAccountData();
+wrappers/LPAccount.ts:35:    getterLpAccountData: 0x24cfc100,
+wrappers/LPAccount.ts:95:    async sendGetterLPAccountData(provider: ContractProvider, via: Sender, value?: bigint) {
+wrappers/LPAccount.ts:99:            body: beginMessage(lpAccOpcodes.getterLpAccountData)
+wrappers/LPAccount.ts:104:    async getLPAccountData(provider: ContractProvider) {
+contracts/pool.fc:48:    if handle_getter_messages() {
+contracts/common/contracts.fc:66:(cell) anyone::getter_lp_account_data(slice _user_address, slice _pool_address, int _left_amount, int _right_amount) inline {
+contracts/common/contracts.fc:67:    return begin_message(op::getter_lp_account_data)
+contracts/lp_account.fc:33:    if handle_getter_messages() {
+contracts/common/op.fc:37:const op::getter_lp_account_data          = "getter_lp_account_data query_id:uint64 = InternalMsgBody"c & 0x7fffffff;
+contracts/router/msgs/getter.fc:3:(int) handle_getter_messages() impure inline {
+contracts/router.fc:35:    if handle_getter_messages() {
+contracts/pool/msgs/getter.fc:3:(int) handle_getter_messages() impure inline {
+contracts/lp_account/msgs/getter.fc:3:(int) handle_getter_messages() impure inline {
+contracts/lp_account/msgs/getter.fc:6:    if (ctx.at(OPCODE) == op::getter_lp_account_data) { 
+contracts/lp_account/msgs/getter.fc:11:            anyone::getter_lp_account_data(
+
+Summary: caller_match_count=19; caller_unique_files=11; callers_grep_done=true.

@@ -1,0 +1,11 @@
+$ node iter_240/poc_lp_account_reset_gas_empty_body_tail.test.js
+{
+  "result": "PASS",
+  "classification": "DEADEND_WITH_PROOF",
+  "cell": "AX17",
+  "cross_file_anchors": 16,
+  "tail_cases": 5,
+  "exact_boundary_checks": 6,
+  "reason": "the root rejects only an actually empty body, while reset_gas consumes no body fields after the opcode; every nonempty tail is inert, exact storage reserve precedes carry, and the destination is immutable stored-user state"
+}
+exit=0

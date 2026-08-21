@@ -1,0 +1,8 @@
+Command: rg -n -i --no-heading 'reset_gas|reset gas|resetgas|lp_account_reset' iter_*/STATUS.yaml
+Relevant prior records:
+iter_138 router_admin_reset_pool_gas_recipient: closed; Router/Pool reset_gas is admin/trusted-routed.
+iter_139 pool_reset_gas_body_tail_parse: KILLED_TRUSTED_ON_TRUSTED; Pool reset-gas tail recipient is trusted admin/Router control.
+iter_229 lp_account_reset_gas_user_destination_carry: DEADEND_WITH_PROOF; LPAccount reset is stored-user gated, body destination is not parsed, and only excess TON is carried.
+iter_232 lp_account_reset_gas_storage_floor_boundary: DEADEND_WITH_PROOF; exact storage reserve retains the floor and carries only surplus to the stored user.
+
+Conclusion: AX17's empty-body/tail variant is the same LPAccount reset-gas parser/value-flow family already closed by iter_229 and iter_232; no new state transition or attacker-positive delta exists.

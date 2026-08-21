@@ -1,0 +1,11 @@
+Command: rg -n --no-heading 'reset_gas|sendResetGas|resetGas' contracts/lp_account.fc contracts/lp_account contracts/common/op.fc wrappers/LPAccount.ts tests
+Root: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon
+contracts/common/op.fc:14:const op::reset_gas                       = "reset_gas query_id:uint64 = InternalMsgBody"c & 0x7fffffff;
+wrappers/LPAccount.ts:32:    resetGas: 0x29d22935,
+wrappers/LPAccount.ts:44:    async sendResetGas(provider: ContractProvider, via: Sender, value?: bigint) {
+wrappers/LPAccount.ts:48:            body: beginMessage(lpAccOpcodes.resetGas)
+tests/System.spec.ts:386:            const sendResetGasResult = await router.sendResetGas(admin.getSender());
+tests/System.spec.ts:387:            expect(sendResetGasResult.transactions).toHaveTransaction({
+contracts/lp_account/msgs/user.fc:104:    if ctx.at(OPCODE) == op::reset_gas {
+
+Summary: caller_match_count=6; caller_unique_files=4; callers_grep_done=true.

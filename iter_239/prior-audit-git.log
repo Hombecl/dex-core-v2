@@ -1,0 +1,14 @@
+Command: git log --all --oneline --decorate --grep='getter\|sender gate\|LPAccount' -i -n 40
+ac79f47 shadow: complete iter140 AF5 getter deadend
+
+Command: rg -n -i --no-heading 'root.*getter|getter.*sender|sender.*gate|lp_account.*getter|wrong_workchain.*storage' iter_*/STATUS.yaml
+Relevant prior records:
+iter_82: async_getter_response_address_confusion — closed; sender-bound read-only response.
+iter_140: getter_response_state_alias — closed; LPAccount getter tuple and ctx.at(SENDER) already covered.
+iter_216: pool handler sender/opcode partition — closed; root handler order and exact opcode partition covered.
+iter_221: lp_account_direct_add_post_send_commit_order — DEADEND_WITH_PROOF; user handler state mutation is sender-gated.
+iter_228: lp_account_getter_data_tuple_identity — PRE_KILLED_DUPLICATE; getter identity/tuple family covered.
+iter_237: lp_account_getter_data_response_carry_destroy — DEADEND_WITH_PROOF; getter carry path is read-only and sender-bound.
+iter_238: lp_account_getter_data_post_refund_snapshot — DEADEND_WITH_PROOF; getter observes committed tuple only.
+
+Conclusion: AX15 is a distinct root-dispatch ordering hypothesis, but its relevant sender gate, exact opcode partition, and read-only getter behavior are already constrained by the source and prior records; no harmful transition was found.
