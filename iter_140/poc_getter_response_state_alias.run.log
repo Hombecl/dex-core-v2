@@ -1,0 +1,1 @@
+AF5 getter-response correlation check passed: begin_message preserves QUERY_ID, responses target SENDER, concurrent getter responses remain distinct, and getter handlers do not mutate token state

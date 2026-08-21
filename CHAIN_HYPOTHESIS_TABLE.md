@@ -143,6 +143,7 @@ Scope is limited to the five selected entrypoint assets recorded in `R1-SURFACE-
 | AF2 | pool_burn_payload_wrapper_leg_split | payload_aliasing | The LP-burn custom-payload wrapper could split payload refs across two output legs while reserve/supply accounting remained committed. | 137 | deadend_with_proof |
 | AF3 | router_admin_reset_pool_gas_recipient | privileged_state | Admin reset-pool-gas recipient selection could redirect carried value or affect pool state across the Router → Pool boundary. | 138 | killed_trusted_on_trusted |
 | AF4 | pool_reset_gas_body_tail_parse | parser_refund | A reset-gas body with trailing or malformed fields could select an unintended excess recipient or mutate Pool token state. | 139 | killed_trusted_on_trusted |
+| AF5 | getter_response_state_alias | async_response_correlation | An asynchronous getter response could alias a different query, redirect to another caller, or mutate Pool/LPAccount state. | 140 | deadend_with_proof |
 
 ## Cell execution contract
 
