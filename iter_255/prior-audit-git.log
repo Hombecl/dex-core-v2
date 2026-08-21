@@ -1,0 +1,20 @@
+iter_25/STATUS.yaml: transfer_notification payload is:issue
+iter_51/STATUS.yaml: transfer_notification sender authentication is:issue/pr
+iter_73/STATUS.yaml: transfer_notification forward is:pr
+iter_76/STATUS.yaml: cross_swap_nested_refund_binding
+iter_86/STATUS.yaml: route_dex_messages cross_swap is:issue
+iter_89/STATUS.yaml: transfer_bounce_invalid_request; refund_address; excesses_address; route_dex_messages
+iter_90/STATUS.yaml: route_dex_messages; cross_swap; custom payload boundary
+iter_118/STATUS.yaml: cross_swap_nested_refund_binding
+iter_128/STATUS.yaml: nested cross_swap payload boundary
+iter_133/STATUS.yaml: router_notification_no_ref
+iter_210/STATUS.yaml: router_notification_ref_forward_payload_boundary
+iter_220/STATUS.yaml: router_notification_ref_forward_payload_boundary
+iter_225/STATUS.yaml: router_notification_no_ref_refund_source
+iter_251/STATUS.yaml: router_pay_to_custom_payload_32bit_cutoff
+iter_254/STATUS.yaml: lp_wallet_receive_storage_fee_floor_notification_order
+
+Command:
+rg -n --no-heading -i 'transfer_notification|slice_refs_empty|route_dex_messages|load_ref|invalid_request|refund_address|excesses_address|malformed|root|nested' CHAIN_HYPOTHESIS_TABLE.md iter_*/STATUS.yaml
+
+Conclusion: CC2 is a direct overlap with the existing Router notification/ref-root and nested-refund audit family; prior runs already cover no-ref refund, reference payload boundaries, route parser failure, and exact refund destination semantics.

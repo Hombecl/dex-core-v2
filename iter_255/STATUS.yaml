@@ -1,0 +1,186 @@
+schema_version: shadow-v1
+iteration: 255
+phase: completed
+cell_id: CC2
+cell_label: router_notification_ref_root_depth_refund
+final_verdict: PRE_KILLED_DUPLICATE
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: CC2
+  final_verdict: PRE_KILLED_DUPLICATE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/router/msgs/jetton.fc
+        line: 5
+        text: 'if ctx.at(OPCODE) == op::ft::transfer_notification {'
+      - file: contracts/router/msgs/jetton.fc
+        line: 6
+        text: 'int jetton_amount = in_msg_body~load_coins();'
+      - file: contracts/router/msgs/jetton.fc
+        line: 7
+        text: 'slice from_address = in_msg_body~load_msg_addr();'
+      - file: contracts/router/msgs/jetton.fc
+        line: 9
+        text: 'if in_msg_body.slice_refs_empty?() {'
+      - file: contracts/router/msgs/jetton.fc
+        line: 14
+        text: 'ctx.at(SENDER),'
+      - file: contracts/router/msgs/jetton.fc
+        line: 15
+        text: 'jetton_wallet::transfer(0, jetton_amount, from_address, from_address)'
+      - file: contracts/router/msgs/jetton.fc
+        line: 17
+        text: '.store_uint32(op::transfer_bounce_invalid_request)'
+      - file: contracts/router/msgs/jetton.fc
+        line: 29
+        text: 'in_msg_body~load_ref()'
+      - file: contracts/router/dex.fc
+        line: 14
+        text: 'slice dex_payload = _dex_payload.begin_parse();'
+      - file: contracts/router/dex.fc
+        line: 15
+        text: 'transferred_op = dex_payload~load_opcode();'
+      - file: contracts/router/dex.fc
+        line: 16
+        text: 'token_wallet1 = dex_payload~load_msg_addr();'
+      - file: contracts/router/dex.fc
+        line: 33
+        text: 'jetton_wallet::transfer(0, _sent_amount, _caller, _caller)'
+      - file: contracts/router/dex.fc
+        line: 95
+        text: 'jetton_wallet::transfer(0, _sent_amount, refund_address, excesses_address)'
+      - file: contracts/common/contracts.fc
+        line: 280
+        text: 'jetton_wallet::transfer(int _fwd_amount, int _jetton_amount, slice _to, slice _response_address) inline {'
+      - file: contracts/lp_wallet/op.fc
+        line: 2
+        text: 'const op::transfer_notification = 0x7362d09c;'
+      - file: tests/System.spec.ts
+        line: 251
+        text: "it('should handle invalid transfers', async () => {"
+      - file: tests/ConstProduct.spec.ts
+        line: 1679
+        text: "it('should handle more complex scenarios', async () => {"
+  source_scope_restricted: true
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  required_evidence_complete: true
+  no_fabrication: true
+  scope_assets_only: true
+  methodology_audit_exit: NOT_AVAILABLE
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_DEADEND
+  shippable: false
+  rejection_reason: 'The Router transfer_notification path refunds no-reference messages with the exact jetton amount and the notifying wallet source, while referenced payloads enter route_dex_messages. Shallow or incomplete roots fail before route state changes and refund the caller; parsed but invalid nested routes refund the exact amount to the parsed refund address. The seven-case PoC and three live regressions show zero persistent Router deltas. This is a direct duplicate of prior notification/ref-root and nested-refund audits.'
+  duplicate_family: 'iter_25 transfer_notification payload, iter_51 transfer_notification sender authentication, iter_73 transfer_notification forwarding, iter_76 cross_swap_nested_refund_binding, iter_89 route parser refund encoding, iter_118 nested cross_swap refund binding, iter_128 nested cross_swap payload boundary, iter_133 router_notification_no_ref, iter_210 and iter_220 router_notification_ref_forward_payload_boundary, iter_225 router_notification_no_ref_refund_source, iter_251 router_pay_to_custom_payload_32bit_cutoff, and iter_254 LPWallet receive notification ordering'
+  caller_match_count: 56
+  caller_unique_files: 7
+  cascade_verbatim_hit_count: 17
+  cross_file_anchor_count: 17
+  caller_paths:
+    - contracts/common/contracts.fc
+    - contracts/common/op.fc
+    - contracts/lp_wallet/op.fc
+    - contracts/router/dex.fc
+    - contracts/router/msgs/jetton.fc
+    - tests/ConstProduct.spec.ts
+    - tests/System.spec.ts
+  callers_grep_artifact: iter_255/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_255/poc_router_notification_ref_root_depth_refund.test.js
+    poc_run_log: iter_255/poc_router_notification_ref_root_depth_refund.run.log
+    live_regression_log: iter_255/live-router-notification-ref-root-regression.run.log
+    prior_audit: iter_255/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_255/poc_router_notification_ref_root_depth_refund.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_255/poc_router_notification_ref_root_depth_refund.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.1s static; 12.173s integration'
+    result: 'PASS (17 cross-file anchors; seven root-depth cases; six malformed cases refund 25 with zero persistent delta; valid route has zero persistent delta; three live regressions)'
+  prior_art_check:
+    queries:
+      - 'transfer_notification/slice_refs_empty/route_dex_messages/load_ref/invalid_request/refund_address/excesses_address/malformed/root/nested scan across CHAIN_HYPOTHESIS_TABLE.md and iter_*/STATUS.yaml'
+    results:
+      - 'iter_25 transfer_notification payload: DEADEND_WITH_PROOF'
+      - 'iter_51 transfer_notification sender authentication: DEADEND_WITH_PROOF'
+      - 'iter_73 transfer_notification forward: DEADEND_WITH_PROOF'
+      - 'iter_76 cross_swap_nested_refund_binding: DEADEND_WITH_PROOF'
+      - 'iter_89 route parser refund encoding: DEADEND_WITH_PROOF'
+      - 'iter_118 nested cross_swap refund binding: DEADEND_WITH_PROOF'
+      - 'iter_128 nested cross_swap payload boundary: DEADEND_WITH_PROOF'
+      - 'iter_133 router_notification_no_ref: PRE_KILLED_DUPLICATE'
+      - 'iter_210 and iter_220 router_notification_ref_forward_payload_boundary: PRE_KILLED_DUPLICATE'
+      - 'iter_225 router_notification_no_ref_refund_source: PRE_KILLED_DUPLICATE'
+      - 'iter_251 router_pay_to_custom_payload_32bit_cutoff: PRE_KILLED_DUPLICATE'
+      - 'iter_254 lp_wallet_receive_storage_fee_floor_notification_order: PRE_KILLED_DUPLICATE'
+    r15_disclosure_check:
+      gh_search_terms_used:
+        - 'repo:ston-fi/dex-core-v2 "slice_refs_empty" "route_dex_messages" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "slice_refs_empty" "route_dex_messages" is:pr'
+        - 'repo:ston-fi/dex-core-v2 "transfer_bounce_invalid_request" "from_address" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "transfer_bounce_invalid_request" "from_address" is:pr'
+      gh_search_hits: 0
+      evidence_files:
+        - iter_255/r15-router-notification-root-issue.json
+        - iter_255/r15-router-notification-root-pr.json
+        - iter_255/r15-router-notification-refund-issue.json
+        - iter_255/r15-router-notification-refund-pr.json
+    attacker_privilege:
+      privilege_required: external_unauth
+    fund_loss_demonstrated: false
+    concrete_impact_demonstrated: false
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "slice_refs_empty" "route_dex_messages" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "slice_refs_empty" "route_dex_messages" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "transfer_bounce_invalid_request" "from_address" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "transfer_bounce_invalid_request" "from_address" is:pr'
+    gh_search_hits: 0
+    evidence_files:
+      - iter_255/r15-router-notification-root-issue.json
+      - iter_255/r15-router-notification-root-pr.json
+      - iter_255/r15-router-notification-refund-issue.json
+      - iter_255/r15-router-notification-refund-pr.json
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: PRE_KILLED_DUPLICATE
+  shadow_mode: true
+  caller_path: iter_255/callers-grep.txt
+  caller_match_count: 56
+  caller_unique_files: 7
+  prior_audit_path: iter_255/prior-audit-git.log
+  prior_family_matches: [iter25, iter51, iter73, iter76, iter89, iter118, iter128, iter133, iter210, iter220, iter225, iter251, iter254]
+  r15_evidence_files:
+    - iter_255/r15-router-notification-root-issue.json
+    - iter_255/r15-router-notification-root-pr.json
+    - iter_255/r15-router-notification-refund-issue.json
+    - iter_255/r15-router-notification-refund-pr.json
+  source_conclusion: 'CC2 is a Router notification reference-root duplicate. Every malformed root case refunds the exact amount and leaves persistent Router state unchanged; valid routing also leaves the modeled persistent delta at zero. No attacker-positive token, LP, or TON delta was demonstrated.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_255/poc_router_notification_ref_root_depth_refund.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_255/poc_router_notification_ref_root_depth_refund.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_255/live-router-notification-ref-root-regression.run.log
+    result: PASS
