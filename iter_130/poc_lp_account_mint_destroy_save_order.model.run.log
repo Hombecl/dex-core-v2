@@ -1,0 +1,1 @@
+AD5 lifecycle edge check passed: mint clears/destroys once, failed callback leaves pool globals uncommitted and rehomes exact claims, while success commits once

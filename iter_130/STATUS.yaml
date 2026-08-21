@@ -1,0 +1,70 @@
+schema_version: shadow-v1
+iteration: 130
+phase: completed
+cell_id: AD5
+cell_label: lp_account_mint_destroy_save_order
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AD5
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - 'contracts/lp_account/msgs/pool.fc:34: pool::cb_add_liquidity('
+      - 'contracts/lp_account/msgs/pool.fc:45: CARRY_ALL_BALANCE | DESTROY_IF_ZERO'
+      - 'contracts/lp_account/msgs/pool.fc:48: storage::amount0 = 0;'
+      - 'contracts/lp_account/msgs/pool.fc:49: storage::amount1 = 0;'
+      - 'contracts/pool/msgs/lp_account.fc:69: | (liquidity < min_lp_out)'
+      - 'contracts/pool/msgs/lp_account.fc:76: var lp_account_new = contracts::from_sources('
+      - 'contracts/pool/msgs/lp_account.fc:88: lp_account::add_liquidity('
+      - 'contracts/pool/msgs/lp_account.fc:121: lp_wallet~address(params::workchain),'
+      - 'contracts/pool/msgs/lp_account.fc:132: storage::save();'
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/System.spec.ts,tests/Pool.spec.ts,tests/ConstProduct.spec.ts,tests/ConstSum.spec.ts,tests/Stableswap.spec.ts,tests/WeightedCPI.spec.ts,tests/WeightedStableswap.spec.ts,iter_130/poc_lp_account_mint_destroy_save_order.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_130/poc_lp_account_mint_destroy_save_order.run.log,iter_130/poc_lp_account_mint_destroy_save_order.model.run.log
+    run_log_exists_on_disk: true
+    test_runtime: '63.608s integration; model passed'
+    result: 'PASSED (integration: 30 passed, 123 skipped, 153 total; model: passed)'
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 lp_account DESTROY_IF_ZERO cb_add_liquidity save is:issue'
+      - 'repo:ston-fi/dex-core-v2 lp_account DESTROY_IF_ZERO cb_add_liquidity save is:pr'
+      - 'repo:ston-fi/dex-core-v2 LP account failed callback rehome amounts is:issue'
+      - 'repo:ston-fi/dex-core-v2 LP account failed callback rehome amounts is:pr'
+    results: all four returned total_count 0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'lp_account DESTROY_IF_ZERO cb_add_liquidity save repository issue search'
+      - 'lp_account DESTROY_IF_ZERO cb_add_liquidity save repository pull-request search'
+      - 'LP account failed callback rehome amounts repository issue search'
+      - 'LP account failed callback rehome amounts repository pull-request search'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_130/callers-grep.txt
+  caller_grep_match_count: 316
+  caller_grep_unique_files: 54
+  prior_audit_path: iter_130/prior-audit-git.log
+  prior_audit_bytes: 78
+  r15_search_files:
+    - iter_130/R15-GH-lp-account-destroy-callback-save-issue.json
+    - iter_130/R15-GH-lp-account-destroy-callback-save-pr.json
+    - iter_130/R15-GH-lp-account-failed-callback-rehome-issue.json
+    - iter_130/R15-GH-lp-account-failed-callback-rehome-pr.json
+  source_conclusion: 'LP-account mint clears both amounts after sending one pool callback with DESTROY_IF_ZERO and saves. Pool validates the derived sender, checks liquidity/minimum/lock/supply/reserve bounds, and on failure sends exact amounts to a fresh LP-account state-init without saving tentative pool globals; min_lp_out=0 prevents a loop. Success alone sends one LP-wallet mint and saves. Direct-add/refund paths subtract or clear selected amounts before one callback. No stale resurrection, duplicate callback, or double-counted reserve was reproduced.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_130-AD5.md
