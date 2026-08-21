@@ -1,0 +1,61 @@
+schema_version: shadow-v1
+iteration: 116
+phase: completed
+cell_id: AB1
+cell_label: pool_max_coins_invariant_boundary
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AB1
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts,tests/ConstSum.spec.ts,tests/Stableswap.spec.ts,tests/WeightedStableswap.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_116/poc_pool_max_coins_invariant_boundary.run.log
+    run_log_exists_on_disk: true
+    test_runtime: 35.644s
+    result: PASSED (23 passed, 90 skipped, 113 total)
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 MAX_COINS pool reserve is:issue'
+      - 'repo:ston-fi/dex-core-v2 MAX_COINS pool reserve is:pr'
+      - 'repo:ston-fi/dex-core-v2 liquidity overflow reserve limit is:issue'
+      - 'repo:ston-fi/dex-core-v2 liquidity overflow reserve limit is:pr'
+    results: all four returned total_count 0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'MAX_COINS pool reserve on repository issue page'
+      - 'MAX_COINS pool reserve on repository pull-request page'
+      - 'liquidity overflow reserve limit on repository issue page'
+      - 'liquidity overflow reserve limit on repository pull-request page'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_116/callers-grep.txt
+  caller_grep_match_count: 188
+  caller_grep_unique_files: 32
+  prior_audit_path: iter_116/prior-audit-git.log
+  prior_audit_bytes: 78
+  r15_search_files:
+    - iter_116/R15-GH-max-coins-pool-issue.json
+    - iter_116/R15-GH-max-coins-pool-pr.json
+    - iter_116/R15-GH-liquidity-overflow-issue.json
+    - iter_116/R15-GH-liquidity-overflow-pr.json
+  source_conclusion: 'MAX_COINS is 2^120-1. LP-account callback math may transiently compute values above that bound, but the pool checks total supply and both reserves before minting; the failure branch sends the exact pair back to the deterministically derived LP account, where it is stored for the same user and excesses are returned. Swap reserve checks likewise refund on an out-of-range result. No attacker-controlled asset delta was demonstrated.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_116-AB1.md
