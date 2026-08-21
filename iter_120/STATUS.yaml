@@ -1,0 +1,61 @@
+schema_version: shadow-v1
+iteration: 120
+phase: completed
+cell_id: AB5
+cell_label: vault_deposit_extra_payload_state_boundary
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AB5
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts,tests/ConstSum.spec.ts,tests/Stableswap.spec.ts,tests/WeightedCPI.spec.ts,tests/WeightedStableswap.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_120/poc_vault_deposit_extra_payload_state_boundary.run.log
+    run_log_exists_on_disk: true
+    test_runtime: 30.857s
+    result: 'PASSED (15 passed, 123 skipped, 138 total)'
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 deposit_ref_fee vault payload state init is:issue'
+      - 'repo:ston-fi/dex-core-v2 deposit_ref_fee vault payload state init is:pr'
+      - 'repo:ston-fi/dex-core-v2 referral vault owner token binding is:issue'
+      - 'repo:ston-fi/dex-core-v2 referral vault owner token binding is:pr'
+    results: all four returned total_count 0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'deposit_ref_fee vault payload state init on repository issue page'
+      - 'deposit_ref_fee vault payload state init on repository pull-request page'
+      - 'referral vault owner token binding on repository issue page'
+      - 'referral vault owner token binding on repository pull-request page'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_120/callers-grep.txt
+  caller_grep_match_count: 211
+  caller_grep_unique_files: 40
+  prior_audit_path: iter_120/prior-audit-git.log
+  prior_audit_bytes: 78
+  r15_search_files:
+    - iter_120/R15-GH-vault-deposit-payload-issue.json
+    - iter_120/R15-GH-vault-deposit-payload-pr.json
+    - iter_120/R15-GH-vault-owner-token-binding-issue.json
+    - iter_120/R15-GH-vault-owner-token-binding-pr.json
+  source_conclusion: 'Vault deposit_ref_fee accepts the amount and excess address only from storage::router_address; any trailing body data is parser-ignored and cannot alter owner, token, or router. Router pay_vault derives the vault from the pool-provided owner/token and checks the sending pool, while vault withdrawal sends the stored amount to the immutable stored owner/token and clears it. Referral collection and zero/max referral tests showed no alternate state-init or payout.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_120-AB5.md
