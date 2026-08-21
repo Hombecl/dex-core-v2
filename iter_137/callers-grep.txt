@@ -1,0 +1,212 @@
+contracts/router/dex.fc-59-                + storage_fee::pool + gas::pool::swap
+contracts/router/dex.fc:60:                + gas::router::pay_to
+contracts/router/dex.fc-61-                + storage_fee::vault + gas::router::pay_vault + gas::vault::deposit_ref_fee
+--
+contracts/lp_wallet.fc-50-    send_raw_message(msg.end_cell(), 64);
+contracts/lp_wallet.fc:51:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc-52-}
+--
+contracts/lp_wallet.fc-99-
+contracts/lp_wallet.fc:100:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc-101-}
+--
+contracts/lp_wallet.fc-115-    var msg_body = begin_cell()
+contracts/lp_wallet.fc:116:        .store_uint(op::burn_notification_ext, 32)
+contracts/lp_wallet.fc-117-        .store_uint(query_id, 64)
+--
+contracts/lp_wallet.fc-132-
+contracts/lp_wallet.fc:133:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc-134-}
+--
+contracts/lp_wallet.fc-140-
+contracts/lp_wallet.fc:141:    throw_unless(709, (op == op::internal_transfer) | (op == op::burn_notification_ext));
+contracts/lp_wallet.fc-142-    
+--
+contracts/lp_wallet.fc-145-    balance += jetton_amount;
+contracts/lp_wallet.fc:146:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc-147-}
+--
+contracts/common/contracts.fc-18-
+contracts/common/contracts.fc:19:(cell) lp_wallet_idata(slice _owner_address, slice _jetton_master_address, cell _jetton_wallet_code) inline {
+contracts/common/contracts.fc-20-    return begin_cell()
+--
+contracts/common/contracts.fc-28-;; messages
+contracts/common/contracts.fc:29:(cell) pool::cb_refund_me(int _left_amount, int _right_amount, cell _left_maybe_payload, cell _right_maybe_payload) inline {
+contracts/common/contracts.fc-30-    return begin_message(op::cb_refund_me)
+--
+contracts/common/contracts.fc-33-        .store_slice(ctx.at(SENDER)) ;; called only in LPAccount from owner, we can safely use sender_address
+contracts/common/contracts.fc:34:        .store_maybe_ref(_left_maybe_payload)
+contracts/common/contracts.fc:35:        .store_maybe_ref(_right_maybe_payload)
+contracts/common/contracts.fc-36-    .end_cell();
+--
+contracts/common/contracts.fc-145-
+contracts/common/contracts.fc:146:(cell) router::pay_to(
+contracts/common/contracts.fc-147-    slice _original_caller,
+--
+contracts/common/contracts.fc-151-    int _ton_fwd_amount, 
+contracts/common/contracts.fc:152:    cell _maybe_custom_payload, 
+contracts/common/contracts.fc:153:    int _amount0_out, 
+contracts/common/contracts.fc-154-    slice _token0_address,
+contracts/common/contracts.fc:155:    int _amount1_out,
+contracts/common/contracts.fc-156-    slice _token1_address
+--
+contracts/common/contracts.fc-162-        .store_uint(_exit_code, 32)
+contracts/common/contracts.fc:163:        .store_maybe_ref(_maybe_custom_payload)
+contracts/common/contracts.fc-164-        .store_ref(begin_cell()
+contracts/common/contracts.fc-165-            .store_coins(_ton_fwd_amount)
+contracts/common/contracts.fc:166:            .store_coins(_amount0_out)
+contracts/common/contracts.fc-167-            .store_slice(_token0_address)
+contracts/common/contracts.fc:168:            .store_coins(_amount1_out)
+contracts/common/contracts.fc-169-            .store_slice(_token1_address)
+--
+contracts/common/contracts.fc-188-    slice _excesses_address,
+contracts/common/contracts.fc:189:    int _amount0_out, 
+contracts/common/contracts.fc-190-    slice _token0_address,
+contracts/common/contracts.fc:191:    int _amount1_out,
+contracts/common/contracts.fc-192-    slice _token1_address
+--
+contracts/common/contracts.fc-197-        .store_ref(begin_cell()
+contracts/common/contracts.fc:198:            .store_coins(_amount0_out)
+contracts/common/contracts.fc-199-            .store_slice(_token0_address)
+contracts/common/contracts.fc:200:            .store_coins(_amount1_out)
+contracts/common/contracts.fc-201-            .store_slice(_token1_address)
+--
+contracts/pool/msgs/router.fc-57-                ctx.at(SENDER), 
+contracts/pool/msgs/router.fc:58:                router::pay_to(
+contracts/pool/msgs/router.fc-59-                    from_user_address,
+--
+contracts/pool/msgs/router.fc-137-                ctx.at(SENDER), 
+contracts/pool/msgs/router.fc:138:                router::pay_to(
+contracts/pool/msgs/router.fc-139-                    from_user_address,
+--
+contracts/pool/msgs/router.fc-151-            );
+contracts/pool/msgs/router.fc:152:            storage::save();
+contracts/pool/msgs/router.fc-153-        } catch(err_arg, err_code) {
+--
+contracts/pool/msgs/router.fc-159-                ctx.at(SENDER), 
+contracts/pool/msgs/router.fc:160:                router::pay_to(
+contracts/pool/msgs/router.fc-161-                    from_user_address,
+--
+contracts/pool/msgs/router.fc-218-                ctx.at(SENDER), 
+contracts/pool/msgs/router.fc:219:                router::pay_to(
+contracts/pool/msgs/router.fc-220-                    from_user,
+--
+contracts/pool/msgs/router.fc-269-                ctx.at(SENDER), 
+contracts/pool/msgs/router.fc:270:                router::pay_to(
+contracts/pool/msgs/router.fc-271-                    from_user,
+--
+contracts/pool/msgs/router.fc-295-        storage::is_locked = storage::is_locked ? false : true; 
+contracts/pool/msgs/router.fc:296:        storage::save();
+contracts/pool/msgs/router.fc-297-        reserves::max_balance(storage_fee::pool);
+--
+contracts/pool/msgs/router.fc-316-
+contracts/pool/msgs/router.fc:317:        storage::save();
+contracts/pool/msgs/router.fc-318-        
+--
+contracts/router/msgs/pool.fc-12-        int fwd_ton_amount = additional_info~load_coins();
+contracts/router/msgs/pool.fc:13:        int amount0_out = additional_info~load_coins();
+contracts/router/msgs/pool.fc-14-        slice token0_address = additional_info~load_msg_addr();
+contracts/router/msgs/pool.fc:15:        int amount1_out = additional_info~load_coins();
+contracts/router/msgs/pool.fc-16-        slice token1_address = additional_info~load_msg_addr();
+--
+contracts/router/msgs/pool.fc-32-            slice tmp_custom_payload_ds = custom_payload.begin_parse();
+contracts/router/msgs/pool.fc:33:            if (tmp_custom_payload_ds.slice_bits() > 32) { ;; cross_swap = 32 + address
+contracts/router/msgs/pool.fc-34-                fwd_opcode = tmp_custom_payload_ds.preload_uint(32);
+--
+contracts/router/msgs/pool.fc-42-        ;; 
+contracts/router/msgs/pool.fc:43:        ;; no need to check: ((amount0_out > 0) & (amount1_out == 0)) ^ ((amount0_out == 0) & (amount1_out > 0))
+contracts/router/msgs/pool.fc-44-
+contracts/router/msgs/pool.fc:45:        int used_gas = ctx.at(FWD_FEE) + gas::router::pay_to;
+contracts/router/msgs/pool.fc-46-        if (fwd_opcode == op::cross_swap) 
+--
+contracts/router/msgs/pool.fc-49-            ;; prepare for forwarding 
+contracts/router/msgs/pool.fc:50:            slice sent_jetton_address = amount0_out > 0 ? token0_address : token1_address;
+contracts/router/msgs/pool.fc-51-            int gas = ctx.at(MSG_VALUE) - used_gas; ;; remove gas for this call
+contracts/router/msgs/pool.fc:52:            int swap_amount = amount0_out + amount1_out; ;; one side is zero, so we can sum them
+contracts/router/msgs/pool.fc-53-
+--
+contracts/router/msgs/pool.fc-69-            ;; one is always zero
+contracts/router/msgs/pool.fc:70:            if amount0_out > 0 {
+contracts/router/msgs/pool.fc-71-                msgs::send_simple(
+--
+contracts/router/msgs/pool.fc-73-                    token0_address, 
+contracts/router/msgs/pool.fc:74:                    jetton_wallet::transfer(fwd_ton_amount, amount0_out, owner, excesses_address)
+contracts/router/msgs/pool.fc-75-                        .store_maybe_ref(custom_payload)
+--
+contracts/router/msgs/pool.fc-82-                    token1_address, 
+contracts/router/msgs/pool.fc:83:                    jetton_wallet::transfer(fwd_ton_amount, amount1_out, owner, excesses_address)
+contracts/router/msgs/pool.fc-84-                        .store_maybe_ref(custom_payload)
+--
+contracts/router/msgs/pool.fc-97-        slice additional_info = in_msg_body~load_slice_ref(); 
+contracts/router/msgs/pool.fc:98:        int amount0_out = additional_info~load_coins();
+contracts/router/msgs/pool.fc-99-        slice token0_address = additional_info~load_msg_addr();
+contracts/router/msgs/pool.fc:100:        int amount1_out = additional_info~load_coins();
+contracts/router/msgs/pool.fc-101-        slice token1_address = additional_info~load_msg_addr();
+--
+contracts/router/msgs/pool.fc-120-                owner, 
+contracts/router/msgs/pool.fc:121:                amount0_out > 0 ? token0_address : token1_address, 
+contracts/router/msgs/pool.fc-122-                my_address()
+--
+contracts/router/msgs/pool.fc-131-            vault::deposit_ref_fee(
+contracts/router/msgs/pool.fc:132:                amount0_out + amount1_out,
+contracts/router/msgs/pool.fc-133-                excesses_address
+--
+contracts/pool/msgs/lp_wallet.fc-3-
+contracts/pool/msgs/lp_wallet.fc:4:    if ctx.at(OPCODE) == op::burn_notification_ext { 
+contracts/pool/msgs/lp_wallet.fc-5-        ;; Sent by LP wallet after burning LP jettons to release liquidity
+--
+contracts/pool/msgs/lp_wallet.fc-8-        slice response_address = in_msg_body~load_msg_addr();
+contracts/pool/msgs/lp_wallet.fc:9:        cell maybe_custom_payload = in_msg_body~load_maybe_ref();
+contracts/pool/msgs/lp_wallet.fc-10-
+contracts/pool/msgs/lp_wallet.fc-11-        var lp_wallet = contracts::from_sources(
+contracts/pool/msgs/lp_wallet.fc:12:            lp_wallet_idata(
+contracts/pool/msgs/lp_wallet.fc-13-                from_address, 
+--
+contracts/pool/msgs/lp_wallet.fc-24-
+contracts/pool/msgs/lp_wallet.fc:25:        (int amount0_out, int amount1_out) = pool::get_lp_burn_out(jetton_amount);
+contracts/pool/msgs/lp_wallet.fc-26-
+contracts/pool/msgs/lp_wallet.fc-27-        ;; both must be positive
+contracts/pool/msgs/lp_wallet.fc:28:        throw_unless(error::zero_output, (amount0_out > 0) & (amount1_out > 0));
+contracts/pool/msgs/lp_wallet.fc-29-
+contracts/pool/msgs/lp_wallet.fc:30:        storage::reserve0 -= amount0_out;
+contracts/pool/msgs/lp_wallet.fc:31:        storage::reserve1 -= amount1_out;
+contracts/pool/msgs/lp_wallet.fc-32-        storage::total_supply_lp -= jetton_amount;
+--
+contracts/pool/msgs/lp_wallet.fc-40-            + storage_fee::pool + gas::pool::burn_ext 
+contracts/pool/msgs/lp_wallet.fc:41:            + storage_fee::router + gas::router::pay_to 
+contracts/pool/msgs/lp_wallet.fc:42:            + gas::router::pay_to  ;; do not sum again storage_fee::router
+contracts/pool/msgs/lp_wallet.fc-43-            + storage_fee::est_jetton_wallet + gas::jetton_wallet::est_transfer 
+--
+contracts/pool/msgs/lp_wallet.fc-45-
+contracts/pool/msgs/lp_wallet.fc:46:        cell left_maybe_payload = null();
+contracts/pool/msgs/lp_wallet.fc:47:        cell right_maybe_payload = null();
+contracts/pool/msgs/lp_wallet.fc:48:        ifnot maybe_custom_payload.null?() {
+contracts/pool/msgs/lp_wallet.fc:49:            slice maybe_custom_payload_sc = maybe_custom_payload.begin_parse();
+contracts/pool/msgs/lp_wallet.fc:50:            if maybe_custom_payload_sc.slice_bits() == 2 {
+contracts/pool/msgs/lp_wallet.fc:51:                left_maybe_payload = maybe_custom_payload_sc~load_maybe_ref();
+contracts/pool/msgs/lp_wallet.fc:52:                right_maybe_payload = maybe_custom_payload_sc~load_maybe_ref();
+contracts/pool/msgs/lp_wallet.fc-53-            }
+--
+contracts/pool/msgs/lp_wallet.fc-61-            storage::router_address, 
+contracts/pool/msgs/lp_wallet.fc:62:            router::pay_to(
+contracts/pool/msgs/lp_wallet.fc-63-                from_address, 
+--
+contracts/pool/msgs/lp_wallet.fc-67-                0, 
+contracts/pool/msgs/lp_wallet.fc:68:                left_maybe_payload, 
+contracts/pool/msgs/lp_wallet.fc:69:                amount0_out, 
+contracts/pool/msgs/lp_wallet.fc-70-                storage::token0_address, 
+--
+contracts/pool/msgs/lp_wallet.fc-79-            storage::router_address, 
+contracts/pool/msgs/lp_wallet.fc:80:            router::pay_to(
+contracts/pool/msgs/lp_wallet.fc-81-                from_address, 
+--
+contracts/pool/msgs/lp_wallet.fc-85-                0, 
+contracts/pool/msgs/lp_wallet.fc:86:                right_maybe_payload, 
+contracts/pool/msgs/lp_wallet.fc-87-                0, 
+contracts/pool/msgs/lp_wallet.fc-88-                storage::token0_address, 
+contracts/pool/msgs/lp_wallet.fc:89:                amount1_out, 
+contracts/pool/msgs/lp_wallet.fc-90-                storage::token1_address
+--
+contracts/pool/msgs/lp_wallet.fc-94-
+contracts/pool/msgs/lp_wallet.fc:95:        storage::save();
+contracts/pool/msgs/lp_wallet.fc-96-        return (true);

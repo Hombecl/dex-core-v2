@@ -140,6 +140,7 @@ Scope is limited to the five selected entrypoint assets recorded in `R1-SURFACE-
 | AE4 | router_vault_pay_to_recipient_stateinit | state_init_asset_binding | A vault_pay_to tuple could pass the derived-vault sender check while redirecting a stored referral amount to another token wallet or owner. | 134 | deadend_with_proof |
 | AE5 | lp_wallet_transfer_response_excess_commit | token_conservation | LP-wallet transfer response/excess handling or a forward-payload boundary could commit a debit while causing duplicate credit, wrong destination state-init, or unaccounted bounce restoration. | 135 | deadend_with_proof |
 | AF1 | lp_wallet_bounced_header_spoof_restore | bounce_accounting | A bounced header/body with an allowed opcode could make LP-wallet `on_bounce` restore a balance without a matching outbound debit. | 136 | deadend_with_proof |
+| AF2 | pool_burn_payload_wrapper_leg_split | payload_aliasing | The LP-burn custom-payload wrapper could split payload refs across two output legs while reserve/supply accounting remained committed. | 137 | deadend_with_proof |
 
 ## Cell execution contract
 

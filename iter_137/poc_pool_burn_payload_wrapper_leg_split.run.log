@@ -1,0 +1,1 @@
+AF2 burn-payload edge check passed: only a two-bit wrapper splits payload refs, output amounts/tokens/owner remain fixed, malformed wrappers clear payloads without changing reserve deltas, and a downstream leg failure is liveness-only
