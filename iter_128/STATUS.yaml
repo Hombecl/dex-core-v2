@@ -1,0 +1,69 @@
+schema_version: shadow-v1
+iteration: 128
+phase: completed
+cell_id: AD3
+cell_label: router_nested_route_payload_tail_boundary
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AD3
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - 'contracts/router/msgs/pool.fc:33: if (tmp_custom_payload_ds.slice_bits() > 32) { ;; cross_swap = 32 + address'
+      - 'contracts/router/msgs/pool.fc:46: if (fwd_opcode == op::cross_swap)'
+      - 'contracts/router/msgs/pool.fc:50: slice sent_jetton_address = amount0_out > 0 ? token0_address : token1_address;'
+      - 'contracts/router/msgs/pool.fc:52: int swap_amount = amount0_out + amount1_out;'
+      - 'contracts/router/msgs/pool.fc:55: route_dex_messages(sent_jetton_address, gas, swap_amount, original_caller, custom_payload);'
+      - 'contracts/router/dex.fc:44: transferred_op = transferred_op == op::cross_swap ? op::swap : transferred_op;'
+      - 'contracts/router/dex.fc:47: throw_arg_if(op::transfer_bounce_invalid_pool, 1, equal_slices(_jetton_address, token_wallet1));'
+      - 'contracts/router/dex.fc:87: pool~state_init(),'
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/System.spec.ts,tests/ConstProduct.spec.ts,tests/ConstSum.spec.ts,tests/Stableswap.spec.ts,tests/WeightedCPI.spec.ts,tests/WeightedStableswap.spec.ts,iter_128/poc_router_nested_route_payload_tail_boundary.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_128/poc_router_nested_route_payload_tail_boundary.run.log,iter_128/poc_router_nested_route_payload_tail_boundary.model.run.log
+    run_log_exists_on_disk: true
+    test_runtime: '58.252s integration; model passed'
+    result: 'PASSED (integration: 25 passed, 124 skipped, 149 total; model: passed)'
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 nested cross_swap payload tail original_caller is:issue'
+      - 'repo:ston-fi/dex-core-v2 nested cross_swap payload tail original_caller is:pr'
+      - 'repo:ston-fi/dex-core-v2 pay_to custom_payload fwd_opcode is:issue'
+      - 'repo:ston-fi/dex-core-v2 pay_to custom_payload fwd_opcode is:pr'
+    results: all four returned total_count 0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'nested cross_swap payload tail original_caller repository issue search'
+      - 'nested cross_swap payload tail original_caller repository pull-request search'
+      - 'pay_to custom_payload fwd_opcode repository issue search'
+      - 'pay_to custom_payload fwd_opcode repository pull-request search'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_128/callers-grep.txt
+  caller_grep_match_count: 189
+  caller_grep_unique_files: 42
+  prior_audit_path: iter_128/prior-audit-git.log
+  prior_audit_bytes: 78
+  r15_search_files:
+    - iter_128/R15-GH-nested-cross-swap-tail-caller-issue.json
+    - iter_128/R15-GH-nested-cross-swap-tail-caller-pr.json
+    - iter_128/R15-GH-pay-to-custom-fwd-opcode-issue.json
+    - iter_128/R15-GH-pay-to-custom-fwd-opcode-pr.json
+  source_conclusion: 'Pay_to validates the derived pool sender before interpreting custom payloads. Nested cross_swap routing requires a payload wider than the 32-bit opcode, the cross_swap opcode, and sufficient current gas; it carries the exact summed output amount, selects the nonzero-leg token wallet, and preserves original_caller. route_dex_messages revalidates token-wallet inequality, caller workchain, deadline, operation, and derived pool state-init. Exact-boundary tails remain normal payloads and malformed nested routes refund the preserved amount/caller.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_128-AD3.md

@@ -1,0 +1,1 @@
+AD3 route-tail edge check passed: exact 32-bit tails stay normal payloads, nested cross-swap keeps original caller and amount, and token/deadline guards refund malformed recursion

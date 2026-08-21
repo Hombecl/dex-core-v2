@@ -1,0 +1,189 @@
+contracts/vault.fc:19:() storage::save() impure inline_ref {
+contracts/vault.fc:44:        storage::save();
+contracts/vault.fc:56:            + gas::router::vault_pay_to + gas::vault::withdraw_fee
+contracts/vault.fc:62:            router::vault_pay_to(
+contracts/vault.fc:69:        storage::save();
+contracts/lp_wallet.fc:26:    cell custom_payload = in_msg_body~load_dict();
+contracts/lp_wallet.fc:51:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:100:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:108:    cell custom_payload = in_msg_body~load_maybe_ref(); 
+contracts/lp_wallet.fc:121:        .store_maybe_ref(custom_payload)
+contracts/lp_wallet.fc:133:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:146:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet/storage.fc:8:() storage::save(int balance, slice owner_address, slice jetton_master_address, cell jetton_wallet_code) impure inline {
+contracts/router/storage.fc:31:() storage::save() impure inline {
+contracts/lp_account/storage.fc:15:() storage::save() impure inline_ref {
+contracts/router/dex.fc:1:() route_dex_messages(slice _jetton_address, int _available_gas, int _sent_amount, slice _caller, cell _dex_payload) impure inline {
+contracts/router/dex.fc:8:    slice token_wallet1 = null();
+contracts/router/dex.fc:11:    int tx_deadline = 0;
+contracts/router/dex.fc:16:        token_wallet1 = dex_payload~load_msg_addr();
+contracts/router/dex.fc:19:        tx_deadline = dex_payload~load_time();
+contracts/router/dex.fc:22:            token_wallet1.address::check_workchain(params::workchain)
+contracts/router/dex.fc:44:        transferred_op = transferred_op == op::cross_swap ? op::swap : transferred_op;
+contracts/router/dex.fc:46:        throw_arg_if(op::transfer_bounce_invalid_request, 1, (transferred_op != op::swap) & (transferred_op != op::provide_lp));
+contracts/router/dex.fc:47:        throw_arg_if(op::transfer_bounce_invalid_pool, 1, equal_slices(_jetton_address, token_wallet1));
+contracts/router/dex.fc:48:        throw_arg_if(op::transfer_bounce_locked, 1, storage::is_locked);
+contracts/router/dex.fc:50:        throw_arg_unless(op::transfer_bounce_wrong_wc, 1, _caller.address::check_workchain(params::workchain));
+contracts/router/dex.fc:51:        throw_arg_unless(op::transfer_bounce_tx_expired, 1, tx_deadline > now());
+contracts/router/dex.fc:56:        throw_arg_if(op::transfer_bounce_low_gas, 1, (transferred_op == op::swap) 
+contracts/router/dex.fc:60:                + gas::router::pay_to
+contracts/router/dex.fc:67:        throw_arg_if(op::transfer_bounce_low_gas, 1, (transferred_op == op::provide_lp) 
+contracts/router/dex.fc:79:            pool_idata(my_address(), _jetton_address, token_wallet1, storage::jetton_lp_wallet_code,  storage::lp_account_code),
+contracts/router/dex.fc:84:        msgs::send_with_stateinit(
+contracts/router/dex.fc:88:            pool::$route(transferred_op, _caller, _sent_amount, _jetton_address, token_wallet1, _dex_payload), 
+contracts/router/get.fc:11:        pool_idata(my_address(), token0, token1, storage::jetton_lp_wallet_code,  storage::lp_account_code),
+tests/System.spec.ts:313:                output: "cross_swap_system",
+contracts/router/msgs/vault.fc:3:    if ctx.at(OPCODE) == op::vault_pay_to {
+contracts/pool/msgs/router.fc:14:        dex_payload~load_msg_addr(); ;; skip token_wallet1
+contracts/pool/msgs/router.fc:19:        int tx_deadline = dex_payload~load_time();
+contracts/pool/msgs/router.fc:24:        cell custom_payload_cs = null(); 
+contracts/pool/msgs/router.fc:36:            custom_payload_cs = call_payload~load_maybe_ref(); 
+contracts/pool/msgs/router.fc:58:                router::pay_to(
+contracts/pool/msgs/router.fc:111:            throw_arg_unless(op::swap_refund_tx_expired, 1, tx_deadline > now());
+contracts/pool/msgs/router.fc:138:                router::pay_to(
+contracts/pool/msgs/router.fc:144:                    custom_payload_cs, 
+contracts/pool/msgs/router.fc:152:            storage::save();
+contracts/pool/msgs/router.fc:160:                router::pay_to(
+contracts/pool/msgs/router.fc:166:                    refund_payload_cs, ;; clear custom_payload_cs, use refund_payload_cs
+contracts/pool/msgs/router.fc:186:        dex_payload~load_msg_addr(); ;; skip token_wallet1 
+contracts/pool/msgs/router.fc:191:        int tx_deadline = dex_payload~load_time();
+contracts/pool/msgs/router.fc:197:        cell custom_payload_cs = null(); 
+contracts/pool/msgs/router.fc:206:            custom_payload_cs = call_payload~load_maybe_ref();
+contracts/pool/msgs/router.fc:219:                router::pay_to(
+contracts/pool/msgs/router.fc:238:            throw_arg_unless(op::provide_refund_tx_expired, 1, tx_deadline > now());
+contracts/pool/msgs/router.fc:246:            msgs::send_with_stateinit(
+contracts/pool/msgs/router.fc:257:                    custom_payload_cs,
+contracts/pool/msgs/router.fc:270:                router::pay_to(
+contracts/pool/msgs/router.fc:296:        storage::save();
+contracts/pool/msgs/router.fc:317:        storage::save();
+contracts/lp_account/msgs/pool.fc:13:        cell custom_payload_cs = in_msg_body~load_maybe_ref(); 
+contracts/lp_account/msgs/pool.fc:41:                    custom_payload_cs,
+contracts/lp_account/msgs/pool.fc:55:        storage::save();
+tests/WeightedStableswap.spec.ts:1630:                debugGraph: "cross_swap",
+tests/WeightedStableswap.spec.ts:1666:                debugGraph: "cross_swap_router",
+tests/WeightedStableswap.spec.ts:1879:                debugGraph: "cross_swap_refund",
+tests/WeightedStableswap.spec.ts:1954:                debugGraph: "cross_swap_router_refund_in",
+tests/WeightedStableswap.spec.ts:1985:                debugGraph: "cross_swap_router_refund_mid",
+contracts/lp_account/msgs/user.fc:17:            + storage_fee::router + gas::router::pay_to  
+contracts/lp_account/msgs/user.fc:36:        storage::save();
+contracts/lp_account/msgs/user.fc:53:        cell custom_payload_cs = in_msg_body~load_maybe_ref(); 
+contracts/lp_account/msgs/user.fc:94:                custom_payload_cs,
+contracts/lp_account/msgs/user.fc:100:        storage::save();
+contracts/router/msgs/admin.fc:35:            pool_idata(my_address(), jetton_wallet0, jetton_wallet1, storage::jetton_lp_wallet_code,  storage::lp_account_code),
+contracts/router/msgs/admin.fc:40:        msgs::send_with_stateinit(
+contracts/router/msgs/admin.fc:71:            pool_idata(my_address(), jetton_wallet0, jetton_wallet1, storage::jetton_lp_wallet_code,  storage::lp_account_code),
+contracts/router/msgs/admin.fc:76:        msgs::send_with_stateinit(
+contracts/router/msgs/admin.fc:102:            pool_idata(my_address(), jetton_wallet0, jetton_wallet1, storage::jetton_lp_wallet_code, storage::lp_account_code),
+contracts/router/msgs/admin.fc:107:        msgs::send_with_stateinit(
+contracts/router/msgs/admin.fc:133:            pool_idata(my_address(), jetton_wallet0, jetton_wallet1, storage::jetton_lp_wallet_code, storage::lp_account_code),
+contracts/router/msgs/admin.fc:138:        msgs::send_with_stateinit(
+contracts/router/msgs/admin.fc:150:        storage::save();
+contracts/router/msgs/admin.fc:164:        storage::save();
+contracts/router/msgs/admin.fc:179:        storage::save();
+contracts/router/msgs/admin.fc:194:        storage::save();
+contracts/router/msgs/admin.fc:205:        storage::save();
+contracts/router/msgs/admin.fc:216:        storage::save();
+contracts/router/msgs/admin.fc:227:        storage::save();
+contracts/router/msgs/admin.fc:258:        storage::save();
+contracts/pool/msgs/lp_account.fc:12:        cell custom_payload_cs = in_msg_body~load_maybe_ref(); 
+contracts/pool/msgs/lp_account.fc:75:            ;; no need to forward again custom_payload_cs
+contracts/pool/msgs/lp_account.fc:84:            msgs::send_with_stateinit(
+contracts/pool/msgs/lp_account.fc:119:            msgs::send_with_stateinit(
+contracts/pool/msgs/lp_account.fc:128:                    custom_payload_cs
+contracts/pool/msgs/lp_account.fc:132:            storage::save();
+contracts/pool/msgs/lp_account.fc:162:                router::pay_to(
+contracts/pool/msgs/lp_account.fc:182:                router::pay_to(
+contracts/pool/msgs/lp_wallet.fc:9:        cell maybe_custom_payload = in_msg_body~load_maybe_ref();
+contracts/pool/msgs/lp_wallet.fc:41:            + storage_fee::router + gas::router::pay_to 
+contracts/pool/msgs/lp_wallet.fc:42:            + gas::router::pay_to  ;; do not sum again storage_fee::router
+contracts/pool/msgs/lp_wallet.fc:48:        ifnot maybe_custom_payload.null?() {
+contracts/pool/msgs/lp_wallet.fc:49:            slice maybe_custom_payload_sc = maybe_custom_payload.begin_parse();
+contracts/pool/msgs/lp_wallet.fc:50:            if maybe_custom_payload_sc.slice_bits() == 2 {
+contracts/pool/msgs/lp_wallet.fc:51:                left_maybe_payload = maybe_custom_payload_sc~load_maybe_ref();
+contracts/pool/msgs/lp_wallet.fc:52:                right_maybe_payload = maybe_custom_payload_sc~load_maybe_ref();
+contracts/pool/msgs/lp_wallet.fc:62:            router::pay_to(
+contracts/pool/msgs/lp_wallet.fc:80:            router::pay_to(
+contracts/pool/msgs/lp_wallet.fc:95:        storage::save();
+contracts/router/msgs/getter.fc:17:            pool_idata(my_address(), token0, token1, storage::jetton_lp_wallet_code,  storage::lp_account_code),
+contracts/router/msgs/pool.fc:5:    if ctx.at(OPCODE) == op::pay_to { 
+contracts/router/msgs/pool.fc:8:        slice original_caller = in_msg_body~load_msg_addr();
+contracts/router/msgs/pool.fc:10:        cell custom_payload = in_msg_body~load_maybe_ref();
+contracts/router/msgs/pool.fc:19:            pool_idata(
+contracts/router/msgs/pool.fc:30:        int fwd_opcode = -1;
+contracts/router/msgs/pool.fc:31:        ifnot(custom_payload.null?()) {
+contracts/router/msgs/pool.fc:32:            slice tmp_custom_payload_ds = custom_payload.begin_parse();
+contracts/router/msgs/pool.fc:33:            if (tmp_custom_payload_ds.slice_bits() > 32) { ;; cross_swap = 32 + address
+contracts/router/msgs/pool.fc:34:                fwd_opcode = tmp_custom_payload_ds.preload_uint(32);
+contracts/router/msgs/pool.fc:38:        ;; handle cross_swap
+contracts/router/msgs/pool.fc:40:        ;; - fwd_opcode is correct
+contracts/router/msgs/pool.fc:45:        int used_gas = ctx.at(FWD_FEE) + gas::router::pay_to;
+contracts/router/msgs/pool.fc:46:        if (fwd_opcode == op::cross_swap) 
+contracts/router/msgs/pool.fc:50:            slice sent_jetton_address = amount0_out > 0 ? token0_address : token1_address;
+contracts/router/msgs/pool.fc:52:            int swap_amount = amount0_out + amount1_out; ;; one side is zero, so we can sum them
+contracts/router/msgs/pool.fc:55:            route_dex_messages(sent_jetton_address, gas, swap_amount, original_caller, custom_payload);
+contracts/router/msgs/pool.fc:75:                        .store_maybe_ref(custom_payload)
+contracts/router/msgs/pool.fc:84:                        .store_maybe_ref(custom_payload)
+contracts/router/msgs/pool.fc:104:            pool_idata(
+contracts/router/msgs/pool.fc:127:        msgs::send_with_stateinit(
+tests/ConstProduct.spec.ts:1751:                output: "cross_swap_payload_complex",
+tests/ConstProduct.spec.ts:1963:                debugGraph: "cross_swap",
+tests/ConstProduct.spec.ts:2000:                debugGraph: "cross_swap_router",
+tests/ConstProduct.spec.ts:2258:                debugGraph: "cross_swap_refund",
+tests/ConstProduct.spec.ts:2296:                debugGraph: "cross_swap_router_refund_in",
+tests/ConstProduct.spec.ts:2327:                debugGraph: "cross_swap_router_refund_mid",
+contracts/pool/msgs/protocolfee.fc:10:            + storage_fee::router + gas::router::pay_to 
+contracts/pool/msgs/protocolfee.fc:11:            + gas::router::pay_to 
+contracts/pool/msgs/protocolfee.fc:25:            router::pay_to(
+contracts/pool/msgs/protocolfee.fc:42:            router::pay_to(
+contracts/pool/msgs/protocolfee.fc:60:        storage::save();
+contracts/router/msgs/jetton.fc:17:                    .store_uint32(op::transfer_bounce_invalid_request)
+contracts/router/msgs/jetton.fc:24:        route_dex_messages(
+contracts/router/pools/weighted_const_product/ext_admin.fc:34:            pool_idata(my_address(), left_jetton_wallet, right_jetton_wallet, storage::jetton_lp_wallet_code, storage::lp_account_code),
+contracts/router/pools/weighted_const_product/ext_admin.fc:39:        msgs::send_with_stateinit(
+contracts/router/pools/weighted_stableswap/ext_admin.fc:39:            pool_idata(my_address(), left_jetton_wallet, right_jetton_wallet, storage::jetton_lp_wallet_code, storage::lp_account_code),
+contracts/router/pools/weighted_stableswap/ext_admin.fc:44:        msgs::send_with_stateinit(
+tests/Stableswap.spec.ts:1508:                debugGraph: "cross_swap",
+tests/Stableswap.spec.ts:1544:                debugGraph: "cross_swap_router",
+tests/Stableswap.spec.ts:1783:                debugGraph: "cross_swap_refund",
+tests/Stableswap.spec.ts:1858:                debugGraph: "cross_swap_router_refund_in",
+tests/Stableswap.spec.ts:1889:                debugGraph: "cross_swap_router_refund_mid",
+tests/WeightedCPI.spec.ts:1538:                debugGraph: "cross_swap",
+tests/WeightedCPI.spec.ts:1574:                debugGraph: "cross_swap_router",
+tests/WeightedCPI.spec.ts:1781:                debugGraph: "cross_swap_refund",
+tests/WeightedCPI.spec.ts:1857:                debugGraph: "cross_swap_router_refund_in",
+tests/WeightedCPI.spec.ts:1888:                debugGraph: "cross_swap_router_refund_mid",
+tests/ConstSum.spec.ts:1435:                debugGraph: "cross_swap",
+tests/ConstSum.spec.ts:1471:                debugGraph: "cross_swap_router",
+tests/ConstSum.spec.ts:1699:                debugGraph: "cross_swap_refund",
+tests/ConstSum.spec.ts:1755:                debugGraph: "cross_swap_router_refund_in",
+tests/ConstSum.spec.ts:1786:                debugGraph: "cross_swap_router_refund_mid",
+contracts/router/pools/stableswap/ext_admin.fc:32:            pool_idata(
+contracts/router/pools/stableswap/ext_admin.fc:43:        msgs::send_with_stateinit(
+contracts/pool/pools/stableswap/ext_router.fc:13:        storage::save();
+contracts/pool/pools/README.md:6:(cell) pool_idata(slice _router_address, slice _first_jetton_address, slice _second_jetton_address, cell _jetton_lp_wallet_code, cell _lp_account_code);
+contracts/pool/pools/README.md:15:() storage::save();
+contracts/pool/pools/constant_product/storage.fc:25:() storage::save() impure inline {
+contracts/pool/pools/stableswap/state_init.fc:17:(slice) _pool_idata() inline asm "<b <%= defaultIsLocked %> 1 u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, b{00} s, <%= defaultLPFee %> 16 u, <%= defaultProtocolFee %> 16 u, 1 32 u, b> <s PUSHSLICE";
+contracts/pool/pools/stableswap/state_init.fc:19:(cell) pool_idata(slice _router_address, slice _first_jetton_address, slice _second_jetton_address, cell _jetton_lp_wallet_code, cell _lp_account_code) inline {    
+contracts/pool/pools/stableswap/state_init.fc:36:        .store_slice(_pool_idata())
+contracts/pool/pools/stableswap/storage.fc:28:() storage::save() impure inline {
+contracts/pool/pools/constant_sum/storage.fc:25:() storage::save() impure inline {
+contracts/pool/pools/constant_product/state_init.fc:16:(slice) _pool_idata() inline asm "<b <%= defaultIsLocked %> 1 u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, b{00} s, <%= defaultLPFee %> 16 u, <%= defaultProtocolFee %> 16 u, b> <s PUSHSLICE";
+contracts/pool/pools/constant_product/state_init.fc:18:(cell) pool_idata(slice _router_address, slice _first_jetton_address, slice _second_jetton_address, cell _jetton_lp_wallet_code, cell _lp_account_code) inline {    
+contracts/pool/pools/constant_product/state_init.fc:34:        .store_slice(_pool_idata())
+contracts/pool/pools/constant_sum/state_init.fc:16:(slice) _pool_idata() inline asm "<b <%= defaultIsLocked %> 1 u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, b{00} s, <%= defaultLPFee %> 16 u, <%= defaultProtocolFee %> 16 u, b> <s PUSHSLICE";
+contracts/pool/pools/constant_sum/state_init.fc:18:(cell) pool_idata(slice _router_address, slice _first_jetton_address, slice _second_jetton_address, cell _jetton_lp_wallet_code, cell _lp_account_code) inline {    
+contracts/pool/pools/constant_sum/state_init.fc:34:        .store_slice(_pool_idata())
+contracts/pool/pools/weighted_const_product/storage.fc:28:() storage::save() impure inline {
+contracts/pool/pools/weighted_stableswap/state_init.fc:16:(slice) _pool_idata() inline asm "<b <%= defaultIsLocked %> 1 u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, b{00} s, <%= defaultLPFee %> 16 u, <%= defaultProtocolFee %> 16 u, b> <s PUSHSLICE";
+contracts/pool/pools/weighted_stableswap/state_init.fc:27:(cell) _pool_idata2() inline asm "<b 1000000000000000000 128 u, 0 128 u, 0 128 u, b{00} s, b> PUSHREF";
+contracts/pool/pools/weighted_stableswap/state_init.fc:29:(cell) pool_idata(slice _router_address, slice _first_jetton_address, slice _second_jetton_address, cell _jetton_lp_wallet_code, cell _lp_account_code) inline {    
+contracts/pool/pools/weighted_stableswap/state_init.fc:46:        .store_slice(_pool_idata())
+contracts/pool/pools/weighted_stableswap/state_init.fc:47:        .store_ref(_pool_idata2())
+contracts/pool/pools/weighted_stableswap/ext_router.fc:26:        storage::save();
+contracts/pool/pools/weighted_stableswap/storage.fc:38:() storage::save() impure inline {
+contracts/pool/pools/weighted_const_product/ext_router.fc:21:        storage::save();
+contracts/pool/pools/weighted_const_product/state_init.fc:17:(slice) _pool_idata() inline asm "<b <%= defaultIsLocked %> 1 u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, b{00} s, <%= defaultLPFee %> 16 u, <%= defaultProtocolFee %> 16 u, 0 64 u, b> <s PUSHSLICE";
+contracts/pool/pools/weighted_const_product/state_init.fc:19:(cell) pool_idata(slice _router_address, slice _first_jetton_address, slice _second_jetton_address, cell _jetton_lp_wallet_code, cell _lp_account_code) inline {    
+contracts/pool/pools/weighted_const_product/state_init.fc:36:        .store_slice(_pool_idata())
+contracts/pool/pools/weighted_stableswap/setter.fc:10:        storage::save();
