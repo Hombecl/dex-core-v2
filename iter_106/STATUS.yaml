@@ -1,0 +1,61 @@
+schema_version: shadow-v1
+iteration: 106
+phase: completed
+cell_id: Z1
+cell_label: lp_account_burn_state_clear_before_payout
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: Z1
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts,tests/ConstSum.spec.ts,tests/Stableswap.spec.ts,tests/WeightedStableswap.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_106/poc_lp_account_burn_state_clear_before_payout.run.log
+    run_log_exists_on_disk: true
+    test_runtime: 16.066s
+    result: PASSED (4 passed, 109 skipped, 113 total)
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 burn_notification_ext is:issue'
+      - 'repo:ston-fi/dex-core-v2 burn_notification_ext is:pr'
+      - 'repo:ston-fi/dex-core-v2 get_lp_burn_out is:issue'
+      - 'repo:ston-fi/dex-core-v2 get_lp_burn_out is:pr'
+    results: all four returned total_count 0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'burn_notification_ext on repository issue page'
+      - 'burn_notification_ext on repository pull-request page'
+      - 'get_lp_burn_out on repository issue page'
+      - 'get_lp_burn_out on repository pull-request page'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_106/callers-grep.txt
+  caller_grep_match_count: 137
+  caller_grep_unique_files: 54
+  prior_audit_path: iter_106/prior-audit-git.log
+  prior_audit_bytes: 78
+  r15_search_files:
+    - iter_106/R15-GH-burn-notification-ext-issue.json
+    - iter_106/R15-GH-burn-notification-ext-pr.json
+    - iter_106/R15-GH-lp-burn-output-issue.json
+    - iter_106/R15-GH-lp-burn-output-pr.json
+  source_conclusion: 'LP-wallet burn callbacks are deterministic and owner-bound; pool burn output decrements both reserve legs and LP supply before sending the two owner-directed payouts, with no attacker-controlled leg substitution. A replay or bounce does not create a second state transition.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_106-Z1.md
