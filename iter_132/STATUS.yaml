@@ -1,0 +1,72 @@
+schema_version: shadow-v1
+iteration: 132
+phase: completed
+cell_id: AE2
+cell_label: pool_protocol_fee_dual_payload_delivery
+final_verdict: KILLED_TRUSTED_ON_TRUSTED
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AE2
+  final_verdict: KILLED_TRUSTED_ON_TRUSTED
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - 'contracts/pool/msgs/protocolfee.fc:5: throw_unless(error::zero_output, (storage::collected_token0_protocol_fee > 0) & (storage::collected_token1_protocol_fee > 0));'
+      - 'contracts/pool/msgs/protocolfee.fc:15: cell maybe_payload0 = in_msg_body~load_maybe_ref();'
+      - 'contracts/pool/msgs/protocolfee.fc:16: cell maybe_payload1 = in_msg_body~load_maybe_ref();'
+      - 'contracts/pool/msgs/protocolfee.fc:25: router::pay_to('
+      - 'contracts/pool/msgs/protocolfee.fc:32: storage::collected_token0_protocol_fee,'
+      - 'contracts/pool/msgs/protocolfee.fc:51: storage::collected_token1_protocol_fee,'
+      - 'contracts/pool/msgs/protocolfee.fc:57: storage::collected_token0_protocol_fee = 0;'
+      - 'contracts/pool/msgs/protocolfee.fc:58: storage::collected_token1_protocol_fee = 0;'
+      - 'contracts/pool/msgs/protocolfee.fc:60: storage::save();'
+      - 'contracts/pool.fc:22: if equal_slices(ctx.at(SENDER), storage::protocol_fee_address) {'
+      - 'contracts/router/msgs/pool.fc:28: throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER)));'
+  poc_execution:
+    test_file_path: iter_132/poc_pool_protocol_fee_dual_payload_delivery.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_132/poc_pool_protocol_fee_dual_payload_delivery.run.log,iter_132/integration.run.log
+    run_log_exists_on_disk: true
+    test_runtime: '26.146s integration; model passed'
+    result: 'PASSED (integration: 10 passed, 128 skipped, 138 total across 5 suites; model: passed)'
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 "collect_fees" "maybe_payload0" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "collect_fees" "maybe_payload0" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "protocol_fee" "CARRY_ALL_BALANCE" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "protocol_fee" "CARRY_ALL_BALANCE" is:pr'
+    results: all four returned total_count 0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'protocol fee dual payload repository issue search'
+      - 'protocol fee dual payload repository pull-request search'
+      - 'protocol fee carry all balance repository issue search'
+      - 'protocol fee carry all balance repository pull-request search'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: killed_trusted_on_trusted
+  caller_grep_path: iter_132/callers-grep.txt
+  caller_grep_match_count: 134
+  caller_grep_unique_files: 7
+  prior_audit_path: iter_132/prior-audit-git.log
+  prior_audit_bytes: 29
+  r15_search_files:
+    - iter_132/R15-GH-protocol-fee-dual-payload-issue.json
+    - iter_132/R15-GH-protocol-fee-dual-payload-pr.json
+    - iter_132/R15-GH-protocol-fee-carry-all-balance-issue.json
+    - iter_132/R15-GH-protocol-fee-carry-all-balance-pr.json
+  source_conclusion: 'Collect_fees requires both stored protocol counters and emits one-sided pay_to messages with exact token/amount fields, clears both counters once, and saves. Pool dispatch is gated by the stored protocol_fee_address, and Router separately binds each pay_to to the derived pool. Custom payload selection therefore belongs to the trusted protocol-fee sender; any malformed payload can at most cause trusted-on-trusted delivery or liveness griefing, which is killed by the scope filter.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_132-AE2.md

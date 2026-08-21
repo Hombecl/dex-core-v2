@@ -1,0 +1,134 @@
+contracts/router/dex.fc-59-                + storage_fee::pool + gas::pool::swap
+contracts/router/dex.fc:60:                + gas::router::pay_to
+contracts/router/dex.fc-61-                + storage_fee::vault + gas::router::pay_vault + gas::vault::deposit_ref_fee
+--
+contracts/pool/msgs/getter.fc-18-            storage::protocol_fee,
+contracts/pool/msgs/getter.fc:19:            storage::protocol_fee_address,
+contracts/pool/msgs/getter.fc:20:            storage::collected_token0_protocol_fee,
+contracts/pool/msgs/getter.fc:21:            storage::collected_token1_protocol_fee
+contracts/pool/msgs/getter.fc-22-        );
+--
+contracts/common/contracts.fc-84-    int _protocol_fee,
+contracts/common/contracts.fc:85:    slice _protocol_fee_address,
+contracts/common/contracts.fc-86-    int _collected_left_token_protocol_fees,
+--
+contracts/common/contracts.fc-98-            .store_slice(_router_address)
+contracts/common/contracts.fc:99:            .store_slice(_protocol_fee_address)
+contracts/common/contracts.fc-100-            .store_coins(_total_supply_lp)
+--
+contracts/common/contracts.fc-145-
+contracts/common/contracts.fc:146:(cell) router::pay_to(
+contracts/common/contracts.fc-147-    slice _original_caller,
+--
+contracts/common/contracts.fc-250-    int _new_protocol_fee, 
+contracts/common/contracts.fc:251:    slice _new_protocol_fee_address,
+contracts/common/contracts.fc-252-    slice _excesses_recipient
+--
+contracts/common/contracts.fc-256-        .store_uint(_new_protocol_fee, 16)
+contracts/common/contracts.fc:257:        .store_slice(_new_protocol_fee_address)
+contracts/common/contracts.fc-258-        .store_slice(_excesses_recipient)
+--
+contracts/router/msgs/pool.fc-44-
+contracts/router/msgs/pool.fc:45:        int used_gas = ctx.at(FWD_FEE) + gas::router::pay_to;
+contracts/router/msgs/pool.fc-46-        if (fwd_opcode == op::cross_swap) 
+--
+contracts/pool.fc-20-
+contracts/pool.fc:21:    ;; handle collect_fees
+contracts/pool.fc:22:    if equal_slices(ctx.at(SENDER), storage::protocol_fee_address) {
+contracts/pool.fc-23-        handle_protocolfee_messages();
+--
+contracts/pool/msgs/protocolfee.fc-3-
+contracts/pool/msgs/protocolfee.fc:4:    if ctx.at(OPCODE) == op::collect_fees { ;; throwable
+contracts/pool/msgs/protocolfee.fc:5:        throw_unless(error::zero_output, (storage::collected_token0_protocol_fee > 0) & (storage::collected_token1_protocol_fee > 0));
+contracts/pool/msgs/protocolfee.fc-6-        ;; -> Pool -> Router -> JettonWalletA ->
+--
+contracts/pool/msgs/protocolfee.fc-8-        throw_unless(error::insufficient_gas, ctx.at(MSG_VALUE) > ((ctx.at(FWD_FEE) * 7) 
+contracts/pool/msgs/protocolfee.fc:9:            + storage_fee::pool + gas::pool::collect_fees 
+contracts/pool/msgs/protocolfee.fc:10:            + storage_fee::router + gas::router::pay_to 
+contracts/pool/msgs/protocolfee.fc:11:            + gas::router::pay_to 
+contracts/pool/msgs/protocolfee.fc-12-            + storage_fee::est_jetton_wallet + gas::jetton_wallet::est_transfer            
+--
+contracts/pool/msgs/protocolfee.fc-14-
+contracts/pool/msgs/protocolfee.fc:15:        cell maybe_payload0 = in_msg_body~load_maybe_ref();
+contracts/pool/msgs/protocolfee.fc:16:        cell maybe_payload1 = in_msg_body~load_maybe_ref();
+contracts/pool/msgs/protocolfee.fc-17-        in_msg_body.end_parse();
+contracts/pool/msgs/protocolfee.fc-18-
+contracts/pool/msgs/protocolfee.fc:19:        int gas = ((ctx.at(MSG_VALUE) - (ctx.at(FWD_FEE) + storage_fee::pool + gas::pool::collect_fees + storage_fee::router)) / 2) + storage_fee::router;
+contracts/pool/msgs/protocolfee.fc-20-
+--
+contracts/pool/msgs/protocolfee.fc-24-            storage::router_address, 
+contracts/pool/msgs/protocolfee.fc:25:            router::pay_to(
+contracts/pool/msgs/protocolfee.fc:26:                storage::protocol_fee_address, 
+contracts/pool/msgs/protocolfee.fc:27:                storage::protocol_fee_address, 
+contracts/pool/msgs/protocolfee.fc:28:                storage::protocol_fee_address, 
+contracts/pool/msgs/protocolfee.fc-29-                0, 
+contracts/pool/msgs/protocolfee.fc-30-                0, 
+contracts/pool/msgs/protocolfee.fc:31:                maybe_payload0, 
+contracts/pool/msgs/protocolfee.fc:32:                storage::collected_token0_protocol_fee, 
+contracts/pool/msgs/protocolfee.fc-33-                storage::token0_address,
+--
+contracts/pool/msgs/protocolfee.fc-41-            storage::router_address, 
+contracts/pool/msgs/protocolfee.fc:42:            router::pay_to(
+contracts/pool/msgs/protocolfee.fc:43:                storage::protocol_fee_address, 
+contracts/pool/msgs/protocolfee.fc:44:                storage::protocol_fee_address, 
+contracts/pool/msgs/protocolfee.fc:45:                storage::protocol_fee_address, 
+contracts/pool/msgs/protocolfee.fc-46-                0, 
+contracts/pool/msgs/protocolfee.fc-47-                0, 
+contracts/pool/msgs/protocolfee.fc:48:                maybe_payload1, 
+contracts/pool/msgs/protocolfee.fc-49-                0, 
+contracts/pool/msgs/protocolfee.fc-50-                storage::token0_address,
+contracts/pool/msgs/protocolfee.fc:51:                storage::collected_token1_protocol_fee,
+contracts/pool/msgs/protocolfee.fc-52-                storage::token1_address
+--
+contracts/pool/msgs/protocolfee.fc-56-
+contracts/pool/msgs/protocolfee.fc:57:        storage::collected_token0_protocol_fee = 0;
+contracts/pool/msgs/protocolfee.fc:58:        storage::collected_token1_protocol_fee = 0;
+contracts/pool/msgs/protocolfee.fc-59-        
+contracts/pool/msgs/protocolfee.fc:60:        storage::save();
+contracts/pool/msgs/protocolfee.fc-61-        return ();
+--
+contracts/pool/msgs/router.fc-57-                ctx.at(SENDER), 
+contracts/pool/msgs/router.fc:58:                router::pay_to(
+contracts/pool/msgs/router.fc-59-                    from_user_address,
+--
+contracts/pool/msgs/router.fc-96-                storage::reserve1 -= (out1 + protocol_fee_out + ref_fee_out1);
+contracts/pool/msgs/router.fc:97:                storage::collected_token1_protocol_fee += protocol_fee_out;
+contracts/pool/msgs/router.fc-98-            } else { 
+--
+contracts/pool/msgs/router.fc-103-                storage::reserve1 += amount1;
+contracts/pool/msgs/router.fc:104:                storage::collected_token0_protocol_fee += protocol_fee_out;
+contracts/pool/msgs/router.fc-105-            }
+--
+contracts/pool/msgs/router.fc-137-                ctx.at(SENDER), 
+contracts/pool/msgs/router.fc:138:                router::pay_to(
+contracts/pool/msgs/router.fc-139-                    from_user_address,
+--
+contracts/pool/msgs/router.fc-151-            );
+contracts/pool/msgs/router.fc:152:            storage::save();
+contracts/pool/msgs/router.fc-153-        } catch(err_arg, err_code) {
+--
+contracts/pool/msgs/router.fc-159-                ctx.at(SENDER), 
+contracts/pool/msgs/router.fc:160:                router::pay_to(
+contracts/pool/msgs/router.fc-161-                    from_user_address,
+--
+contracts/pool/msgs/router.fc-218-                ctx.at(SENDER), 
+contracts/pool/msgs/router.fc:219:                router::pay_to(
+contracts/pool/msgs/router.fc-220-                    from_user,
+--
+contracts/pool/msgs/router.fc-269-                ctx.at(SENDER), 
+contracts/pool/msgs/router.fc:270:                router::pay_to(
+contracts/pool/msgs/router.fc-271-                    from_user,
+--
+contracts/pool/msgs/router.fc-295-        storage::is_locked = storage::is_locked ? false : true; 
+contracts/pool/msgs/router.fc:296:        storage::save();
+contracts/pool/msgs/router.fc-297-        reserves::max_balance(storage_fee::pool);
+--
+contracts/pool/msgs/router.fc-310-        int new_protocol_fee = in_msg_body~load_uint16();
+contracts/pool/msgs/router.fc:311:        slice new_protocol_fee_address = in_msg_body~load_msg_addr();
+contracts/pool/msgs/router.fc-312-
+--
+contracts/pool/msgs/router.fc-314-        storage::protocol_fee = new_protocol_fee;
+contracts/pool/msgs/router.fc:315:        storage::protocol_fee_address = new_protocol_fee_address;
+contracts/pool/msgs/router.fc-316-
+contracts/pool/msgs/router.fc:317:        storage::save();
+contracts/pool/msgs/router.fc-318-        

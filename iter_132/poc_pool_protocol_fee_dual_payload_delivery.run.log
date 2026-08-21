@@ -1,0 +1,1 @@
+AE2 protocol-fee edge check passed: both counters are required, each message is one-sided and amount/token bound, counters clear exactly once after construction, and only the stored protocol-fee sender can choose custom payloads; a malformed trusted payload is trusted-on-trusted liveness/accounting griefing
