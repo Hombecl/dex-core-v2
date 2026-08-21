@@ -1,0 +1,61 @@
+schema_version: shadow-v1
+iteration: 115
+phase: completed
+cell_id: AA4
+cell_label: pool_set_fees_protocol_recipient_boundary
+final_verdict: KILLED_TRUSTED_ON_TRUSTED
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AA4
+  final_verdict: KILLED_TRUSTED_ON_TRUSTED
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts,tests/ConstSum.spec.ts,tests/Stableswap.spec.ts,tests/WeightedStableswap.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_115/poc_pool_set_fees_protocol_recipient_boundary.run.log
+    run_log_exists_on_disk: true
+    test_runtime: 19.559s
+    result: PASSED (8 passed, 105 skipped, 113 total)
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 set_fees protocol_fee_address is:issue'
+      - 'repo:ston-fi/dex-core-v2 set_fees protocol_fee_address is:pr'
+      - 'repo:ston-fi/dex-core-v2 collect_fees counter is:issue'
+      - 'repo:ston-fi/dex-core-v2 collect_fees counter is:pr'
+    results: all four returned total_count 0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'set_fees protocol_fee_address on repository issue page'
+      - 'set_fees protocol_fee_address on repository pull-request page'
+      - 'collect_fees counter on repository issue page'
+      - 'collect_fees counter on repository pull-request page'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: killed_trusted_on_trusted
+  caller_grep_path: iter_115/callers-grep.txt
+  caller_grep_match_count: 141
+  caller_grep_unique_files: 30
+  prior_audit_path: iter_115/prior-audit-git.log
+  prior_audit_bytes: 78
+  r15_search_files:
+    - iter_115/R15-GH-set-fees-protocol-recipient-issue.json
+    - iter_115/R15-GH-set-fees-protocol-recipient-pr.json
+    - iter_115/R15-GH-collect-fees-counter-issue.json
+    - iter_115/R15-GH-collect-fees-counter-pr.json
+  source_conclusion: 'Fee recipient and fee parameters are admin-gated and workchain/range checked; protocol collection uses stored token/recipient fields and clears counters after two payouts. The only harmful control is trusted-on-trusted/admin behavior and is killed.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_115-AA4.md

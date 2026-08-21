@@ -117,6 +117,7 @@ Scope is limited to the five selected entrypoint assets recorded in `R1-SURFACE-
 | AA1 | pool_callback_failure_redeploy_refund_binding | state_init_asset_binding | Pool callback failure can redeploy an LP account with both input amounts; a mismatched refund/user identity could redirect or duplicate the stored refund. | 111 | deadend_with_proof |
 | AA2 | lp_account_add_liquidity_storage_merge | state_persistence | Repeated pool `add_liquidity` callbacks could merge amounts across users or mint against another account's stored single-sided balance. | 112 | deadend_with_proof |
 | AA3 | router_pay_to_excess_address_invalidation | destination_binding | Malformed or expired route returns could bypass validation and decouple `pay_to` residual TON/token recipients from the original caller. | 113 | deadend_with_proof |
+| AA4 | pool_set_fees_protocol_recipient_boundary | privileged_state | Fee recipient/token updates could make protocol counters accrue to an unreachable or unintended route. | 115 | killed_trusted_on_trusted |
 | AA5 | router_transfer_bounce_error_recipient | error_refund | Parser and validation catch branches could encode different bounce errors while selecting a refund/excess recipient that changes who receives returned tokens. | 114 | deadend_with_proof |
 
 ## Cell execution contract
