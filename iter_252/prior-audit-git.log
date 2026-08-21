@@ -1,0 +1,13 @@
+COMMAND: rg -n --no-heading -i 'send_tokens|state_init|funding|insufficient_gas|throw_unless(709|balance -=|storage::save|wrong_workchain|custom_payload|pre-save' CHAIN_HYPOTHESIS_TABLE.md iter_*/STATUS.yaml
+
+Prior matching audit records:
+iter_103/STATUS.yaml:5:cell_label: lp_wallet_forward_payload_dict_boundary; malformed input reverts before save and valid input cannot redirect the debit.
+iter_119/STATUS.yaml:5:cell_label: lp_wallet_master_credit_debit_conservation; send_tokens decrements only after owner/balance semantics and saves the result; no unmatched credit or debit.
+iter_124/STATUS.yaml:5:cell_label: lp_wallet_forward_payload_reference_depth; send_tokens saves only after outbound construction; no payload-depth path produced a persistent debit or diversion.
+iter_135/STATUS.yaml:5:cell_label: lp_wallet_transfer_response_excess_commit; owner/balance checks, deterministic destination, exact internal_transfer, and save ordering were audited.
+iter_149/STATUS.yaml:5:cell_label: lp_wallet_state_init_encoding; StateInit packing and address derivation are the same utility path already covered by prior identity audits.
+iter_208/STATUS.yaml:5:cell_label: lp_wallet_send_tokens_stateinit_bounce_debit_restore; exact internal_transfer is emitted and save follows; bounce restores the encoded amount.
+iter_215/STATUS.yaml:5:cell_label: lp_wallet_master_source_auth_alias; full owner/master/code tuple commits the deterministic address and failures revert before save.
+iter_233/STATUS.yaml:5:cell_label: lp_wallet_receive_user_wallet_stateinit_collision; full StateInit hash commits owner, master, and code, with no identity collision.
+
+Conclusion: BB4 is the exact LPWallet transfer funding/StateInit duplicate. Destination and payload parsing precede persistence; post-debit failures throw before save, and only a strictly funded success persists the exact debit.

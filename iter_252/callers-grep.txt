@@ -1,0 +1,10 @@
+MATCH_COUNT: 110
+UNIQUE_FILE_COUNT: 8
+contracts/common/contracts.fc
+contracts/lp_wallet.fc
+contracts/lp_wallet/jetton-utils.fc
+contracts/lp_wallet/storage.fc
+contracts/pool/msgs/lp_wallet.fc
+contracts/router/msgs/pool.fc
+tests/ConstProduct.spec.ts
+tests/System.spec.ts

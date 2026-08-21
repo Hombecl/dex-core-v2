@@ -1,0 +1,165 @@
+schema_version: shadow-v1
+iteration: 252
+phase: completed
+cell_id: BB4
+cell_label: lp_wallet_send_state_init_funding_boundary
+final_verdict: PRE_KILLED_DUPLICATE
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: BB4
+  final_verdict: PRE_KILLED_DUPLICATE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/lp_wallet.fc
+        line: 12
+        text: 'int jetton_amount = in_msg_body~load_coins();'
+      - file: contracts/lp_wallet.fc
+        line: 15
+        text: 'force_chain(params::workchain, to_owner_address, error::wrong_workchain);'
+      - file: contracts/lp_wallet.fc
+        line: 18
+        text: 'balance -= jetton_amount;'
+      - file: contracts/lp_wallet.fc
+        line: 23
+        text: 'cell state_init = calculate_jetton_lp_wallet_state_init(to_owner_address, jetton_master_address, jetton_wallet_code);'
+      - file: contracts/lp_wallet.fc
+        line: 48
+        text: 'throw_unless(709, msg_value > forward_ton_amount + fwd_count * fwd_fee + (2 * REQUIRED_GAS + REQUIRED_TON_STORAGE));'
+      - file: contracts/lp_wallet.fc
+        line: 50
+        text: 'send_raw_message(msg.end_cell(), 64);'
+      - file: contracts/lp_wallet.fc
+        line: 51
+        text: 'storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);'
+      - file: contracts/lp_wallet/jetton-utils.fc
+        line: 1
+        text: 'cell pack_jetton_lp_wallet_data(int balance, slice owner_address, slice jetton_master_address, cell jetton_wallet_code) inline {'
+      - file: contracts/common/contracts.fc
+        line: 280
+        text: '(builder) jetton_wallet::transfer(int _fwd_amount, int _jetton_amount, slice _to, slice _response_address) inline {'
+      - file: tests/System.spec.ts
+        line: 251
+        text: "it('should handle invalid transfers', async () => {"
+      - file: tests/ConstProduct.spec.ts
+        line: 1679
+        text: "it('should handle more complex scenarios', async () => {"
+  source_scope_restricted: true
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  required_evidence_complete: true
+  no_fabrication: true
+  scope_assets_only: true
+  methodology_audit_exit: NOT_AVAILABLE
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_DEADEND
+  shippable: false
+  rejection_reason: 'LPWallet parses and validates the destination before the working debit, and every later owner, nonnegative balance, payload, and strict funding failure occurs before send/save persistence. StateInit is derived from destination owner, stored master, and stored code; success emits the exact amount and saves afterward. Equality or below funding reverts the working debit, while above-threshold success persists exactly the requested debit. No wrong-wallet, stuck-debit, or attacker-positive asset delta was demonstrated.'
+  duplicate_family: 'iter_103 lp_wallet_forward_payload_dict_boundary, iter_119 lp_wallet_master_credit_debit_conservation, iter_124 lp_wallet_forward_payload_reference_depth, iter_135 lp_wallet_transfer_response_excess_commit, iter_149 lp_wallet_state_init_encoding, iter_208 lp_wallet_send_tokens_stateinit_bounce_debit_restore, iter_215 lp_wallet_master_source_auth_alias, and iter_233 lp_wallet_receive_user_wallet_stateinit_collision'
+  caller_match_count: 110
+  caller_unique_files: 8
+  cascade_verbatim_hit_count: 11
+  cross_file_anchor_count: 21
+  caller_paths:
+    - contracts/common/contracts.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_wallet/jetton-utils.fc
+    - contracts/lp_wallet/storage.fc
+    - contracts/pool/msgs/lp_wallet.fc
+    - contracts/router/msgs/pool.fc
+    - tests/ConstProduct.spec.ts
+    - tests/System.spec.ts
+  callers_grep_artifact: iter_252/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_252/poc_lp_wallet_send_state_init_funding_boundary.test.js
+    poc_run_log: iter_252/poc_lp_wallet_send_state_init_funding_boundary.run.log
+    live_regression_log: iter_252/live-lp-wallet-send-funding-regression.run.log
+    prior_audit: iter_252/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_252/poc_lp_wallet_send_state_init_funding_boundary.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_252/poc_lp_wallet_send_state_init_funding_boundary.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.1s static; 11.128s integration'
+    result: 'PASS (21 PoC anchors; seven parse/owner/funding cases; equality throw; strict success exact debit; three live regressions)'
+  prior_art_check:
+    queries:
+      - 'send_tokens/state_init/funding/throw_unless(709)/balance debit/storage save/workchain/custom_payload scan across CHAIN_HYPOTHESIS_TABLE.md and iter_*/STATUS.yaml'
+    results:
+      - 'iter_103 lp_wallet_forward_payload_dict_boundary: DEADEND_WITH_PROOF'
+      - 'iter_119 lp_wallet_master_credit_debit_conservation: DEADEND_WITH_PROOF'
+      - 'iter_124 lp_wallet_forward_payload_reference_depth: DEADEND_WITH_PROOF'
+      - 'iter_135 lp_wallet_transfer_response_excess_commit: DEADEND_WITH_PROOF'
+      - 'iter_149 lp_wallet_state_init_encoding: PRE_KILLED_DUPLICATE'
+      - 'iter_208 lp_wallet_send_tokens_stateinit_bounce_debit_restore: DEADEND_WITH_PROOF'
+      - 'iter_215 lp_wallet_master_source_auth_alias: DEADEND_WITH_PROOF'
+      - 'iter_233 lp_wallet_receive_user_wallet_stateinit_collision: DEADEND_WITH_PROOF'
+    r15_disclosure_check:
+      gh_search_terms_used:
+        - 'repo:ston-fi/dex-core-v2 "throw_unless(709" "calculate_jetton_lp_wallet_state_init" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "throw_unless(709" "calculate_jetton_lp_wallet_state_init" is:pr'
+        - 'repo:ston-fi/dex-core-v2 "send_raw_message(msg.end_cell(), 64)" "storage::save(balance" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "send_raw_message(msg.end_cell(), 64)" "storage::save(balance" is:pr'
+      gh_search_hits: 0
+      evidence_files:
+        - iter_252/r15-lp-wallet-funding-issue.json
+        - iter_252/r15-lp-wallet-funding-pr.json
+        - iter_252/r15-lp-wallet-save-order-issue.json
+        - iter_252/r15-lp-wallet-save-order-pr.json
+    attacker_privilege:
+      privilege_required: external_unauth
+    fund_loss_demonstrated: false
+    concrete_impact_demonstrated: false
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "throw_unless(709" "calculate_jetton_lp_wallet_state_init" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "throw_unless(709" "calculate_jetton_lp_wallet_state_init" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "send_raw_message(msg.end_cell(), 64)" "storage::save(balance" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "send_raw_message(msg.end_cell(), 64)" "storage::save(balance" is:pr'
+    gh_search_hits: 0
+    evidence_files:
+      - iter_252/r15-lp-wallet-funding-issue.json
+      - iter_252/r15-lp-wallet-funding-pr.json
+      - iter_252/r15-lp-wallet-save-order-issue.json
+      - iter_252/r15-lp-wallet-save-order-pr.json
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: PRE_KILLED_DUPLICATE
+  shadow_mode: true
+  caller_path: iter_252/callers-grep.txt
+  caller_match_count: 110
+  caller_unique_files: 8
+  prior_audit_path: iter_252/prior-audit-git.log
+  prior_family_matches: [iter103, iter119, iter124, iter135, iter149, iter208, iter215, iter233]
+  r15_evidence_files:
+    - iter_252/r15-lp-wallet-funding-issue.json
+    - iter_252/r15-lp-wallet-funding-pr.json
+    - iter_252/r15-lp-wallet-save-order-issue.json
+    - iter_252/r15-lp-wallet-save-order-pr.json
+  source_conclusion: 'BB4 is the exact LPWallet transfer funding/StateInit duplicate. Destination and payload parsing precede persistence; post-debit failures throw before save, and only a strictly funded success persists the exact debit. Existing StateInit tuple binding and bounce restoration audits cover the same route, with no attacker-positive token, LP, or TON delta.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_252/poc_lp_wallet_send_state_init_funding_boundary.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_252/poc_lp_wallet_send_state_init_funding_boundary.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_252/live-lp-wallet-send-funding-regression.run.log
+    result: PASS

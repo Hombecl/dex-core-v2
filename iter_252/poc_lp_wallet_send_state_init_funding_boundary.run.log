@@ -1,0 +1,11 @@
+{
+  "result": "PASS",
+  "classification": "PRE_KILLED_DUPLICATE",
+  "cell": "BB4",
+  "cross_file_anchors": 21,
+  "funding_cases": 7,
+  "persistent_deltas": [0, 0, 0, 0, -25, 0, -25],
+  "strict_equality_case": "throw_before_save",
+  "strict_success_case": "send_then_save_exact_debit",
+  "reason": "LPWallet parses and validates destination fields before the working debit, and every later owner, balance, payload, and strict funding failure occurs before send/save persistence. StateInit is derived from destination owner, stored master, and stored code; successful transfer emits the exact debit and saves only afterward. Equality or below funding reverts the working debit, while above-threshold success persists exactly -amount"
+}
