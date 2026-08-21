@@ -132,6 +132,7 @@ Scope is limited to the five selected entrypoint assets recorded in `R1-SURFACE-
 | AD1 | lp_account_both_positive_flag_mint_gate | mint_gate | A caller-controlled `both_positive` bit could cross router → pool → LP-account boundaries and mint LP against mismatched token legs or bypass the pool’s reserve accounting. | 126 | deadend_with_proof |
 | AD2 | pool_provide_lp_parser_error_refund_typing | parser_refund | Truncated or malformed provide-LP payloads could select a wrong error/refund tuple while the original token legs remain committed in the router/pool chain. | 127 | deadend_with_proof |
 | AD3 | router_nested_route_payload_tail_boundary | nested_route | Trailing or nested payload cells could alter the selected pool/token wallet or caller across cross-swap recursion while preserving the Router sender check. | 128 | deadend_with_proof |
+| AD4 | vault_deposited_amount_coin_serialization_limit | coin_width | Repeated router referral-fee deposits could cross the 120-bit coin serialization boundary and leave a vault unable to withdraw or redirect a stored fee. | 129 | deadend_with_proof |
 
 ## Cell execution contract
 

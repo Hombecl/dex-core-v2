@@ -1,0 +1,1 @@
+AD4 coin-width edge check passed: max-width storage and withdrawal encode, overflow rolls back before save, and router-only deposits remain owner/token bound

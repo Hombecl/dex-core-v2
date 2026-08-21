@@ -1,0 +1,69 @@
+schema_version: shadow-v1
+iteration: 129
+phase: completed
+cell_id: AD4
+cell_label: vault_deposited_amount_coin_serialization_limit
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AD4
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - 'contracts/vault.fc:15: storage::deposited_amount = ds~load_coins();'
+      - 'contracts/vault.fc:24: .store_coins(storage::deposited_amount)'
+      - 'contracts/vault.fc:42: ;; assume deposited_amount will never exceed max coin limit'
+      - 'contracts/vault.fc:43: storage::deposited_amount += in_msg_body~load_coins();'
+      - 'contracts/vault.fc:63: storage::deposited_amount,'
+      - 'contracts/vault.fc:66: CARRY_ALL_BALANCE | DESTROY_IF_ZERO);'
+      - 'contracts/router/msgs/pool.fc:131: vault::deposit_ref_fee('
+      - 'contracts/pool/msgs/router.fc:121: if (ref_address.preload_uint(2) != 0) & (ref_fee_out0 + ref_fee_out1 > 0) {'
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts,tests/ConstSum.spec.ts,tests/Stableswap.spec.ts,tests/WeightedCPI.spec.ts,tests/WeightedStableswap.spec.ts,iter_129/poc_vault_deposited_amount_coin_serialization_limit.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_129/poc_vault_deposited_amount_coin_serialization_limit.run.log,iter_129/poc_vault_deposited_amount_coin_serialization_limit.model.run.log
+    run_log_exists_on_disk: true
+    test_runtime: '19.951s integration; model passed'
+    result: 'PASSED (integration: 5 passed, 133 skipped, 138 total; model: passed)'
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 vault deposited_amount max coin limit overflow is:issue'
+      - 'repo:ston-fi/dex-core-v2 vault deposited_amount max coin limit overflow is:pr'
+      - 'repo:ston-fi/dex-core-v2 referral fee accumulator coin serialization is:issue'
+      - 'repo:ston-fi/dex-core-v2 referral fee accumulator coin serialization is:pr'
+    results: all four returned total_count 0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'vault deposited_amount max coin limit overflow repository issue search'
+      - 'vault deposited_amount max coin limit overflow repository pull-request search'
+      - 'referral fee accumulator coin serialization repository issue search'
+      - 'referral fee accumulator coin serialization repository pull-request search'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_129/callers-grep.txt
+  caller_grep_match_count: 344
+  caller_grep_unique_files: 47
+  prior_audit_path: iter_129/prior-audit-git.log
+  prior_audit_bytes: 78
+  r15_search_files:
+    - iter_129/R15-GH-vault-deposited-max-coin-overflow-issue.json
+    - iter_129/R15-GH-vault-deposited-max-coin-overflow-pr.json
+    - iter_129/R15-GH-referral-fee-coin-serialization-issue.json
+    - iter_129/R15-GH-referral-fee-coin-serialization-pr.json
+  source_conclusion: 'Vault deposited_amount is loaded and saved as a 120-bit coin. Router-only deposits add the decoded value, and a sum above the coin width fails during save so the previous state remains. Maximum value can be withdrawn through the owner/token-bound vault_pay_to message and then zeroed. Pool referral fee fields are also coin-width encoded and caller-bound. No corrupted or redirected state was reproduced; overflow requires the 2^120−1 boundary and reverts.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_129-AD4.md
