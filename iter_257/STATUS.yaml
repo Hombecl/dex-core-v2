@@ -1,0 +1,190 @@
+schema_version: shadow-v1
+iteration: 257
+phase: completed
+cell_id: CC4
+cell_label: router_admin_set_fees_excess_bounce_order
+final_verdict: KILLED_TRUSTED_ON_TRUSTED
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: CC4
+  final_verdict: KILLED_TRUSTED_ON_TRUSTED
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/router.fc
+        line: 11
+        text: 'if ctx.at(IS_BOUNCED) {'
+      - file: contracts/router.fc
+        line: 28
+        text: 'if equal_slices(ctx.at(SENDER), storage::admin_address) {'
+      - file: contracts/router/msgs/admin.fc
+        line: 9
+        text: '+ storage_fee::router + gas::router::set_fees'
+      - file: contracts/router/msgs/admin.fc
+        line: 12
+        text: 'int new_lp_fee = in_msg_body~load_uint16();'
+      - file: contracts/router/msgs/admin.fc
+        line: 18
+        text: 'slice excesses_recipient = get_excesses_address(jetton_info~load_msg_addr());'
+      - file: contracts/router/msgs/admin.fc
+        line: 28
+        text: '(params::min_fee  <= new_protocol_fee) &'
+      - file: contracts/router/msgs/admin.fc
+        line: 43
+        text: 'pool~state_init(),'
+      - file: contracts/router/msgs/admin.fc
+        line: 44
+        text: 'pool::internal_set_fees('
+      - file: contracts/router/msgs/admin.fc
+        line: 50
+        text: 'CARRY_ALL_BALANCE'
+      - file: contracts/pool.fc
+        line: 28
+        text: 'if equal_slices(ctx.at(SENDER), storage::router_address) {'
+      - file: contracts/pool/msgs/router.fc
+        line: 308
+        text: 'if ctx.at(OPCODE) == op::internal_set_fees {'
+      - file: contracts/pool/msgs/router.fc
+        line: 315
+        text: 'storage::protocol_fee_address = new_protocol_fee_address;'
+      - file: contracts/pool/msgs/router.fc
+        line: 317
+        text: 'storage::save();'
+      - file: contracts/pool/msgs/router.fc
+        line: 320
+        text: 'utils::send_excesses(0, in_msg_body~load_msg_addr(), QCARRY_ALL_BALANCE);'
+      - file: contracts/common/contracts.fc
+        line: 248
+        text: '(cell) pool::internal_set_fees('
+      - file: tests/System.spec.ts
+        line: 420
+        text: "it('should set fees', async () => {"
+      - file: tests/ConstProduct.spec.ts
+        line: 2357
+        text: "it('should bounce set fees if not admin', async () => {"
+  source_scope_restricted: true
+  scope_assets_only: true
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  methodology_audit_exit: NOT_AVAILABLE
+  required_evidence_complete: true
+  no_fabrication: true
+  shippable: false
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_DEADEND
+  rejection_reason: 'Router set_fees is admitted only from storage::admin_address, checks fee bounds/workchains, derives the Pool StateInit, and sends the canonical internal_set_fees with CARRY_ALL_BALANCE. Pool admits it only from storage::router_address, saves the fee tuple, and sends residual TON to the parsed excess recipient. External, malformed, wrong-pool, and bounced paths do not persist changes. Any recipient or fee effect requires the trusted admin and is killed by the trusted-on-trusted filter.'
+  duplicate_family: 'iter_35 governance bounce ordering, iter_46 admin/router/pool gates, iter_50 governance fee ordering, iter_57 protocol recipient mutation, iter_98 fee recipient transition, iter_115 pool set-fees recipient, iter_132 protocol fee collection, iter_138/139 admin reset recipient, iter_145 protocol recipient role collision, iter_177 fee collection liveness, iter_204 protocol pay_to tuple, and iter_219 internal_set_fees tail/excess parser'
+  caller_match_count: 84
+  caller_unique_files: 7
+  cascade_verbatim_hit_count: 17
+  cross_file_anchor_count: 17
+  caller_paths:
+    - contracts/common/contracts.fc
+    - contracts/pool.fc
+    - contracts/pool/msgs/router.fc
+    - contracts/router.fc
+    - contracts/router/msgs/admin.fc
+    - tests/ConstProduct.spec.ts
+    - tests/System.spec.ts
+  callers_grep_artifact: iter_257/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_257/poc_router_admin_set_fees_excess_bounce_order.test.js
+    poc_run_log: iter_257/poc_router_admin_set_fees_excess_bounce_order.run.log
+    live_regression_log: iter_257/live-router-admin-set-fees-regression.run.log
+    prior_audit: iter_257/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_257/poc_router_admin_set_fees_excess_bounce_order.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_257/poc_router_admin_set_fees_excess_bounce_order.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.2s static; 10.407s integration'
+    result: 'PASS (17 cross-file anchors; six admin/bounce/parser cases; rejected paths preserve fee state; trusted admin path only; three live regressions)'
+  prior_art_check:
+    queries:
+      - 'set_fees/internal_set_fees/fee_out_range/protocol_fee_address/excesses_recipient/admin/pool/bounce/message_ordering_fees scan across CHAIN_HYPOTHESIS_TABLE.md and iter_*/STATUS.yaml'
+    results:
+      - 'iter_35 governance bounce ordering: DEADEND_WITH_PROOF'
+      - 'iter_46 admin/router/pool sender gates: DEADEND_WITH_PROOF'
+      - 'iter_50 governance fee ordering: DEADEND_WITH_PROOF'
+      - 'iter_57 protocol recipient mutation: DEADEND_WITH_PROOF'
+      - 'iter_98 fee recipient transition: KILLED_TRUSTED_ON_TRUSTED'
+      - 'iter_115 pool set-fees recipient: KILLED_TRUSTED_ON_TRUSTED'
+      - 'iter_132 protocol fee collection: KILLED_TRUSTED_ON_TRUSTED'
+      - 'iter_138/139 admin reset recipient: KILLED_TRUSTED_ON_TRUSTED'
+      - 'iter_145 protocol recipient role collision: KILLED_TRUSTED_ON_TRUSTED'
+      - 'iter_177 fee collection liveness: KILLED_TRUSTED_ON_TRUSTED'
+      - 'iter_204 protocol pay_to tuple: KILLED_TRUSTED_ON_TRUSTED'
+      - 'iter_219 internal_set_fees tail/excess parser: KILLED_TRUSTED_ON_TRUSTED'
+    r15_disclosure_check:
+      gh_search_terms_used:
+        - 'repo:ston-fi/dex-core-v2 "internal_set_fees" "excesses_address" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "internal_set_fees" "excesses_address" is:pr'
+        - 'repo:ston-fi/dex-core-v2 "set_fees" "addr_none" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "set_fees" "addr_none" is:pr'
+      gh_search_hits: 0
+      evidence_files:
+        - iter_257/r15-router-set-fees-tail-issue.json
+        - iter_257/r15-router-set-fees-tail-pr.json
+        - iter_257/r15-router-set-fees-none-issue.json
+        - iter_257/r15-router-set-fees-none-pr.json
+    attacker_privilege:
+      privilege_required: privileged_role
+    fund_loss_demonstrated: false
+    concrete_impact_demonstrated: false
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "internal_set_fees" "excesses_address" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "internal_set_fees" "excesses_address" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "set_fees" "addr_none" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "set_fees" "addr_none" is:pr'
+    gh_search_hits: 0
+    evidence_files:
+      - iter_257/r15-router-set-fees-tail-issue.json
+      - iter_257/r15-router-set-fees-tail-pr.json
+      - iter_257/r15-router-set-fees-none-issue.json
+      - iter_257/r15-router-set-fees-none-pr.json
+  attacker_privilege:
+    privilege_required: privileged_role
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: KILLED_TRUSTED_ON_TRUSTED
+  shadow_mode: true
+  caller_path: iter_257/callers-grep.txt
+  caller_match_count: 84
+  caller_unique_files: 7
+  prior_audit_path: iter_257/prior-audit-git.log
+  prior_family_matches: [iter35, iter46, iter50, iter57, iter98, iter115, iter132, iter138, iter139, iter145, iter177, iter204, iter219]
+  r15_evidence_files:
+    - iter_257/r15-router-set-fees-tail-issue.json
+    - iter_257/r15-router-set-fees-tail-pr.json
+    - iter_257/r15-router-set-fees-none-issue.json
+    - iter_257/r15-router-set-fees-none-pr.json
+  source_conclusion: 'CC4 is the Router admin set-fees carry/bounce duplicate. External senders and malformed or bounced messages do not persist fee changes; the valid path is an intentional trusted admin mutation with trusted excess-recipient control, so the methodology kill applies.'
+  attacker_privilege:
+    privilege_required: privileged_role
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_257/poc_router_admin_set_fees_excess_bounce_order.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_257/poc_router_admin_set_fees_excess_bounce_order.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_257/live-router-admin-set-fees-regression.run.log
+    result: PASS
+  attacker_privilege:
+    privilege_required: privileged_role
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false

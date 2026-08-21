@@ -1,0 +1,17 @@
+iter_35: bounced top-level messages return before governance handlers; fee updates and collection use explicit checks.
+iter_46: Router gates admin handlers on storage::admin_address; Pool gates internal governance on storage::router_address.
+iter_50: governance/message-ordering fee paths include explicit gas/storage reserves and parameter bounds.
+iter_57: only Router admin set_fees mutates protocol_fee_address; collection remains sender-bound.
+iter_98: set_fees protocol-recipient transition is admin-gated and trusted-on-trusted.
+iter_115: pool_set_fees_protocol_recipient_boundary.
+iter_132: protocol fee collection and recipient mutation are trusted-role controlled.
+iter_138/139: Router admin reset-pool-gas recipient and carried TON path is trusted admin control.
+iter_145: internal_set_fees protocol_fee_address precedence is trusted-on-trusted griefing.
+iter_177: protocol_fee_address collection liveness is trusted-role only.
+iter_204: protocol-fee pay_to tuple and Router/Pool sender binding.
+iter_219: exact internal_set_fees tuple, malformed excess tail rollback, addr_none resolution, and non-admin bounce; killed by trusted-on-trusted scope.
+
+Command:
+rg -n --no-heading -i 'set_fees|internal_set_fees|fee_out_range|protocol_fee_address|excesses_recipient|admin.*pool|pool.*admin|bounce.*fee|message_ordering_fees' CHAIN_HYPOTHESIS_TABLE.md iter_*/STATUS.yaml
+
+Conclusion: CC4 is a direct duplicate of the internal_set_fees tail/excess and admin fee-recipient family. All externally reachable paths are rejected or rolled back; the remaining recipient/fee effect requires the trusted admin and is methodology-killed.
