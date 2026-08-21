@@ -1,0 +1,81 @@
+contracts/lp_account/storage.fc:3:global int storage::amount0;
+contracts/lp_account/storage.fc:4:global int storage::amount1;
+contracts/lp_account/storage.fc:10:    storage::amount0 = ds~load_coins();
+contracts/lp_account/storage.fc:11:    storage::amount1 = ds~load_coins();
+contracts/lp_account/storage.fc:19:        .store_coins(storage::amount0)
+contracts/lp_account/storage.fc:20:        .store_coins(storage::amount1)
+contracts/lp_account/get.fc:3:    return (storage::user_address, storage::pool_address, storage::amount0, storage::amount1);
+contracts/router/dex.fc:9:    slice refund_address = null();
+contracts/router/dex.fc:17:        refund_address = dex_payload~load_msg_addr();
+contracts/router/dex.fc:23:            & refund_address.address::check_workchain(params::workchain)
+contracts/router/dex.fc:71:                + storage_fee::lp_account + gas::lp_account::add_liquidity
+contracts/router/dex.fc:72:                + gas::pool::cb_add_liquidity
+contracts/router/dex.fc:95:        var out_msg_body = jetton_wallet::transfer(0, _sent_amount, refund_address, excesses_address)
+contracts/lp_account/msgs/getter.fc:14:                storage::amount0, 
+contracts/lp_account/msgs/getter.fc:15:                storage::amount1
+contracts/pool/msgs/router.fc:6:        ;; usually not needed since it uses to_address and refund_address
+contracts/pool/msgs/router.fc:17:        slice refund_address = dex_payload~load_msg_addr();
+contracts/pool/msgs/router.fc:30:        try { ;; check call_payload body, refund to refund_address if fails
+contracts/pool/msgs/router.fc:60:                    refund_address, 
+contracts/pool/msgs/router.fc:162:                    refund_address, 
+contracts/pool/msgs/router.fc:189:        slice refund_address = dex_payload~load_msg_addr();
+contracts/pool/msgs/router.fc:221:                    refund_address, 
+contracts/pool/msgs/router.fc:250:                lp_account::add_liquidity(
+contracts/pool/msgs/router.fc:258:                    refund_address,
+contracts/pool/msgs/router.fc:272:                    refund_address, 
+contracts/lp_account/msgs/pool.fc:15:        slice refund_address = additional_fields~load_msg_addr();
+contracts/lp_account/msgs/pool.fc:16:        slice excess_address = additional_fields~load_msg_addr();
+contracts/lp_account/msgs/pool.fc:18:        storage::amount0 += new_amount0;
+contracts/lp_account/msgs/pool.fc:19:        storage::amount1 += new_amount1;
+contracts/lp_account/msgs/pool.fc:25:            mint? = (min_lp_out > 0) & ((storage::amount0 > 0) & (storage::amount1 > 0));
+contracts/lp_account/msgs/pool.fc:27:            mint? = (min_lp_out > 0) & (storage::amount0 + storage::amount1 > 0);
+contracts/lp_account/msgs/pool.fc:34:                pool::cb_add_liquidity(
+contracts/lp_account/msgs/pool.fc:36:                    storage::amount0, 
+contracts/lp_account/msgs/pool.fc:37:                    storage::amount1, 
+contracts/lp_account/msgs/pool.fc:42:                    refund_address,
+contracts/lp_account/msgs/pool.fc:43:                    excess_address
+contracts/lp_account/msgs/pool.fc:45:                CARRY_ALL_BALANCE | DESTROY_IF_ZERO
+contracts/lp_account/msgs/pool.fc:48:            storage::amount0 = 0;
+contracts/lp_account/msgs/pool.fc:49:            storage::amount1 = 0;
+contracts/lp_account/msgs/pool.fc:52:            utils::send_excesses(0, excess_address, QCARRY_ALL_BALANCE);
+contracts/lp_account/msgs/user.fc:4:    if ctx.at(OPCODE) == op::refund_me { 
+contracts/lp_account/msgs/user.fc:10:        throw_unless(error::no_liquidity, (storage::amount0 > 0) | (storage::amount1 > 0));
+contracts/lp_account/msgs/user.fc:24:            pool::cb_refund_me(
+contracts/lp_account/msgs/user.fc:25:                storage::amount0, 
+contracts/lp_account/msgs/user.fc:26:                storage::amount1, 
+contracts/lp_account/msgs/user.fc:30:            CARRY_ALL_BALANCE | DESTROY_IF_ZERO
+contracts/lp_account/msgs/user.fc:33:        storage::amount0 = 0;
+contracts/lp_account/msgs/user.fc:34:        storage::amount1 = 0;
+contracts/lp_account/msgs/user.fc:40:    if ctx.at(OPCODE) == op::direct_add_liquidity {
+contracts/lp_account/msgs/user.fc:44:            + storage_fee::lp_account + gas::lp_account::direct_add_liquidity 
+contracts/lp_account/msgs/user.fc:45:            + storage_fee::pool + gas::pool::cb_add_liquidity 
+contracts/lp_account/msgs/user.fc:55:        slice refund_address = additional_fields~load_msg_addr();
+contracts/lp_account/msgs/user.fc:63:            & refund_address.address::check_workchain(params::workchain)
+contracts/lp_account/msgs/user.fc:67:        am0 = am0 ? am0 : storage::amount0;
+contracts/lp_account/msgs/user.fc:68:        am1 = am1 ? am1 : storage::amount1;
+contracts/lp_account/msgs/user.fc:70:        throw_unless(error::zero_output, (min_lp_out > 0) & ((am0 > 0) & (am1 > 0)));
+contracts/lp_account/msgs/user.fc:72:        storage::amount0 -= am0;
+contracts/lp_account/msgs/user.fc:73:        storage::amount1 -= am1;
+contracts/lp_account/msgs/user.fc:77:        throw_unless(error::no_liquidity, (storage::amount0 >= 0) & (storage::amount1 >= 0));
+contracts/lp_account/msgs/user.fc:79:        if storage::amount0 + storage::amount1 > 0  {
+contracts/lp_account/msgs/user.fc:87:            pool::cb_add_liquidity(
+contracts/lp_account/msgs/user.fc:95:                refund_address,
+contracts/lp_account/msgs/user.fc:98:            CARRY_ALL_BALANCE | DESTROY_IF_ZERO
+contracts/pool/msgs/lp_wallet.fc:22:        throw_unless(error::zero_output, jetton_amount > 0); 
+contracts/pool/msgs/lp_wallet.fc:28:        throw_unless(error::zero_output, (amount0_out > 0) & (amount1_out > 0));
+contracts/pool/msgs/protocolfee.fc:5:        throw_unless(error::zero_output, (storage::collected_token0_protocol_fee > 0) & (storage::collected_token1_protocol_fee > 0));
+contracts/pool/msgs/lp_account.fc:4:    if ctx.at(OPCODE) == op::cb_add_liquidity {
+contracts/pool/msgs/lp_account.fc:15:        slice refund_address = additional_data~load_msg_addr();
+contracts/pool/msgs/lp_account.fc:16:        slice excess_address = additional_data~load_msg_addr();
+contracts/pool/msgs/lp_account.fc:79:                    refund_address
+contracts/pool/msgs/lp_account.fc:88:                lp_account::add_liquidity(
+contracts/pool/msgs/lp_account.fc:96:                    addr_none(), ;; refund_address
+contracts/pool/msgs/lp_account.fc:97:                    excess_address
+contracts/pool/msgs/lp_account.fc:111:            int used_gas = ctx.at(FWD_FEE) + gas::pool::cb_add_liquidity;
+contracts/pool/msgs/lp_account.fc:125:                    excess_address, 
+contracts/pool/msgs/lp_account.fc:138:    if ctx.at(OPCODE) == op::cb_refund_me {
+contracts/pool/pools/weighted_const_product/gas.fc:1:const gas::pool::cb_add_liquidity = 100000000; ;; 0.100
+contracts/pool/pools/constant_sum/gas.fc:1:const gas::pool::cb_add_liquidity = 22000000;
+contracts/pool/pools/constant_product/gas.fc:1:const gas::pool::cb_add_liquidity = 27000000;
+contracts/pool/pools/stableswap/gas.fc:1:const gas::pool::cb_add_liquidity = 30000000; ;; 0.03
+contracts/pool/pools/weighted_stableswap/gas.fc:1:const gas::pool::cb_add_liquidity = 100000000; ;; 0.10

@@ -1,0 +1,61 @@
+schema_version: shadow-v1
+iteration: 123
+phase: completed
+cell_id: AC3
+cell_label: lp_account_refund_then_direct_add_lifecycle
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AC3
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/System.spec.ts,tests/ConstProduct.spec.ts,tests/ConstSum.spec.ts,tests/Stableswap.spec.ts,tests/WeightedCPI.spec.ts,tests/WeightedStableswap.spec.ts,iter_123/poc_lp_account_refund_then_direct_add_lifecycle.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_123/poc_lp_account_refund_then_direct_add_lifecycle.run.log,iter_123/poc_lp_account_refund_then_direct_add_lifecycle.model.run.log
+    run_log_exists_on_disk: true
+    test_runtime: '39.452s integration; model passed'
+    result: 'PASSED (integration: 23 passed, 126 skipped, 149 total; model: passed)'
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 lp_account refund direct_add lifecycle state is:issue'
+      - 'repo:ston-fi/dex-core-v2 lp_account refund direct_add lifecycle state is:pr'
+      - 'repo:ston-fi/dex-core-v2 callback refund stale amount liquidity is:issue'
+      - 'repo:ston-fi/dex-core-v2 callback refund stale amount liquidity is:pr'
+    results: all four returned total_count 0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'lp_account refund direct_add lifecycle state on repository issue page'
+      - 'lp_account refund direct_add lifecycle state on repository pull-request page'
+      - 'callback refund stale amount liquidity on repository issue page'
+      - 'callback refund stale amount liquidity on repository pull-request page'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_123/callers-grep.txt
+  caller_grep_match_count: 81
+  caller_grep_unique_files: 15
+  prior_audit_path: iter_123/prior-audit-git.log
+  prior_audit_bytes: 78
+  r15_search_files:
+    - iter_123/R15-GH-lp-account-refund-direct-add-issue.json
+    - iter_123/R15-GH-lp-account-refund-direct-add-pr.json
+    - iter_123/R15-GH-callback-refund-stale-amount-issue.json
+    - iter_123/R15-GH-callback-refund-stale-amount-pr.json
+  source_conclusion: 'The LP account refund path sends the current stored amounts to the pool, zeroes both fields, and saves. Direct add uses stored amounts only when the requested side is zero, subtracts selected amounts, rejects negative residuals, and sends one callback; full consumption uses DESTROY_IF_ZERO while partial residuals are saved. The pool callback failure loop explicitly redeploys/uses a fresh account with min_lp_out zero and cannot mint. Integration and edge-model lifecycle tests showed no stale replay or cross-user amount reuse.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_123-AC3.md
