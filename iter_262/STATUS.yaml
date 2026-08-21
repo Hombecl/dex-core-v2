@@ -1,0 +1,181 @@
+schema_version: shadow-v1
+iteration: 262
+phase: completed
+cell_id: DD4
+cell_label: lp_wallet_receive_response_after_notification
+final_verdict: PRE_KILLED_DUPLICATE
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: DD4
+  final_verdict: PRE_KILLED_DUPLICATE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/lp_wallet.fc
+        line: 54
+        text: '() receive_tokens (slice in_msg_body, slice sender_address, int my_ton_balance, int fwd_fee, int msg_value) impure {'
+      - file: contracts/lp_wallet.fc
+        line: 58
+        text: 'balance += jetton_amount;'
+      - file: contracts/lp_wallet.fc
+        line: 62
+        text: 'throw_unless(707, equal_slices(jetton_master_address, sender_address)'
+      - file: contracts/lp_wallet.fc
+        line: 65
+        text: 'int forward_ton_amount = in_msg_body~load_coins();'
+      - file: contracts/lp_wallet.fc
+        line: 68
+        text: 'msg_value -= (storage_fee + REQUIRED_GAS);'
+      - file: contracts/lp_wallet.fc
+        line: 70
+        text: 'if(forward_ton_amount) {'
+      - file: contracts/lp_wallet.fc
+        line: 74
+        text: '.store_uint(op::transfer_notification, 32)'
+      - file: contracts/lp_wallet.fc
+        line: 82
+        text: '.store_slice(owner_address)'
+      - file: contracts/lp_wallet.fc
+        line: 89
+        text: 'if ((response_address.preload_uint(2) != 0) & (msg_value > 0)) {'
+      - file: contracts/lp_wallet.fc
+        line: 92
+        text: '.store_slice(response_address)'
+      - file: contracts/lp_wallet.fc
+        line: 95
+        text: '.store_uint(op::excesses, 32)'
+      - file: contracts/lp_wallet.fc
+        line: 100
+        text: 'storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);'
+      - file: contracts/lp_wallet/storage.fc
+        line: 9
+        text: 'set_data(pack_jetton_lp_wallet_data(balance, owner_address, jetton_master_address, jetton_wallet_code));'
+      - file: contracts/common/contracts.fc
+        line: 206
+        text: '(cell) jetton_wallet::mint('
+      - file: contracts/common/contracts.fc
+        line: 217
+        text: '.store_coins(_fwd_amount) ;; forward_ton_amount'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 116
+        text: 'fwd_amount = 0;'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 123
+        text: 'jetton_wallet::mint('
+      - file: contracts/router/msgs/jetton.fc
+        line: 5
+        text: 'if ctx.at(OPCODE) == op::ft::transfer_notification {'
+      - file: tests/System.spec.ts
+        line: 132
+        text: "it('should handle mint & burn liquidity', async () => {"
+      - file: tests/ConstProduct.spec.ts
+        line: 1679
+        text: "it('should handle more complex scenarios', async () => {"
+  source_scope_restricted: true
+  scope_assets_only: true
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  methodology_audit_exit: NOT_AVAILABLE
+  required_evidence_complete: true
+  no_fabrication: true
+  shippable: false
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_DEADEND
+  rejection_reason: 'LPWallet receive authorizes only the configured master or deterministic source wallet. It computes the exact LP credit, optionally schedules notification and residual excess actions, and saves the same identity/balance tuple afterward. A notification or excess delivery outcome cannot rewrite the saved credit; addr_none suppresses only the optional excess message, and unauthorized senders throw before save.'
+  duplicate_family: 'iter_73 forward payload balance, iter_87 notification payload alias, iter_103/124 payload boundaries, iter_110/171 response workchain, iter_119/135 credit conservation, iter_185 zero-forward mint commit, iter_208 StateInit/bounce, iter_215 source auth, iter_230 owner binding, iter_231 forward accounting, iter_234 response excess, iter_235 notification alias, and iter_254 floor/notification order'
+  caller_match_count: 55
+  caller_unique_files: 7
+  cascade_verbatim_hit_count: 20
+  cross_file_anchor_count: 20
+  caller_paths:
+    - contracts/common/contracts.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_wallet/storage.fc
+    - contracts/pool/msgs/lp_account.fc
+    - contracts/router/msgs/jetton.fc
+    - tests/ConstProduct.spec.ts
+    - tests/System.spec.ts
+  callers_grep_artifact: iter_262/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_262/poc_lp_wallet_receive_response_after_notification.test.js
+    poc_run_log: iter_262/poc_lp_wallet_receive_response_after_notification.run.log
+    live_regression_log: iter_262/live-lp-wallet-receive-order-regression.run.log
+    prior_audit: iter_262/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_262/poc_lp_wallet_receive_response_after_notification.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_262/poc_lp_wallet_receive_response_after_notification.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.2s static; 10.237s integration'
+    result: 'PASS (20 cross-file anchors; five authorized/low-value/none/bounce/unauthorized cases; exact +25 credit on authorized paths; zero unauthorized persistent delta; two live regressions)'
+  prior_art_check:
+    queries:
+      - 'receive_tokens/forwarding/storage_fee/transfer_notification/response_address/excesses/storage::save scan across CHAIN_HYPOTHESIS_TABLE.md and iter_*/STATUS.yaml'
+      - 'git history and prior status scan for LPWallet notification, forward-value, response-excess, authorization, and storage-floor families'
+    results:
+      - 'iter_73, iter_87, iter_103, iter_110, iter_119, iter_124, iter_135, iter_171, iter_185, iter_208, iter_210, iter_215, iter_230, iter_231, iter_234, iter_235, and iter_254: adjacent LPWallet families closed'
+    r15_disclosure_check:
+      gh_search_terms_used:
+        - 'repo:ston-fi/dex-core-v2 "receive_tokens" "storage::save" "transfer_notification" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "receive_tokens" "storage::save" "transfer_notification" is:pr'
+        - 'repo:ston-fi/dex-core-v2 "response_address" "op::excesses" "storage::save" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "response_address" "op::excesses" "storage::save" is:pr'
+      gh_search_hits: 0
+      evidence_files:
+        - iter_262/r15-lp-wallet-notification-save-issue.json
+        - iter_262/r15-lp-wallet-notification-save-pr.json
+        - iter_262/r15-lp-wallet-excess-save-issue.json
+        - iter_262/r15-lp-wallet-excess-save-pr.json
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "receive_tokens" "storage::save" "transfer_notification" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "receive_tokens" "storage::save" "transfer_notification" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "response_address" "op::excesses" "storage::save" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "response_address" "op::excesses" "storage::save" is:pr'
+    gh_search_hits: 0
+    evidence_files:
+      - iter_262/r15-lp-wallet-notification-save-issue.json
+      - iter_262/r15-lp-wallet-notification-save-pr.json
+      - iter_262/r15-lp-wallet-excess-save-issue.json
+      - iter_262/r15-lp-wallet-excess-save-pr.json
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: PRE_KILLED_DUPLICATE
+  shadow_mode: true
+  caller_path: iter_262/callers-grep.txt
+  caller_match_count: 55
+  caller_unique_files: 7
+  prior_audit_path: iter_262/prior-audit-git.log
+  prior_family_matches: [iter73, iter87, iter103, iter110, iter119, iter124, iter135, iter171, iter185, iter208, iter210, iter215, iter230, iter231, iter234, iter235, iter254]
+  r15_evidence_files:
+    - iter_262/r15-lp-wallet-notification-save-issue.json
+    - iter_262/r15-lp-wallet-notification-save-pr.json
+    - iter_262/r15-lp-wallet-excess-save-issue.json
+    - iter_262/r15-lp-wallet-excess-save-pr.json
+  source_conclusion: 'DD4 is the direct post-notification-save duplicate of the LPWallet authorization, forward, response-excess, and storage-floor families. Authorized master/source receives persist the exact LP credit regardless of optional notification/excess outcome; unauthorized senders cannot reach the final save. No attacker-positive token, LP, TON, or persistent-state delta was demonstrated.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_262/poc_lp_wallet_receive_response_after_notification.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_262/poc_lp_wallet_receive_response_after_notification.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_262/live-lp-wallet-receive-order-regression.run.log
+    result: PASS

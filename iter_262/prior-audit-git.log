@@ -1,0 +1,25 @@
+COMMAND: git log --all --oneline -- CHAIN_HYPOTHESIS_TABLE.md | head -n 12
+LATEST_COMMITS:
+cd3613b shadow: complete iter261 DD3
+730c8fb shadow: complete iter260 DD2
+8518247 shadow: complete iter259 DD1
+eba2cc6 shadow: complete iter258 CC5
+4393dcb shadow: complete iter257 CC4
+
+COMMAND: rg -n -i 'cell_label:.*(lp_wallet|notification|response|forward|excess)|duplicate_family:.*(lp_wallet|notification|response|forward|excess)|source_conclusion:.*(LPWallet|LP-wallet|response_address|forward)' selected prior STATUS.yaml files
+PRIOR_MATCHES:
+iter_73 lp_wallet_forward_payload_balance: closed; authorization precedes save and forwarding does not debit balance.
+iter_87 lp_wallet_notification_payload_alias: closed; notification payload and response excess do not alter LP credit.
+iter_103/124 LPWallet payload/reference families: closed; malformed payloads do not persist an unauthorized debit or owner substitution.
+iter_110/171 response/excess workchain families: closed; response forms govern residual TON only.
+iter_119/135 master credit/debit conservation: closed; source/master gate and exact bounce restoration hold.
+iter_185 pool LP mint zero-forward commit: closed; forward notification failure does not roll back LP credit.
+iter_208 LPWallet StateInit/bounce debit restore: closed.
+iter_215 master/source auth alias: closed; address hash binds the full tuple and failures precede save.
+iter_230 master/from_address owner binding: closed; from_address is metadata, not sender authority.
+iter_231 receive forward amount accounting: closed; forward/storage deductions precede final save.
+iter_234 response excess destination: closed; response controls residual TON only.
+iter_235 forward payload notification alias: PRE_KILLED_DUPLICATE.
+iter_254 receive storage floor/notification order: PRE_KILLED_DUPLICATE.
+
+CONCLUSION: DD4 is a direct post-notification-save duplicate of the LPWallet authorization, forward-value, response-excess, and storage-floor families. The fresh proof isolates final LP credit from optional outgoing action success and preserves the exact unauthorized rejection boundary.

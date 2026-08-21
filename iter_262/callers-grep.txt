@@ -1,0 +1,18 @@
+COMMAND: rg -n --no-heading 'receive_tokens|balance += jetton_amount|forward_ton_amount|transfer_notification|response_address|op::excesses|storage::save|pack_jetton_lp_wallet_data|jetton_wallet::mint|fwd_amount|should handle mint & burn liquidity|should handle more complex scenarios' contracts/lp_wallet.fc contracts/lp_wallet/storage.fc contracts/common/contracts.fc contracts/pool/msgs/lp_account.fc contracts/router/msgs/jetton.fc tests/System.spec.ts tests/ConstProduct.spec.ts
+MATCH_COUNT: 55
+UNIQUE_FILE_COUNT: 7
+contracts/common/contracts.fc
+contracts/lp_wallet.fc
+contracts/lp_wallet/storage.fc
+contracts/pool/msgs/lp_account.fc
+contracts/router/msgs/jetton.fc
+tests/ConstProduct.spec.ts
+tests/System.spec.ts
+KEY_CALLER_HITS:
+contracts/lp_wallet.fc:54-100: receive_tokens authorizes source/master, computes notification/excess actions, and saves the credited tuple.
+contracts/lp_wallet/storage.fc:8-12: storage::save encodes balance, owner, master, and code.
+contracts/common/contracts.fc:206-217: jetton_wallet::mint serializes response address and forward amount.
+contracts/pool/msgs/lp_account.fc:110-132: Pool suppresses an underfunded forward notification and saves after mint send.
+contracts/router/msgs/jetton.fc:5: Router handles transfer_notification ingress.
+tests/System.spec.ts:132: should handle mint & burn liquidity.
+tests/ConstProduct.spec.ts:1679: should handle more complex scenarios.

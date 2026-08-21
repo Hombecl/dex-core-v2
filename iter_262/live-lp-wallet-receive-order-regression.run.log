@@ -1,0 +1,14 @@
+COMMAND: npm test -- --runInBand tests/System.spec.ts tests/ConstProduct.spec.ts -t 'should handle mint & burn liquidity|should handle more complex scenarios'
+
+PASS tests/ConstProduct.spec.ts (6.578 s)
+  Dex
+    ✓ should handle more complex scenarios (2119 ms)
+
+PASS tests/System.spec.ts
+  Dex
+    ✓ should handle mint & burn liquidity (342 ms)
+
+Test Suites: 2 passed, 2 total
+Tests: 45 skipped, 2 passed, 47 total
+Time: 10.237 s
+Result: PASS

@@ -1,0 +1,13 @@
+{
+  "result": "PASS",
+  "classification": "PRE_KILLED_DUPLICATE",
+  "cell": "DD4",
+  "cross_file_anchors": 20,
+  "cases": 5,
+  "branches": ["authorized_receive_save_after_actions", "authorized_receive_save_after_actions", "authorized_receive_save_after_actions", "authorized_receive_save_after_actions", "reject_before_save"],
+  "saved_balances": [125, 125, 125, 125, 100],
+  "notification_states": ["queued", null, "queued", "bounced_later", null],
+  "excess_recipients": ["EXCESS_A", "EXCESS_B", null, null, null],
+  "persistent_deltas": [25, 25, 25, 25, 0],
+  "reason": "LPWallet receive authorizes the master or deterministic source wallet, computes the exact credited balance, schedules optional notification and residual excess actions, and then saves the same balance/identity tuple. Forward amount and response address affect only outgoing action values and destinations; a later notification bounce does not rewrite the already saved LP credit, while an unauthorized sender throws before save."
+}
