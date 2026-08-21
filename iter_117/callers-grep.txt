@@ -1,0 +1,69 @@
+contracts/vault.fc:52:        throw_unless(error::zero_output, storage::deposited_amount > 0);
+contracts/lp_wallet.fc:116:        .store_uint(op::burn_notification_ext, 32)
+contracts/lp_wallet.fc:141:    throw_unless(709, (op == op::internal_transfer) | (op == op::burn_notification_ext));
+contracts/pool/get.fc:36:    return (storage::total_supply_lp, -1, storage::router_address, content_lp, storage::jetton_lp_wallet_code);
+contracts/pool/headers.fc:7:global int   storage::total_supply_lp;
+contracts/lp_account/msgs/user.fc:40:    if ctx.at(OPCODE) == op::direct_add_liquidity {
+contracts/lp_account/msgs/user.fc:44:            + storage_fee::lp_account + gas::lp_account::direct_add_liquidity 
+contracts/lp_account/msgs/user.fc:70:        throw_unless(error::zero_output, (min_lp_out > 0) & ((am0 > 0) & (am1 > 0)));
+contracts/pool/msgs/router.fc:112:            throw_arg_if(op::swap_refund_no_liq, 1, storage::total_supply_lp <= 0);
+contracts/pool/msgs/getter.fc:12:            storage::total_supply_lp,
+contracts/pool/msgs/lp_account.fc:31:        if storage::total_supply_lp == 0 { 
+contracts/pool/msgs/lp_account.fc:39:            storage::total_supply_lp = liquidity;
+contracts/pool/msgs/lp_account.fc:43:            liquidity -= params::required_min_liquidity;
+contracts/pool/msgs/lp_account.fc:55:            storage::total_supply_lp += liquidity;
+contracts/pool/msgs/lp_account.fc:70:            | (storage::total_supply_lp > math::MAX_COINS)
+contracts/pool/msgs/lp_wallet.fc:4:    if ctx.at(OPCODE) == op::burn_notification_ext { 
+contracts/pool/msgs/lp_wallet.fc:22:        throw_unless(error::zero_output, jetton_amount > 0); 
+contracts/pool/msgs/lp_wallet.fc:25:        (int amount0_out, int amount1_out) = pool::get_lp_burn_out(jetton_amount);
+contracts/pool/msgs/lp_wallet.fc:28:        throw_unless(error::zero_output, (amount0_out > 0) & (amount1_out > 0));
+contracts/pool/msgs/lp_wallet.fc:30:        storage::reserve0 -= amount0_out;
+contracts/pool/msgs/lp_wallet.fc:31:        storage::reserve1 -= amount1_out;
+contracts/pool/msgs/lp_wallet.fc:32:        storage::total_supply_lp -= jetton_amount;
+contracts/pool/msgs/lp_wallet.fc:34:        throw_unless(error::invalid_amount, (storage::reserve0 > 0) & (storage::reserve1 > 0));
+contracts/pool/msgs/lp_wallet.fc:35:        throw_unless(error::invalid_amount, (storage::total_supply_lp > 0));
+contracts/pool/msgs/lp_wallet.fc:69:                amount0_out, 
+contracts/pool/msgs/lp_wallet.fc:89:                amount1_out, 
+contracts/pool/msgs/protocolfee.fc:5:        throw_unless(error::zero_output, (storage::collected_token0_protocol_fee > 0) & (storage::collected_token1_protocol_fee > 0));
+contracts/pool/pools/weighted_const_product/storage.fc:8:    storage::total_supply_lp = ds~load_coins();
+contracts/pool/pools/weighted_const_product/storage.fc:33:        .store_coins(storage::total_supply_lp)
+contracts/pool/pools/weighted_const_product/get.fc:6:        storage::total_supply_lp,
+contracts/pool/pools/weighted_const_product/pool.fc:67:    return (muldiv((inv2 - inv0), storage::total_supply_lp, inv0), protocol_fee0, protocol_fee1);
+contracts/pool/pools/weighted_const_product/pool.fc:70:(int, int) pool::get_lp_burn_out(int _lp_amount) inline {
+contracts/pool/pools/weighted_const_product/pool.fc:73:        muldiv(_lp_amount, storage::reserve0, storage::total_supply_lp),
+contracts/pool/pools/weighted_const_product/pool.fc:74:        muldiv(_lp_amount, storage::reserve1, storage::total_supply_lp)
+contracts/pool/pools/weighted_const_product/state_init.fc:8:        .store_coins(0) ;; storage::total_supply_lp
+contracts/pool/pools/constant_product/storage.fc:6:    storage::total_supply_lp = ds~load_coins();
+contracts/pool/pools/constant_product/storage.fc:30:        .store_coins(storage::total_supply_lp)
+contracts/pool/pools/constant_product/get.fc:6:        storage::total_supply_lp,
+contracts/pool/pools/constant_product/pool.fc:51:    return (muldiv((inv2 - inv0), storage::total_supply_lp, inv0), protocol_fee0, protocol_fee1);
+contracts/pool/pools/constant_product/pool.fc:54:(int, int) pool::get_lp_burn_out(int _lp_amount) inline {
+contracts/pool/pools/constant_product/pool.fc:55:    int left_amount = muldiv(_lp_amount, storage::reserve0, storage::total_supply_lp);
+contracts/pool/pools/constant_product/pool.fc:56:    int right_amount = muldiv(_lp_amount, storage::reserve1, storage::total_supply_lp);
+contracts/pool/pools/constant_product/state_init.fc:8:        .store_coins(0) ;; storage::total_supply_lp
+contracts/pool/pools/weighted_stableswap/storage.fc:11:    storage::total_supply_lp = ds~load_coins();
+contracts/pool/pools/weighted_stableswap/storage.fc:43:        .store_coins(storage::total_supply_lp)
+contracts/pool/pools/weighted_stableswap/state_init.fc:8:        .store_coins(0) ;; storage::total_supply_lp
+contracts/pool/pools/weighted_stableswap/get.fc:6:        storage::total_supply_lp,
+contracts/pool/pools/README.md:12:(int, int)      pool::get_lp_burn_out(int _lp_amount);
+contracts/pool/pools/weighted_stableswap/setter.fc:7:        throw_unless(error::invalid_amount, new_rate > 0);
+contracts/pool/pools/weighted_stableswap/pool.fc:73:    return (muldiv((inv2 - inv0), storage::total_supply_lp, inv0), protocol_fee0, protocol_fee1);
+contracts/pool/pools/weighted_stableswap/pool.fc:76:(int, int) pool::get_lp_burn_out(int _lp_amount) inline {
+contracts/pool/pools/weighted_stableswap/pool.fc:79:        muldiv(_lp_amount, storage::reserve0, storage::total_supply_lp),
+contracts/pool/pools/weighted_stableswap/pool.fc:80:        muldiv(_lp_amount, storage::reserve1, storage::total_supply_lp)
+contracts/pool/pools/stableswap/storage.fc:8:    storage::total_supply_lp = ds~load_coins();
+contracts/pool/pools/stableswap/storage.fc:33:        .store_coins(storage::total_supply_lp)
+contracts/pool/pools/constant_sum/storage.fc:6:    storage::total_supply_lp = ds~load_coins();
+contracts/pool/pools/constant_sum/storage.fc:30:        .store_coins(storage::total_supply_lp)
+contracts/pool/pools/constant_sum/get.fc:6:        storage::total_supply_lp,
+contracts/pool/pools/stableswap/get.fc:6:        storage::total_supply_lp,
+contracts/pool/pools/stableswap/state_init.fc:8:        .store_coins(0) ;; storage::total_supply_lp
+contracts/pool/pools/stableswap/pool.fc:65:    return (muldiv((inv2 - inv0), storage::total_supply_lp, inv0), protocol_fee0, protocol_fee1);
+contracts/pool/pools/stableswap/pool.fc:68:(int, int) pool::get_lp_burn_out(int _lp_amount) inline {
+contracts/pool/pools/stableswap/pool.fc:71:        muldiv(_lp_amount, storage::reserve0, storage::total_supply_lp),
+contracts/pool/pools/stableswap/pool.fc:72:        muldiv(_lp_amount, storage::reserve1, storage::total_supply_lp)
+contracts/pool/pools/constant_sum/pool.fc:50:    return (muldiv((inv2 - inv0), storage::total_supply_lp, inv0), protocol_fee0, protocol_fee1);
+contracts/pool/pools/constant_sum/pool.fc:53:(int, int) pool::get_lp_burn_out(int _lp_amount) inline {
+contracts/pool/pools/constant_sum/pool.fc:56:        muldiv(_lp_amount, storage::reserve0, storage::total_supply_lp),
+contracts/pool/pools/constant_sum/pool.fc:57:        muldiv(_lp_amount, storage::reserve1, storage::total_supply_lp)
+contracts/pool/pools/constant_sum/state_init.fc:8:        .store_coins(0) ;; storage::total_supply_lp
