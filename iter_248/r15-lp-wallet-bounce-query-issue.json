@@ -1,0 +1,7 @@
+{
+  "total_count": 0,
+  "incomplete_results": false,
+  "items": [],
+  "search_type": "lexical",
+  "query": "repo:ston-fi/dex-core-v2 \"on_bounce\" \"query_id\" \"jetton_amount\" LPWallet is:issue"
+}

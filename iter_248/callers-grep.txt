@@ -1,0 +1,36 @@
+COMMAND:
+rg -n --no-heading 'on_bounce|flags & 1|skip_bits(32)|query_id|jetton_amount|balance +=|internal_transfer|burn_notification_ext|storage::save|send_raw_message|sendBurnExt' contracts/lp_wallet.fc contracts/lp_wallet contracts/pool.fc contracts/pool contracts/router.fc contracts/router contracts/vault.fc contracts/common/contracts.fc contracts/common/op.fc tests/System.spec.ts tests/ConstProduct.spec.ts
+
+RESULT:
+caller_match_count=122
+caller_unique_files=25
+cross_file_requirement=PASS (25 files > 4)
+
+UNIQUE_CALLER_FILES:
+contracts/common/contracts.fc
+contracts/common/op.fc
+contracts/lp_wallet.fc
+contracts/lp_wallet/op.fc
+contracts/lp_wallet/storage.fc
+contracts/pool/msgs/lp_account.fc
+contracts/pool/msgs/lp_wallet.fc
+contracts/pool/msgs/protocolfee.fc
+contracts/pool/msgs/router.fc
+contracts/pool/pools/README.md
+contracts/pool/pools/constant_product/storage.fc
+contracts/pool/pools/constant_sum/storage.fc
+contracts/pool/pools/stableswap/ext_router.fc
+contracts/pool/pools/stableswap/storage.fc
+contracts/pool/pools/weighted_const_product/ext_router.fc
+contracts/pool/pools/weighted_const_product/storage.fc
+contracts/pool/pools/weighted_stableswap/setter.fc
+contracts/pool/pools/weighted_stableswap/storage.fc
+contracts/router/msgs/admin.fc
+contracts/router/msgs/jetton.fc
+contracts/router/storage.fc
+contracts/vault.fc
+tests/ConstProduct.spec.ts
+tests/System.spec.ts
+
+INTERPRETATION:
+The bounce path spans protocol bounce flag handling, typed outbound operation bodies, LPWallet reload/save, Pool burn authentication, and ordinary/custom-burn integration tests.

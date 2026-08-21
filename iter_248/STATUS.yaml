@@ -1,0 +1,180 @@
+schema_version: shadow-v1
+iteration: 248
+phase: completed
+cell_id: BA5
+cell_label: lp_wallet_bounce_query_id_noncorrelation
+final_verdict: PRE_KILLED_DUPLICATE
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: BA5
+  final_verdict: PRE_KILLED_DUPLICATE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/lp_wallet.fc
+        line: 137
+        text: 'in_msg_body~skip_bits(32);'
+      - file: contracts/lp_wallet.fc
+        line: 136
+        text: '() on_bounce (slice in_msg_body) impure'
+      - file: contracts/lp_wallet.fc
+        line: 141
+        text: '(op == op::internal_transfer) | (op == op::burn_notification_ext)'
+      - file: contracts/lp_wallet.fc
+        line: 143
+        text: 'int query_id = in_msg_body~load_uint(64);'
+      - file: contracts/lp_wallet.fc
+        line: 144
+        text: 'int jetton_amount = in_msg_body~load_coins();'
+      - file: contracts/lp_wallet.fc
+        line: 145
+        text: 'balance += jetton_amount;'
+      - file: contracts/lp_wallet.fc
+        line: 146
+        text: 'storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);'
+      - file: contracts/lp_wallet.fc
+        line: 11
+        text: 'int query_id = in_msg_body~load_uint(64);'
+      - file: contracts/lp_wallet.fc
+        line: 37
+        text: '.store_uint(op::internal_transfer, 32)'
+      - file: contracts/lp_wallet.fc
+        line: 116
+        text: '.store_uint(op::burn_notification_ext, 32)'
+      - file: contracts/lp_wallet.fc
+        line: 117
+        text: '.store_uint(query_id, 64)'
+      - file: contracts/lp_wallet.fc
+        line: 118
+        text: '.store_coins(jetton_amount)'
+      - file: contracts/lp_wallet.fc
+        line: 156
+        text: 'if (flags & 1)'
+      - file: contracts/lp_wallet.fc
+        line: 167
+        text: 'int op = in_msg_body~load_uint(32);'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 20
+        text: 'throw_unless(error::invalid_caller'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 25
+        text: 'pool::get_lp_burn_out(jetton_amount)'
+      - file: contracts/common/op.fc
+        line: 7
+        text: 'const op::burn_notification_ext'
+      - file: contracts/common/contracts.fc
+        line: 29
+        text: 'pool::cb_refund_me'
+      - file: tests/System.spec.ts
+        line: 175
+        text: 'const sendBurnLPResult = await lpWallet.sendBurnExt(admin.getSender(), {'
+      - file: tests/ConstProduct.spec.ts
+        line: 1799
+        text: 'let msgResult = await lpWallet.sendBurnExt(alice.getSender(), {'
+  source_scope_restricted: true
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  required_evidence_complete: true
+  no_fabrication: true
+  scope_assets_only: true
+  methodology_audit_exit: NOT_AVAILABLE
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_DEADEND
+  shippable: false
+  rejection_reason: 'LPWallet bounce entry is controlled by the protocol-marked bounced flag, accepts only internal_transfer or burn_notification_ext, reloads its own storage tuple, restores the exact encoded amount, and saves. query_id is parsed but never selects a debit, wallet, owner, or destination; Pool burn authentication and fixed output calculations remain independent.'
+  duplicate_family: 'iter_30 LP burn payload coverage, iter_77/T2 burn dual-output bounce accounting, iter_96 lp_wallet bounce restore authority, iter_124 payload balance boundary, iter_136 lp_wallet bounce query_id alias, iter_178/AP1 burn bounce accounting, and iter_194/AR4 dual-output bounce family'
+  caller_match_count: 122
+  caller_unique_files: 25
+  cascade_verbatim_hit_count: 20
+  cross_file_anchor_count: 20
+  caller_paths:
+    - contracts/common/contracts.fc
+    - contracts/common/op.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_wallet/op.fc
+    - contracts/lp_wallet/storage.fc
+    - contracts/pool/msgs/lp_account.fc
+    - contracts/pool/msgs/lp_wallet.fc
+    - contracts/pool/msgs/router.fc
+    - contracts/router/msgs/jetton.fc
+    - contracts/router/storage.fc
+    - contracts/vault.fc
+    - tests/System.spec.ts
+    - tests/ConstProduct.spec.ts
+  callers_grep_artifact: iter_248/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_248/poc_lp_wallet_bounce_query_id_replay.test.js
+    poc_run_log: iter_248/poc_lp_wallet_bounce_query_id_replay.run.log
+    live_regression_log: iter_248/live-lp-wallet-bounce-query-regression.run.log
+    prior_audit: iter_248/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_248/poc_lp_wallet_bounce_query_id_replay.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_248/poc_lp_wallet_bounce_query_id_replay.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.1s static; 9.269s integration'
+    result: 'PASS (20 cross-file anchors; three bounce/query cases; exact amount restores; typed opcode checks; System/ConstProduct regressions)'
+  prior_art_check:
+    queries:
+      - 'cell_label on_bounce/query_id/internal_transfer/burn_notification_ext/replay scan across iter_*/STATUS.yaml'
+    results:
+      - 'iter_30 LP burn custom payload coverage: DEADEND_WITH_PROOF'
+      - 'iter_77 burn_dual_output_bounce_accounting: DEADEND_WITH_PROOF'
+      - 'iter_96 lp_wallet_bounce_restore_authority: DEADEND_WITH_PROOF'
+      - 'iter_124 lp_wallet_payload_balance_boundary: DEADEND_WITH_PROOF'
+      - 'iter_136 lp_wallet_bounce_query_id_alias: DEADEND_WITH_PROOF'
+      - 'iter_178 lp_wallet_burn_bounce_accounting: DEADEND_WITH_PROOF'
+      - 'iter_194 lp_burn_dual_output_bounce_correlation: DEADEND_WITH_PROOF'
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "on_bounce" "query_id" "jetton_amount" LPWallet is:issue'
+      - 'repo:ston-fi/dex-core-v2 "on_bounce" "query_id" "jetton_amount" LPWallet is:pr'
+      - 'repo:ston-fi/dex-core-v2 "internal_transfer" "burn_notification_ext" "on_bounce" "storage::save" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "internal_transfer" "burn_notification_ext" "on_bounce" "storage::save" is:pr'
+    gh_search_hits: 0
+    evidence_files:
+      - iter_248/r15-lp-wallet-bounce-query-issue.json
+      - iter_248/r15-lp-wallet-bounce-query-pr.json
+      - iter_248/r15-lp-wallet-typed-bounce-issue.json
+      - iter_248/r15-lp-wallet-typed-bounce-pr.json
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: PRE_KILLED_DUPLICATE
+  shadow_mode: true
+  caller_path: iter_248/callers-grep.txt
+  caller_match_count: 122
+  caller_unique_files: 25
+  prior_audit_path: iter_248/prior-audit-git.log
+  prior_family_matches: [iter30, iter77, iter96, iter124, iter136, iter178, iter194]
+  r15_evidence_files:
+    - iter_248/r15-lp-wallet-bounce-query-issue.json
+    - iter_248/r15-lp-wallet-bounce-query-pr.json
+    - iter_248/r15-lp-wallet-typed-bounce-issue.json
+    - iter_248/r15-lp-wallet-typed-bounce-pr.json
+  source_conclusion: 'BA5 is the already audited LPWallet typed-bounce family. query_id is metadata only; protocol bounce entry, exact opcode gating, local storage reload, exact amount restore, and same-tuple save prevent replay or cross-wallet inflation. No attacker-positive token, LP, or TON delta was demonstrated.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_248/poc_lp_wallet_bounce_query_id_replay.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_248/poc_lp_wallet_bounce_query_id_replay.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_248/live-lp-wallet-bounce-query-regression.run.log
+    result: PASS

@@ -1,0 +1,13 @@
+$ node iter_248/poc_lp_wallet_bounce_query_id_replay.test.js
+{
+  "result": "PASS",
+  "classification": "PRE_KILLED_DUPLICATE",
+  "cell": "BA5",
+  "cross_file_anchors": 20,
+  "bounce_cases": 3,
+  "query_ids_modeled": 3,
+  "exact_amount_restores": 3,
+  "typed_opcode_checks": 2,
+  "reason": "protocol-marked bounce entry, typed opcode gating, local tuple reload, exact amount restoration, and same-tuple save prevent query-id replay or cross-wallet inflation"
+}
+exit=0

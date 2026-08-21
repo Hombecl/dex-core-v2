@@ -1,0 +1,23 @@
+COMMAND:
+rg -n --no-heading -i 'on_bounce|query_id|internal_transfer|burn_notification_ext|bounce restore|balance +=|replay' CHAIN_HYPOTHESIS_TABLE.md iter_*/STATUS.yaml
+
+RELEVANT PRIOR RESULTS:
+iter_30 LP burn custom payload coverage: DEADEND_WITH_PROOF
+  LP mint/burn with custom left/right payloads and partial refund passed; no payload-driven balance or recipient delta.
+iter_77 burn_dual_output_bounce_accounting: DEADEND_WITH_PROOF
+  LPWallet burn decrements local balance before burn_notification_ext and restores the exact jetton amount on a protocol bounce. Pool/Router auth and fixed output legs prevent cross-user payout.
+iter_93 lp_account_bounce_query_id_alias: DEADEND_WITH_PROOF
+  LPAccount does not use query ids as mutable state keys; root bounces are ignored and callback amounts are sender-bound.
+iter_96 lp_wallet_bounce_restore_authority: DEADEND_WITH_PROOF
+  on_bounce is entered only from the VM bounced flag, accepts only internal_transfer or burn_notification_ext, reloads the same wallet tuple, and restores the encoded amount.
+iter_124 lp_wallet_payload_balance_boundary: DEADEND_WITH_PROOF
+  Payload parsing does not populate amount, owner, destination, or balance; bounce restores only the exact encoded amount.
+iter_136 lp_wallet_bounce_query_id_alias: DEADEND_WITH_PROOF
+  query_id is carried but does not select another wallet or user; typed bounce restoration remains local and exact.
+iter_178 lp_wallet_burn_bounce_accounting: DEADEND_WITH_PROOF
+  Burn debit/bounce restoration and Pool/Router output authentication were rechecked with live burn payload tests.
+iter_194 lp_burn_dual_output_bounce_correlation: DEADEND_WITH_PROOF
+  The exact burn dual-output bounce family had no attacker-positive delta.
+
+CONCLUSION:
+BA5 is a direct duplicate of the LPWallet typed-bounce restoration family. Query id is parsed but unused; protocol-bounce entry, typed opcode gate, local storage reload, exact amount restoration, and save ordering prevent replay or cross-wallet inflation.
