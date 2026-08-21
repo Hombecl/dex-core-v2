@@ -108,6 +108,7 @@ Scope is limited to the five selected entrypoint assets recorded in `R1-SURFACE-
 | Y2 | router_route_untrusted_notification_binding | sender_binding | An untrusted `transfer_notification` sender/from-address combination could cross the router's token-wallet, pool, or refund identity boundaries into real-asset movement. | 102 | deadend_with_proof |
 | Y3 | lp_wallet_forward_payload_dict_boundary | payload_aliasing | The LP-wallet's ignored custom dictionary and forwarded remainder could alter transfer parsing, destination, balance, or bounce restoration. | 103 | deadend_with_proof |
 | Y4 | vault_withdraw_permissionless_state_transition | state_persistence | Permissionless vault withdrawal and `CARRY_ALL_BALANCE | DESTROY_IF_ZERO` could replay, destroy, or strand a deposited referral fee across withdrawal/redeposit ordering. | 104 | deadend_with_proof |
+| Y5 | router_upgrade_parallel_finalize_cancel | privileged_state | Parallel router code/admin/pool-code upgrade timers or cancellation order could overwrite unrelated state or bypass a delay. | 105 | deadend_with_proof (privileged kill) |
 
 ## Cell execution contract
 

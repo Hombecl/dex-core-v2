@@ -1,0 +1,63 @@
+
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/Router.spec.ts tests/ConstProduct.spec.ts -t should handle upgrades|should init new pool code|should cancel new pool code|should finalize new pool code|should not finalize new pool code if time not passed|should set new pool code on pool|should not set new pool code if empty
+
+PASS tests/ConstProduct.spec.ts (8.927 s)
+  Const Product
+    wip
+      ○ skipped 123
+    Pool code upgrade
+      ✓ should init new pool code (928 ms)
+      ✓ should cancel new pool code (765 ms)
+      ✓ should finalize new pool code (781 ms)
+      ✓ should not finalize new pool code if time not passed (786 ms)
+      ✓ should set new pool code on pool (793 ms)
+      ✓ should not set new pool code if empty (759 ms)
+    Fees
+      ○ skipped should set fees
+      ○ skipped should collect fees
+      ○ skipped should collect ref fee from vault
+    Dex
+      ○ skipped should deploy dex
+      ○ skipped should swap
+      ○ skipped should provide lp
+      ○ skipped should provide lp with payload
+      ○ skipped should provide lp with payload to a different address
+      ○ skipped should handle more complex scenarios
+      ○ skipped should provide lp (single side)
+      ○ skipped should burn lp and swap
+      ○ skipped should provide lp (single side) with protocol fees
+      ○ skipped should burn liquidity
+      ○ skipped should cross-swap on the same router
+      ○ skipped should cross-swap on 2 routers
+      ○ skipped should direct add liquidity (all)
+      ○ skipped should direct add liquidity (partial)
+      ○ skipped should refund swap if tx is expired
+      ○ skipped should swap with 0 ref fee
+      ○ skipped should swap with max ref fee
+    Refund
+      ○ skipped should refund partial liquidity
+      ○ skipped should refund both lp tokens
+      ○ skipped should refund swap
+      ○ skipped should refund cross-swap on the same router
+      ○ skipped should refund cross-swap on 2 routers (in)
+      ○ skipped should refund cross-swap on 2 routers (mid)
+      ○ skipped should refund swap if fee more than max
+    Bounce
+      ○ skipped should bounce set fees if not admin
+      ○ skipped should bounce collect fees if no fee
+
+PASS tests/Router.spec.ts
+  Router
+    Governance
+      ✓ should handle upgrades (63 ms)
+      ○ skipped should handle lock & unlock
+    Getters
+      ○ skipped should return valid pool address
+      ○ skipped should return correct dex version
+
+Test Suites: 2 passed, 2 total
+Tests:       33 skipped, 7 passed, 40 total
+Snapshots:   0 total
+Time:        11.956 s
+Ran all test suites matching /tests\/Router.spec.ts|tests\/ConstProduct.spec.ts/i with tests matching "should handle upgrades|should init new pool code|should cancel new pool code|should finalize new pool code|should not finalize new pool code if time not passed|should set new pool code on pool|should not set new pool code if empty".
