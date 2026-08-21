@@ -1,0 +1,61 @@
+schema_version: shadow-v1
+iteration: 118
+phase: completed
+cell_id: AB3
+cell_label: router_cross_router_original_caller_binding
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AB3
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts,tests/ConstSum.spec.ts,tests/Stableswap.spec.ts,tests/WeightedCPI.spec.ts,tests/WeightedStableswap.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_118/poc_router_cross_router_original_caller_binding.run.log
+    run_log_exists_on_disk: true
+    test_runtime: 41.201s
+    result: 'PASSED (15 passed, 123 skipped, 138 total)'
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 original_caller cross_swap refund is:issue'
+      - 'repo:ston-fi/dex-core-v2 original_caller cross_swap refund is:pr'
+      - 'repo:ston-fi/dex-core-v2 cross-router refund excesses is:issue'
+      - 'repo:ston-fi/dex-core-v2 cross-router refund excesses is:pr'
+    results: all four returned total_count 0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'original_caller cross_swap refund on repository issue page'
+      - 'original_caller cross_swap refund on repository pull-request page'
+      - 'cross-router refund excesses on repository issue page'
+      - 'cross-router refund excesses on repository pull-request page'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_118/callers-grep.txt
+  caller_grep_match_count: 159
+  caller_grep_unique_files: 27
+  prior_audit_path: iter_118/prior-audit-git.log
+  prior_audit_bytes: 78
+  r15_search_files:
+    - iter_118/R15-GH-original-caller-cross-swap-issue.json
+    - iter_118/R15-GH-original-caller-cross-swap-pr.json
+    - iter_118/R15-GH-cross-router-refund-excesses-issue.json
+    - iter_118/R15-GH-cross-router-refund-excesses-pr.json
+  source_conclusion: 'The first router passes the initial transfer notification caller into the pool; pool pay_to serializes that same original_caller; and the next router uses it on cross-swap parse failures. After route parsing, the nested refund/excess fields are workchain-validated and are intentionally used for user-selected refund destinations. Successful and in/mid failure tests preserve the original input/mid balances and do not credit a third-party recipient.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_118-AB3.md

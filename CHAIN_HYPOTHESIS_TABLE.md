@@ -121,6 +121,7 @@ Scope is limited to the five selected entrypoint assets recorded in `R1-SURFACE-
 | AA5 | router_transfer_bounce_error_recipient | error_refund | Parser and validation catch branches could encode different bounce errors while selecting a refund/excess recipient that changes who receives returned tokens. | 114 | deadend_with_proof |
 | AB1 | pool_max_coins_invariant_boundary | arithmetic_boundary | Maximum-width reserves or LP supply could make invariant/fee arithmetic release unbacked tokens before the post-operation bound check. | 116 | deadend_with_proof |
 | AB2 | pool_lp_supply_minimum_lock_boundary | minimum_supply | The required locked LP minimum could make a near-empty pool burn or provide path pass with zero/negative effective supply and misaccount reserves. | 117 | deadend_with_proof |
+| AB3 | router_cross_router_original_caller_binding | cross_router_identity | Across two routers, the mid-hop `original_caller` and refund/excess fields could diverge so the second router pays a different account. | 118 | deadend_with_proof |
 
 ## Cell execution contract
 
