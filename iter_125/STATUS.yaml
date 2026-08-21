@@ -1,0 +1,67 @@
+schema_version: shadow-v1
+iteration: 125
+phase: completed
+cell_id: AC5
+cell_label: vault_concurrent_deposit_withdraw_transition
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AC5
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - 'contracts/vault.fc:40: if (ctx.at(OPCODE) == op::deposit_ref_fee) & equal_slices(ctx.at(SENDER), storage::router_address) {'
+      - 'contracts/vault.fc:43: storage::deposited_amount += in_msg_body~load_coins();'
+      - 'contracts/vault.fc:52: throw_unless(error::zero_output, storage::deposited_amount > 0);'
+      - 'contracts/vault.fc:62: router::vault_pay_to('
+      - 'contracts/vault.fc:66: CARRY_ALL_BALANCE | DESTROY_IF_ZERO);'
+      - 'contracts/router/msgs/vault.fc:13: throw_unless(error::invalid_caller, equal_slices(vault~address(params::workchain), ctx.at(SENDER)));'
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts,tests/ConstSum.spec.ts,tests/Stableswap.spec.ts,tests/WeightedCPI.spec.ts,tests/WeightedStableswap.spec.ts,iter_125/poc_vault_concurrent_deposit_withdraw_transition.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_125/poc_vault_concurrent_deposit_withdraw_transition.run.log,iter_125/poc_vault_concurrent_deposit_withdraw_transition.model.run.log
+    run_log_exists_on_disk: true
+    test_runtime: '20.627s integration; model passed'
+    result: 'PASSED (integration: 5 passed, 133 skipped, 138 total; model: passed)'
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 vault deposit_ref_fee withdraw_fee is:issue'
+      - 'repo:ston-fi/dex-core-v2 vault deposit_ref_fee withdraw_fee is:pr'
+      - 'repo:ston-fi/dex-core-v2 vault_pay_to DESTROY_IF_ZERO is:issue'
+      - 'repo:ston-fi/dex-core-v2 vault_pay_to DESTROY_IF_ZERO is:pr'
+    results: all four returned total_count 0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'vault deposit_ref_fee withdraw_fee repository issue search'
+      - 'vault deposit_ref_fee withdraw_fee repository pull-request search'
+      - 'vault_pay_to DESTROY_IF_ZERO repository issue search'
+      - 'vault_pay_to DESTROY_IF_ZERO repository pull-request search'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_125/callers-grep.txt
+  caller_grep_match_count: 151
+  caller_grep_unique_files: 33
+  prior_audit_path: iter_125/prior-audit-git.log
+  prior_audit_bytes: 78
+  r15_search_files:
+    - iter_125/R15-GH-vault-deposit-withdraw-issue.json
+    - iter_125/R15-GH-vault-deposit-withdraw-pr.json
+    - iter_125/R15-GH-vault-pay-to-destroy-issue.json
+    - iter_125/R15-GH-vault-pay-to-destroy-pr.json
+  source_conclusion: 'Vault deposits are accepted only from the stored router and atomically add the encoded amount. Permissionless withdrawal requires a positive amount, routes the stored amount/token/owner through vault_pay_to, zeroes storage, and may destroy the empty vault. The router validates the deterministic vault state-init address before sending the exact amount to the encoded owner. Sequential/concurrent transition modeling showed aggregation before withdrawal, a zero guard against duplicate withdrawal, and clean post-destroy redeposit without stale state or cross-owner payout.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_125-AC5.md
