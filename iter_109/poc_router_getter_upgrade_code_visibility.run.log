@@ -1,0 +1,18 @@
+
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/Router.spec.ts -t should handle upgrades|should return valid pool address|should return correct dex version
+
+PASS tests/Router.spec.ts
+  Router
+    Governance
+      ✓ should handle upgrades (65 ms)
+      ○ skipped should handle lock & unlock
+    Getters
+      ✓ should return valid pool address (15 ms)
+      ✓ should return correct dex version (15 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       1 skipped, 3 passed, 4 total
+Snapshots:   0 total
+Time:        4.059 s
+Ran all test suites matching /tests\/Router.spec.ts/i with tests matching "should handle upgrades|should return valid pool address|should return correct dex version".

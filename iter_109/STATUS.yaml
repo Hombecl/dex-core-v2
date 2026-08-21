@@ -1,0 +1,61 @@
+schema_version: shadow-v1
+iteration: 109
+phase: completed
+cell_id: Z4
+cell_label: router_getter_upgrade_code_visibility
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: Z4
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/Router.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_109/poc_router_getter_upgrade_code_visibility.run.log
+    run_log_exists_on_disk: true
+    test_runtime: 4.059s
+    result: PASSED (3 passed, 1 skipped, 4 total)
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 get_upgraded_pool_code is:issue'
+      - 'repo:ston-fi/dex-core-v2 get_upgraded_pool_code is:pr'
+      - 'repo:ston-fi/dex-core-v2 get_pool_address upgrade is:issue'
+      - 'repo:ston-fi/dex-core-v2 get_pool_address upgrade is:pr'
+    results: all four returned total_count 0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'get_upgraded_pool_code on repository issue page'
+      - 'get_upgraded_pool_code on repository pull-request page'
+      - 'get_pool_address upgrade on repository issue page'
+      - 'get_pool_address upgrade on repository pull-request page'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_109/callers-grep.txt
+  caller_grep_match_count: 52
+  caller_grep_unique_files: 18
+  prior_audit_path: iter_109/prior-audit-git.log
+  prior_audit_bytes: 78
+  r15_search_files:
+    - iter_109/R15-GH-get-upgraded-pool-code-issue.json
+    - iter_109/R15-GH-get-upgraded-pool-code-pr.json
+    - iter_109/R15-GH-get-pool-address-upgrade-issue.json
+    - iter_109/R15-GH-get-pool-address-upgrade-pr.json
+  source_conclusion: 'Router getters expose read-only current/pending code state, and pool addresses remain derived from the stable router state-init code while upgrades replace pool code in place. No getter output creates a value-bearing address or authorization path.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_109-Z4.md

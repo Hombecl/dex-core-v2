@@ -1,0 +1,52 @@
+contracts/router/storage.fc:9:global cell storage::upgrade_pool_code;
+contracts/router/storage.fc:27:    storage::upgrade_pool_code = ds~load_ref();
+contracts/router/storage.fc:37:        .store_ref(storage::upgrade_pool_code)
+wrappers/Router.ts:47:                codeEnd: ds_p.loadUintBig(64),
+wrappers/Router.ts:487:        const result = await provider.get('get_router_data', []);
+wrappers/Router.ts:507:            pendingPoolCode: sc.loadRef()
+wrappers/Router.ts:519:        const result = await provider.get('get_pool_address', [
+wrappers/Router.ts:530:        const result = await provider.get('get_vault_address', [
+wrappers/Router.ts:538:        const result = await provider.get('get_upgraded_pool_code', []);
+contracts/common/op.fc:32:const op::internal_update_pool_code       = "internal_update_pool_code query_id:uint64 upgrade_pool_code:^Cell = InternalMsgBody"c & 0x7fffffff;
+contracts/router/dex.fc:79:            pool_idata(my_address(), _jetton_address, token_wallet1, storage::jetton_lp_wallet_code,  storage::lp_account_code),
+contracts/router/get.fc:3:_ get_pool_address(slice token0, slice token1) method_id {
+contracts/router/get.fc:11:        pool_idata(my_address(), token0, token1, storage::jetton_lp_wallet_code,  storage::lp_account_code),
+contracts/router/get.fc:18:_ get_vault_address(slice user, slice token) method_id {
+contracts/router/get.fc:32:_ get_router_data() method_id {
+contracts/router/get.fc:48:_ get_upgraded_pool_code() method_id {
+contracts/router/get.fc:51:    return (storage::upgrade_pool_code);
+contracts/router/msgs/admin.fc:35:            pool_idata(my_address(), jetton_wallet0, jetton_wallet1, storage::jetton_lp_wallet_code,  storage::lp_account_code),
+contracts/router/msgs/admin.fc:71:            pool_idata(my_address(), jetton_wallet0, jetton_wallet1, storage::jetton_lp_wallet_code,  storage::lp_account_code),
+contracts/router/msgs/admin.fc:102:            pool_idata(my_address(), jetton_wallet0, jetton_wallet1, storage::jetton_lp_wallet_code, storage::lp_account_code),
+contracts/router/msgs/admin.fc:127:        throw_if(error::empty_cell, storage::upgrade_pool_code.cell::is_empty());
+contracts/router/msgs/admin.fc:133:            pool_idata(my_address(), jetton_wallet0, jetton_wallet1, storage::jetton_lp_wallet_code, storage::lp_account_code),
+contracts/router/msgs/admin.fc:142:            pool::internal_update_pool_code(storage::upgrade_pool_code), 
+contracts/router/msgs/admin.fc:252:            storage::upgrade_pool_code = pool_code;
+contracts/router/msgs/getter.fc:17:            pool_idata(my_address(), token0, token1, storage::jetton_lp_wallet_code,  storage::lp_account_code),
+contracts/router/pools/weighted_const_product/ext_admin.fc:34:            pool_idata(my_address(), left_jetton_wallet, right_jetton_wallet, storage::jetton_lp_wallet_code, storage::lp_account_code),
+contracts/router/msgs/pool.fc:19:            pool_idata(
+contracts/router/msgs/pool.fc:104:            pool_idata(
+contracts/router/pools/weighted_stableswap/ext_admin.fc:39:            pool_idata(my_address(), left_jetton_wallet, right_jetton_wallet, storage::jetton_lp_wallet_code, storage::lp_account_code),
+contracts/router/pools/stableswap/ext_admin.fc:32:            pool_idata(
+tests/ConstProduct.spec.ts:1125:            expect(data.pendingPoolCode.equals(code.poolDummy)).toBeTruthy()
+tests/ConstProduct.spec.ts:1159:            expect(data.pendingPoolCode.equals(emptyCell())).toBeTruthy()
+tests/ConstProduct.spec.ts:1196:            expect(data.pendingPoolCode.equals(emptyCell())).toBeTruthy()
+tests/ConstProduct.spec.ts:1236:            expect(data.pendingPoolCode.equals(code.poolDummy)).toBeTruthy()
+contracts/pool/pools/README.md:6:(cell) pool_idata(slice _router_address, slice _first_jetton_address, slice _second_jetton_address, cell _jetton_lp_wallet_code, cell _lp_account_code);
+contracts/pool/pools/weighted_const_product/state_init.fc:17:(slice) _pool_idata() inline asm "<b <%= defaultIsLocked %> 1 u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, b{00} s, <%= defaultLPFee %> 16 u, <%= defaultProtocolFee %> 16 u, 0 64 u, b> <s PUSHSLICE";
+contracts/pool/pools/weighted_const_product/state_init.fc:19:(cell) pool_idata(slice _router_address, slice _first_jetton_address, slice _second_jetton_address, cell _jetton_lp_wallet_code, cell _lp_account_code) inline {    
+contracts/pool/pools/weighted_const_product/state_init.fc:36:        .store_slice(_pool_idata())
+contracts/pool/pools/constant_sum/state_init.fc:16:(slice) _pool_idata() inline asm "<b <%= defaultIsLocked %> 1 u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, b{00} s, <%= defaultLPFee %> 16 u, <%= defaultProtocolFee %> 16 u, b> <s PUSHSLICE";
+contracts/pool/pools/constant_sum/state_init.fc:18:(cell) pool_idata(slice _router_address, slice _first_jetton_address, slice _second_jetton_address, cell _jetton_lp_wallet_code, cell _lp_account_code) inline {    
+contracts/pool/pools/constant_sum/state_init.fc:34:        .store_slice(_pool_idata())
+contracts/pool/pools/constant_product/state_init.fc:16:(slice) _pool_idata() inline asm "<b <%= defaultIsLocked %> 1 u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, b{00} s, <%= defaultLPFee %> 16 u, <%= defaultProtocolFee %> 16 u, b> <s PUSHSLICE";
+contracts/pool/pools/constant_product/state_init.fc:18:(cell) pool_idata(slice _router_address, slice _first_jetton_address, slice _second_jetton_address, cell _jetton_lp_wallet_code, cell _lp_account_code) inline {    
+contracts/pool/pools/constant_product/state_init.fc:34:        .store_slice(_pool_idata())
+contracts/pool/pools/weighted_stableswap/state_init.fc:16:(slice) _pool_idata() inline asm "<b <%= defaultIsLocked %> 1 u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, b{00} s, <%= defaultLPFee %> 16 u, <%= defaultProtocolFee %> 16 u, b> <s PUSHSLICE";
+contracts/pool/pools/weighted_stableswap/state_init.fc:27:(cell) _pool_idata2() inline asm "<b 1000000000000000000 128 u, 0 128 u, 0 128 u, b{00} s, b> PUSHREF";
+contracts/pool/pools/weighted_stableswap/state_init.fc:29:(cell) pool_idata(slice _router_address, slice _first_jetton_address, slice _second_jetton_address, cell _jetton_lp_wallet_code, cell _lp_account_code) inline {    
+contracts/pool/pools/weighted_stableswap/state_init.fc:46:        .store_slice(_pool_idata())
+contracts/pool/pools/weighted_stableswap/state_init.fc:47:        .store_ref(_pool_idata2())
+contracts/pool/pools/stableswap/state_init.fc:17:(slice) _pool_idata() inline asm "<b <%= defaultIsLocked %> 1 u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, b{00} s, <%= defaultLPFee %> 16 u, <%= defaultProtocolFee %> 16 u, 1 32 u, b> <s PUSHSLICE";
+contracts/pool/pools/stableswap/state_init.fc:19:(cell) pool_idata(slice _router_address, slice _first_jetton_address, slice _second_jetton_address, cell _jetton_lp_wallet_code, cell _lp_account_code) inline {    
+contracts/pool/pools/stableswap/state_init.fc:36:        .store_slice(_pool_idata())
