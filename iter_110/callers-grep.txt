@@ -1,0 +1,177 @@
+contracts/router/dex.fc:10:    slice excesses_address = null();
+contracts/router/dex.fc:18:        excesses_address = dex_payload~load_msg_addr();
+contracts/router/dex.fc:24:            & excesses_address.address::check_workchain(params::workchain)
+contracts/router/dex.fc:95:        var out_msg_body = jetton_wallet::transfer(0, _sent_amount, refund_address, excesses_address)
+wrappers/Pool.ts:116:        excessesAddress?: Address;
+wrappers/Pool.ts:139:                    .storeAddress(opts.excessesAddress || opts.fromAddress)
+wrappers/Pool.ts:161:        excessesAddress?: Address;
+wrappers/Pool.ts:180:                    .storeAddress(opts.excessesAddress || opts.fromAddress)
+wrappers/Router.ts:103:    excessesAddress?: Address,
+wrappers/Router.ts:111:        .storeAddress(opts.excessesAddress ? opts.excessesAddress : opts.refundAddress)
+wrappers/Router.ts:133:    excessesAddress?: Address,
+wrappers/Router.ts:143:        .storeAddress(opts.excessesAddress ? opts.excessesAddress : opts.refundAddress)
+wrappers/Router.ts:165:    excessesAddress?: Address,
+wrappers/Router.ts:177:        .storeAddress(opts.excessesAddress ? opts.excessesAddress : opts.refundAddress)
+wrappers/Router.ts:205:        excessesAddress?: Address;
+wrappers/Router.ts:213:                .storeAddress(opts.excessesAddress)
+wrappers/Router.ts:221:        excessesAddress?: Address;
+wrappers/Router.ts:229:                .storeAddress(opts.excessesAddress)
+wrappers/Router.ts:240:        excessesAddress?: Address;
+wrappers/Router.ts:252:                    .storeAddress(opts.excessesAddress)
+wrappers/Router.ts:395:        excessesAddress?: Address;
+wrappers/Router.ts:415:                    excessesAddress: opts.excessesAddress || opts.fromAddress,
+wrappers/Router.ts:464:                    excessesAddress: opts.toAddress || via.address as Address,
+wrappers/Router.ts:572:        excessesRecipient?: Address;
+wrappers/Router.ts:586:                    .storeAddress(opts.excessesRecipient || null)
+wrappers/Router.ts:603:        excessesRecipient?: Address;
+wrappers/Router.ts:614:                    .storeAddress(opts.excessesRecipient || null)
+wrappers/Router.ts:630:        excessesRecipient?: Address;
+wrappers/Router.ts:639:                .storeAddress(opts.excessesRecipient || null)
+contracts/router/msgs/admin.fc:18:        slice excesses_recipient = get_excesses_address(jetton_info~load_msg_addr());
+contracts/router/msgs/admin.fc:25:            & excesses_recipient.address::check_workchain(params::workchain));
+contracts/router/msgs/admin.fc:48:                excesses_recipient
+contracts/router/msgs/admin.fc:63:        slice excesses_recipient = get_excesses_address(in_msg_body~load_msg_addr());
+contracts/router/msgs/admin.fc:68:            & excesses_recipient.address::check_workchain(params::workchain));
+contracts/router/msgs/admin.fc:80:            pool::reset_gas(excesses_recipient), 
+contracts/router/msgs/admin.fc:94:        slice excesses_recipient = get_excesses_address(in_msg_body~load_msg_addr());
+contracts/router/msgs/admin.fc:99:            & excesses_recipient.address::check_workchain(params::workchain));
+contracts/router/msgs/admin.fc:111:            pool::internal_update_status(excesses_recipient), 
+contracts/router/msgs/admin.fc:152:        utils::send_excesses(0, storage::admin_address, QCARRY_ALL_BALANCE);
+contracts/router/msgs/admin.fc:167:        utils::send_excesses(0, storage::admin_address, QCARRY_ALL_BALANCE);
+contracts/router/msgs/admin.fc:182:        utils::send_excesses(0, storage::admin_address, QCARRY_ALL_BALANCE);
+contracts/router/msgs/admin.fc:197:        utils::send_excesses(0, storage::admin_address, QCARRY_ALL_BALANCE);
+contracts/router/msgs/admin.fc:208:        utils::send_excesses(0, storage::admin_address, QCARRY_ALL_BALANCE);
+contracts/router/msgs/admin.fc:219:        utils::send_excesses(0, storage::admin_address, QCARRY_ALL_BALANCE);
+contracts/router/msgs/admin.fc:230:        utils::send_excesses(0, storage::admin_address, QCARRY_ALL_BALANCE);
+contracts/router/msgs/admin.fc:265:        utils::send_excesses(0, storage::admin_address, QCARRY_ALL_BALANCE);
+wrappers/LPAccount.ts:61:        excessesAddress?: Address
+wrappers/LPAccount.ts:75:                    .storeAddress(opts.excessesAddress || via.address)
+tests/System.spec.ts:305:                    excessesAddress: admin.address,
+tests/System.spec.ts:360:                op: stdNftOpCodes.excesses
+tests/System.spec.ts:371:                excessesAddress: router.address
+tests/System.spec.ts:376:                op: stdNftOpCodes.excesses
+tests/System.spec.ts:436:                op: stdNftOpCodes.excesses
+tests/System.spec.ts:471:                    excessesAddress: admin.address,
+contracts/router/msgs/pool.fc:7:        slice excesses_address = in_msg_body~load_msg_addr();
+contracts/router/msgs/pool.fc:64:                ;; do not send transfer_notification, if gas is too low
+contracts/router/msgs/pool.fc:74:                    jetton_wallet::transfer(fwd_ton_amount, amount0_out, owner, excesses_address)
+contracts/router/msgs/pool.fc:83:                    jetton_wallet::transfer(fwd_ton_amount, amount1_out, owner, excesses_address)
+contracts/router/msgs/pool.fc:96:        slice excesses_address = in_msg_body~load_msg_addr();
+contracts/router/msgs/pool.fc:133:                excesses_address
+contracts/vault.fc:46:        utils::send_excesses(0, in_msg_body~load_msg_addr(), QCARRY_ALL_BALANCE);
+contracts/router/msgs/jetton.fc:5:    if ctx.at(OPCODE) == op::ft::transfer_notification {
+contracts/common/contracts.fc:149:    slice _excesses_address,
+contracts/common/contracts.fc:160:        .store_slice(_excesses_address)
+contracts/common/contracts.fc:188:    slice _excesses_address,
+contracts/common/contracts.fc:196:        .store_slice(_excesses_address)
+contracts/common/contracts.fc:208:    slice _response_address, 
+contracts/common/contracts.fc:213:    return begin_message(op::internal_transfer)
+contracts/common/contracts.fc:216:        .store_slice(_response_address) ;; response_address
+contracts/common/contracts.fc:252:    slice _excesses_recipient
+contracts/common/contracts.fc:258:        .store_slice(_excesses_recipient)
+contracts/common/contracts.fc:268:(cell) pool::reset_gas(slice _excesses_recipient) inline {
+contracts/common/contracts.fc:270:        .store_slice(_excesses_recipient)
+contracts/common/contracts.fc:274:(cell) pool::internal_update_status(slice _excesses_recipient) inline {
+contracts/common/contracts.fc:276:        .store_slice(_excesses_recipient)
+contracts/common/contracts.fc:280:(builder) jetton_wallet::transfer(int _fwd_amount, int _jetton_amount, slice _to, slice _response_address) inline {
+contracts/common/contracts.fc:284:        .store_slice(_response_address) ;; responseAddress
+contracts/common/contracts.fc:291:    slice _response_address
+contracts/common/contracts.fc:295:        .store_slice(_response_address)
+contracts/common/op.fc:1:const op::internal_transfer               = 0x178d4519;
+contracts/common/op.fc:4:const op::cross_swap                      = "cross_swap token_wallet1:MsgAddress refund_address:MsgAddress excesses_address:MsgAddress tx_deadline:uint64 cross_swap_body:^[min_out:Coins receiver:MsgAddress fwd_gas:Coins custom_payload:(Maybe ^Cell) refund_fwd_gas:Coins refund_payload:(Maybe ^Cell) ref_fee:uint16 ref_address:MsgAddress] = DexPayload"c  & 0x7fffffff;
+contracts/common/op.fc:5:const op::swap                            = "swap query_id:uint64 from_user:MsgAddress left_amount:Coins right_amount:Coins dex_payload:^[transferred_op:uint32 token_wallet1:MsgAddress refund_address:MsgAddress excesses_address:MsgAddress tx_deadline:uint64 swap_body:^[min_out:Coins receiver:MsgAddress fwd_gas:Coins custom_payload:(Maybe ^Cell) refund_fwd_gas:Coins refund_payload:(Maybe ^Cell) ref_fee:uint16 ref_address:MsgAddress]] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:6:const op::provide_lp                      = "provide_lp query_id:uint64 from_user:MsgAddress left_amount:Coins right_amount:Coins dex_payload:^[transferred_op:uint32 token_wallet1:MsgAddress refund_address:MsgAddress excesses_address:MsgAddress tx_deadline:uint64 provide_lp_body:^[min_lp_out:Coins to_address:MsgAddress both_positive:uint1 fwd_amount:Coins custom_payload:(Maybe ^Cell)]] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:7:const op::burn_notification_ext           = "burn_notification_ext query_id:uint64 jetton_amount:Coins from_address:MsgAddress response_address:MsgAddress maybe_custom_payload:(Maybe ^Cell) = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:10:const op::pay_to                          = "pay_to query_id:uint64 to_address:MsgAddress excesses_address:MsgAddress original_caller:MsgAddress exit_code:uint32 custom_payload:(Maybe ^Cell) additional_info:^[fwd_ton_amount:Coins amount0_out:Coins token0_address:MsgAddress amount1_out:Coins token1_address:MsgAddress] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:12:const op::set_fees                        = "set_fees query_id:uint64 new_lp_fee:uint16 new_protocol_fee:uint16 new_protocol_fee_address:MsgAddress jetton_info:^[jetton_wallet0:MsgAddress jetton_wallet1:MsgAddress excesses_recipient:MsgAddress] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:13:const op::internal_set_fees               = "internal_set_fees query_id:uint64 new_lp_fee:uint16 new_protocol_fee:uint16 new_protocol_fee_address:MsgAddress excesses_address:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:18:const op::reset_pool_gas                  = "reset_pool_gas query_id:uint64 jetton_wallet0:MsgAddress jetton_wallet1:MsgAddress excesses_recipient:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:24:const op::update_pool_status              = "update_pool_status query_id:uint64 jetton_wallet0:MsgAddress jetton_wallet1:MsgAddress excesses_recipient:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:25:const op::pay_vault                       = "pay_vault query_id:uint64 owner:MsgAddress excesses_address:MsgAddress additional_info:^[amount0_out:Coins token0_address:MsgAddress amount1_out:Coins token1_address:MsgAddress] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:27:const op::deposit_ref_fee                 = "deposit_ref_fee query_id:uint64 jetton_amount:Coins excesses_address:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:30:const op::internal_update_status          = "internal_update_status query_id:uint64 excesses_recipient:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+contracts/common/utils.fc:1:slice get_excesses_address(slice _addr) impure inline {
+contracts/lp_wallet.fc:25:    slice response_address = in_msg_body~load_msg_addr();
+contracts/lp_wallet.fc:37:        .store_uint(op::internal_transfer, 32)
+contracts/lp_wallet.fc:41:        .store_slice(response_address)
+contracts/lp_wallet.fc:60:    slice response_address = in_msg_body~load_msg_addr();
+contracts/lp_wallet.fc:74:            .store_uint(op::transfer_notification, 32)
+contracts/lp_wallet.fc:89:    if ((response_address.preload_uint(2) != 0) & (msg_value > 0)) {
+contracts/lp_wallet.fc:92:        .store_slice(response_address)
+contracts/lp_wallet.fc:95:        .store_uint(op::excesses, 32)
+contracts/lp_wallet.fc:107:    slice response_address = in_msg_body~load_msg_addr();
+contracts/lp_wallet.fc:116:        .store_uint(op::burn_notification_ext, 32)
+contracts/lp_wallet.fc:120:        .store_slice(response_address)
+contracts/lp_wallet.fc:136:() on_bounce (slice in_msg_body) impure {
+contracts/lp_wallet.fc:141:    throw_unless(709, (op == op::internal_transfer) | (op == op::burn_notification_ext));
+contracts/lp_wallet.fc:157:        on_bounce(in_msg_body);
+contracts/lp_wallet.fc:174:    if (op == op::internal_transfer) { 
+contracts/router/pools/weighted_const_product/contracts.fc:2:    slice _excesses_address,
+contracts/router/pools/weighted_const_product/contracts.fc:7:        .store_slice(_excesses_address)
+contracts/pool/msgs/router.fc:18:        slice excesses_address = dex_payload~load_msg_addr();
+contracts/pool/msgs/router.fc:61:                    excesses_address,
+contracts/pool/msgs/router.fc:90:            ref_value = ref_address.preload_uint(2) == 0 ? 0 : ref_value;
+contracts/pool/msgs/router.fc:121:            if (ref_address.preload_uint(2) != 0) & (ref_fee_out0 + ref_fee_out1 > 0) { ;; 2 messages, pay referral, check ref_fee_out
+contracts/pool/msgs/router.fc:126:                        excesses_address,
+contracts/pool/msgs/router.fc:141:                    excesses_address,
+contracts/pool/msgs/router.fc:163:                    excesses_address,
+contracts/pool/msgs/router.fc:190:        slice excesses_address = dex_payload~load_msg_addr();
+contracts/pool/msgs/router.fc:222:                    excesses_address,
+contracts/pool/msgs/router.fc:259:                    excesses_address
+contracts/pool/msgs/router.fc:273:                    excesses_address,
+contracts/pool/msgs/router.fc:290:        utils::send_excesses(0, in_msg_body~load_msg_addr(), QCARRY_ALL_BALANCE);
+contracts/pool/msgs/router.fc:298:        utils::send_excesses(0, in_msg_body~load_msg_addr(), QCARRY_ALL_BALANCE);
+contracts/pool/msgs/router.fc:320:        utils::send_excesses(0, in_msg_body~load_msg_addr(), QCARRY_ALL_BALANCE);
+contracts/router/pools/weighted_const_product/ext_admin.fc:12:        slice excesses_recipient = get_excesses_address(ref_data~load_msg_addr());
+contracts/router/pools/weighted_const_product/ext_admin.fc:26:            & excesses_recipient.address::check_workchain(params::workchain));
+contracts/router/pools/weighted_const_product/ext_admin.fc:44:                excesses_recipient,
+contracts/pool/msgs/lp_wallet.fc:4:    if ctx.at(OPCODE) == op::burn_notification_ext { 
+contracts/pool/msgs/lp_wallet.fc:8:        slice response_address = in_msg_body~load_msg_addr();
+contracts/pool/msgs/lp_wallet.fc:23:        throw_unless(error::wrong_address, response_address.preload_uint(2) == 0); 
+contracts/router/pools/weighted_stableswap/contracts.fc:2:    slice _excesses_address,
+contracts/router/pools/weighted_stableswap/contracts.fc:10:        .store_slice(_excesses_address)
+contracts/pool/msgs/lp_account.fc:40:            ;; 1000 LP tokens will be locked, excesses minted to user
+contracts/pool/msgs/lp_account.fc:115:            ) { ;; do not send transfer_notification, if gas is too low, mint may revert
+contracts/router/pools/weighted_stableswap/ext_admin.fc:13:        slice excesses_recipient = get_excesses_address(ref_data~load_msg_addr());
+contracts/router/pools/weighted_stableswap/ext_admin.fc:35:            & excesses_recipient.address::check_workchain(params::workchain)
+contracts/router/pools/weighted_stableswap/ext_admin.fc:49:                excesses_recipient,
+contracts/router/pools/stableswap/contracts.fc:1:(cell) pool::internal_set_params(slice _excesses_address, int _new_amp) inline {
+contracts/router/pools/stableswap/contracts.fc:3:        .store_slice(_excesses_address)
+contracts/router/pools/stableswap/ext_admin.fc:13:        slice excesses_recipient = get_excesses_address(in_msg_body~load_msg_addr());
+contracts/router/pools/stableswap/ext_admin.fc:29:            & excesses_recipient.address::check_workchain(params::workchain));
+contracts/router/pools/stableswap/ext_admin.fc:48:                excesses_recipient,
+tests/Pool.spec.ts:103:                    const excessesAddress = body?.loadAddress();
+tests/Pool.spec.ts:112:                        && excessesAddress?.equals(user.address)
+tests/Pool.spec.ts:142:                    const excessesAddress = body?.loadAddress();
+tests/Pool.spec.ts:151:                        && excessesAddress?.equals(user.address)
+contracts/lp_wallet/op.fc:2:const op::transfer_notification = 0x7362d09c;
+contracts/lp_wallet/op.fc:3:const op::internal_transfer = 0x178d4519;
+contracts/lp_wallet/op.fc:4:const op::excesses = 0xd53276db;
+contracts/lp_account/msgs/pool.fc:52:            utils::send_excesses(0, excess_address, QCARRY_ALL_BALANCE);
+contracts/lp_account/msgs/user.fc:56:        slice excesses_address = additional_fields~load_msg_addr();
+contracts/lp_account/msgs/user.fc:64:            & excesses_address.address::check_workchain(params::workchain));
+contracts/lp_account/msgs/user.fc:96:                excesses_address
+tests/ConstProduct.spec.ts:170:    excessesReceiver?: SBCtrTreasury,
+tests/ConstProduct.spec.ts:362:                    excessesAddress: sender.address,
+tests/ConstProduct.spec.ts:504:                    excessesAddress: sender.address,
+tests/ConstProduct.spec.ts:651:                        excessesAddress: sender.address,
+tests/ConstProduct.spec.ts:698:                        excessesAddress: sender.address,
+tests/ConstProduct.spec.ts:792:                    excessesAddress: sender.address,
+tests/ConstProduct.spec.ts:906:                    excessesAddress: sender.address,
+tests/ConstProduct.spec.ts:915:                        excessesAddress: sender.address,
+tests/ConstProduct.spec.ts:1538:                    excessesAddress: alice.address,
+tests/ConstProduct.spec.ts:1558:                    excessesAddress: alice.address,
+tests/ConstProduct.spec.ts:1618:                    excessesAddress: alice.address,
+tests/ConstProduct.spec.ts:1640:                    excessesAddress: alice.address,
+tests/ConstProduct.spec.ts:1674:                op: stdFtOpCodes.excesses,
+tests/ConstProduct.spec.ts:1733:                    excessesAddress: alice.address,
+tests/ConstProduct.spec.ts:1739:                        excessesAddress: alice.address,
+tests/ConstProduct.spec.ts:1843:                        excessesAddress: alice.address,
+tests/ConstProduct.spec.ts:1967:                    excessesAddress: deployer.address,
+tests/ConstProduct.spec.ts:1998:                excessesReceiver: alice,
+tests/ConstProduct.spec.ts:2263:                    excessesAddress: deployer.address,
+tests/ConstProduct.spec.ts:2294:                excessesReceiver: alice,
+contracts/pool/pools/weighted_const_product/ext_router.fc:24:        utils::send_excesses(0, resp, QCARRY_ALL_BALANCE);
+contracts/pool/pools/weighted_stableswap/ext_router.fc:29:        utils::send_excesses(0, resp, QCARRY_ALL_BALANCE);
+contracts/pool/pools/stableswap/ext_router.fc:16:        utils::send_excesses(0, resp, QCARRY_ALL_BALANCE);
+contracts/pool/pools/weighted_stableswap/setter.fc:12:        utils::send_excesses(0, ctx.at(SENDER), QCARRY_ALL_BALANCE);
