@@ -1,0 +1,58 @@
+
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/WeightedCPI.spec.ts tests/System.spec.ts -t should swap$|should cross-swap on the same router|should cross-swap on 2 routers|should handle swaps|should handle cross swap|should refund swap$
+
+PASS tests/WeightedCPI.spec.ts (9.22 s)
+  Weighted CPI
+    Fees
+      ○ skipped should set fees
+      ○ skipped should collect fees
+      ○ skipped should collect ref fee from vault
+    Params
+      ○ skipped should set params
+      ○ skipped should swap with different ratio
+    Dex
+      ✓ should swap (1112 ms)
+      ✓ should cross-swap on the same router (1576 ms)
+      ✓ should cross-swap on 2 routers (1772 ms)
+      ○ skipped should deploy dex
+      ○ skipped should provide lp
+      ○ skipped should provide lp (single side)
+      ○ skipped should burn liquidity
+      ○ skipped should direct add liquidity (all)
+      ○ skipped should direct add liquidity (partial)
+      ○ skipped should swap with 0 ref fee
+      ○ skipped should swap with max ref fee
+    Refund
+      ✓ should refund swap (960 ms)
+      ○ skipped should refund partial liquidity
+      ○ skipped should refund cross-swap on the same router
+      ○ skipped should refund swap if pool locked
+      ○ skipped should refund swap if fee more than max
+      ○ skipped should refund cross-swap on 2 routers (in)
+      ○ skipped should refund cross-swap on 2 routers (mid)
+    Bounce
+      ○ skipped should bounce set fees if not admin
+      ○ skipped should bounce collect fees if no fee
+
+PASS tests/System.spec.ts
+  System
+    Dex
+      ✓ should handle swaps (264 ms)
+      ✓ should handle cross swap (289 ms)
+      ○ skipped should handle mint & burn liquidity
+      ○ skipped should handle refund partial liquidity
+      ○ skipped should handle invalid transfers
+    Governance
+      ○ skipped should reset pool gas
+      ○ skipped should reset pool gas (different address)
+      ○ skipped should reset router gas
+      ○ skipped should lock & unlock pool
+      ○ skipped should set fees
+      ○ skipped should collect fees
+
+Test Suites: 2 passed, 2 total
+Tests:       30 skipped, 6 passed, 36 total
+Snapshots:   0 total
+Time:        12.733 s
+Ran all test suites matching /tests\/WeightedCPI.spec.ts|tests\/System.spec.ts/i with tests matching "should swap$|should cross-swap on the same router|should cross-swap on 2 routers|should handle swaps|should handle cross swap|should refund swap$".

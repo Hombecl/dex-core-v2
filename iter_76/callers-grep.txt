@@ -1,0 +1,72 @@
+tests/WeightedStableswap.spec.ts:1630:                debugGraph: "cross_swap",
+tests/WeightedStableswap.spec.ts:1666:                debugGraph: "cross_swap_router",
+tests/WeightedStableswap.spec.ts:1879:                debugGraph: "cross_swap_refund",
+tests/WeightedStableswap.spec.ts:1954:                debugGraph: "cross_swap_router_refund_in",
+tests/WeightedStableswap.spec.ts:1985:                debugGraph: "cross_swap_router_refund_mid",
+contracts/pool/msgs/router.fc:14:        dex_payload~load_msg_addr(); ;; skip token_wallet1
+contracts/pool/msgs/router.fc:24:        cell custom_payload_cs = null(); 
+contracts/pool/msgs/router.fc:26:        cell refund_payload_cs = null(); 
+contracts/pool/msgs/router.fc:36:            custom_payload_cs = call_payload~load_maybe_ref(); 
+contracts/pool/msgs/router.fc:38:            refund_payload_cs = call_payload~load_maybe_ref(); 
+contracts/pool/msgs/router.fc:58:                router::pay_to(
+contracts/pool/msgs/router.fc:138:                router::pay_to(
+contracts/pool/msgs/router.fc:144:                    custom_payload_cs, 
+contracts/pool/msgs/router.fc:160:                router::pay_to(
+contracts/pool/msgs/router.fc:166:                    refund_payload_cs, ;; clear custom_payload_cs, use refund_payload_cs
+contracts/pool/msgs/router.fc:186:        dex_payload~load_msg_addr(); ;; skip token_wallet1 
+contracts/pool/msgs/router.fc:197:        cell custom_payload_cs = null(); 
+contracts/pool/msgs/router.fc:206:            custom_payload_cs = call_payload~load_maybe_ref();
+contracts/pool/msgs/router.fc:219:                router::pay_to(
+contracts/pool/msgs/router.fc:257:                    custom_payload_cs,
+contracts/pool/msgs/router.fc:270:                router::pay_to(
+tests/ConstProduct.spec.ts:1751:                output: "cross_swap_payload_complex",
+tests/ConstProduct.spec.ts:1963:                debugGraph: "cross_swap",
+tests/ConstProduct.spec.ts:2000:                debugGraph: "cross_swap_router",
+tests/ConstProduct.spec.ts:2258:                debugGraph: "cross_swap_refund",
+tests/ConstProduct.spec.ts:2296:                debugGraph: "cross_swap_router_refund_in",
+tests/ConstProduct.spec.ts:2327:                debugGraph: "cross_swap_router_refund_mid",
+contracts/common/contracts.fc:46:    cell _custom_payload_cs,
+contracts/common/contracts.fc:56:        .store_maybe_ref(_custom_payload_cs)
+contracts/common/contracts.fc:127:    cell _custom_payload_cs,
+contracts/common/contracts.fc:138:        .store_maybe_ref(_custom_payload_cs)
+contracts/common/contracts.fc:146:(cell) router::pay_to(
+contracts/common/contracts.fc:147:    slice _original_caller,
+contracts/common/contracts.fc:152:    cell _maybe_custom_payload, 
+contracts/common/contracts.fc:158:    return begin_message(op::pay_to)
+contracts/common/contracts.fc:161:        .store_slice(_original_caller)
+contracts/common/contracts.fc:163:        .store_maybe_ref(_maybe_custom_payload)
+contracts/common/contracts.fc:174:(cell) router::vault_pay_to(
+contracts/common/contracts.fc:179:    return begin_message(op::vault_pay_to)
+contracts/common/contracts.fc:222:(cell) pool::$route(
+contracts/router/msgs/pool.fc:5:    if ctx.at(OPCODE) == op::pay_to { 
+contracts/router/msgs/pool.fc:8:        slice original_caller = in_msg_body~load_msg_addr();
+contracts/router/msgs/pool.fc:10:        cell custom_payload = in_msg_body~load_maybe_ref();
+contracts/router/msgs/pool.fc:31:        ifnot(custom_payload.null?()) {
+contracts/router/msgs/pool.fc:32:            slice tmp_custom_payload_ds = custom_payload.begin_parse();
+contracts/router/msgs/pool.fc:33:            if (tmp_custom_payload_ds.slice_bits() > 32) { ;; cross_swap = 32 + address
+contracts/router/msgs/pool.fc:34:                fwd_opcode = tmp_custom_payload_ds.preload_uint(32);
+contracts/router/msgs/pool.fc:38:        ;; handle cross_swap
+contracts/router/msgs/pool.fc:45:        int used_gas = ctx.at(FWD_FEE) + gas::router::pay_to;
+contracts/router/msgs/pool.fc:46:        if (fwd_opcode == op::cross_swap) 
+contracts/router/msgs/pool.fc:55:            route_dex_messages(sent_jetton_address, gas, swap_amount, original_caller, custom_payload);
+contracts/router/msgs/pool.fc:75:                        .store_maybe_ref(custom_payload)
+contracts/router/msgs/pool.fc:84:                        .store_maybe_ref(custom_payload)
+contracts/router/dex.fc:1:() route_dex_messages(slice _jetton_address, int _available_gas, int _sent_amount, slice _caller, cell _dex_payload) impure inline {
+contracts/router/dex.fc:8:    slice token_wallet1 = null();
+contracts/router/dex.fc:16:        token_wallet1 = dex_payload~load_msg_addr();
+contracts/router/dex.fc:22:            token_wallet1.address::check_workchain(params::workchain)
+contracts/router/dex.fc:44:        transferred_op = transferred_op == op::cross_swap ? op::swap : transferred_op;
+contracts/router/dex.fc:47:        throw_arg_if(op::transfer_bounce_invalid_pool, 1, equal_slices(_jetton_address, token_wallet1));
+contracts/router/dex.fc:60:                + gas::router::pay_to
+contracts/router/dex.fc:79:            pool_idata(my_address(), _jetton_address, token_wallet1, storage::jetton_lp_wallet_code,  storage::lp_account_code),
+contracts/router/dex.fc:88:            pool::$route(transferred_op, _caller, _sent_amount, _jetton_address, token_wallet1, _dex_payload), 
+tests/Stableswap.spec.ts:1508:                debugGraph: "cross_swap",
+tests/Stableswap.spec.ts:1544:                debugGraph: "cross_swap_router",
+tests/Stableswap.spec.ts:1783:                debugGraph: "cross_swap_refund",
+tests/Stableswap.spec.ts:1858:                debugGraph: "cross_swap_router_refund_in",
+tests/Stableswap.spec.ts:1889:                debugGraph: "cross_swap_router_refund_mid",
+tests/WeightedCPI.spec.ts:1538:                debugGraph: "cross_swap",
+tests/WeightedCPI.spec.ts:1574:                debugGraph: "cross_swap_router",
+tests/WeightedCPI.spec.ts:1781:                debugGraph: "cross_swap_refund",
+tests/WeightedCPI.spec.ts:1857:                debugGraph: "cross_swap_router_refund_in",
+tests/WeightedCPI.spec.ts:1888:                debugGraph: "cross_swap_router_refund_mid",

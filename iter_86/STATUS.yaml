@@ -1,0 +1,61 @@
+schema_version: shadow-v1
+iteration: 86
+phase: completed
+cell_id: V1
+cell_label: router_cross_swap_gas_threshold_residual
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: V1
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts,tests/WeightedCPI.spec.ts,tests/Stableswap.spec.ts,tests/WeightedStableswap.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_86/poc_router_cross_swap_gas_threshold_residual.run.log
+    run_log_exists_on_disk: true
+    test_runtime: 45.764s
+    result: PASSED (20 passed, 95 skipped, 115 total)
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 "route_dex_messages" "cross_swap" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "pay_to" "gas" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "cross swap" "refund" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "transfer_bounce_low_gas" is:pr'
+    results: all four GitHub searches returned total_count=0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "route_dex_messages" "cross_swap" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "pay_to" "gas" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "cross swap" "refund" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "transfer_bounce_low_gas" is:pr'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_86/callers-grep.txt
+  caller_grep_match_count: 78
+  caller_grep_unique_files: 19
+  prior_audit_path: iter_86/prior-audit-git.log
+  prior_audit_bytes: 53
+  r15_search_files:
+    - iter_86/R15-GH-route-dex-cross-swap-issue.json
+    - iter_86/R15-GH-pay-to-gas-issue.json
+    - iter_86/R15-GH-cross-swap-refund-pr.json
+    - iter_86/R15-GH-low-gas-pr.json
+  source_conclusion: 'The router pay_to handler authenticates the deterministic pool before selecting its branch. A custom payload with cross_swap and MSG_VALUE strictly above FWD_FEE plus pay_to gas enters route_dex_messages with the residual value; the equality and below-threshold cases use the normal one-sided jetton payout path. route_dex_messages validates the nested payload, workchains, deadline, lock, and gas budget, and on any failure refunds the original sent amount to the parsed refund address. The successful and refund paths preserve the tested asset flow, leaving no unauthorized balance delta or shippable external exploit.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_86-V1.md

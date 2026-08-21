@@ -1,0 +1,61 @@
+schema_version: shadow-v1
+iteration: 83
+phase: completed
+cell_id: U3
+cell_label: vault_destroy_recreate_deposit_order
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: U3
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_83/poc_vault_destroy_recreate_deposit_order.run.log
+    run_log_exists_on_disk: true
+    test_runtime: 17.495s
+    result: PASSED (4 passed, 111 skipped, 115 total)
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 vault destroy recreate is:issue'
+      - 'repo:ston-fi/dex-core-v2 referral vault second deposit is:issue'
+      - 'repo:ston-fi/dex-core-v2 DESTROY_IF_ZERO vault is:pr'
+      - 'repo:ston-fi/dex-core-v2 pending referral fee withdrawal is:issue'
+    results: all four GitHub searches returned total_count=0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 vault destroy recreate is:issue'
+      - 'repo:ston-fi/dex-core-v2 referral vault second deposit is:issue'
+      - 'repo:ston-fi/dex-core-v2 DESTROY_IF_ZERO vault is:pr'
+      - 'repo:ston-fi/dex-core-v2 pending referral fee withdrawal is:issue'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_83/callers-grep.txt
+  caller_grep_match_count: 35
+  caller_grep_unique_files: 8
+  prior_audit_path: iter_83/prior-audit-git.log
+  prior_audit_bytes: 0
+  r15_search_files:
+    - iter_83/R15-GH-vault-destroy-recreate.json
+    - iter_83/R15-GH-referral-vault-second-deposit.json
+    - iter_83/R15-GH-destroy-if-zero-vault.json
+    - iter_83/R15-GH-pending-referral-withdrawal.json
+  source_conclusion: 'A vault withdrawal sends the stored amount through the deterministic router/vault tuple, sets deposited_amount to zero, saves, and uses DESTROY_IF_ZERO only for the vault account lifecycle. A later referral fee deposit recreates the same state-init address with a zero balance and is accepted only from the stored router. The second withdrawal test increased the owner balance again after a new deposit, with no replayed first claim or cross-owner amount.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_83-U3.md

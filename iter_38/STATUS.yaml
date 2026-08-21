@@ -1,0 +1,54 @@
+schema_version: shadow-v1
+iteration: 38
+phase: completed
+cell_id: P8xC3
+cell_label: referral_fee_deposit x state_persistence
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: P8xC3
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/WeightedCPI.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_38/poc_referral_fee_state_persistence.run.log
+    run_log_exists_on_disk: true
+    test_runtime: PASSED
+    duration_seconds: 5.15
+    numerical_evidence: "WeightedCPI.spec.ts: 1 passed, 24 skipped; referral-fee deposit, withdrawal, second swap, and second withdrawal path."
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 referral vault replay is:issue"
+      - "repo:ston-fi/dex-core-v2 referral fee state persistence is:issue"
+      - "repo:ston-fi/dex-core-v2 referral vault replay is:pr"
+      - "repo:ston-fi/dex-core-v2 audit referral vault replay is:issue"
+    results: "Fresh GitHub API searches returned zero results; local audit/security/referral/vault/replay/state git search was empty."
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "repo:ston-fi/dex-core-v2 referral vault replay is:issue"
+      - "repo:ston-fi/dex-core-v2 referral fee state persistence is:issue"
+      - "repo:ston-fi/dex-core-v2 referral vault replay is:pr"
+      - "repo:ston-fi/dex-core-v2 audit referral vault replay is:issue"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_38-P8xC3.md
+  notes:
+    - "Vault storage is loaded once per message, deposit_ref_fee adds once and saves, and withdraw_fee zeros and saves immediately after emitting one router payout."
+    - "No repeated-message replay, stale state, or duplicate owner payout was demonstrated."

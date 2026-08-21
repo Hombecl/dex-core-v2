@@ -1,0 +1,78 @@
+tests/System.spec.ts:313:                output: "cross_swap_system",
+tests/WeightedStableswap.spec.ts:1630:                debugGraph: "cross_swap",
+tests/WeightedStableswap.spec.ts:1666:                debugGraph: "cross_swap_router",
+tests/WeightedStableswap.spec.ts:1879:                debugGraph: "cross_swap_refund",
+tests/WeightedStableswap.spec.ts:1954:                debugGraph: "cross_swap_router_refund_in",
+tests/WeightedStableswap.spec.ts:1985:                debugGraph: "cross_swap_router_refund_mid",
+tests/ConstProduct.spec.ts:1751:                output: "cross_swap_payload_complex",
+tests/ConstProduct.spec.ts:1963:                debugGraph: "cross_swap",
+tests/ConstProduct.spec.ts:2000:                debugGraph: "cross_swap_router",
+tests/ConstProduct.spec.ts:2258:                debugGraph: "cross_swap_refund",
+tests/ConstProduct.spec.ts:2296:                debugGraph: "cross_swap_router_refund_in",
+tests/ConstProduct.spec.ts:2327:                debugGraph: "cross_swap_router_refund_mid",
+contracts/router/dex.fc:1:() route_dex_messages(slice _jetton_address, int _available_gas, int _sent_amount, slice _caller, cell _dex_payload) impure inline {
+contracts/router/dex.fc:44:        transferred_op = transferred_op == op::cross_swap ? op::swap : transferred_op;
+contracts/router/dex.fc:56:        throw_arg_if(op::transfer_bounce_low_gas, 1, (transferred_op == op::swap) 
+contracts/router/dex.fc:60:                + gas::router::pay_to
+contracts/router/dex.fc:67:        throw_arg_if(op::transfer_bounce_low_gas, 1, (transferred_op == op::provide_lp) 
+contracts/vault.fc:56:            + gas::router::vault_pay_to + gas::vault::withdraw_fee
+contracts/vault.fc:62:            router::vault_pay_to(
+tests/ConstSum.spec.ts:1435:                debugGraph: "cross_swap",
+tests/ConstSum.spec.ts:1471:                debugGraph: "cross_swap_router",
+tests/ConstSum.spec.ts:1699:                debugGraph: "cross_swap_refund",
+tests/ConstSum.spec.ts:1755:                debugGraph: "cross_swap_router_refund_in",
+tests/ConstSum.spec.ts:1786:                debugGraph: "cross_swap_router_refund_mid",
+tests/WeightedCPI.spec.ts:1538:                debugGraph: "cross_swap",
+tests/WeightedCPI.spec.ts:1574:                debugGraph: "cross_swap_router",
+tests/WeightedCPI.spec.ts:1781:                debugGraph: "cross_swap_refund",
+tests/WeightedCPI.spec.ts:1857:                debugGraph: "cross_swap_router_refund_in",
+tests/WeightedCPI.spec.ts:1888:                debugGraph: "cross_swap_router_refund_mid",
+tests/Stableswap.spec.ts:1508:                debugGraph: "cross_swap",
+tests/Stableswap.spec.ts:1544:                debugGraph: "cross_swap_router",
+tests/Stableswap.spec.ts:1783:                debugGraph: "cross_swap_refund",
+tests/Stableswap.spec.ts:1858:                debugGraph: "cross_swap_router_refund_in",
+tests/Stableswap.spec.ts:1889:                debugGraph: "cross_swap_router_refund_mid",
+contracts/common/gas.fc:3:const gas::router::pay_to = 16000000;
+contracts/common/gas.fc:4:const gas::router::vault_pay_to = 20000000;
+contracts/common/contracts.fc:146:(cell) router::pay_to(
+contracts/common/contracts.fc:158:    return begin_message(op::pay_to)
+contracts/common/contracts.fc:174:(cell) router::vault_pay_to(
+contracts/common/contracts.fc:179:    return begin_message(op::vault_pay_to)
+contracts/common/op.fc:4:const op::cross_swap                      = "cross_swap token_wallet1:MsgAddress refund_address:MsgAddress excesses_address:MsgAddress tx_deadline:uint64 cross_swap_body:^[min_out:Coins receiver:MsgAddress fwd_gas:Coins custom_payload:(Maybe ^Cell) refund_fwd_gas:Coins refund_payload:(Maybe ^Cell) ref_fee:uint16 ref_address:MsgAddress] = DexPayload"c  & 0x7fffffff;
+contracts/common/op.fc:10:const op::pay_to                          = "pay_to query_id:uint64 to_address:MsgAddress excesses_address:MsgAddress original_caller:MsgAddress exit_code:uint32 custom_payload:(Maybe ^Cell) additional_info:^[fwd_ton_amount:Coins amount0_out:Coins token0_address:MsgAddress amount1_out:Coins token1_address:MsgAddress] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:26:const op::vault_pay_to                    = "vault_pay_to query_id:uint64 amount_out:Coins token_address:MsgAddress to_address:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:62:const op::transfer_bounce_low_gas         = "transfer_bounce_low_gas"c;
+contracts/router/msgs/vault.fc:3:    if ctx.at(OPCODE) == op::vault_pay_to {
+contracts/router/msgs/pool.fc:5:    if ctx.at(OPCODE) == op::pay_to { 
+contracts/router/msgs/pool.fc:30:        int fwd_opcode = -1;
+contracts/router/msgs/pool.fc:33:            if (tmp_custom_payload_ds.slice_bits() > 32) { ;; cross_swap = 32 + address
+contracts/router/msgs/pool.fc:34:                fwd_opcode = tmp_custom_payload_ds.preload_uint(32);
+contracts/router/msgs/pool.fc:38:        ;; handle cross_swap
+contracts/router/msgs/pool.fc:40:        ;; - fwd_opcode is correct
+contracts/router/msgs/pool.fc:45:        int used_gas = ctx.at(FWD_FEE) + gas::router::pay_to;
+contracts/router/msgs/pool.fc:46:        if (fwd_opcode == op::cross_swap) 
+contracts/router/msgs/pool.fc:47:            & (ctx.at(MSG_VALUE) > used_gas) {
+contracts/router/msgs/pool.fc:51:            int gas = ctx.at(MSG_VALUE) - used_gas; ;; remove gas for this call
+contracts/router/msgs/pool.fc:55:            route_dex_messages(sent_jetton_address, gas, swap_amount, original_caller, custom_payload);
+contracts/router/msgs/pool.fc:60:            int gas_available = ctx.at(MSG_VALUE) - (used_gas + storage_fee::router); ;; estimate free gas after this call
+contracts/router/msgs/pool.fc:62:                (gas_available - (gas::jetton_wallet::est_transfer + (ctx.at(FWD_FEE) * 2))) - fwd_ton_amount <= 0
+contracts/router/msgs/jetton.fc:24:        route_dex_messages(
+contracts/lp_account/msgs/user.fc:17:            + storage_fee::router + gas::router::pay_to  
+contracts/pool/msgs/router.fc:58:                router::pay_to(
+contracts/pool/msgs/router.fc:138:                router::pay_to(
+contracts/pool/msgs/router.fc:160:                router::pay_to(
+contracts/pool/msgs/router.fc:219:                router::pay_to(
+contracts/pool/msgs/router.fc:270:                router::pay_to(
+contracts/pool/msgs/protocolfee.fc:10:            + storage_fee::router + gas::router::pay_to 
+contracts/pool/msgs/protocolfee.fc:11:            + gas::router::pay_to 
+contracts/pool/msgs/protocolfee.fc:25:            router::pay_to(
+contracts/pool/msgs/protocolfee.fc:42:            router::pay_to(
+contracts/pool/msgs/lp_account.fc:111:            int used_gas = ctx.at(FWD_FEE) + gas::pool::cb_add_liquidity;
+contracts/pool/msgs/lp_account.fc:112:            int gas_available = ctx.at(MSG_VALUE) - (used_gas + storage_fee::pool); ;; estimate free gas after this call
+contracts/pool/msgs/lp_account.fc:114:                (gas_available - (gas::jetton_wallet::est_transfer + (ctx.at(FWD_FEE) * 2))) - fwd_amount <= 0
+contracts/pool/msgs/lp_account.fc:162:                router::pay_to(
+contracts/pool/msgs/lp_account.fc:182:                router::pay_to(
+contracts/pool/msgs/lp_wallet.fc:41:            + storage_fee::router + gas::router::pay_to 
+contracts/pool/msgs/lp_wallet.fc:42:            + gas::router::pay_to  ;; do not sum again storage_fee::router
+contracts/pool/msgs/lp_wallet.fc:62:            router::pay_to(
+contracts/pool/msgs/lp_wallet.fc:80:            router::pay_to(

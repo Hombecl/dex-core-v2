@@ -1,0 +1,42 @@
+
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/WeightedCPI.spec.ts -t should cross-swap on the same router|should cross-swap on 2 routers|should refund cross-swap on the same router|should refund cross-swap on 2 routers
+
+PASS tests/WeightedCPI.spec.ts (12.395 s)
+  Weighted CPI
+    Fees
+      ○ skipped should set fees
+      ○ skipped should collect fees
+      ○ skipped should collect ref fee from vault
+    Params
+      ○ skipped should set params
+      ○ skipped should swap with different ratio
+    Dex
+      ✓ should cross-swap on the same router (1814 ms)
+      ✓ should cross-swap on 2 routers (1812 ms)
+      ○ skipped should deploy dex
+      ○ skipped should swap
+      ○ skipped should provide lp
+      ○ skipped should provide lp (single side)
+      ○ skipped should burn liquidity
+      ○ skipped should direct add liquidity (all)
+      ○ skipped should direct add liquidity (partial)
+      ○ skipped should swap with 0 ref fee
+      ○ skipped should swap with max ref fee
+    Refund
+      ✓ should refund cross-swap on the same router (1456 ms)
+      ✓ should refund cross-swap on 2 routers (in) (1745 ms)
+      ✓ should refund cross-swap on 2 routers (mid) (1704 ms)
+      ○ skipped should refund partial liquidity
+      ○ skipped should refund swap
+      ○ skipped should refund swap if pool locked
+      ○ skipped should refund swap if fee more than max
+    Bounce
+      ○ skipped should bounce set fees if not admin
+      ○ skipped should bounce collect fees if no fee
+
+Test Suites: 1 passed, 1 total
+Tests:       20 skipped, 5 passed, 25 total
+Snapshots:   0 total
+Time:        12.54 s
+Ran all test suites matching /tests\/WeightedCPI.spec.ts/i with tests matching "should cross-swap on the same router|should cross-swap on 2 routers|should refund cross-swap on the same router|should refund cross-swap on 2 routers".

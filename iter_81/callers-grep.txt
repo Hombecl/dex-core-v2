@@ -1,0 +1,36 @@
+contracts/pool.fc:28:    if equal_slices(ctx.at(SENDER), storage::router_address) {
+contracts/pool.fc:37:    if handle_lp_account_messages() {
+contracts/common/contracts.fc:10:(cell) lp_account_idata(slice _pool_address, slice _user_address) inline {
+contracts/common/contracts.fc:39:(cell) pool::cb_add_liquidity(
+contracts/common/contracts.fc:50:    return begin_message(op::cb_add_liquidity)
+contracts/common/contracts.fc:222:(cell) pool::$route(
+contracts/pool/msgs/lp_account.fc:1:(int) handle_lp_account_messages() impure inline {
+contracts/pool/msgs/lp_account.fc:4:    if ctx.at(OPCODE) == op::cb_add_liquidity {
+contracts/pool/msgs/lp_account.fc:19:            lp_account_idata(
+contracts/pool/msgs/lp_account.fc:31:        if storage::total_supply_lp == 0 { 
+contracts/pool/msgs/lp_account.fc:39:            storage::total_supply_lp = liquidity;
+contracts/pool/msgs/lp_account.fc:55:            storage::total_supply_lp += liquidity;
+contracts/pool/msgs/lp_account.fc:70:            | (storage::total_supply_lp > math::MAX_COINS)
+contracts/pool/msgs/lp_account.fc:77:                lp_account_idata(
+contracts/pool/msgs/lp_account.fc:84:            msgs::send_with_stateinit(
+contracts/pool/msgs/lp_account.fc:111:            int used_gas = ctx.at(FWD_FEE) + gas::pool::cb_add_liquidity;
+contracts/pool/msgs/lp_account.fc:119:            msgs::send_with_stateinit(
+contracts/pool/msgs/lp_account.fc:147:            lp_account_idata(my_address(), user_address),
+contracts/pool/msgs/lp_account.fc:161:                storage::router_address, 
+contracts/pool/msgs/lp_account.fc:181:                storage::router_address, 
+contracts/router/dex.fc:72:                + gas::pool::cb_add_liquidity
+contracts/router/dex.fc:79:            pool_idata(my_address(), _jetton_address, token_wallet1, storage::jetton_lp_wallet_code,  storage::lp_account_code),
+contracts/router/dex.fc:84:        msgs::send_with_stateinit(
+contracts/router/dex.fc:88:            pool::$route(transferred_op, _caller, _sent_amount, _jetton_address, token_wallet1, _dex_payload), 
+tests/Stableswap.spec.ts:298:                let msgResult = await minter.sendDeploy(deployer.getSender(), toNano('0.05'));
+tests/Stableswap.spec.ts:431:            msgResult = await pool.sendDeploy(sender.getSender(), BigInt(params.initTonDeposit ?? toNano(1)));
+tests/Stableswap.spec.ts:601:            let msgResult = await router.sendDeploy(deployer.getSender(), toNano('5'));
+tests/WeightedStableswap.spec.ts:311:                let msgResult = await minter.sendDeploy(deployer.getSender(), toNano('0.05'));
+tests/WeightedStableswap.spec.ts:445:            msgResult = await pool.sendDeploy(sender.getSender(), BigInt(params.initTonDeposit ?? toNano(1)));
+tests/WeightedStableswap.spec.ts:615:            let msgResult = await router.sendDeploy(deployer.getSender(), toNano('5'));
+tests/WeightedCPI.spec.ts:299:                let msgResult = await minter.sendDeploy(deployer.getSender(), toNano('0.05'));
+tests/WeightedCPI.spec.ts:432:            msgResult = await pool.sendDeploy(sender.getSender(), BigInt(params.initTonDeposit ?? toNano(1)));
+tests/WeightedCPI.spec.ts:601:            let msgResult = await router.sendDeploy(deployer.getSender(), toNano('5'));
+tests/ConstProduct.spec.ts:282:                let msgResult = await minter.sendDeploy(deployer.getSender(), toNano('0.05'));
+tests/ConstProduct.spec.ts:396:            msgResult = await pool.sendDeploy(sender.getSender(), BigInt(params.initTonDeposit ?? toNano(1)));
+tests/ConstProduct.spec.ts:562:            let msgResult = await router.sendDeploy(deployer.getSender(), toNano('5'));

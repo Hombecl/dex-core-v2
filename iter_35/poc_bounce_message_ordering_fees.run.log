@@ -1,0 +1,34 @@
+
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/Pool.spec.ts tests/System.spec.ts -t refund swap if tx is expired|refund provide lp if tx is expired|bounce if tokens are the same|should set fees|should collect fees
+
+PASS tests/System.spec.ts
+  System
+    Dex
+      ○ skipped should handle mint & burn liquidity
+      ○ skipped should handle refund partial liquidity
+      ○ skipped should handle swaps
+      ○ skipped should handle invalid transfers
+      ○ skipped should handle cross swap
+    Governance
+      ✓ should set fees (252 ms)
+      ✓ should collect fees (192 ms)
+      ○ skipped should reset pool gas
+      ○ skipped should reset pool gas (different address)
+      ○ skipped should reset router gas
+      ○ skipped should lock & unlock pool
+
+PASS tests/Pool.spec.ts
+  Pool
+    Router calls
+      ✓ should refund swap if tx is expired (15 ms)
+      ✓ should refund provide lp if tx is expired (16 ms)
+      ✓ should bounce if tokens are the same (22 ms)
+    Getters
+      ○ skipped should generate valid URI
+
+Test Suites: 2 passed, 2 total
+Tests:       10 skipped, 5 passed, 15 total
+Snapshots:   0 total
+Time:        6.123 s, estimated 8 s
+Ran all test suites matching /tests\/Pool.spec.ts|tests\/System.spec.ts/i with tests matching "refund swap if tx is expired|refund provide lp if tx is expired|bounce if tokens are the same|should set fees|should collect fees".

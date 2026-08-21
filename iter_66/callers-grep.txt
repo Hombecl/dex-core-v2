@@ -1,0 +1,55 @@
+contracts/pool/msgs/protocolfee.fc:5:        throw_unless(error::zero_output, (storage::collected_token0_protocol_fee > 0) & (storage::collected_token1_protocol_fee > 0));
+contracts/pool/msgs/protocolfee.fc:25:            router::pay_to(
+contracts/pool/msgs/protocolfee.fc:32:                storage::collected_token0_protocol_fee, 
+contracts/pool/msgs/protocolfee.fc:42:            router::pay_to(
+contracts/pool/msgs/protocolfee.fc:51:                storage::collected_token1_protocol_fee,
+contracts/pool/msgs/protocolfee.fc:57:        storage::collected_token0_protocol_fee = 0;
+contracts/pool/msgs/protocolfee.fc:58:        storage::collected_token1_protocol_fee = 0;
+contracts/pool/msgs/protocolfee.fc:60:        storage::save();
+contracts/pool/msgs/router.fc:30:        try { ;; check call_payload body, refund to refund_address if fails
+contracts/pool/msgs/router.fc:51:        } catch(err_arg, err_code) {
+contracts/pool/msgs/router.fc:58:                router::pay_to(
+contracts/pool/msgs/router.fc:78:        try {
+contracts/pool/msgs/router.fc:94:                (out1, protocol_fee_out, ref_fee_out1) = pool::get_swap_out(true, ref_value, amount0, storage::reserve0, storage::reserve1);
+contracts/pool/msgs/router.fc:95:                storage::reserve0 += amount0;
+contracts/pool/msgs/router.fc:96:                storage::reserve1 -= (out1 + protocol_fee_out + ref_fee_out1);
+contracts/pool/msgs/router.fc:97:                storage::collected_token1_protocol_fee += protocol_fee_out;
+contracts/pool/msgs/router.fc:101:                (out0, protocol_fee_out, ref_fee_out0) = pool::get_swap_out(false, ref_value, amount1, storage::reserve1, storage::reserve0);
+contracts/pool/msgs/router.fc:102:                storage::reserve0 -= (out0 + protocol_fee_out + ref_fee_out0);
+contracts/pool/msgs/router.fc:103:                storage::reserve1 += amount1;
+contracts/pool/msgs/router.fc:104:                storage::collected_token0_protocol_fee += protocol_fee_out;
+contracts/pool/msgs/router.fc:111:            throw_arg_unless(op::swap_refund_tx_expired, 1, tx_deadline > now());
+contracts/pool/msgs/router.fc:112:            throw_arg_if(op::swap_refund_no_liq, 1, storage::total_supply_lp <= 0);
+contracts/pool/msgs/router.fc:113:            throw_arg_if(op::swap_refund_0_out, 1, out < 1);
+contracts/pool/msgs/router.fc:114:            throw_arg_if(op::swap_refund_slippage, 1, min_out > out);
+contracts/pool/msgs/router.fc:115:            throw_arg_if(op::swap_refund_reserve_err, 1, (storage::reserve0 > math::MAX_COINS) 
+contracts/pool/msgs/router.fc:116:                | (storage::reserve1 <= 0) 
+contracts/pool/msgs/router.fc:117:                | (storage::reserve1 > math::MAX_COINS) 
+contracts/pool/msgs/router.fc:118:                | (storage::reserve0 <= 0));
+contracts/pool/msgs/router.fc:138:                router::pay_to(
+contracts/pool/msgs/router.fc:152:            storage::save();
+contracts/pool/msgs/router.fc:153:        } catch(err_arg, err_code) {
+contracts/pool/msgs/router.fc:160:                router::pay_to(
+contracts/pool/msgs/router.fc:199:        try {
+contracts/pool/msgs/router.fc:212:        } catch(err_arg, err_code) {
+contracts/pool/msgs/router.fc:219:                router::pay_to(
+contracts/pool/msgs/router.fc:237:        try {
+contracts/pool/msgs/router.fc:238:            throw_arg_unless(op::provide_refund_tx_expired, 1, tx_deadline > now());
+contracts/pool/msgs/router.fc:263:        } catch(err_arg, err_code) {
+contracts/pool/msgs/router.fc:270:                router::pay_to(
+contracts/pool/msgs/router.fc:296:        storage::save();
+contracts/pool/msgs/router.fc:317:        storage::save();
+tests/WeightedCPI.spec.ts:296:            try {
+tests/WeightedCPI.spec.ts:1749:                debugGraph: "swap_refund",
+tests/WeightedCPI.spec.ts:1781:                debugGraph: "cross_swap_refund",
+tests/WeightedCPI.spec.ts:1806:                debugGraph: "swap_refund_locked",
+tests/ConstProduct.spec.ts:127:    slippage?: never;
+tests/ConstProduct.spec.ts:130:    slippage?: number;
+tests/ConstProduct.spec.ts:279:            try {
+tests/ConstProduct.spec.ts:764:            if (params.slippage) {
+tests/ConstProduct.spec.ts:768:                params.minAmountOut = maxOut * BigInt(10000 - params.slippage) / 10000n;
+tests/ConstProduct.spec.ts:1484:                slippage: 1000,  // 10%
+tests/ConstProduct.spec.ts:2099:                debugGraph: "swap_refund_tx_expired",
+tests/ConstProduct.spec.ts:2226:                debugGraph: "swap_refund",
+tests/ConstProduct.spec.ts:2227:                slippage: 1,
+tests/ConstProduct.spec.ts:2258:                debugGraph: "cross_swap_refund",

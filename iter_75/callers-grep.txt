@@ -1,0 +1,56 @@
+contracts/pool/msgs/getter.fc:27:    if ctx.at(OPCODE) == op::getter_lp_account_address { 
+contracts/pool/msgs/getter.fc:33:            lp_account_idata(my_address(), user_address),
+contracts/pool/msgs/getter.fc:37:        var out_msg_body = anyone::getter_lp_account_address(lp_account~address(params::workchain));
+contracts/pool/msgs/getter.fc:42:    if ctx.at(OPCODE) == op::ft::provide_wallet_address {
+contracts/pool/msgs/getter.fc:46:        throw_unless(75, ctx.at(MSG_VALUE) > ctx.at(FWD_FEE) + gas::pool::provide_wallet_address);
+contracts/pool/msgs/getter.fc:58:                lp_wallet_idata(owner_address, my_address(), storage::jetton_lp_wallet_code),
+contracts/pool/get.fc:7:_ get_lp_account_address(slice owner_address) method_id {
+contracts/pool/get.fc:13:        lp_account_idata(my_address(), owner_address),
+contracts/pool/get.fc:39:slice get_wallet_address(slice owner_address) method_id {
+contracts/pool/get.fc:45:        lp_wallet_idata(owner_address, my_address(), storage::jetton_lp_wallet_code),
+contracts/router/storage.fc:5:global cell storage::pool_code;
+contracts/router/storage.fc:9:global cell storage::upgrade_pool_code;
+contracts/router/storage.fc:22:    storage::pool_code = ds_0~load_ref();
+contracts/router/storage.fc:27:    storage::upgrade_pool_code = ds~load_ref();
+contracts/router/storage.fc:37:        .store_ref(storage::upgrade_pool_code)
+contracts/common/contracts.fc:1:(cell) vault_idata(slice _user_address, slice _token_address, slice _router_address) inline {
+contracts/common/contracts.fc:10:(cell) lp_account_idata(slice _pool_address, slice _user_address) inline {
+contracts/common/contracts.fc:19:(cell) lp_wallet_idata(slice _owner_address, slice _jetton_master_address, cell _jetton_wallet_code) inline {
+contracts/common/contracts.fc:107:(cell) anyone::getter_lp_account_address(slice _addr) inline {
+contracts/common/contracts.fc:108:    return begin_message(op::getter_lp_account_address)
+contracts/common/contracts.fc:114:(cell) anyone::getter_pool_address(slice _addr) inline {
+contracts/common/contracts.fc:115:    return begin_message(op::getter_pool_address)
+contracts/common/contracts.fc:262:(cell) pool::internal_update_pool_code(cell _new_pool_code) inline {
+contracts/common/contracts.fc:263:    return begin_message(op::internal_update_pool_code)
+contracts/router/msgs/getter.fc:6:    if ctx.at(OPCODE) == op::getter_pool_address { 
+contracts/router/msgs/getter.fc:17:            pool_idata(my_address(), token0, token1, storage::jetton_lp_wallet_code,  storage::lp_account_code),
+contracts/router/msgs/getter.fc:18:            storage::pool_code
+contracts/router/msgs/getter.fc:25:            anyone::getter_pool_address(pool~address(params::workchain)), 
+contracts/router/msgs/admin.fc:35:            pool_idata(my_address(), jetton_wallet0, jetton_wallet1, storage::jetton_lp_wallet_code,  storage::lp_account_code),
+contracts/router/msgs/admin.fc:36:            storage::pool_code
+contracts/router/msgs/admin.fc:43:            pool~state_init(), 
+contracts/router/msgs/admin.fc:71:            pool_idata(my_address(), jetton_wallet0, jetton_wallet1, storage::jetton_lp_wallet_code,  storage::lp_account_code),
+contracts/router/msgs/admin.fc:72:            storage::pool_code
+contracts/router/msgs/admin.fc:79:            pool~state_init(), 
+contracts/router/msgs/admin.fc:102:            pool_idata(my_address(), jetton_wallet0, jetton_wallet1, storage::jetton_lp_wallet_code, storage::lp_account_code),
+contracts/router/msgs/admin.fc:103:            storage::pool_code
+contracts/router/msgs/admin.fc:110:            pool~state_init(), 
+contracts/router/msgs/admin.fc:121:            + storage_fee::pool + gas::pool::internal_update_pool_code);
+contracts/router/msgs/admin.fc:127:        throw_if(error::empty_cell, storage::upgrade_pool_code.cell::is_empty());
+contracts/router/msgs/admin.fc:133:            pool_idata(my_address(), jetton_wallet0, jetton_wallet1, storage::jetton_lp_wallet_code, storage::lp_account_code),
+contracts/router/msgs/admin.fc:134:            storage::pool_code
+contracts/router/msgs/admin.fc:141:            pool~state_init(), 
+contracts/router/msgs/admin.fc:142:            pool::internal_update_pool_code(storage::upgrade_pool_code), 
+contracts/router/msgs/admin.fc:252:            storage::upgrade_pool_code = pool_code;
+contracts/router/get.fc:3:_ get_pool_address(slice token0, slice token1) method_id {
+contracts/router/get.fc:11:        pool_idata(my_address(), token0, token1, storage::jetton_lp_wallet_code,  storage::lp_account_code),
+contracts/router/get.fc:12:        storage::pool_code
+contracts/router/get.fc:18:_ get_vault_address(slice user, slice token) method_id {
+contracts/router/get.fc:25:        vault_idata(user, token, my_address()),
+contracts/router/get.fc:41:        storage::pool_code,
+contracts/router/get.fc:51:    return (storage::upgrade_pool_code);
+tests/ConstProduct.spec.ts:1097:        it('should init new pool code', async () => {
+tests/ConstProduct.spec.ts:1242:        it('should set new pool code on pool', async () => {
+contracts/pool/msgs/router.fc:241:                lp_account_idata(my_address(), from_user),
+contracts/pool/msgs/router.fc:249:                lp_account~state_init(), 
+contracts/pool/msgs/router.fc:302:    if ctx.at(OPCODE) == op::internal_update_pool_code {

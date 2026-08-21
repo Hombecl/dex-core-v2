@@ -1,0 +1,110 @@
+contracts/pool.fc:16:    throw_unless(error::wrong_workchain, ctx.at(SENDER).address::check_workchain(params::workchain));
+contracts/pool.fc:22:    if equal_slices(ctx.at(SENDER), storage::protocol_fee_address) {
+contracts/pool.fc:28:    if equal_slices(ctx.at(SENDER), storage::router_address) {
+contracts/pool.fc:43:        print(`if equal_slices(ctx.at(SENDER), storage::rate_setter_address) { if handle_setter_messages() { return (); } }`);
+contracts/lp_account.fc:15:    throw_unless(error::wrong_workchain, ctx.at(SENDER).address::check_workchain(params::workchain));
+contracts/lp_account.fc:19:    if equal_slices(ctx.at(SENDER), storage::pool_address) {
+contracts/lp_account.fc:26:    if equal_slices(ctx.at(SENDER), storage::user_address) {
+contracts/vault.fc:7:global slice storage::router_address; 
+contracts/vault.fc:14:    storage::router_address = ds~load_msg_addr(); 
+contracts/vault.fc:23:        .store_slice(storage::router_address)
+contracts/vault.fc:36:    throw_unless(error::wrong_workchain, ctx.at(SENDER).address::check_workchain(params::workchain));
+contracts/vault.fc:40:    if (ctx.at(OPCODE) == op::deposit_ref_fee) & equal_slices(ctx.at(SENDER), storage::router_address) {
+contracts/vault.fc:51:    if ctx.at(OPCODE) == op::withdraw_fee { 
+contracts/vault.fc:56:            + gas::router::vault_pay_to + gas::vault::withdraw_fee
+contracts/vault.fc:61:            storage::router_address, 
+contracts/vault.fc:62:            router::vault_pay_to(
+contracts/vault.fc:82:        storage::router_address,
+contracts/router.fc:15:    throw_unless(error::wrong_workchain, ctx.at(SENDER).address::check_workchain(params::workchain));
+contracts/router.fc:28:    if equal_slices(ctx.at(SENDER), storage::admin_address) {
+contracts/router.fc:39:    ;; handle referral vault msgs
+contracts/lp_wallet.fc:20:    throw_unless(705, equal_slices(owner_address, sender_address));
+contracts/lp_wallet.fc:62:    throw_unless(707, equal_slices(jetton_master_address, sender_address)
+contracts/lp_wallet.fc:63:        | equal_slices(calculate_user_jetton_lp_wallet_address(from_address, jetton_master_address, jetton_wallet_code), sender_address));
+contracts/lp_wallet.fc:111:    throw_unless(705, equal_slices(owner_address, sender_address));
+contracts/pool/get.fc:36:    return (storage::total_supply_lp, -1, storage::router_address, content_lp, storage::jetton_lp_wallet_code);
+contracts/pool/headers.fc:14:global slice storage::router_address;
+contracts/lp_account/msgs/getter.fc:10:            ctx.at(SENDER), 
+contracts/router/dex.fc:61:                + storage_fee::vault + gas::router::pay_vault + gas::vault::deposit_ref_fee
+contracts/pool/pools/weighted_const_product/storage.fc:18:    storage::router_address = static_data~load_msg_addr();
+contracts/router/msgs/vault.fc:3:    if ctx.at(OPCODE) == op::vault_pay_to {
+contracts/router/msgs/vault.fc:13:        throw_unless(error::invalid_caller, equal_slices(vault~address(params::workchain), ctx.at(SENDER))); ;; check if its a valid vault
+contracts/pool/msgs/router.fc:57:                ctx.at(SENDER), 
+contracts/pool/msgs/router.fc:87:            int ref_fee_out0 = 0; 
+contracts/pool/msgs/router.fc:88:            int ref_fee_out1 = 0;
+contracts/pool/msgs/router.fc:94:                (out1, protocol_fee_out, ref_fee_out1) = pool::get_swap_out(true, ref_value, amount0, storage::reserve0, storage::reserve1);
+contracts/pool/msgs/router.fc:96:                storage::reserve1 -= (out1 + protocol_fee_out + ref_fee_out1);
+contracts/pool/msgs/router.fc:101:                (out0, protocol_fee_out, ref_fee_out0) = pool::get_swap_out(false, ref_value, amount1, storage::reserve1, storage::reserve0);
+contracts/pool/msgs/router.fc:102:                storage::reserve0 -= (out0 + protocol_fee_out + ref_fee_out0);
+contracts/pool/msgs/router.fc:121:            if (ref_address.preload_uint(2) != 0) & (ref_fee_out0 + ref_fee_out1 > 0) { ;; 2 messages, pay referral, check ref_fee_out
+contracts/pool/msgs/router.fc:122:                msgs::send_simple(ctx.at(FWD_FEE) * 3 + storage_fee::vault + gas::router::pay_vault + gas::vault::deposit_ref_fee, 
+contracts/pool/msgs/router.fc:123:                    ctx.at(SENDER),
+contracts/pool/msgs/router.fc:124:                    router::pay_vault(
+contracts/pool/msgs/router.fc:127:                        ref_fee_out0, 
+contracts/pool/msgs/router.fc:129:                        ref_fee_out1, 
+contracts/pool/msgs/router.fc:137:                ctx.at(SENDER), 
+contracts/pool/msgs/router.fc:159:                ctx.at(SENDER), 
+contracts/pool/msgs/router.fc:218:                ctx.at(SENDER), 
+contracts/pool/msgs/router.fc:269:                ctx.at(SENDER), 
+contracts/pool/pools/weighted_const_product/get.fc:5:        storage::router_address,
+contracts/lp_account/msgs/user.fc:88:                ctx.at(SENDER), 
+contracts/pool/pools/constant_product/storage.fc:15:    storage::router_address = static_data~load_msg_addr();
+contracts/router/msgs/pool.fc:28:        throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER))); ;; check if its a valid pool
+contracts/router/msgs/pool.fc:94:    if ctx.at(OPCODE) == op::pay_vault { 
+contracts/router/msgs/pool.fc:113:        throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER))); ;; check if its a valid pool
+contracts/router/msgs/pool.fc:131:            vault::deposit_ref_fee(
+contracts/pool/msgs/getter.fc:11:            storage::router_address,
+contracts/pool/msgs/getter.fc:23:        msgs::send_simple(0, ctx.at(SENDER), out_msg_body, CARRY_ALL_BALANCE | IGNORE_ERRORS);
+contracts/pool/msgs/getter.fc:38:        msgs::send_simple(0, ctx.at(SENDER), out_msg_body, CARRY_ALL_BALANCE | IGNORE_ERRORS);
+contracts/pool/msgs/getter.fc:65:        msgs::send_simple(0, ctx.at(SENDER), msg.store_maybe_ref(included_address).end_cell(), CARRY_ALL_BALANCE | IGNORE_ERRORS);
+contracts/pool/pools/constant_product/get.fc:5:        storage::router_address,
+contracts/router/msgs/getter.fc:24:            ctx.at(SENDER), 
+contracts/pool/msgs/lp_wallet.fc:20:        throw_unless(error::invalid_caller, equal_slices(lp_wallet~address(params::workchain), ctx.at(SENDER)));
+contracts/pool/msgs/lp_wallet.fc:61:            storage::router_address, 
+contracts/pool/msgs/lp_wallet.fc:79:            storage::router_address, 
+contracts/pool/pools/weighted_const_product/pool.fc:3:    int ref_fee_out = 0;
+contracts/pool/pools/weighted_const_product/pool.fc:20:        ref_fee_out = divc(base_out * _ref_value, params::fee_divider);
+contracts/pool/pools/weighted_const_product/pool.fc:23:    base_out -= protocol_fee_out + ref_fee_out;
+contracts/pool/pools/weighted_const_product/pool.fc:24:    return (base_out, protocol_fee_out, ref_fee_out);
+contracts/router/msgs/jetton.fc:14:                ctx.at(SENDER), 
+contracts/router/msgs/jetton.fc:25:            ctx.at(SENDER), 
+contracts/pool/pools/weighted_stableswap/storage.fc:27:    storage::router_address = static_data~load_msg_addr();
+contracts/pool/pools/weighted_stableswap/state_init.fc:29:(cell) pool_idata(slice _router_address, slice _first_jetton_address, slice _second_jetton_address, cell _jetton_lp_wallet_code, cell _lp_account_code) inline {    
+contracts/pool/pools/weighted_stableswap/state_init.fc:31:        .store_slice(_router_address); ;; storage::router_address
+contracts/pool/pools/constant_product/pool.fc:6:    int ref_fee_out = 0;
+contracts/pool/pools/constant_product/pool.fc:13:        ref_fee_out = divc(base_out * _ref_value, params::fee_divider);
+contracts/pool/pools/constant_product/pool.fc:16:    base_out -= protocol_fee_out + ref_fee_out;
+contracts/pool/pools/constant_product/pool.fc:17:    return (base_out, protocol_fee_out, ref_fee_out);
+contracts/pool/pools/weighted_stableswap/get.fc:5:        storage::router_address,
+contracts/pool/msgs/protocolfee.fc:24:            storage::router_address, 
+contracts/pool/msgs/protocolfee.fc:41:            storage::router_address, 
+contracts/pool/pools/weighted_const_product/state_init.fc:19:(cell) pool_idata(slice _router_address, slice _first_jetton_address, slice _second_jetton_address, cell _jetton_lp_wallet_code, cell _lp_account_code) inline {    
+contracts/pool/pools/weighted_const_product/state_init.fc:21:        .store_slice(_router_address); ;; storage::router_address
+contracts/pool/pools/weighted_stableswap/setter.fc:12:        utils::send_excesses(0, ctx.at(SENDER), QCARRY_ALL_BALANCE);
+contracts/pool/pools/constant_product/state_init.fc:18:(cell) pool_idata(slice _router_address, slice _first_jetton_address, slice _second_jetton_address, cell _jetton_lp_wallet_code, cell _lp_account_code) inline {    
+contracts/pool/pools/constant_product/state_init.fc:20:        .store_slice(_router_address); ;; storage::router_address
+contracts/pool/msgs/lp_account.fc:26:        throw_unless(error::invalid_caller, equal_slices(lp_account~address(params::workchain), ctx.at(SENDER)));
+contracts/pool/msgs/lp_account.fc:151:        throw_unless(error::invalid_caller, equal_slices(lp_account~address(params::workchain), ctx.at(SENDER)));
+contracts/pool/msgs/lp_account.fc:161:                storage::router_address, 
+contracts/pool/msgs/lp_account.fc:181:                storage::router_address, 
+contracts/pool/pools/README.md:6:(cell) pool_idata(slice _router_address, slice _first_jetton_address, slice _second_jetton_address, cell _jetton_lp_wallet_code, cell _lp_account_code);
+contracts/pool/pools/weighted_stableswap/pool.fc:3:    int ref_fee_out = 0;
+contracts/pool/pools/weighted_stableswap/pool.fc:20:        ref_fee_out = divc(base_out * _ref_value, params::fee_divider);
+contracts/pool/pools/weighted_stableswap/pool.fc:23:    base_out -= protocol_fee_out + ref_fee_out;
+contracts/pool/pools/weighted_stableswap/pool.fc:24:    return (base_out, protocol_fee_out, ref_fee_out);
+contracts/pool/pools/constant_sum/storage.fc:15:    storage::router_address = static_data~load_msg_addr();
+contracts/pool/pools/stableswap/storage.fc:18:    storage::router_address = static_data~load_msg_addr();
+contracts/pool/pools/constant_sum/pool.fc:5:    int ref_fee_out = 0;
+contracts/pool/pools/constant_sum/pool.fc:12:        ref_fee_out = divc(base_out * _ref_value, params::fee_divider);
+contracts/pool/pools/constant_sum/pool.fc:15:    base_out -= protocol_fee_out + ref_fee_out;
+contracts/pool/pools/constant_sum/pool.fc:16:    return (base_out, protocol_fee_out, ref_fee_out);
+contracts/pool/pools/constant_sum/get.fc:5:        storage::router_address,
+contracts/pool/pools/constant_sum/state_init.fc:18:(cell) pool_idata(slice _router_address, slice _first_jetton_address, slice _second_jetton_address, cell _jetton_lp_wallet_code, cell _lp_account_code) inline {    
+contracts/pool/pools/constant_sum/state_init.fc:20:        .store_slice(_router_address); ;; storage::router_address
+contracts/pool/pools/stableswap/get.fc:5:        storage::router_address,
+contracts/pool/pools/stableswap/state_init.fc:19:(cell) pool_idata(slice _router_address, slice _first_jetton_address, slice _second_jetton_address, cell _jetton_lp_wallet_code, cell _lp_account_code) inline {    
+contracts/pool/pools/stableswap/state_init.fc:21:        .store_slice(_router_address); ;; storage::router_address
+contracts/pool/pools/stableswap/pool.fc:3:    int ref_fee_out = 0;
+contracts/pool/pools/stableswap/pool.fc:26:        ref_fee_out = divc(base_out * _ref_value, params::fee_divider);
+contracts/pool/pools/stableswap/pool.fc:29:    base_out -= protocol_fee_out + ref_fee_out;
+contracts/pool/pools/stableswap/pool.fc:30:    return (base_out, protocol_fee_out, ref_fee_out);

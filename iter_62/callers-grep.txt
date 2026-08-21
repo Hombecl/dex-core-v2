@@ -1,0 +1,92 @@
+contracts/vault.fc:5:global slice storage::owner_address;
+contracts/vault.fc:6:global slice storage::token_address; 
+contracts/vault.fc:7:global slice storage::router_address; 
+contracts/vault.fc:12:    storage::owner_address = ds~load_msg_addr();
+contracts/vault.fc:13:    storage::token_address = ds~load_msg_addr(); 
+contracts/vault.fc:14:    storage::router_address = ds~load_msg_addr(); 
+contracts/vault.fc:21:        .store_slice(storage::owner_address)
+contracts/vault.fc:22:        .store_slice(storage::token_address)
+contracts/vault.fc:23:        .store_slice(storage::router_address)
+contracts/vault.fc:40:    if (ctx.at(OPCODE) == op::deposit_ref_fee) & equal_slices(ctx.at(SENDER), storage::router_address) {
+contracts/vault.fc:61:            storage::router_address, 
+contracts/vault.fc:64:                storage::token_address, 
+contracts/vault.fc:65:                storage::owner_address),
+contracts/vault.fc:80:        storage::owner_address,
+contracts/vault.fc:81:        storage::token_address,
+contracts/vault.fc:82:        storage::router_address,
+contracts/common/contracts.fc:1:(cell) vault_idata(slice _user_address, slice _token_address, slice _router_address) inline {
+contracts/common/contracts.fc:4:        .store_slice(_token_address)
+contracts/common/contracts.fc:5:        .store_slice(_router_address)
+contracts/common/contracts.fc:19:(cell) lp_wallet_idata(slice _owner_address, slice _jetton_master_address, cell _jetton_wallet_code) inline {
+contracts/common/contracts.fc:22:        .store_slice(_owner_address)
+contracts/common/contracts.fc:77:    slice _router_address,
+contracts/common/contracts.fc:81:    slice _left_token_address,
+contracts/common/contracts.fc:82:    slice _right_token_address,
+contracts/common/contracts.fc:93:        .store_slice(_left_token_address)
+contracts/common/contracts.fc:94:        .store_slice(_right_token_address)
+contracts/common/contracts.fc:98:            .store_slice(_router_address)
+contracts/common/contracts.fc:176:    slice _token_address,
+contracts/common/contracts.fc:181:        .store_slice(_token_address)
+contracts/common/contracts.fc:283:        .store_slice(_to) ;; to_owner_address
+tests/WeightedCPI.spec.ts:454:            addressMap.set((await router.getVaultAddress({
+tests/WeightedCPI.spec.ts:458:            addressMap.set((await router.getVaultAddress({
+tests/WeightedCPI.spec.ts:462:            addressMap.set((await router.getVaultAddress({
+tests/WeightedCPI.spec.ts:466:            addressMap.set((await router.getVaultAddress({
+tests/WeightedCPI.spec.ts:470:            addressMap.set((await router.getVaultAddress({
+tests/WeightedCPI.spec.ts:474:            addressMap.set((await router.getVaultAddress({
+tests/WeightedCPI.spec.ts:478:            bracketMap.set((await router.getVaultAddress({
+tests/WeightedCPI.spec.ts:482:            bracketMap.set((await router.getVaultAddress({
+tests/WeightedCPI.spec.ts:486:            bracketMap.set((await router.getVaultAddress({
+tests/WeightedCPI.spec.ts:490:            bracketMap.set((await router.getVaultAddress({
+tests/WeightedCPI.spec.ts:494:            bracketMap.set((await router.getVaultAddress({
+tests/WeightedCPI.spec.ts:498:            bracketMap.set((await router.getVaultAddress({
+tests/WeightedCPI.spec.ts:502:            storageMap.set((await router.getVaultAddress({
+tests/WeightedCPI.spec.ts:506:            storageMap.set((await router.getVaultAddress({
+tests/WeightedCPI.spec.ts:510:            storageMap.set((await router.getVaultAddress({
+tests/WeightedCPI.spec.ts:514:            storageMap.set((await router.getVaultAddress({
+tests/WeightedCPI.spec.ts:518:            storageMap.set((await router.getVaultAddress({
+tests/WeightedCPI.spec.ts:522:            storageMap.set((await router.getVaultAddress({
+tests/WeightedCPI.spec.ts:870:                    let refVaultAddress = await router.getVaultAddress({
+tests/WeightedCPI.spec.ts:1284:            let vaultAddress = await setup.router.getVaultAddress({
+contracts/router/dex.fc:78:        var pool = contracts::from_sources(
+tests/ConstProduct.spec.ts:418:            addressMap.set((await router.getVaultAddress({
+tests/ConstProduct.spec.ts:422:            addressMap.set((await router.getVaultAddress({
+tests/ConstProduct.spec.ts:426:            addressMap.set((await router.getVaultAddress({
+tests/ConstProduct.spec.ts:430:            addressMap.set((await router.getVaultAddress({
+tests/ConstProduct.spec.ts:434:            addressMap.set((await router.getVaultAddress({
+tests/ConstProduct.spec.ts:438:            addressMap.set((await router.getVaultAddress({
+tests/ConstProduct.spec.ts:442:            bracketMap.set((await router.getVaultAddress({
+tests/ConstProduct.spec.ts:446:            bracketMap.set((await router.getVaultAddress({
+tests/ConstProduct.spec.ts:450:            bracketMap.set((await router.getVaultAddress({
+tests/ConstProduct.spec.ts:454:            bracketMap.set((await router.getVaultAddress({
+tests/ConstProduct.spec.ts:458:            bracketMap.set((await router.getVaultAddress({
+tests/ConstProduct.spec.ts:462:            bracketMap.set((await router.getVaultAddress({
+tests/ConstProduct.spec.ts:466:            storageMap.set((await router.getVaultAddress({
+tests/ConstProduct.spec.ts:470:            storageMap.set((await router.getVaultAddress({
+tests/ConstProduct.spec.ts:474:            storageMap.set((await router.getVaultAddress({
+tests/ConstProduct.spec.ts:478:            storageMap.set((await router.getVaultAddress({
+tests/ConstProduct.spec.ts:482:            storageMap.set((await router.getVaultAddress({
+tests/ConstProduct.spec.ts:486:            storageMap.set((await router.getVaultAddress({
+tests/ConstProduct.spec.ts:841:                    let refVaultAddress = await router.getVaultAddress({
+tests/ConstProduct.spec.ts:1409:            let vaultAddress = await setup.router.getVaultAddress({
+contracts/router/get.fc:10:    var pool = contracts::from_sources(
+contracts/router/get.fc:18:_ get_vault_address(slice user, slice token) method_id {
+contracts/router/get.fc:24:    var vault = contracts::from_sources(
+contracts/router/get.fc:25:        vault_idata(user, token, my_address()),
+contracts/router/msgs/vault.fc:5:        slice token_address = in_msg_body~load_msg_addr();
+contracts/router/msgs/vault.fc:9:        var vault = contracts::from_sources(
+contracts/router/msgs/vault.fc:10:            vault_idata(to_address, token_address, my_address()),
+contracts/router/msgs/vault.fc:19:        msgs::send_simple(0, token_address, msg.end_cell(), QCARRY_ALL_BALANCE);
+contracts/router/msgs/pool.fc:18:        var pool = contracts::from_sources(
+contracts/router/msgs/pool.fc:103:        var pool = contracts::from_sources(
+contracts/router/msgs/pool.fc:118:        var vault = contracts::from_sources(
+contracts/router/msgs/pool.fc:119:            vault_idata(
+contracts/router/msgs/pool.fc:130:            vault~state_init(), 
+contracts/router/msgs/admin.fc:34:        var pool = contracts::from_sources(
+contracts/router/msgs/admin.fc:70:        var pool = contracts::from_sources(
+contracts/router/msgs/admin.fc:101:        var pool = contracts::from_sources(
+contracts/router/msgs/admin.fc:132:        var pool = contracts::from_sources(
+contracts/router/pools/weighted_const_product/ext_admin.fc:33:        var pool = contracts::from_sources(
+contracts/router/msgs/getter.fc:16:        var pool = contracts::from_sources(
+contracts/router/pools/weighted_stableswap/ext_admin.fc:38:        var pool = contracts::from_sources(
+contracts/router/pools/stableswap/ext_admin.fc:31:        var pool = contracts::from_sources(

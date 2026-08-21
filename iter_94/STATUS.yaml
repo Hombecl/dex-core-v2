@@ -1,0 +1,61 @@
+schema_version: shadow-v1
+iteration: 94
+phase: completed
+cell_id: W4
+cell_label: vault_referral_fee_coin_limit_boundary
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: W4
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts,tests/WeightedCPI.spec.ts,tests/Stableswap.spec.ts,tests/WeightedStableswap.spec.ts,tests/ConstSum.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_94/poc_vault_referral_fee_coin_limit_boundary.run.log
+    run_log_exists_on_disk: true
+    test_runtime: 20.784s
+    result: PASSED (5 passed, 133 skipped, 138 total)
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 deposited_amount overflow issue search'
+      - 'repo:ston-fi/dex-core-v2 vault coin limit issue search'
+      - 'repo:ston-fi/dex-core-v2 deposit_ref_fee overflow pull request search'
+      - 'repo:ston-fi/dex-core-v2 withdraw_fee deposited_amount pull request search'
+    results: all four repository issue/PR pages showed No results
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'deposited_amount overflow on repository issue page'
+      - 'vault coin limit on repository issue page'
+      - 'deposit_ref_fee overflow on repository pull-request page'
+      - 'withdraw_fee deposited_amount on repository pull-request page'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_94/callers-grep.txt
+  caller_grep_match_count: 169
+  caller_grep_unique_files: 28
+  prior_audit_path: iter_94/prior-audit-git.log
+  prior_audit_bytes: 53
+  r15_search_files:
+    - iter_94/R15-GH-deposited-amount-overflow-issue.html
+    - iter_94/R15-GH-vault-coin-limit-issue.html
+    - iter_94/R15-GH-deposit-ref-fee-overflow-pr.html
+    - iter_94/R15-GH-withdraw-deposited-amount-pr.html
+  source_conclusion: 'The vault stores deposited_amount as a Coins value and adds only messages whose sender equals the stored router. A sum beyond the coin-width boundary would fail inside the router-authenticated deposit transaction before storage save; the external swap path does not select or overwrite the vault owner, token, or router tuple. Normal withdrawal sends the stored amount to the router, which authenticates the deterministic vault before the token transfer, and then clears the amount. The boundary is trusted-router accounting behavior, not an external asset theft or victim grief chain.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_94-W4.md

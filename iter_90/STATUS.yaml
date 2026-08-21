@@ -1,0 +1,61 @@
+schema_version: shadow-v1
+iteration: 90
+phase: completed
+cell_id: V5
+cell_label: pool_pay_to_custom_payload_dispatch
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: V5
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts,tests/WeightedCPI.spec.ts,tests/Stableswap.spec.ts,tests/WeightedStableswap.spec.ts,tests/ConstSum.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_90/poc_pool_pay_to_custom_payload_dispatch.run.log
+    run_log_exists_on_disk: true
+    test_runtime: 35.087s
+    result: PASSED (15 passed, 123 skipped, 138 total)
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 pay_to custom_payload issue search'
+      - 'repo:ston-fi/dex-core-v2 pay_to cross_swap issue search'
+      - 'repo:ston-fi/dex-core-v2 custom_payload pay_to pull request search'
+      - 'repo:ston-fi/dex-core-v2 cross_swap custom_payload pull request search'
+    results: all four repository issue/PR pages showed No results
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'pay_to custom_payload on repository issue page'
+      - 'pay_to cross_swap on repository issue page'
+      - 'custom_payload pay_to on repository pull-request page'
+      - 'cross_swap custom_payload on repository pull-request page'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_90/callers-grep.txt
+  caller_grep_match_count: 146
+  caller_grep_unique_files: 24
+  prior_audit_path: iter_90/prior-audit-git.log
+  prior_audit_bytes: 53
+  r15_search_files:
+    - iter_90/R15-GH-pay-to-custom-payload-issue.html
+    - iter_90/R15-GH-pay-to-cross-swap-issue.html
+    - iter_90/R15-GH-custom-payload-pay-to-pr.html
+    - iter_90/R15-GH-cross-swap-custom-payload-pr.html
+  source_conclusion: 'The router pay_to handler derives and verifies the deterministic pool from the supplied token pair before reading the custom payload. Only a payload with more than 32 bits and the cross_swap opcode enters nested routing; all other payload shapes, including a 32-bit boundary, use the ordinary one-sided token transfer and preserve the payload as user-selected metadata. The nested path reuses route_dex_messages validation and refunds on failure. Since the pool is the caller and the payload originates from the same user-requested route, no external actor can redirect a victim payout or create a forged pool-originated pay_to message.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_90-V5.md

@@ -1,0 +1,58 @@
+
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/WeightedCPI.spec.ts tests/System.spec.ts -t should provide lp$|should provide lp \(single side\)|should handle mint & burn liquidity
+
+PASS tests/WeightedCPI.spec.ts (6.243 s)
+  Weighted CPI
+    Fees
+      ○ skipped should set fees
+      ○ skipped should collect fees
+      ○ skipped should collect ref fee from vault
+    Params
+      ○ skipped should set params
+      ○ skipped should swap with different ratio
+    Dex
+      ✓ should provide lp (1339 ms)
+      ✓ should provide lp (single side) (1059 ms)
+      ○ skipped should deploy dex
+      ○ skipped should swap
+      ○ skipped should burn liquidity
+      ○ skipped should cross-swap on the same router
+      ○ skipped should cross-swap on 2 routers
+      ○ skipped should direct add liquidity (all)
+      ○ skipped should direct add liquidity (partial)
+      ○ skipped should swap with 0 ref fee
+      ○ skipped should swap with max ref fee
+    Refund
+      ○ skipped should refund partial liquidity
+      ○ skipped should refund swap
+      ○ skipped should refund cross-swap on the same router
+      ○ skipped should refund swap if pool locked
+      ○ skipped should refund swap if fee more than max
+      ○ skipped should refund cross-swap on 2 routers (in)
+      ○ skipped should refund cross-swap on 2 routers (mid)
+    Bounce
+      ○ skipped should bounce set fees if not admin
+      ○ skipped should bounce collect fees if no fee
+
+PASS tests/System.spec.ts
+  System
+    Dex
+      ✓ should handle mint & burn liquidity (314 ms)
+      ○ skipped should handle refund partial liquidity
+      ○ skipped should handle swaps
+      ○ skipped should handle invalid transfers
+      ○ skipped should handle cross swap
+    Governance
+      ○ skipped should reset pool gas
+      ○ skipped should reset pool gas (different address)
+      ○ skipped should reset router gas
+      ○ skipped should lock & unlock pool
+      ○ skipped should set fees
+      ○ skipped should collect fees
+
+Test Suites: 2 passed, 2 total
+Tests:       33 skipped, 3 passed, 36 total
+Snapshots:   0 total
+Time:        9.481 s
+Ran all test suites matching /tests\/WeightedCPI.spec.ts|tests\/System.spec.ts/i with tests matching "should provide lp$|should provide lp \(single side\)|should handle mint & burn liquidity".

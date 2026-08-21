@@ -1,0 +1,166 @@
+contracts/router.fc:11:    if ctx.at(IS_BOUNCED) { 
+contracts/vault.fc:32:    if ctx.at(IS_BOUNCED) { 
+contracts/vault.fc:40:    if (ctx.at(OPCODE) == op::deposit_ref_fee) & equal_slices(ctx.at(SENDER), storage::router_address) {
+contracts/vault.fc:51:    if ctx.at(OPCODE) == op::withdraw_fee { 
+contracts/vault.fc:60:        msgs::send_simple(0, 
+contracts/pool.fc:11:    if ctx.at(IS_BOUNCED) { 
+contracts/lp_account.fc:10:    if ctx.at(IS_BOUNCED) { 
+contracts/lp_account.fc:11:        ;; dont handle bounced messages
+contracts/lp_wallet.fc:37:        .store_uint(op::internal_transfer, 32)
+contracts/lp_wallet.fc:74:            .store_uint(op::transfer_notification, 32)
+contracts/lp_wallet.fc:95:        .store_uint(op::excesses, 32)
+contracts/lp_wallet.fc:116:        .store_uint(op::burn_notification_ext, 32)
+contracts/lp_wallet.fc:136:() on_bounce (slice in_msg_body) impure {
+contracts/lp_wallet.fc:141:    throw_unless(709, (op == op::internal_transfer) | (op == op::burn_notification_ext));
+contracts/lp_wallet.fc:157:        on_bounce(in_msg_body);
+contracts/lp_wallet.fc:169:    if (op == op::transfer) { 
+contracts/lp_wallet.fc:174:    if (op == op::internal_transfer) { 
+contracts/lp_wallet.fc:179:    if (op == op::burn) { 
+contracts/lp_wallet/op.fc:1:const op::transfer = 0xf8a7ea5;
+contracts/lp_wallet/op.fc:2:const op::transfer_notification = 0x7362d09c;
+contracts/lp_wallet/op.fc:3:const op::internal_transfer = 0x178d4519;
+contracts/lp_wallet/op.fc:4:const op::excesses = 0xd53276db;
+contracts/lp_wallet/op.fc:5:const op::burn = 0x595f07bc;
+contracts/lp_account/msgs/getter.fc:6:    if (ctx.at(OPCODE) == op::getter_lp_account_data) { 
+contracts/lp_account/msgs/getter.fc:8:        msgs::send_simple(
+contracts/router/dex.fc:9:    slice refund_address = null();
+contracts/router/dex.fc:17:        refund_address = dex_payload~load_msg_addr();
+contracts/router/dex.fc:23:            & refund_address.address::check_workchain(params::workchain)
+contracts/router/dex.fc:30:        msgs::send_simple(
+contracts/router/dex.fc:44:        transferred_op = transferred_op == op::cross_swap ? op::swap : transferred_op;
+contracts/router/dex.fc:46:        throw_arg_if(op::transfer_bounce_invalid_request, 1, (transferred_op != op::swap) & (transferred_op != op::provide_lp));
+contracts/router/dex.fc:47:        throw_arg_if(op::transfer_bounce_invalid_pool, 1, equal_slices(_jetton_address, token_wallet1));
+contracts/router/dex.fc:48:        throw_arg_if(op::transfer_bounce_locked, 1, storage::is_locked);
+contracts/router/dex.fc:50:        throw_arg_unless(op::transfer_bounce_wrong_wc, 1, _caller.address::check_workchain(params::workchain));
+contracts/router/dex.fc:51:        throw_arg_unless(op::transfer_bounce_tx_expired, 1, tx_deadline > now());
+contracts/router/dex.fc:56:        throw_arg_if(op::transfer_bounce_low_gas, 1, (transferred_op == op::swap) 
+contracts/router/dex.fc:67:        throw_arg_if(op::transfer_bounce_low_gas, 1, (transferred_op == op::provide_lp) 
+contracts/router/dex.fc:84:        msgs::send_with_stateinit(
+contracts/router/dex.fc:95:        var out_msg_body = jetton_wallet::transfer(0, _sent_amount, refund_address, excesses_address)
+contracts/router/dex.fc:98:        msgs::send_simple(0, _jetton_address, out_msg_body.end_cell(), QCARRY_ALL_BALANCE);
+contracts/lp_account/msgs/pool.fc:6:    if ctx.at(OPCODE) == op::add_liquidity { 
+contracts/lp_account/msgs/pool.fc:15:        slice refund_address = additional_fields~load_msg_addr();
+contracts/lp_account/msgs/pool.fc:31:            msgs::send_simple(
+contracts/lp_account/msgs/pool.fc:42:                    refund_address,
+contracts/pool/msgs/lp_account.fc:4:    if ctx.at(OPCODE) == op::cb_add_liquidity {
+contracts/pool/msgs/lp_account.fc:15:        slice refund_address = additional_data~load_msg_addr();
+contracts/pool/msgs/lp_account.fc:79:                    refund_address
+contracts/pool/msgs/lp_account.fc:84:            msgs::send_with_stateinit(
+contracts/pool/msgs/lp_account.fc:96:                    addr_none(), ;; refund_address
+contracts/pool/msgs/lp_account.fc:119:            msgs::send_with_stateinit(
+contracts/pool/msgs/lp_account.fc:138:    if ctx.at(OPCODE) == op::cb_refund_me {
+contracts/pool/msgs/lp_account.fc:155:            (gas, mode) = ((ctx.at(MSG_VALUE) - (ctx.at(FWD_FEE) + storage_fee::pool + gas::pool::cb_refund)) / 2, NORMAL);
+contracts/pool/msgs/lp_account.fc:159:            msgs::send_simple(
+contracts/pool/msgs/lp_account.fc:166:                    op::refund_ok, 
+contracts/pool/msgs/lp_account.fc:179:            msgs::send_simple(
+contracts/pool/msgs/lp_account.fc:186:                    op::refund_ok, 
+contracts/router/msgs/vault.fc:3:    if ctx.at(OPCODE) == op::vault_pay_to {
+contracts/router/msgs/vault.fc:19:        msgs::send_simple(0, token_address, msg.end_cell(), QCARRY_ALL_BALANCE);
+contracts/lp_account/msgs/user.fc:4:    if ctx.at(OPCODE) == op::refund_me { 
+contracts/lp_account/msgs/user.fc:15:            + gas::lp_account::refund  ;; no storage_fee, since this destroy contract
+contracts/lp_account/msgs/user.fc:16:            + storage_fee::pool + gas::pool::cb_refund  
+contracts/lp_account/msgs/user.fc:21:        msgs::send_simple(
+contracts/lp_account/msgs/user.fc:24:            pool::cb_refund_me(
+contracts/lp_account/msgs/user.fc:40:    if ctx.at(OPCODE) == op::direct_add_liquidity {
+contracts/lp_account/msgs/user.fc:55:        slice refund_address = additional_fields~load_msg_addr();
+contracts/lp_account/msgs/user.fc:63:            & refund_address.address::check_workchain(params::workchain)
+contracts/lp_account/msgs/user.fc:84:        msgs::send_simple(
+contracts/lp_account/msgs/user.fc:95:                refund_address,
+contracts/lp_account/msgs/user.fc:104:    if ctx.at(OPCODE) == op::reset_gas {
+contracts/router/msgs/pool.fc:4:    ;; send tokens, called from pools (on swap, liquidity providing, refund etc)
+contracts/router/msgs/pool.fc:5:    if ctx.at(OPCODE) == op::pay_to { 
+contracts/router/msgs/pool.fc:46:        if (fwd_opcode == op::cross_swap) 
+contracts/router/msgs/pool.fc:71:                msgs::send_simple(
+contracts/router/msgs/pool.fc:80:                msgs::send_simple(
+contracts/router/msgs/pool.fc:94:    if ctx.at(OPCODE) == op::pay_vault { 
+contracts/router/msgs/pool.fc:127:        msgs::send_with_stateinit(
+contracts/pool/msgs/router.fc:4:    if ctx.at(OPCODE) == op::swap {
+contracts/pool/msgs/router.fc:6:        ;; usually not needed since it uses to_address and refund_address
+contracts/pool/msgs/router.fc:17:        slice refund_address = dex_payload~load_msg_addr();
+contracts/pool/msgs/router.fc:25:        int refund_fwd_ton_amount = 0;
+contracts/pool/msgs/router.fc:26:        cell refund_payload_cs = null(); 
+contracts/pool/msgs/router.fc:30:        try { ;; check call_payload body, refund to refund_address if fails
+contracts/pool/msgs/router.fc:37:            refund_fwd_ton_amount = call_payload~load_coins();
+contracts/pool/msgs/router.fc:38:            refund_payload_cs = call_payload~load_maybe_ref(); 
+contracts/pool/msgs/router.fc:55:            msgs::send_simple(
+contracts/pool/msgs/router.fc:60:                    refund_address, 
+contracts/pool/msgs/router.fc:77:        ;; refund if not enough liquidity or not enough output or output less than min_out
+contracts/pool/msgs/router.fc:80:            throw_arg_if(op::swap_pool_locked, 1, storage::is_locked);
+contracts/pool/msgs/router.fc:81:            throw_arg_if(op::swap_fee_out_of_bounds, 1, (ref_value > params::max_fee) | (ref_value < params::min_fee));
+contracts/pool/msgs/router.fc:111:            throw_arg_unless(op::swap_refund_tx_expired, 1, tx_deadline > now());
+contracts/pool/msgs/router.fc:112:            throw_arg_if(op::swap_refund_no_liq, 1, storage::total_supply_lp <= 0);
+contracts/pool/msgs/router.fc:113:            throw_arg_if(op::swap_refund_0_out, 1, out < 1);
+contracts/pool/msgs/router.fc:114:            throw_arg_if(op::swap_refund_slippage, 1, min_out > out);
+contracts/pool/msgs/router.fc:115:            throw_arg_if(op::swap_refund_reserve_err, 1, (storage::reserve0 > math::MAX_COINS) 
+contracts/pool/msgs/router.fc:122:                msgs::send_simple(ctx.at(FWD_FEE) * 3 + storage_fee::vault + gas::router::pay_vault + gas::vault::deposit_ref_fee, 
+contracts/pool/msgs/router.fc:135:            msgs::send_simple(
+contracts/pool/msgs/router.fc:142:                    op::swap_ok, 
+contracts/pool/msgs/router.fc:157:            msgs::send_simple(
+contracts/pool/msgs/router.fc:162:                    refund_address, 
+contracts/pool/msgs/router.fc:165:                    refund_fwd_ton_amount, 
+contracts/pool/msgs/router.fc:166:                    refund_payload_cs, ;; clear custom_payload_cs, use refund_payload_cs
+contracts/pool/msgs/router.fc:178:    if ctx.at(OPCODE) == op::provide_lp { 
+contracts/pool/msgs/router.fc:189:        slice refund_address = dex_payload~load_msg_addr();
+contracts/pool/msgs/router.fc:211:            throw_arg_unless(op::provide_refund_wrong_workchain, 1, to_user.address::check_workchain(params::workchain));
+contracts/pool/msgs/router.fc:216:            msgs::send_simple(
+contracts/pool/msgs/router.fc:221:                    refund_address, 
+contracts/pool/msgs/router.fc:238:            throw_arg_unless(op::provide_refund_tx_expired, 1, tx_deadline > now());
+contracts/pool/msgs/router.fc:246:            msgs::send_with_stateinit(
+contracts/pool/msgs/router.fc:258:                    refund_address,
+contracts/pool/msgs/router.fc:267:            msgs::send_simple(
+contracts/pool/msgs/router.fc:272:                    refund_address, 
+contracts/pool/msgs/router.fc:288:    if ctx.at(OPCODE) == op::reset_gas {
+contracts/pool/msgs/router.fc:294:    if ctx.at(OPCODE) == op::internal_update_status {
+contracts/pool/msgs/router.fc:302:    if ctx.at(OPCODE) == op::internal_update_pool_code {
+contracts/pool/msgs/router.fc:308:    if ctx.at(OPCODE) == op::internal_set_fees { 
+contracts/pool/msgs/lp_wallet.fc:4:    if ctx.at(OPCODE) == op::burn_notification_ext { 
+contracts/pool/msgs/lp_wallet.fc:59:        msgs::send_simple(
+contracts/pool/msgs/lp_wallet.fc:66:                op::burn_ok, 
+contracts/pool/msgs/lp_wallet.fc:77:        msgs::send_simple(
+contracts/pool/msgs/lp_wallet.fc:84:                op::burn_ok, 
+contracts/router/pools/weighted_const_product/contracts.fc:6:    return begin_message(op::internal_set_params)
+contracts/pool/msgs/protocolfee.fc:4:    if ctx.at(OPCODE) == op::collect_fees { ;; throwable
+contracts/pool/msgs/protocolfee.fc:22:        msgs::send_simple(
+contracts/pool/msgs/protocolfee.fc:39:        msgs::send_simple(
+contracts/router/msgs/jetton.fc:5:    if ctx.at(OPCODE) == op::ft::transfer_notification {
+contracts/router/msgs/jetton.fc:10:            ;; no ref, refund tx
+contracts/router/msgs/jetton.fc:12:            msgs::send_simple(
+contracts/router/msgs/jetton.fc:17:                    .store_uint32(op::transfer_bounce_invalid_request)
+contracts/pool/msgs/getter.fc:6:    if ctx.at(OPCODE) == op::getter_pool_data { 
+contracts/pool/msgs/getter.fc:23:        msgs::send_simple(0, ctx.at(SENDER), out_msg_body, CARRY_ALL_BALANCE | IGNORE_ERRORS);
+contracts/pool/msgs/getter.fc:27:    if ctx.at(OPCODE) == op::getter_lp_account_address { 
+contracts/pool/msgs/getter.fc:38:        msgs::send_simple(0, ctx.at(SENDER), out_msg_body, CARRY_ALL_BALANCE | IGNORE_ERRORS);
+contracts/pool/msgs/getter.fc:42:    if ctx.at(OPCODE) == op::ft::provide_wallet_address {
+contracts/pool/msgs/getter.fc:54:        var msg = begin_message(op::ft::take_wallet_address);
+contracts/pool/msgs/getter.fc:65:        msgs::send_simple(0, ctx.at(SENDER), msg.store_maybe_ref(included_address).end_cell(), CARRY_ALL_BALANCE | IGNORE_ERRORS);
+contracts/router/pools/weighted_stableswap/contracts.fc:9:    return begin_message(op::internal_set_params)
+contracts/router/msgs/getter.fc:6:    if ctx.at(OPCODE) == op::getter_pool_address { 
+contracts/router/msgs/getter.fc:22:        msgs::send_simple(
+contracts/router/pools/weighted_const_product/ext_admin.fc:6:    if ctx.at(OPCODE) == op::set_params {
+contracts/router/pools/weighted_const_product/ext_admin.fc:39:        msgs::send_with_stateinit(
+contracts/router/pools/weighted_stableswap/ext_admin.fc:6:    if ctx.at(OPCODE) == op::set_params {
+contracts/router/pools/weighted_stableswap/ext_admin.fc:44:        msgs::send_with_stateinit(
+contracts/router/msgs/admin.fc:6:    if ctx.at(OPCODE) == op::set_fees { 
+contracts/router/msgs/admin.fc:40:        msgs::send_with_stateinit(
+contracts/router/msgs/admin.fc:55:    if ctx.at(OPCODE) == op::reset_pool_gas { 
+contracts/router/msgs/admin.fc:76:        msgs::send_with_stateinit(
+contracts/router/msgs/admin.fc:86:    if ctx.at(OPCODE) == op::update_pool_status { 
+contracts/router/msgs/admin.fc:107:        msgs::send_with_stateinit(
+contracts/router/msgs/admin.fc:117:    if ctx.at(OPCODE) == op::update_pool_code { 
+contracts/router/msgs/admin.fc:138:        msgs::send_with_stateinit(
+contracts/router/msgs/admin.fc:148:    if ctx.at(OPCODE) == op::update_status { 
+contracts/router/msgs/admin.fc:156:    if ctx.at(OPCODE) == op::init_code_upgrade { 
+contracts/router/msgs/admin.fc:171:    if ctx.at(OPCODE) == op::init_admin_upgrade { 
+contracts/router/msgs/admin.fc:186:    if ctx.at(OPCODE) == op::init_pool_code_upgrade { 
+contracts/router/msgs/admin.fc:201:    if ctx.at(OPCODE) == op::cancel_pool_code_upgrade { 
+contracts/router/msgs/admin.fc:212:    if ctx.at(OPCODE) == op::cancel_admin_upgrade { 
+contracts/router/msgs/admin.fc:223:    if ctx.at(OPCODE) == op::cancel_code_upgrade { 
+contracts/router/msgs/admin.fc:235:    if ctx.at(OPCODE) == op::finalize_upgrades { 
+contracts/router/msgs/admin.fc:263:    if ctx.at(OPCODE) == op::reset_gas {
+contracts/pool/pools/stableswap/ext_router.fc:6:    if ctx.at(OPCODE) == op::internal_set_params {
+contracts/pool/pools/weighted_const_product/ext_router.fc:6:    if ctx.at(OPCODE) == op::internal_set_params {
+contracts/router/pools/stableswap/contracts.fc:2:    return begin_message(op::internal_set_params)
+contracts/router/pools/stableswap/ext_admin.fc:9:    if ctx.at(OPCODE) == op::set_params {
+contracts/router/pools/stableswap/ext_admin.fc:43:        msgs::send_with_stateinit(
+contracts/pool/pools/weighted_stableswap/setter.fc:4:    if ctx.at(OPCODE) == op::set_rate {
+contracts/pool/pools/weighted_stableswap/ext_router.fc:6:    if ctx.at(OPCODE) == op::internal_set_params {

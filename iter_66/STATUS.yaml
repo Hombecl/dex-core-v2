@@ -1,0 +1,55 @@
+schema_version: shadow-v1
+iteration: 66
+phase: completed
+cell_id: R11
+cell_label: swap_catch_state_rollback
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: R11
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/WeightedCPI.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_66/poc_swap_catch_state_rollback.run.log
+    run_log_exists_on_disk: true
+    test_runtime: PASSED
+    duration_seconds: 12.923
+    numerical_evidence: "WeightedCPI.spec.ts and ConstProduct.spec.ts: 6 passed, 55 skipped; slippage, locked-pool, fee-bound, expired-deadline, and swap-refund paths completed with expected refunds."
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 swap catch reserve rollback is:issue"
+      - "repo:ston-fi/dex-core-v2 swap refund reserve drift is:issue"
+      - "repo:ston-fi/dex-core-v2 reserve rollback swap is:pr"
+      - "repo:ston-fi/dex-core-v2 audit swap refund reserve is:issue"
+    results: "Fresh GitHub API searches returned zero results; local audit/security/swap/refund/reserve-drift/rollback git search was empty."
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "repo:ston-fi/dex-core-v2 swap catch reserve rollback is:issue"
+      - "repo:ston-fi/dex-core-v2 swap refund reserve drift is:issue"
+      - "repo:ston-fi/dex-core-v2 reserve rollback swap is:pr"
+      - "repo:ston-fi/dex-core-v2 audit swap refund reserve is:issue"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_66-R11.md
+  notes:
+    - "pool/msgs/router.fc mutates reserve and protocol-fee globals before deadline/output/reserve checks, but storage::save() is reached only in the success branch; the catch branch emits the original input refund without saving those tentative mutations."
+    - "The failure PoC covered slippage, locked pool, fee bounds, and expired deadline across weighted and constant-product pools; user input balances were restored and no reserve or protocol-fee drift was demonstrated."
+    - "Shadow mode: no emit-shippable.py, bb_findings, shippable-staging, IA queue, submission queue, or platform form was touched."

@@ -1,0 +1,54 @@
+
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/ConstProduct.spec.ts -t should provide lp|direct add liquidity|refund partial liquidity|refund both lp tokens
+
+PASS tests/ConstProduct.spec.ts (12.463 s)
+  Const Product
+    wip
+      ○ skipped 123
+    Pool code upgrade
+      ○ skipped should init new pool code
+      ○ skipped should cancel new pool code
+      ○ skipped should finalize new pool code
+      ○ skipped should not finalize new pool code if time not passed
+      ○ skipped should set new pool code on pool
+      ○ skipped should not set new pool code if empty
+    Fees
+      ○ skipped should set fees
+      ○ skipped should collect fees
+      ○ skipped should collect ref fee from vault
+    Dex
+      ✓ should provide lp (1142 ms)
+      ✓ should provide lp with payload (822 ms)
+      ✓ should provide lp with payload to a different address (855 ms)
+      ✓ should provide lp (single side) (980 ms)
+      ✓ should provide lp (single side) with protocol fees (890 ms)
+      ✓ should direct add liquidity (all) (921 ms)
+      ✓ should direct add liquidity (partial) (896 ms)
+      ○ skipped should deploy dex
+      ○ skipped should swap
+      ○ skipped should handle more complex scenarios
+      ○ skipped should burn lp and swap
+      ○ skipped should burn liquidity
+      ○ skipped should cross-swap on the same router
+      ○ skipped should cross-swap on 2 routers
+      ○ skipped should refund swap if tx is expired
+      ○ skipped should swap with 0 ref fee
+      ○ skipped should swap with max ref fee
+    Refund
+      ✓ should refund partial liquidity (857 ms)
+      ✓ should refund both lp tokens (936 ms)
+      ○ skipped should refund swap
+      ○ skipped should refund cross-swap on the same router
+      ○ skipped should refund cross-swap on 2 routers (in)
+      ○ skipped should refund cross-swap on 2 routers (mid)
+      ○ skipped should refund swap if fee more than max
+    Bounce
+      ○ skipped should bounce set fees if not admin
+      ○ skipped should bounce collect fees if no fee
+
+Test Suites: 1 passed, 1 total
+Tests:       27 skipped, 9 passed, 36 total
+Snapshots:   0 total
+Time:        12.629 s
+Ran all test suites matching /tests\/ConstProduct.spec.ts/i with tests matching "should provide lp|direct add liquidity|refund partial liquidity|refund both lp tokens".

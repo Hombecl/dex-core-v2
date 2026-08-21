@@ -1,0 +1,48 @@
+
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/Router.spec.ts tests/Pool.spec.ts tests/LPAccount.spec.ts tests/System.spec.ts -t return valid pool address|return correct dex version|generate valid URI|return valid data|handle mint & burn liquidity|handle invalid transfers|handle refund partial liquidity
+
+PASS tests/System.spec.ts
+  System
+    Dex
+      ✓ should handle mint & burn liquidity (397 ms)
+      ✓ should handle refund partial liquidity (228 ms)
+      ✓ should handle invalid transfers (194 ms)
+      ○ skipped should handle swaps
+      ○ skipped should handle cross swap
+    Governance
+      ○ skipped should reset pool gas
+      ○ skipped should reset pool gas (different address)
+      ○ skipped should reset router gas
+      ○ skipped should lock & unlock pool
+      ○ skipped should set fees
+      ○ skipped should collect fees
+
+PASS tests/Router.spec.ts
+  Router
+    Governance
+      ○ skipped should handle lock & unlock
+      ○ skipped should handle upgrades
+    Getters
+      ✓ should return valid pool address (24 ms)
+      ✓ should return correct dex version (14 ms)
+
+PASS tests/Pool.spec.ts
+  Pool
+    Router calls
+      ○ skipped should refund swap if tx is expired
+      ○ skipped should refund provide lp if tx is expired
+      ○ skipped should bounce if tokens are the same
+    Getters
+      ✓ should generate valid URI (17 ms)
+
+PASS tests/LPAccount.spec.ts
+  LPAccount
+    Getters
+      ✓ should return valid data (9 ms)
+
+Test Suites: 4 passed, 4 total
+Tests:       13 skipped, 7 passed, 20 total
+Snapshots:   0 total
+Time:        10.236 s, estimated 12 s
+Ran all test suites matching /tests\/Router.spec.ts|tests\/Pool.spec.ts|tests\/LPAccount.spec.ts|tests\/System.spec.ts/i with tests matching "return valid pool address|return correct dex version|generate valid URI|return valid data|handle mint & burn liquidity|handle invalid transfers|handle refund partial liquidity".

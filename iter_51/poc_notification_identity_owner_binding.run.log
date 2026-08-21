@@ -1,0 +1,25 @@
+
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/System.spec.ts -t should handle swaps|should handle cross swap|should handle invalid transfers
+
+PASS tests/System.spec.ts
+  System
+    Dex
+      ✓ should handle swaps (298 ms)
+      ✓ should handle invalid transfers (185 ms)
+      ✓ should handle cross swap (288 ms)
+      ○ skipped should handle mint & burn liquidity
+      ○ skipped should handle refund partial liquidity
+    Governance
+      ○ skipped should reset pool gas
+      ○ skipped should reset pool gas (different address)
+      ○ skipped should reset router gas
+      ○ skipped should lock & unlock pool
+      ○ skipped should set fees
+      ○ skipped should collect fees
+
+Test Suites: 1 passed, 1 total
+Tests:       8 skipped, 3 passed, 11 total
+Snapshots:   0 total
+Time:        4.564 s, estimated 5 s
+Ran all test suites matching /tests\/System.spec.ts/i with tests matching "should handle swaps|should handle cross swap|should handle invalid transfers".

@@ -1,0 +1,106 @@
+contracts/vault.fc:29:    throw_if(error::empty_not_allowed, in_msg_body.slice_empty?());
+contracts/vault.fc:32:    if ctx.at(IS_BOUNCED) { 
+contracts/vault.fc:36:    throw_unless(error::wrong_workchain, ctx.at(SENDER).address::check_workchain(params::workchain));
+contracts/vault.fc:73:    throw(error::wrong_op);
+contracts/router/dex.fc:21:        throw_arg_unless(error::wrong_workchain, 1, 
+tests/System.spec.ts:251:        it('should handle invalid transfers', async () => {
+tests/WeightedCPI.spec.ts:9:import { expectBounced, expectEqAddress, expectNotBounced, getWalletContract, SLIM_CONFIG_LEGACY } from '../libs/src/test-helpers';
+tests/WeightedCPI.spec.ts:415:                    expectBounced(msgResult.events);
+tests/WeightedCPI.spec.ts:556:                    expectBounced(msgResult.events);
+tests/WeightedCPI.spec.ts:706:                        expectBounced(msgResult.events);
+tests/WeightedCPI.spec.ts:750:                        expectBounced(msgResult.events);
+tests/WeightedCPI.spec.ts:840:                    expectBounced(msgResult.events);
+tests/WeightedCPI.spec.ts:959:                    expectBounced(msgResult.events);
+tests/WeightedCPI.spec.ts:1026:                expectBounced(msgResult.events);
+tests/WeightedCPI.spec.ts:1079:                expectBounced(msgResult.events);
+tests/WeightedCPI.spec.ts:1131:                expectBounced(msgResult.events);
+tests/WeightedCPI.spec.ts:1169:                expectBounced(msgResult.events);
+contracts/lp_account.fc:7:    throw_if(error::empty_not_allowed, in_msg_body.slice_empty?());
+contracts/lp_account.fc:10:    if ctx.at(IS_BOUNCED) { 
+contracts/lp_account.fc:15:    throw_unless(error::wrong_workchain, ctx.at(SENDER).address::check_workchain(params::workchain));
+contracts/lp_account.fc:37:    throw(error::wrong_op);
+tests/ConstProduct.spec.ts:9:import { expectBounced, expectEqAddress, expectNotBounced, getWalletContract, SLIM_CONFIG_LEGACY } from '../libs/src/test-helpers';
+tests/ConstProduct.spec.ts:381:                    expectBounced(msgResult.events);
+tests/ConstProduct.spec.ts:523:                    expectBounced(msgResult.events);
+tests/ConstProduct.spec.ts:669:                        expectBounced(msgResult.events);
+tests/ConstProduct.spec.ts:715:                        expectBounced(msgResult.events);
+tests/ConstProduct.spec.ts:810:                    expectBounced(msgResult.events);
+tests/ConstProduct.spec.ts:933:                    expectBounced(msgResult.events);
+tests/ConstProduct.spec.ts:1001:                expectBounced(msgResult.events);
+tests/ConstProduct.spec.ts:1055:                expectBounced(msgResult.events);
+tests/ConstProduct.spec.ts:1298:            expectBounced(msgResult.events)
+tests/ConstProduct.spec.ts:1329:            expectBounced(msgResult.events)
+tests/ConstSum.spec.ts:9:import { expectBounced, expectEqAddress, expectNotBounced, getWalletContract, SLIM_CONFIG_LEGACY } from '../libs/src/test-helpers';
+tests/ConstSum.spec.ts:369:                    expectBounced(msgResult.events);
+tests/ConstSum.spec.ts:500:                    expectBounced(msgResult.events);
+tests/ConstSum.spec.ts:643:                        expectBounced(msgResult.events);
+tests/ConstSum.spec.ts:687:                        expectBounced(msgResult.events);
+tests/ConstSum.spec.ts:783:                    expectBounced(msgResult.events);
+tests/ConstSum.spec.ts:888:                    expectBounced(msgResult.events);
+tests/ConstSum.spec.ts:1007:                    expectBounced(msgResult.events);
+tests/ConstSum.spec.ts:1074:                expectBounced(msgResult.events);
+tests/ConstSum.spec.ts:1127:                expectBounced(msgResult.events);
+tests/Stableswap.spec.ts:9:import { expectBounced, expectEqAddress, expectNotBounced, getWalletContract, SLIM_CONFIG_LEGACY } from '../libs/src/test-helpers';
+tests/Stableswap.spec.ts:414:                    expectBounced(msgResult.events);
+tests/Stableswap.spec.ts:554:                    expectBounced(msgResult.events);
+tests/Stableswap.spec.ts:703:                        expectBounced(msgResult.events);
+tests/Stableswap.spec.ts:748:                        expectBounced(msgResult.events);
+tests/Stableswap.spec.ts:839:                    expectBounced(msgResult.events);
+tests/Stableswap.spec.ts:958:                    expectBounced(msgResult.events);
+tests/Stableswap.spec.ts:1025:                expectBounced(msgResult.events);
+tests/Stableswap.spec.ts:1078:                expectBounced(msgResult.events);
+tests/Stableswap.spec.ts:1121:                expectBounced(msgResult.events);
+tests/Stableswap.spec.ts:1159:                expectBounced(msgResult.events);
+contracts/router/get.fc:7:    throw_unless(error::wrong_workchain, token0.address::check_workchain(params::workchain));
+contracts/router/get.fc:8:    throw_unless(error::wrong_workchain, token1.address::check_workchain(params::workchain));
+contracts/router/get.fc:21:    throw_unless(error::wrong_workchain, token.address::check_workchain(params::workchain));
+contracts/router/get.fc:22:    throw_unless(error::wrong_workchain, user.address::check_workchain(params::workchain));
+contracts/pool.fc:7:    throw_if(error::empty_not_allowed, in_msg_body.slice_empty?());
+contracts/pool.fc:11:    if ctx.at(IS_BOUNCED) { 
+contracts/pool.fc:16:    throw_unless(error::wrong_workchain, ctx.at(SENDER).address::check_workchain(params::workchain));
+contracts/pool.fc:52:    throw(error::wrong_op);
+contracts/router.fc:7:    throw_if(error::empty_not_allowed, in_msg_body.slice_empty?());
+contracts/router.fc:11:    if ctx.at(IS_BOUNCED) { 
+contracts/router.fc:15:    throw_unless(error::wrong_workchain, ctx.at(SENDER).address::check_workchain(params::workchain));
+contracts/router.fc:44:    throw(error::wrong_op);
+contracts/test/pool_dummy.fc:76:    throw(error::wrong_op);
+contracts/test/pool_dummy.fc:80:    throw_if(error::empty_not_allowed, in_msg_body.slice_empty?());
+contracts/test/pool_dummy.fc:84:    if ctx.at(IS_BOUNCED) { 
+contracts/test/pool_dummy.fc:89:    throw_unless(error::wrong_workchain, ctx.at(SENDER).address::check_workchain(params::workchain));
+contracts/lp_wallet.fc:15:    force_chain(params::workchain, to_owner_address, error::wrong_workchain);
+contracts/lp_wallet.fc:136:() on_bounce (slice in_msg_body) impure {
+contracts/lp_wallet.fc:157:        on_bounce(in_msg_body);
+contracts/lp_wallet.fc:184:    throw(error::wrong_op);
+contracts/common/errors.fc:5:const error::wrong_workchain = 85;
+contracts/common/errors.fc:13:const error::empty_not_allowed = 96;
+contracts/common/errors.fc:17:const error::wrong_op = 0xFFFF;
+contracts/pool/get.fc:10:    throw_unless(error::wrong_workchain, owner_address.address::check_workchain(params::workchain));
+contracts/pool/get.fc:42:    throw_unless(error::wrong_workchain, owner_address.address::check_workchain(params::workchain));
+contracts/common/utils.fc:3:    throw_unless(error::wrong_workchain, _addr.address::check_workchain(params::workchain));
+contracts/common/op.fc:65:const op::provide_refund_wrong_workchain  = "provide_refund_wrong_workchain"c;
+contracts/router/msgs/admin.fc:22:        throw_unless(error::wrong_workchain, jetton_wallet1.address::check_workchain(params::workchain) 
+contracts/router/msgs/admin.fc:66:        throw_unless(error::wrong_workchain, jetton_wallet1.address::check_workchain(params::workchain)
+contracts/router/msgs/admin.fc:97:        throw_unless(error::wrong_workchain, jetton_wallet1.address::check_workchain(params::workchain) 
+contracts/router/msgs/admin.fc:129:        throw_unless(error::wrong_workchain, jetton_wallet1.address::check_workchain(params::workchain) 
+contracts/router/msgs/admin.fc:177:        throw_unless(error::wrong_workchain, new_admin_address.address::check_workchain(params::workchain)); 
+contracts/pool/msgs/router.fc:44:            throw_arg_unless(error::wrong_workchain, 1, 
+contracts/pool/msgs/router.fc:211:            throw_arg_unless(op::provide_refund_wrong_workchain, 1, to_user.address::check_workchain(params::workchain));
+contracts/pool/msgs/router.fc:331:    throw(error::wrong_op);
+tests/WeightedStableswap.spec.ts:9:import { expectBounced, expectEqAddress, expectNotBounced, getWalletContract, SLIM_CONFIG_LEGACY } from '../libs/src/test-helpers';
+tests/WeightedStableswap.spec.ts:428:                    expectBounced(msgResult.events);
+tests/WeightedStableswap.spec.ts:568:                    expectBounced(msgResult.events);
+tests/WeightedStableswap.spec.ts:723:                        expectBounced(msgResult.events);
+tests/WeightedStableswap.spec.ts:770:                        expectBounced(msgResult.events);
+tests/WeightedStableswap.spec.ts:858:                    expectBounced(msgResult.events);
+tests/WeightedStableswap.spec.ts:977:                    expectBounced(msgResult.events);
+tests/WeightedStableswap.spec.ts:1044:                expectBounced(msgResult.events);
+tests/WeightedStableswap.spec.ts:1097:                expectBounced(msgResult.events);
+tests/WeightedStableswap.spec.ts:1154:                expectBounced(msgResult.events);
+tests/WeightedStableswap.spec.ts:1197:                expectBounced(msgResult.events);
+tests/WeightedStableswap.spec.ts:2065:            expectBounced(msgResult.events);
+contracts/router/msgs/getter.fc:13:        throw_unless(error::wrong_workchain, token0.address::check_workchain(params::workchain));
+contracts/router/msgs/getter.fc:14:        throw_unless(error::wrong_workchain, token1.address::check_workchain(params::workchain));
+contracts/pool/msgs/protocolfee.fc:64:    throw(error::wrong_op);
+contracts/router/pools/weighted_const_product/ext_admin.fc:24:        throw_unless(error::wrong_workchain, left_jetton_wallet.address::check_workchain(params::workchain)
+contracts/router/pools/weighted_stableswap/ext_admin.fc:33:        throw_unless(error::wrong_workchain, left_jetton_wallet.address::check_workchain(params::workchain) 
+contracts/router/pools/stableswap/ext_admin.fc:27:        throw_unless(error::wrong_workchain, left_jetton_wallet.address::check_workchain(params::workchain) 

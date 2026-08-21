@@ -1,0 +1,42 @@
+
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/WeightedCPI.spec.ts -t should collect ref fee from vault|should swap with 0 ref fee|should swap with max ref fee
+
+PASS tests/WeightedCPI.spec.ts (6.824 s)
+  Weighted CPI
+    Fees
+      ✓ should collect ref fee from vault (1288 ms)
+      ○ skipped should set fees
+      ○ skipped should collect fees
+    Params
+      ○ skipped should set params
+      ○ skipped should swap with different ratio
+    Dex
+      ✓ should swap with 0 ref fee (901 ms)
+      ✓ should swap with max ref fee (938 ms)
+      ○ skipped should deploy dex
+      ○ skipped should swap
+      ○ skipped should provide lp
+      ○ skipped should provide lp (single side)
+      ○ skipped should burn liquidity
+      ○ skipped should cross-swap on the same router
+      ○ skipped should cross-swap on 2 routers
+      ○ skipped should direct add liquidity (all)
+      ○ skipped should direct add liquidity (partial)
+    Refund
+      ○ skipped should refund partial liquidity
+      ○ skipped should refund swap
+      ○ skipped should refund cross-swap on the same router
+      ○ skipped should refund swap if pool locked
+      ○ skipped should refund swap if fee more than max
+      ○ skipped should refund cross-swap on 2 routers (in)
+      ○ skipped should refund cross-swap on 2 routers (mid)
+    Bounce
+      ○ skipped should bounce set fees if not admin
+      ○ skipped should bounce collect fees if no fee
+
+Test Suites: 1 passed, 1 total
+Tests:       22 skipped, 3 passed, 25 total
+Snapshots:   0 total
+Time:        6.96 s
+Ran all test suites matching /tests\/WeightedCPI.spec.ts/i with tests matching "should collect ref fee from vault|should swap with 0 ref fee|should swap with max ref fee".

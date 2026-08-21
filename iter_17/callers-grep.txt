@@ -1,0 +1,137 @@
+contracts/pool.fc:12:        ;; mint should never
+contracts/lp_wallet.fc:10:() send_tokens (slice in_msg_body, slice sender_address, int msg_value, int fwd_fee) impure {
+contracts/lp_wallet.fc:12:    int jetton_amount = in_msg_body~load_coins();
+contracts/lp_wallet.fc:18:    balance -= jetton_amount;
+contracts/lp_wallet.fc:37:        .store_uint(op::internal_transfer, 32)
+contracts/lp_wallet.fc:39:        .store_coins(jetton_amount)
+contracts/lp_wallet.fc:50:    send_raw_message(msg.end_cell(), 64);
+contracts/lp_wallet.fc:51:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:54:() receive_tokens (slice in_msg_body, slice sender_address, int my_ton_balance, int fwd_fee, int msg_value) impure {
+contracts/lp_wallet.fc:57:    int jetton_amount = in_msg_body~load_coins();
+contracts/lp_wallet.fc:58:    balance += jetton_amount;
+contracts/lp_wallet.fc:74:            .store_uint(op::transfer_notification, 32)
+contracts/lp_wallet.fc:76:            .store_coins(jetton_amount)
+contracts/lp_wallet.fc:86:        send_raw_message(msg.end_cell(), 1);
+contracts/lp_wallet.fc:97:        send_raw_message(msg.end_cell(), 2);
+contracts/lp_wallet.fc:100:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:103:() burn_tokens (slice in_msg_body, slice sender_address, int msg_value, int fwd_fee) impure {
+contracts/lp_wallet.fc:106:    int jetton_amount = in_msg_body~load_coins();
+contracts/lp_wallet.fc:109:    balance -= jetton_amount;
+contracts/lp_wallet.fc:116:        .store_uint(op::burn_notification_ext, 32)
+contracts/lp_wallet.fc:118:        .store_coins(jetton_amount)
+contracts/lp_wallet.fc:131:    send_raw_message(msg.end_cell(), 64);
+contracts/lp_wallet.fc:133:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:136:() on_bounce (slice in_msg_body) impure {
+contracts/lp_wallet.fc:141:    throw_unless(709, (op == op::internal_transfer) | (op == op::burn_notification_ext));
+contracts/lp_wallet.fc:144:    int jetton_amount = in_msg_body~load_coins();
+contracts/lp_wallet.fc:145:    balance += jetton_amount;
+contracts/lp_wallet.fc:146:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:157:        on_bounce(in_msg_body);
+contracts/lp_wallet.fc:170:        send_tokens(in_msg_body, sender_address, msg_value, fwd_fee);
+contracts/lp_wallet.fc:174:    if (op == op::internal_transfer) { 
+contracts/lp_wallet.fc:175:        receive_tokens(in_msg_body, sender_address, my_balance, fwd_fee, msg_value);
+contracts/lp_wallet.fc:179:    if (op == op::burn) { 
+contracts/lp_wallet.fc:180:        burn_tokens(in_msg_body, sender_address, msg_value, fwd_fee);
+contracts/lp_wallet/storage.fc:8:() storage::save(int balance, slice owner_address, slice jetton_master_address, cell jetton_wallet_code) impure inline {
+contracts/common/gas.fc:3:const gas::router::pay_to = 16000000;
+contracts/common/gas.fc:4:const gas::router::vault_pay_to = 20000000;
+contracts/common/gas.fc:29:const gas::lp_wallet::burn = 20000000;
+contracts/common/gas.fc:30:const gas::lp_wallet::mint = 20000000;
+contracts/common/contracts.fc:146:(cell) router::pay_to(
+contracts/common/contracts.fc:158:    return begin_message(op::pay_to)
+contracts/common/contracts.fc:174:(cell) router::vault_pay_to(
+contracts/common/contracts.fc:179:    return begin_message(op::vault_pay_to)
+contracts/common/contracts.fc:206:(cell) jetton_wallet::mint(
+contracts/common/contracts.fc:213:    return begin_message(op::internal_transfer)
+contracts/common/contracts.fc:214:        .store_coins(_amount) ;; jetton_amount
+contracts/common/contracts.fc:225:    int _jetton_amount, 
+contracts/common/contracts.fc:235:            .store_coins(_jetton_amount)
+contracts/common/contracts.fc:240:            .store_coins(_jetton_amount);
+contracts/common/contracts.fc:280:(builder) jetton_wallet::transfer(int _fwd_amount, int _jetton_amount, slice _to, slice _response_address) inline {
+contracts/common/contracts.fc:282:        .store_coins(_jetton_amount)
+contracts/lp_wallet/op.fc:2:const op::transfer_notification = 0x7362d09c;
+contracts/lp_wallet/op.fc:3:const op::internal_transfer = 0x178d4519;
+contracts/lp_wallet/op.fc:5:const op::burn = 0x595f07bc;
+contracts/common/op.fc:1:const op::internal_transfer               = 0x178d4519;
+contracts/common/op.fc:7:const op::burn_notification_ext           = "burn_notification_ext query_id:uint64 jetton_amount:Coins from_address:MsgAddress response_address:MsgAddress maybe_custom_payload:(Maybe ^Cell) = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:10:const op::pay_to                          = "pay_to query_id:uint64 to_address:MsgAddress excesses_address:MsgAddress original_caller:MsgAddress exit_code:uint32 custom_payload:(Maybe ^Cell) additional_info:^[fwd_ton_amount:Coins amount0_out:Coins token0_address:MsgAddress amount1_out:Coins token1_address:MsgAddress] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:26:const op::vault_pay_to                    = "vault_pay_to query_id:uint64 amount_out:Coins token_address:MsgAddress to_address:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:27:const op::deposit_ref_fee                 = "deposit_ref_fee query_id:uint64 jetton_amount:Coins excesses_address:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:57:const op::burn_ok                         = "burn_ok"c;
+contracts/pool/headers.fc:1:;; updated from swaps, providelp, burnlp
+contracts/router/storage.fc:31:() storage::save() impure inline {
+contracts/router/dex.fc:60:                + gas::router::pay_to
+contracts/router/dex.fc:73:                + storage_fee::lp_wallet + gas::lp_wallet::mint)
+contracts/router/msgs/vault.fc:3:    if ctx.at(OPCODE) == op::vault_pay_to {
+contracts/pool/msgs/router.fc:58:                router::pay_to(
+contracts/pool/msgs/router.fc:138:                router::pay_to(
+contracts/pool/msgs/router.fc:152:            storage::save();
+contracts/pool/msgs/router.fc:160:                router::pay_to(
+contracts/pool/msgs/router.fc:219:                router::pay_to(
+contracts/pool/msgs/router.fc:270:                router::pay_to(
+contracts/pool/msgs/router.fc:296:        storage::save();
+contracts/pool/msgs/router.fc:317:        storage::save();
+contracts/pool/msgs/lp_account.fc:40:            ;; 1000 LP tokens will be locked, excesses minted to user
+contracts/pool/msgs/lp_account.fc:73:            ;; hardcoded 0 to avoid minting loop between pool and lp_account
+contracts/pool/msgs/lp_account.fc:115:            ) { ;; do not send transfer_notification, if gas is too low, mint may revert
+contracts/pool/msgs/lp_account.fc:123:                jetton_wallet::mint(
+contracts/pool/msgs/lp_account.fc:132:            storage::save();
+contracts/pool/msgs/lp_account.fc:162:                router::pay_to(
+contracts/pool/msgs/lp_account.fc:182:                router::pay_to(
+contracts/pool/msgs/protocolfee.fc:10:            + storage_fee::router + gas::router::pay_to 
+contracts/pool/msgs/protocolfee.fc:11:            + gas::router::pay_to 
+contracts/pool/msgs/protocolfee.fc:25:            router::pay_to(
+contracts/pool/msgs/protocolfee.fc:42:            router::pay_to(
+contracts/pool/msgs/protocolfee.fc:60:        storage::save();
+contracts/router/msgs/admin.fc:150:        storage::save();
+contracts/router/msgs/admin.fc:164:        storage::save();
+contracts/router/msgs/admin.fc:179:        storage::save();
+contracts/router/msgs/admin.fc:194:        storage::save();
+contracts/router/msgs/admin.fc:205:        storage::save();
+contracts/router/msgs/admin.fc:216:        storage::save();
+contracts/router/msgs/admin.fc:227:        storage::save();
+contracts/router/msgs/admin.fc:258:        storage::save();
+contracts/pool/msgs/lp_wallet.fc:4:    if ctx.at(OPCODE) == op::burn_notification_ext { 
+contracts/pool/msgs/lp_wallet.fc:5:        ;; Sent by LP wallet after burning LP jettons to release liquidity
+contracts/pool/msgs/lp_wallet.fc:6:        int jetton_amount = in_msg_body~load_coins();
+contracts/pool/msgs/lp_wallet.fc:22:        throw_unless(error::zero_output, jetton_amount > 0); 
+contracts/pool/msgs/lp_wallet.fc:25:        (int amount0_out, int amount1_out) = pool::get_lp_burn_out(jetton_amount);
+contracts/pool/msgs/lp_wallet.fc:32:        storage::total_supply_lp -= jetton_amount;
+contracts/pool/msgs/lp_wallet.fc:40:            + storage_fee::pool + gas::pool::burn_ext 
+contracts/pool/msgs/lp_wallet.fc:41:            + storage_fee::router + gas::router::pay_to 
+contracts/pool/msgs/lp_wallet.fc:42:            + gas::router::pay_to  ;; do not sum again storage_fee::router
+contracts/pool/msgs/lp_wallet.fc:58:        int gas = ((ctx.at(MSG_VALUE) - (ctx.at(FWD_FEE) + storage_fee::pool + gas::pool::burn_ext + storage_fee::router)) / 2) + storage_fee::router;
+contracts/pool/msgs/lp_wallet.fc:62:            router::pay_to(
+contracts/pool/msgs/lp_wallet.fc:66:                op::burn_ok, 
+contracts/pool/msgs/lp_wallet.fc:80:            router::pay_to(
+contracts/pool/msgs/lp_wallet.fc:84:                op::burn_ok, 
+contracts/pool/msgs/lp_wallet.fc:95:        storage::save();
+contracts/pool/msgs/getter.fc:45:        ;; https://github.com/ton-blockchain/token-contract/blob/920c5aa3a33ede6405b5653147895c9e27bfe535/ft/jetton-minter-discoverable.fc#L100
+contracts/pool/pools/weighted_const_product/storage.fc:28:() storage::save() impure inline {
+contracts/pool/pools/weighted_const_product/pool.fc:70:(int, int) pool::get_lp_burn_out(int _lp_amount) inline {
+contracts/pool/pools/weighted_const_product/ext_router.fc:21:        storage::save();
+contracts/router/msgs/jetton.fc:5:    if ctx.at(OPCODE) == op::ft::transfer_notification {
+contracts/router/msgs/jetton.fc:6:        int jetton_amount = in_msg_body~load_coins();
+contracts/router/msgs/jetton.fc:15:                jetton_wallet::transfer(0, jetton_amount, from_address, from_address)
+contracts/router/msgs/jetton.fc:27:            jetton_amount, 
+contracts/router/msgs/pool.fc:5:    if ctx.at(OPCODE) == op::pay_to { 
+contracts/router/msgs/pool.fc:45:        int used_gas = ctx.at(FWD_FEE) + gas::router::pay_to;
+contracts/router/msgs/pool.fc:64:                ;; do not send transfer_notification, if gas is too low
+contracts/pool/pools/weighted_const_product/gas.fc:3:const gas::pool::burn_ext         = 25000000;  ;; 0.025
+contracts/pool/pools/README.md:12:(int, int)      pool::get_lp_burn_out(int _lp_amount);
+contracts/pool/pools/README.md:15:() storage::save();
+contracts/pool/pools/stableswap/storage.fc:28:() storage::save() impure inline {
+contracts/pool/pools/constant_product/storage.fc:25:() storage::save() impure inline {
+contracts/pool/pools/stableswap/ext_router.fc:13:        storage::save();
+contracts/pool/pools/constant_product/gas.fc:3:const gas::pool::burn_ext = 21000000;
+contracts/pool/pools/stableswap/pool.fc:68:(int, int) pool::get_lp_burn_out(int _lp_amount) inline {
+contracts/pool/pools/constant_sum/storage.fc:25:() storage::save() impure inline {
+contracts/pool/pools/constant_sum/gas.fc:3:const gas::pool::burn_ext = 21000000;
+contracts/pool/pools/stableswap/gas.fc:3:const gas::pool::burn_ext         = 30000000; ;; 0.03
+contracts/pool/pools/weighted_stableswap/storage.fc:38:() storage::save() impure inline {
+contracts/pool/pools/constant_product/pool.fc:54:(int, int) pool::get_lp_burn_out(int _lp_amount) inline {
+contracts/pool/pools/weighted_stableswap/gas.fc:3:const gas::pool::burn_ext         = 30000000;  ;; 0.03
+contracts/pool/pools/constant_sum/pool.fc:53:(int, int) pool::get_lp_burn_out(int _lp_amount) inline {
+contracts/pool/pools/weighted_stableswap/ext_router.fc:26:        storage::save();
+contracts/pool/pools/weighted_stableswap/pool.fc:76:(int, int) pool::get_lp_burn_out(int _lp_amount) inline {
+contracts/pool/pools/weighted_stableswap/setter.fc:10:        storage::save();

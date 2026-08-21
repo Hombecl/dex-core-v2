@@ -1,0 +1,157 @@
+
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/ConstProduct.spec.ts tests/WeightedCPI.spec.ts tests/Stableswap.spec.ts tests/WeightedStableswap.spec.ts -t should cross-swap on the same router|should cross-swap on 2 routers|should refund cross-swap on the same router|should refund cross-swap on 2 routers
+
+PASS tests/ConstProduct.spec.ts (11.376 s)
+  Const Product
+    wip
+      ○ skipped 123
+    Pool code upgrade
+      ○ skipped should init new pool code
+      ○ skipped should cancel new pool code
+      ○ skipped should finalize new pool code
+      ○ skipped should not finalize new pool code if time not passed
+      ○ skipped should set new pool code on pool
+      ○ skipped should not set new pool code if empty
+    Fees
+      ○ skipped should set fees
+      ○ skipped should collect fees
+      ○ skipped should collect ref fee from vault
+    Dex
+      ✓ should cross-swap on the same router (1485 ms)
+      ✓ should cross-swap on 2 routers (1533 ms)
+      ○ skipped should deploy dex
+      ○ skipped should swap
+      ○ skipped should provide lp
+      ○ skipped should provide lp with payload
+      ○ skipped should provide lp with payload to a different address
+      ○ skipped should handle more complex scenarios
+      ○ skipped should provide lp (single side)
+      ○ skipped should burn lp and swap
+      ○ skipped should provide lp (single side) with protocol fees
+      ○ skipped should burn liquidity
+      ○ skipped should direct add liquidity (all)
+      ○ skipped should direct add liquidity (partial)
+      ○ skipped should refund swap if tx is expired
+      ○ skipped should swap with 0 ref fee
+      ○ skipped should swap with max ref fee
+    Refund
+      ✓ should refund cross-swap on the same router (1295 ms)
+      ✓ should refund cross-swap on 2 routers (in) (1484 ms)
+      ✓ should refund cross-swap on 2 routers (mid) (1508 ms)
+      ○ skipped should refund partial liquidity
+      ○ skipped should refund both lp tokens
+      ○ skipped should refund swap
+      ○ skipped should refund swap if fee more than max
+    Bounce
+      ○ skipped should bounce set fees if not admin
+      ○ skipped should bounce collect fees if no fee
+
+PASS tests/WeightedStableswap.spec.ts (11.85 s)
+  Weighted Stableswap
+    Fees
+      ○ skipped should set fees
+      ○ skipped should collect fees
+      ○ skipped should collect ref fee from vault
+    Params
+      ○ skipped should set params
+      ○ skipped should set params (no setter)
+      ○ skipped should swap with different ratio
+      ○ skipped should set new rate with setter call
+    Dex
+      ✓ should cross-swap on the same router (1783 ms)
+      ✓ should cross-swap on 2 routers (1898 ms)
+      ○ skipped should deploy dex
+      ○ skipped should swap
+      ○ skipped should provide lp
+      ○ skipped should provide lp (single side)
+      ○ skipped should burn liquidity
+      ○ skipped should direct add liquidity (all)
+      ○ skipped should direct add liquidity (partial)
+      ○ skipped should swap with 0 ref fee
+      ○ skipped should swap with max ref fee
+    Refund
+      ✓ should refund cross-swap on the same router (1579 ms)
+      ✓ should refund cross-swap on 2 routers (in) (1829 ms)
+      ✓ should refund cross-swap on 2 routers (mid) (2037 ms)
+      ○ skipped should refund partial liquidity
+      ○ skipped should refund swap
+      ○ skipped should refund swap if pool locked
+      ○ skipped should refund swap if fee more than max
+    Bounce
+      ○ skipped should bounce set fees if not admin
+      ○ skipped should bounce collect fees if no fee
+      ○ skipped should bounce set new rate by non-setter
+
+PASS tests/WeightedCPI.spec.ts (10.959 s)
+  Weighted CPI
+    Fees
+      ○ skipped should set fees
+      ○ skipped should collect fees
+      ○ skipped should collect ref fee from vault
+    Params
+      ○ skipped should set params
+      ○ skipped should swap with different ratio
+    Dex
+      ✓ should cross-swap on the same router (1604 ms)
+      ✓ should cross-swap on 2 routers (1763 ms)
+      ○ skipped should deploy dex
+      ○ skipped should swap
+      ○ skipped should provide lp
+      ○ skipped should provide lp (single side)
+      ○ skipped should burn liquidity
+      ○ skipped should direct add liquidity (all)
+      ○ skipped should direct add liquidity (partial)
+      ○ skipped should swap with 0 ref fee
+      ○ skipped should swap with max ref fee
+    Refund
+      ✓ should refund cross-swap on the same router (1517 ms)
+      ✓ should refund cross-swap on 2 routers (in) (1653 ms)
+      ✓ should refund cross-swap on 2 routers (mid) (1682 ms)
+      ○ skipped should refund partial liquidity
+      ○ skipped should refund swap
+      ○ skipped should refund swap if pool locked
+      ○ skipped should refund swap if fee more than max
+    Bounce
+      ○ skipped should bounce set fees if not admin
+      ○ skipped should bounce collect fees if no fee
+
+PASS tests/Stableswap.spec.ts (10.231 s)
+  Stableswap
+    Fees
+      ○ skipped should set fees
+      ○ skipped should collect fees
+      ○ skipped should collect ref fee from vault
+    Params
+      ○ skipped should set params
+      ○ skipped should set param
+    Dex
+      ✓ should cross-swap on the same router (1515 ms)
+      ✓ should cross-swap on 2 routers (1602 ms)
+      ○ skipped should deploy dex
+      ○ skipped should swap
+      ○ skipped should provide lp
+      ○ skipped should provide lp (single side)
+      ○ skipped should burn liquidity
+      ○ skipped should direct add liquidity (all)
+      ○ skipped should direct add liquidity (partial)
+      ○ skipped should swap with different amp
+      ○ skipped should swap with 0 ref fee
+      ○ skipped should swap with max ref fee
+    Refund
+      ✓ should refund cross-swap on the same router (1324 ms)
+      ✓ should refund cross-swap on 2 routers (in) (1524 ms)
+      ✓ should refund cross-swap on 2 routers (mid) (1529 ms)
+      ○ skipped should refund partial liquidity
+      ○ skipped should refund swap
+      ○ skipped should refund swap if pool locked
+      ○ skipped should refund swap if fee more than max
+    Bounce
+      ○ skipped should bounce set fees if not admin
+      ○ skipped should bounce collect fees if no fee
+
+Test Suites: 4 passed, 4 total
+Tests:       95 skipped, 20 passed, 115 total
+Snapshots:   0 total
+Time:        44.593 s
+Ran all test suites matching /tests\/ConstProduct.spec.ts|tests\/WeightedCPI.spec.ts|tests\/Stableswap.spec.ts|tests\/WeightedStableswap.spec.ts/i with tests matching "should cross-swap on the same router|should cross-swap on 2 routers|should refund cross-swap on the same router|should refund cross-swap on 2 routers".

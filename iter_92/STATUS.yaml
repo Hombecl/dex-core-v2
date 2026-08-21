@@ -1,0 +1,61 @@
+schema_version: shadow-v1
+iteration: 92
+phase: completed
+cell_id: W2
+cell_label: router_pay_to_zero_amount_side_selection
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: W2
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts,tests/WeightedCPI.spec.ts,tests/Stableswap.spec.ts,tests/WeightedStableswap.spec.ts,tests/ConstSum.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_92/poc_router_pay_to_zero_amount_side_selection.run.log
+    run_log_exists_on_disk: true
+    test_runtime: 36.763s
+    result: PASSED (20 passed, 118 skipped, 138 total)
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 pay_to zero amount issue search'
+      - 'repo:ston-fi/dex-core-v2 amount0_out amount1_out issue search'
+      - 'repo:ston-fi/dex-core-v2 pay_to amount0_out pull request search'
+      - 'repo:ston-fi/dex-core-v2 zero_output router pull request search'
+    results: all four repository issue/PR pages showed No results
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'pay_to zero amount on repository issue page'
+      - 'amount0_out amount1_out on repository issue page'
+      - 'pay_to amount0_out on repository pull-request page'
+      - 'zero_output router on repository pull-request page'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_92/callers-grep.txt
+  caller_grep_match_count: 194
+  caller_grep_unique_files: 40
+  prior_audit_path: iter_92/prior-audit-git.log
+  prior_audit_bytes: 53
+  r15_search_files:
+    - iter_92/R15-GH-pay-to-zero-amount-issue.html
+    - iter_92/R15-GH-output-side-selection-issue.html
+    - iter_92/R15-GH-pay-to-amount0-pr.html
+    - iter_92/R15-GH-zero-output-router-pr.html
+  source_conclusion: 'The router selects token0 only when amount0_out is positive and otherwise selects token1, but every in-scope producer enforces one positive output before constructing pay_to; swap rejects out < 1, burn requires both outputs positive, and liquidity callbacks reject zero outputs. The deterministic pool sender check blocks a caller from submitting dual-zero or forged payout data directly. Thus the fallback cannot redirect a victim payout or create a residual claim.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_92-W2.md

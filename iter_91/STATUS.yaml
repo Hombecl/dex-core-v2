@@ -1,0 +1,61 @@
+schema_version: shadow-v1
+iteration: 91
+phase: completed
+cell_id: W1
+cell_label: pool_referral_fee_rounding_dust
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: W1
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts,tests/WeightedCPI.spec.ts,tests/Stableswap.spec.ts,tests/WeightedStableswap.spec.ts,tests/ConstSum.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_91/poc_pool_referral_fee_rounding_dust.run.log
+    run_log_exists_on_disk: true
+    test_runtime: 30.853s
+    result: PASSED (15 passed, 123 skipped, 138 total)
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 ref_fee rounding issue search'
+      - 'repo:ston-fi/dex-core-v2 protocol_fee divc issue search'
+      - 'repo:ston-fi/dex-core-v2 referral fee swap pull request search'
+      - 'repo:ston-fi/dex-core-v2 fee_divider base_out pull request search'
+    results: all four repository issue/PR pages showed No results
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'ref_fee rounding on repository issue page'
+      - 'protocol_fee divc on repository issue page'
+      - 'referral fee swap on repository pull-request page'
+      - 'fee_divider base_out on repository pull-request page'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_91/callers-grep.txt
+  caller_grep_match_count: 258
+  caller_grep_unique_files: 40
+  prior_audit_path: iter_91/prior-audit-git.log
+  prior_audit_bytes: 53
+  r15_search_files:
+    - iter_91/R15-GH-ref-fee-rounding-issue.html
+    - iter_91/R15-GH-protocol-fee-divc-issue.html
+    - iter_91/R15-GH-referral-fee-swap-pr.html
+    - iter_91/R15-GH-fee-divider-base-out-pr.html
+  source_conclusion: 'All five pool families compute referral and protocol fee outputs with divc after the base output is calculated, subtract both fees from base_out, and reject out < 1 or invalid reserves before saving. Referral deposits are emitted only after those checks, and the catch path sends the input amount back without persisting the provisional reserve mutation. Ceiling rounding can produce a zero-output refund or at most assign the integer fee already removed from the same output; it does not create a repeatable external reserve or fee claim.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_91-W1.md

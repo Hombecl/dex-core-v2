@@ -1,0 +1,87 @@
+
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/WeightedCPI.spec.ts tests/ConstProduct.spec.ts -t should swap$|should burn liquidity|should refund swap$|should collect fees$
+
+PASS tests/WeightedCPI.spec.ts (8.285 s)
+  Weighted CPI
+    Fees
+      ✓ should collect fees (1373 ms)
+      ○ skipped should set fees
+      ○ skipped should collect ref fee from vault
+    Params
+      ○ skipped should set params
+      ○ skipped should swap with different ratio
+    Dex
+      ✓ should swap (965 ms)
+      ✓ should burn liquidity (1146 ms)
+      ○ skipped should deploy dex
+      ○ skipped should provide lp
+      ○ skipped should provide lp (single side)
+      ○ skipped should cross-swap on the same router
+      ○ skipped should cross-swap on 2 routers
+      ○ skipped should direct add liquidity (all)
+      ○ skipped should direct add liquidity (partial)
+      ○ skipped should swap with 0 ref fee
+      ○ skipped should swap with max ref fee
+    Refund
+      ✓ should refund swap (969 ms)
+      ○ skipped should refund partial liquidity
+      ○ skipped should refund cross-swap on the same router
+      ○ skipped should refund swap if pool locked
+      ○ skipped should refund swap if fee more than max
+      ○ skipped should refund cross-swap on 2 routers (in)
+      ○ skipped should refund cross-swap on 2 routers (mid)
+    Bounce
+      ○ skipped should bounce set fees if not admin
+      ○ skipped should bounce collect fees if no fee
+
+PASS tests/ConstProduct.spec.ts (6.86 s)
+  Const Product
+    wip
+      ○ skipped 123
+    Pool code upgrade
+      ○ skipped should init new pool code
+      ○ skipped should cancel new pool code
+      ○ skipped should finalize new pool code
+      ○ skipped should not finalize new pool code if time not passed
+      ○ skipped should set new pool code on pool
+      ○ skipped should not set new pool code if empty
+    Fees
+      ✓ should collect fees (1141 ms)
+      ○ skipped should set fees
+      ○ skipped should collect ref fee from vault
+    Dex
+      ✓ should swap (825 ms)
+      ✓ should burn liquidity (949 ms)
+      ○ skipped should deploy dex
+      ○ skipped should provide lp
+      ○ skipped should provide lp with payload
+      ○ skipped should provide lp with payload to a different address
+      ○ skipped should handle more complex scenarios
+      ○ skipped should provide lp (single side)
+      ○ skipped should burn lp and swap
+      ○ skipped should provide lp (single side) with protocol fees
+      ○ skipped should cross-swap on the same router
+      ○ skipped should cross-swap on 2 routers
+      ○ skipped should direct add liquidity (all)
+      ○ skipped should direct add liquidity (partial)
+      ○ skipped should refund swap if tx is expired
+      ○ skipped should swap with 0 ref fee
+      ○ skipped should swap with max ref fee
+    Refund
+      ✓ should refund swap (819 ms)
+      ○ skipped should refund partial liquidity
+      ○ skipped should refund both lp tokens
+      ○ skipped should refund cross-swap on the same router
+      ○ skipped should refund cross-swap on 2 routers (in)
+      ○ skipped should refund cross-swap on 2 routers (mid)
+      ○ skipped should refund swap if fee more than max
+    Bounce
+      ○ skipped should bounce set fees if not admin
+      ○ skipped should bounce collect fees if no fee
+
+Test Suites: 2 passed, 2 total
+Tests:       53 skipped, 8 passed, 61 total
+Snapshots:   0 total
+Time:        15.294 s
+Ran all test suites matching /tests\/WeightedCPI.spec.ts|tests\/ConstProduct.spec.ts/i with tests matching "should swap$|should burn liquidity|should refund swap$|should collect fees$".

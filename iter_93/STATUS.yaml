@@ -1,0 +1,61 @@
+schema_version: shadow-v1
+iteration: 93
+phase: completed
+cell_id: W3
+cell_label: lp_account_bounce_query_id_alias
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: W3
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/System.spec.ts,tests/ConstProduct.spec.ts,tests/WeightedCPI.spec.ts,tests/Stableswap.spec.ts,tests/WeightedStableswap.spec.ts,tests/ConstSum.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_93/poc_lp_account_bounce_query_id_alias.run.log
+    run_log_exists_on_disk: true
+    test_runtime: 22.771s
+    result: PASSED (7 passed, 142 skipped, 149 total)
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 lp_account refund bounce issue search'
+      - 'repo:ston-fi/dex-core-v2 cb_refund_me issue search'
+      - 'repo:ston-fi/dex-core-v2 lp_account on_bounce pull request search'
+      - 'repo:ston-fi/dex-core-v2 cb_add_liquidity refund pull request search'
+    results: all four repository issue/PR pages showed No results
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'lp_account refund bounce on repository issue page'
+      - 'cb_refund_me on repository issue page'
+      - 'lp_account on_bounce on repository pull-request page'
+      - 'cb_add_liquidity refund on repository pull-request page'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_93/callers-grep.txt
+  caller_grep_match_count: 460
+  caller_grep_unique_files: 28
+  prior_audit_path: iter_93/prior-audit-git.log
+  prior_audit_bytes: 53
+  r15_search_files:
+    - iter_93/R15-GH-lp-account-refund-bounce-issue.html
+    - iter_93/R15-GH-cb-refund-me-issue.html
+    - iter_93/R15-GH-lp-account-bounce-pr.html
+    - iter_93/R15-GH-callback-refund-pr.html
+  source_conclusion: 'LP-account messages do not carry query ids: refund and add-liquidity callbacks carry explicit amounts and optional per-leg payload cells. User refund is sender-gated, zeroes the local amounts, and calls the deterministic pool with both legs; the pool callback recomputes the same LP-account address and rejects any other sender before constructing one-sided pay_to messages. Root bounced messages are ignored by design, but no attacker-controlled bounce can reach a victim state or substitute a callback leg, and valid partial/two-leg refund tests preserve both assets.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_93-W3.md

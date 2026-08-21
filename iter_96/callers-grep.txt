@@ -1,0 +1,177 @@
+tests/System.spec.ts:10:import { LPWallet } from '../wrappers/LPWallet';
+tests/System.spec.ts:52:            lpWallet: await compile('LPWallet'),
+tests/System.spec.ts:169:            const lpWallet = bc.openContract(LPWallet.createFromAddress(lpWalAddress));
+tests/System.spec.ts:175:            const sendBurnLPResult = await lpWallet.sendBurnExt(admin.getSender(), {
+tests/System.spec.ts:461:                    LPWalletCode: code.lpWallet,
+tests/Pool.spec.ts:51:            lpWallet: await compile('LPWallet'),
+tests/Pool.spec.ts:72:            LPWalletCode: code.lpWallet
+tests/Pool.spec.ts:175:                LPWalletCode: code.lpWallet
+contracts/router/dex.fc:66:        ;; -> Router -> Pool -> LPAccount -> Pool -> LPWallet ->
+contracts/router.fc:11:    if ctx.at(IS_BOUNCED) { 
+tests/Router.spec.ts:48:            lpWallet: await compile('LPWallet'),
+contracts/common/contracts.fc:213:    return begin_message(op::internal_transfer)
+contracts/common/contracts.fc:214:        .store_coins(_amount) ;; jetton_amount
+contracts/common/contracts.fc:225:    int _jetton_amount, 
+contracts/common/contracts.fc:235:            .store_coins(_jetton_amount)
+contracts/common/contracts.fc:240:            .store_coins(_jetton_amount);
+contracts/common/contracts.fc:280:(builder) jetton_wallet::transfer(int _fwd_amount, int _jetton_amount, slice _to, slice _response_address) inline {
+contracts/common/contracts.fc:282:        .store_coins(_jetton_amount)
+tests/ConstSum.spec.ts:11:import { LPWallet } from '../wrappers/LPWallet';
+tests/ConstSum.spec.ts:225:            lpWallet: await compile('LPWallet'),
+tests/ConstSum.spec.ts:344:            let msgResult = await wallet1.sendTransfer(sender.getSender(), {
+tests/ConstSum.spec.ts:475:            msgResult = await wallet2.sendTransfer(sender.getSender(), {
+tests/ConstSum.spec.ts:592:            let lpWallet = bc.openContract(LPWallet.createFromAddress(await pool.getWalletAddress(deployer.address)));
+tests/ConstSum.spec.ts:618:                let msgResult = await wallet1.sendTransfer(sender.getSender(), {
+tests/ConstSum.spec.ts:662:                let msgResult = await wallet2.sendTransfer(sender.getSender(), {
+tests/ConstSum.spec.ts:749:            let msgResult = await walletIn.sendTransfer(sender.getSender(), {
+tests/ConstSum.spec.ts:858:            let msgResult = await walletIn.sendTransfer(sender.getSender(), {
+tests/ConstSum.spec.ts:969:            let msgResult = await walletIn.sendTransfer(sender.getSender(), {
+tests/ConstSum.spec.ts:1358:            let lpWallet = bc.openContract(LPWallet.createFromAddress(lpWalletAddress));
+tests/ConstSum.spec.ts:1361:            let msgResult = await lpWallet.sendBurnExt(alice.getSender(), {
+tests/ConstSum.spec.ts:1392:            let lpWallet = bc.openContract(LPWallet.createFromAddress(lpWalletAddress));
+tests/ConstSum.spec.ts:1396:            let msgResult = await lpWallet.sendBurnExt(deployer.getSender(), {
+tests/WeightedCPI.spec.ts:11:import { LPWallet, lpWalletStorageParser } from '../wrappers/LPWallet';
+tests/WeightedCPI.spec.ts:248:            lpWallet: await compile('LPWallet'),
+tests/WeightedCPI.spec.ts:390:            let msgResult = await wallet1.sendTransfer(sender.getSender(), {
+tests/WeightedCPI.spec.ts:530:            msgResult = await wallet2.sendTransfer(sender.getSender(), {
+tests/WeightedCPI.spec.ts:655:            let lpWallet = bc.openContract(LPWallet.createFromAddress(await pool.getWalletAddress(sender.address)));
+tests/WeightedCPI.spec.ts:681:                let msgResult = await wallet1.sendTransfer(sender.getSender(), {
+tests/WeightedCPI.spec.ts:725:                let msgResult = await wallet2.sendTransfer(sender.getSender(), {
+tests/WeightedCPI.spec.ts:810:            let msgResult = await walletIn.sendTransfer(sender.getSender(), {
+tests/WeightedCPI.spec.ts:921:            let msgResult = await walletIn.sendTransfer(sender.getSender(), {
+tests/WeightedCPI.spec.ts:1453:            let lpWallet = bc.openContract(LPWallet.createFromAddress(lpWalletAddress));
+tests/WeightedCPI.spec.ts:1456:            let msgResult = await lpWallet.sendBurnExt(alice.getSender(), {
+tests/WeightedCPI.spec.ts:1495:            let lpWallet = bc.openContract(LPWallet.createFromAddress(lpWalletAddress));
+tests/WeightedCPI.spec.ts:1499:            let msgResult = await lpWallet.sendBurnExt(deployer.getSender(), {
+tests/Stableswap.spec.ts:11:import { LPWallet, lpWalletStorageParser } from '../wrappers/LPWallet';
+tests/Stableswap.spec.ts:247:            lpWallet: await compile('LPWallet'),
+tests/Stableswap.spec.ts:389:            let msgResult = await wallet1.sendTransfer(sender.getSender(), {
+tests/Stableswap.spec.ts:529:            msgResult = await wallet2.sendTransfer(sender.getSender(), {
+tests/Stableswap.spec.ts:655:            let lpWallet = bc.openContract(LPWallet.createFromAddress(await pool.getWalletAddress(sender.address)));
+tests/Stableswap.spec.ts:677:                let msgResult = await wallet1.sendTransfer(sender.getSender(), {
+tests/Stableswap.spec.ts:722:                let msgResult = await wallet2.sendTransfer(sender.getSender(), {
+tests/Stableswap.spec.ts:809:            let msgResult = await walletIn.sendTransfer(sender.getSender(), {
+tests/Stableswap.spec.ts:920:            let msgResult = await walletIn.sendTransfer(sender.getSender(), {
+tests/Stableswap.spec.ts:1430:            let lpWallet = bc.openContract(LPWallet.createFromAddress(lpWalletAddress));
+tests/Stableswap.spec.ts:1433:            let msgResult = await lpWallet.sendBurnExt(alice.getSender(), {
+tests/Stableswap.spec.ts:1465:            let lpWallet = bc.openContract(LPWallet.createFromAddress(lpWalletAddress));
+tests/Stableswap.spec.ts:1469:            let msgResult = await lpWallet.sendBurnExt(deployer.getSender(), {
+tests/ConstProduct.spec.ts:11:import { LPWallet, lpWalletStorageParser } from '../wrappers/LPWallet';
+tests/ConstProduct.spec.ts:229:            lpWallet: await compile('LPWallet'),
+tests/ConstProduct.spec.ts:352:            let msgResult = await wallet1.sendTransfer(sender.getSender(), {
+tests/ConstProduct.spec.ts:494:            msgResult = await wallet2.sendTransfer(sender.getSender(), {
+tests/ConstProduct.spec.ts:616:            let lpWallet = bc.openContract(LPWallet.createFromAddress(await pool.getWalletAddress(sender.address)));
+tests/ConstProduct.spec.ts:641:                let msgResult = await wallet1.sendTransfer(sender.getSender(), {
+tests/ConstProduct.spec.ts:688:                let msgResult = await wallet2.sendTransfer(sender.getSender(), {
+tests/ConstProduct.spec.ts:778:            let msgResult = await walletIn.sendTransfer(sender.getSender(), {
+tests/ConstProduct.spec.ts:892:            let msgResult = await walletIn.sendTransfer(sender.getSender(), {
+tests/ConstProduct.spec.ts:1527:            let msgResult1 = await aliceWallet1.sendTransfer(alice.getSender(), {
+tests/ConstProduct.spec.ts:1544:            let msgResult2 = await aliceWallet2.sendTransfer(alice.getSender(), {
+tests/ConstProduct.spec.ts:1607:            let msgResult1 = await aliceWallet1.sendTransfer(alice.getSender(), {
+tests/ConstProduct.spec.ts:1624:            let msgResult2 = await aliceWallet2.sendTransfer(alice.getSender(), {
+tests/ConstProduct.spec.ts:1723:            let msgResult2 = await aliceWallet1.sendTransfer(alice.getSender(), {
+tests/ConstProduct.spec.ts:1796:            let lpWallet = bc.openContract(LPWallet.createFromAddress(lpWalletAddress));
+tests/ConstProduct.spec.ts:1799:            let msgResult = await lpWallet.sendBurnExt(alice.getSender(), {
+tests/ConstProduct.spec.ts:1833:            let lpWallet = bc.openContract(LPWallet.createFromAddress(lpWalletAddress));
+tests/ConstProduct.spec.ts:1837:            let msgResult = await lpWallet.sendBurnExt(alice.getSender(), {
+tests/ConstProduct.spec.ts:1885:            let lpWallet = bc.openContract(LPWallet.createFromAddress(lpWalletAddress));
+tests/ConstProduct.spec.ts:1888:            let msgResult = await lpWallet.sendBurnExt(alice.getSender(), {
+tests/ConstProduct.spec.ts:1919:            let lpWallet = bc.openContract(LPWallet.createFromAddress(lpWalletAddress));
+tests/ConstProduct.spec.ts:1923:            let msgResult = await lpWallet.sendBurnExt(deployer.getSender(), {
+contracts/common/op.fc:1:const op::internal_transfer               = 0x178d4519;
+contracts/common/op.fc:5:const op::swap                            = "swap query_id:uint64 from_user:MsgAddress left_amount:Coins right_amount:Coins dex_payload:^[transferred_op:uint32 token_wallet1:MsgAddress refund_address:MsgAddress excesses_address:MsgAddress tx_deadline:uint64 swap_body:^[min_out:Coins receiver:MsgAddress fwd_gas:Coins custom_payload:(Maybe ^Cell) refund_fwd_gas:Coins refund_payload:(Maybe ^Cell) ref_fee:uint16 ref_address:MsgAddress]] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:6:const op::provide_lp                      = "provide_lp query_id:uint64 from_user:MsgAddress left_amount:Coins right_amount:Coins dex_payload:^[transferred_op:uint32 token_wallet1:MsgAddress refund_address:MsgAddress excesses_address:MsgAddress tx_deadline:uint64 provide_lp_body:^[min_lp_out:Coins to_address:MsgAddress both_positive:uint1 fwd_amount:Coins custom_payload:(Maybe ^Cell)]] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:7:const op::burn_notification_ext           = "burn_notification_ext query_id:uint64 jetton_amount:Coins from_address:MsgAddress response_address:MsgAddress maybe_custom_payload:(Maybe ^Cell) = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:8:const op::direct_add_liquidity            = "direct_add_liquidity query_id:uint64 am0:Coins am1:Coins min_lp_out:Coins fwd_amount:Coins to_user:MsgAddress custom_payload_cs:(Maybe ^Cell) additional_fields:^[refund_address:MsgAddress excess_address:MsgAddress] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:9:const op::refund_me                       = "refund_me query_id:uint64 left_maybe_payload:(Maybe ^Cell) right_maybe_payload:(Maybe ^Cell) = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:10:const op::pay_to                          = "pay_to query_id:uint64 to_address:MsgAddress excesses_address:MsgAddress original_caller:MsgAddress exit_code:uint32 custom_payload:(Maybe ^Cell) additional_info:^[fwd_ton_amount:Coins amount0_out:Coins token0_address:MsgAddress amount1_out:Coins token1_address:MsgAddress] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:11:const op::collect_fees                    = "collect_fees query_id:uint64 maybe_payload0:(Maybe ^Cell) maybe_payload1:(Maybe ^Cell) = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:12:const op::set_fees                        = "set_fees query_id:uint64 new_lp_fee:uint16 new_protocol_fee:uint16 new_protocol_fee_address:MsgAddress jetton_info:^[jetton_wallet0:MsgAddress jetton_wallet1:MsgAddress excesses_recipient:MsgAddress] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:13:const op::internal_set_fees               = "internal_set_fees query_id:uint64 new_lp_fee:uint16 new_protocol_fee:uint16 new_protocol_fee_address:MsgAddress excesses_address:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:14:const op::reset_gas                       = "reset_gas query_id:uint64 = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:15:const op::add_liquidity                   = "add_liquidity query_id:uint64 new_amount0:Coins new_amount1:Coins min_lp_out:Coins fwd_amount:Coins both_positive:uint1 to_user:MsgAddress custom_payload_cs:(Maybe ^Cell) additional_fields:^[refund_address:MsgAddress excess_address:MsgAddress] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:16:const op::cb_add_liquidity                = "cb_add_liquidity query_id:uint64 tot_am0:Coins tot_am1:Coins user_address:MsgAddress min_lp_out:Coins fwd_amount:Coins custom_payload_cs:(Maybe ^Cell) additional_fields:^[to_user_address:MsgAddress refund_address:MsgAddress excess_address:MsgAddress] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:17:const op::cb_refund_me                    = "cb_refund_me query_id:uint64 tot_am0:Coins tot_am1:Coins user_address:MsgAddress left_maybe_payload:(Maybe ^Cell) right_maybe_payload:(Maybe ^Cell) = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:18:const op::reset_pool_gas                  = "reset_pool_gas query_id:uint64 jetton_wallet0:MsgAddress jetton_wallet1:MsgAddress excesses_recipient:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:19:const op::init_code_upgrade               = "init_code_upgrade query_id:uint64 new_code:^Cell = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:20:const op::init_admin_upgrade              = "init_admin_upgrade query_id:uint64 new_admin_address:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:21:const op::cancel_code_upgrade             = "cancel_code_upgrade query_id:uint64 = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:22:const op::cancel_admin_upgrade            = "cancel_admin_upgrade query_id:uint64 = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:23:const op::finalize_upgrades               = "finalize_upgrades query_id:uint64 = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:24:const op::update_pool_status              = "update_pool_status query_id:uint64 jetton_wallet0:MsgAddress jetton_wallet1:MsgAddress excesses_recipient:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:25:const op::pay_vault                       = "pay_vault query_id:uint64 owner:MsgAddress excesses_address:MsgAddress additional_info:^[amount0_out:Coins token0_address:MsgAddress amount1_out:Coins token1_address:MsgAddress] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:26:const op::vault_pay_to                    = "vault_pay_to query_id:uint64 amount_out:Coins token_address:MsgAddress to_address:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:27:const op::deposit_ref_fee                 = "deposit_ref_fee query_id:uint64 jetton_amount:Coins excesses_address:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:28:const op::withdraw_fee                    = "withdraw_fee query_id:uint64 = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:29:const op::update_status                   = "update_status query_id:uint64 = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:30:const op::internal_update_status          = "internal_update_status query_id:uint64 excesses_recipient:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:31:const op::update_pool_code                = "update_pool_code query_id:uint64 jetton_wallet0:MsgAddress jetton_wallet1:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:32:const op::internal_update_pool_code       = "internal_update_pool_code query_id:uint64 upgrade_pool_code:^Cell = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:33:const op::init_pool_code_upgrade          = "init_pool_code_upgrade query_id:uint64 new_pool_code:^Cell = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:34:const op::cancel_pool_code_upgrade        = "cancel_pool_code_upgrade query_id:uint64 = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:37:const op::getter_lp_account_data          = "getter_lp_account_data query_id:uint64 = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:38:const op::getter_pool_data                = "getter_pool_data query_id:uint64 = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:39:const op::getter_lp_account_address       = "getter_lp_account_address query_id:uint64 user_address:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:40:const op::getter_pool_address             = "getter_pool_address query_id:uint64 token0:MsgAddress token1:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+contracts/pool.fc:11:    if ctx.at(IS_BOUNCED) { 
+contracts/router/msgs/jetton.fc:6:        int jetton_amount = in_msg_body~load_coins();
+contracts/router/msgs/jetton.fc:15:                jetton_wallet::transfer(0, jetton_amount, from_address, from_address)
+contracts/router/msgs/jetton.fc:27:            jetton_amount, 
+contracts/lp_account.fc:10:    if ctx.at(IS_BOUNCED) { 
+contracts/lp_wallet.fc:10:() send_tokens (slice in_msg_body, slice sender_address, int msg_value, int fwd_fee) impure {
+contracts/lp_wallet.fc:11:    int query_id = in_msg_body~load_uint(64);
+contracts/lp_wallet.fc:12:    int jetton_amount = in_msg_body~load_coins();
+contracts/lp_wallet.fc:18:    balance -= jetton_amount;
+contracts/lp_wallet.fc:37:        .store_uint(op::internal_transfer, 32)
+contracts/lp_wallet.fc:38:        .store_uint(query_id, 64)
+contracts/lp_wallet.fc:39:        .store_coins(jetton_amount)
+contracts/lp_wallet.fc:50:    send_raw_message(msg.end_cell(), 64);
+contracts/lp_wallet.fc:54:() receive_tokens (slice in_msg_body, slice sender_address, int my_ton_balance, int fwd_fee, int msg_value) impure {
+contracts/lp_wallet.fc:56:    int query_id = in_msg_body~load_uint(64);
+contracts/lp_wallet.fc:57:    int jetton_amount = in_msg_body~load_coins();
+contracts/lp_wallet.fc:58:    balance += jetton_amount;
+contracts/lp_wallet.fc:75:            .store_uint(query_id, 64)
+contracts/lp_wallet.fc:76:            .store_coins(jetton_amount)
+contracts/lp_wallet.fc:86:        send_raw_message(msg.end_cell(), 1);
+contracts/lp_wallet.fc:96:        .store_uint(query_id, 64);
+contracts/lp_wallet.fc:97:        send_raw_message(msg.end_cell(), 2);
+contracts/lp_wallet.fc:103:() burn_tokens (slice in_msg_body, slice sender_address, int msg_value, int fwd_fee) impure {
+contracts/lp_wallet.fc:105:    int query_id = in_msg_body~load_uint(64);
+contracts/lp_wallet.fc:106:    int jetton_amount = in_msg_body~load_coins();
+contracts/lp_wallet.fc:109:    balance -= jetton_amount;
+contracts/lp_wallet.fc:116:        .store_uint(op::burn_notification_ext, 32)
+contracts/lp_wallet.fc:117:        .store_uint(query_id, 64)
+contracts/lp_wallet.fc:118:        .store_coins(jetton_amount)
+contracts/lp_wallet.fc:131:    send_raw_message(msg.end_cell(), 64);
+contracts/lp_wallet.fc:136:() on_bounce (slice in_msg_body) impure {
+contracts/lp_wallet.fc:141:    throw_unless(709, (op == op::internal_transfer) | (op == op::burn_notification_ext));
+contracts/lp_wallet.fc:143:    int query_id = in_msg_body~load_uint(64);
+contracts/lp_wallet.fc:144:    int jetton_amount = in_msg_body~load_coins();
+contracts/lp_wallet.fc:145:    balance += jetton_amount;
+contracts/lp_wallet.fc:157:        on_bounce(in_msg_body);
+contracts/lp_wallet.fc:170:        send_tokens(in_msg_body, sender_address, msg_value, fwd_fee);
+contracts/lp_wallet.fc:174:    if (op == op::internal_transfer) { 
+contracts/lp_wallet.fc:175:        receive_tokens(in_msg_body, sender_address, my_balance, fwd_fee, msg_value);
+contracts/lp_wallet.fc:180:        burn_tokens(in_msg_body, sender_address, msg_value, fwd_fee);
+contracts/test/pool_dummy.fc:84:    if ctx.at(IS_BOUNCED) { 
+contracts/lp_wallet/op.fc:3:const op::internal_transfer = 0x178d4519;
+contracts/vault.fc:32:    if ctx.at(IS_BOUNCED) { 
+tests/WeightedStableswap.spec.ts:11:import { LPWallet, lpWalletStorageParser } from '../wrappers/LPWallet';
+tests/WeightedStableswap.spec.ts:260:            lpWallet: await compile('LPWallet'),
+tests/WeightedStableswap.spec.ts:403:            let msgResult = await wallet1.sendTransfer(sender.getSender(), {
+tests/WeightedStableswap.spec.ts:543:            msgResult = await wallet2.sendTransfer(sender.getSender(), {
+tests/WeightedStableswap.spec.ts:669:            let lpWallet = bc.openContract(LPWallet.createFromAddress(await pool.getWalletAddress(sender.address)));
+tests/WeightedStableswap.spec.ts:695:                let msgResult = await wallet1.sendTransfer(sender.getSender(), {
+tests/WeightedStableswap.spec.ts:742:                let msgResult = await wallet2.sendTransfer(sender.getSender(), {
+tests/WeightedStableswap.spec.ts:828:            let msgResult = await walletIn.sendTransfer(sender.getSender(), {
+tests/WeightedStableswap.spec.ts:939:            let msgResult = await walletIn.sendTransfer(sender.getSender(), {
+tests/WeightedStableswap.spec.ts:1545:            let lpWallet = bc.openContract(LPWallet.createFromAddress(lpWalletAddress));
+tests/WeightedStableswap.spec.ts:1549:            let msgResult = await lpWallet.sendBurnExt(alice.getSender(), {
+tests/WeightedStableswap.spec.ts:1587:            let lpWallet = bc.openContract(LPWallet.createFromAddress(lpWalletAddress));
+tests/WeightedStableswap.spec.ts:1591:            let msgResult = await lpWallet.sendBurnExt(deployer.getSender(), {
+contracts/pool/msgs/lp_wallet.fc:4:    if ctx.at(OPCODE) == op::burn_notification_ext { 
+contracts/pool/msgs/lp_wallet.fc:6:        int jetton_amount = in_msg_body~load_coins();
+contracts/pool/msgs/lp_wallet.fc:22:        throw_unless(error::zero_output, jetton_amount > 0); 
+contracts/pool/msgs/lp_wallet.fc:25:        (int amount0_out, int amount1_out) = pool::get_lp_burn_out(jetton_amount);
+contracts/pool/msgs/lp_wallet.fc:32:        storage::total_supply_lp -= jetton_amount;
+contracts/pool/msgs/lp_wallet.fc:37:        ;; -> LPWallet -> Pool -> Router -> JettonWalletA ->

@@ -1,0 +1,54 @@
+schema_version: shadow-v1
+iteration: 6
+phase: completed
+cell_id: P1xC5
+cell_label: swap x message_ordering_fees
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: P1xC5
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_6/poc_swap_message_ordering_fees.run.log
+    run_log_exists_on_disk: true
+    test_runtime: PASSED
+    duration_seconds: 8.04
+    numerical_evidence: "ConstProduct.spec.ts: 4 passed in the primary fee-ordering run; the supplemental rejection/refund run passed 3 additional swap/refund cases in 6.969s."
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 swap fee is:issue"
+      - "repo:ston-fi/dex-core-v2 referral fee is:issue"
+      - "repo:ston-fi/dex-core-v2 fee is:pr"
+      - "repo:ston-fi/dex-core-v2 audit swap is:issue"
+    results: "Fresh GitHub API searches returned zero results; corrected local audit/security/fee/referral git search was empty."
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "repo:ston-fi/dex-core-v2 swap fee is:issue"
+      - "repo:ston-fi/dex-core-v2 referral fee is:issue"
+      - "repo:ston-fi/dex-core-v2 fee is:pr"
+      - "repo:ston-fi/dex-core-v2 audit swap is:issue"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_6-P1xC5.md
+  notes:
+    - "Fee arithmetic is bounded by the router and protocol parameters; the pool computes and deducts protocol/referral fees together with output before saving, and the tests exercise zero/max/refund fee boundaries."
+    - "Referral deposit is router-only at the vault, while the user payout is pool-caller-bound; no attacker-controlled message ordering produces an attacker-positive balance delta."

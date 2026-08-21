@@ -1,0 +1,55 @@
+schema_version: shadow-v1
+iteration: 61
+phase: completed
+cell_id: R6
+cell_label: vault_withdraw_bounce_replay
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: R6
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/WeightedCPI.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_61/poc_vault_withdraw_bounce_replay.run.log
+    run_log_exists_on_disk: true
+    test_runtime: PASSED
+    duration_seconds: 9.467
+    numerical_evidence: "WeightedCPI.spec.ts and ConstProduct.spec.ts: 2 passed, 59 skipped; public vault withdrawal followed by a second referral-fee deposit and withdrawal delivered increasing owner wallet balances."
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 vault withdraw fee bounce is:issue"
+      - "repo:ston-fi/dex-core-v2 withdraw_fee replay is:issue"
+      - "repo:ston-fi/dex-core-v2 vault referral fee is:pr"
+      - "repo:ston-fi/dex-core-v2 audit vault withdrawal is:issue"
+    results: "Fresh GitHub API searches returned zero results; local audit/security/vault/withdraw-fee/referral-fee git search was empty."
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "repo:ston-fi/dex-core-v2 vault withdraw fee bounce is:issue"
+      - "repo:ston-fi/dex-core-v2 withdraw_fee replay is:issue"
+      - "repo:ston-fi/dex-core-v2 vault referral fee is:pr"
+      - "repo:ston-fi/dex-core-v2 audit vault withdrawal is:issue"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_61-R6.md
+  notes:
+    - "vault.fc allows any caller to request withdrawal but sends the stored deposited_amount, token_address, and owner_address to the stored router, then zeroes and saves deposited_amount; a second withdrawal is rejected until a new router-authenticated deposit arrives."
+    - "router/msgs/vault.fc reconstructs the vault from to_address, token_address, and router identity and rejects any other sender before sending the fixed token amount; pool/msgs/router.fc creates that vault only from a deterministic pool callback. No replay, recipient substitution, or downstream delivery loss was demonstrated in the repeated withdrawal PoC."
+    - "Shadow mode: no emit-shippable.py, bb_findings, shippable-staging, IA queue, submission queue, or platform form was touched."

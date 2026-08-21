@@ -1,0 +1,54 @@
+schema_version: shadow-v1
+iteration: 14
+phase: completed
+cell_id: P3xC4
+cell_label: withdraw_lp x bounce_reversal
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: P3xC4
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_14/poc_withdraw_lp_bounce_reversal.run.log
+    run_log_exists_on_disk: true
+    test_runtime: PASSED
+    duration_seconds: 13.123
+    numerical_evidence: "ConstProduct.spec.ts: 8 passed, 28 skipped; LP burn, burn-and-swap, expired/ordinary swap refunds, same-router and two-router cross-swap refunds, and over-limit fee refund."
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 LP burn bounce is:issue"
+      - "repo:ston-fi/dex-core-v2 withdrawal refund bounce is:issue"
+      - "repo:ston-fi/dex-core-v2 LP payout bounce is:pr"
+      - "repo:ston-fi/dex-core-v2 audit withdrawal bounce is:issue"
+    results: "Fresh GitHub API searches returned zero results; local audit/security/bounce/burn/withdraw/refund git search was empty."
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "repo:ston-fi/dex-core-v2 LP burn bounce is:issue"
+      - "repo:ston-fi/dex-core-v2 withdrawal refund bounce is:issue"
+      - "repo:ston-fi/dex-core-v2 LP payout bounce is:pr"
+      - "repo:ston-fi/dex-core-v2 audit withdrawal bounce is:issue"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_14-P3xC4.md
+  notes:
+    - "LP-wallet burn notification bounces restore the exact LP amount; pool-side validation and gas checks occur before reserve/total-supply save."
+    - "The only unresolved failure premise is a nonstandard or externally broken token-wallet payout after the authenticated pool callback, not an attacker-controlled selected-asset reversal."

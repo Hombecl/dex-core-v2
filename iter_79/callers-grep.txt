@@ -1,0 +1,69 @@
+contracts/common/params.fc:10:const params::required_min_liquidity = 1001;
+contracts/pool/pools/weighted_stableswap/pool.fc:27:(int) pool::get_lp_provide_init_out(int _left_amount, int _right_amount) impure inline {    
+contracts/pool/pools/weighted_stableswap/pool.fc:48:    int inv0 = _invariant(storage::reserve0, storage::reserve1, _w0, _w1);
+contracts/pool/pools/weighted_stableswap/pool.fc:50:    int new_reserve0 = storage::reserve0 + _left_amount; 
+contracts/pool/pools/weighted_stableswap/pool.fc:51:    int new_reserve1 = storage::reserve1 + _right_amount;
+contracts/pool/pools/weighted_stableswap/pool.fc:56:    int ideal_balance0 = muldiv(storage::reserve0, inv1, inv0);
+contracts/pool/pools/weighted_stableswap/pool.fc:63:    int ideal_balance1 = muldiv(storage::reserve1, inv1, inv0);
+contracts/pool/pools/weighted_stableswap/pool.fc:73:    return (muldiv((inv2 - inv0), storage::total_supply_lp, inv0), protocol_fee0, protocol_fee1);
+contracts/pool/pools/weighted_stableswap/pool.fc:79:        muldiv(_lp_amount, storage::reserve0, storage::total_supply_lp),
+contracts/pool/pools/weighted_stableswap/pool.fc:80:        muldiv(_lp_amount, storage::reserve1, storage::total_supply_lp)
+contracts/pool/pools/weighted_const_product/pool.fc:27:(int) pool::get_lp_provide_init_out(int _left_amount, int _right_amount) impure inline {
+contracts/pool/pools/weighted_const_product/pool.fc:42:    int inv0 = _invariant(storage::reserve0, storage::reserve1, _w0, _w1);
+contracts/pool/pools/weighted_const_product/pool.fc:44:    int new_reserve0 = storage::reserve0 + _left_amount; 
+contracts/pool/pools/weighted_const_product/pool.fc:45:    int new_reserve1 = storage::reserve1 + _right_amount; 
+contracts/pool/pools/weighted_const_product/pool.fc:50:    int ideal_balance0 = muldiv(storage::reserve0, inv1, inv0);
+contracts/pool/pools/weighted_const_product/pool.fc:57:    int ideal_balance1 = muldiv(storage::reserve1, inv1, inv0);
+contracts/pool/pools/weighted_const_product/pool.fc:67:    return (muldiv((inv2 - inv0), storage::total_supply_lp, inv0), protocol_fee0, protocol_fee1);
+contracts/pool/pools/weighted_const_product/pool.fc:73:        muldiv(_lp_amount, storage::reserve0, storage::total_supply_lp),
+contracts/pool/pools/weighted_const_product/pool.fc:74:        muldiv(_lp_amount, storage::reserve1, storage::total_supply_lp)
+contracts/pool/pools/constant_product/pool.fc:20:(int) pool::get_lp_provide_init_out(int _left_amount, int _right_amount) inline {
+contracts/pool/pools/constant_product/pool.fc:26:    int inv0 = norm_invariant(storage::reserve0, storage::reserve1);
+contracts/pool/pools/constant_product/pool.fc:28:    int new_reserve0 = storage::reserve0 + _left_amount; 
+contracts/pool/pools/constant_product/pool.fc:29:    int new_reserve1 = storage::reserve1 + _right_amount; 
+contracts/pool/pools/constant_product/pool.fc:34:    int ideal_balance0 = muldiv(storage::reserve0, inv1, inv0);
+contracts/pool/pools/constant_product/pool.fc:41:    int ideal_balance1 = muldiv(storage::reserve1, inv1, inv0);
+contracts/pool/pools/constant_product/pool.fc:51:    return (muldiv((inv2 - inv0), storage::total_supply_lp, inv0), protocol_fee0, protocol_fee1);
+contracts/pool/pools/constant_product/pool.fc:55:    int left_amount = muldiv(_lp_amount, storage::reserve0, storage::total_supply_lp);
+contracts/pool/pools/constant_product/pool.fc:56:    int right_amount = muldiv(_lp_amount, storage::reserve1, storage::total_supply_lp);
+contracts/pool/pools/constant_sum/pool.fc:19:(int) pool::get_lp_provide_init_out(int _left_amount, int _right_amount) inline {
+contracts/pool/pools/constant_sum/pool.fc:25:    int inv0 = norm_invariant(storage::reserve0, storage::reserve1);
+contracts/pool/pools/constant_sum/pool.fc:27:    int new_reserve0 = storage::reserve0 + _left_amount; 
+contracts/pool/pools/constant_sum/pool.fc:28:    int new_reserve1 = storage::reserve1 + _right_amount; 
+contracts/pool/pools/constant_sum/pool.fc:33:    int ideal_balance0 = muldiv(storage::reserve0, inv1, inv0);
+contracts/pool/pools/constant_sum/pool.fc:40:    int ideal_balance1 = muldiv(storage::reserve1, inv1, inv0);
+contracts/pool/pools/constant_sum/pool.fc:50:    return (muldiv((inv2 - inv0), storage::total_supply_lp, inv0), protocol_fee0, protocol_fee1);
+contracts/pool/pools/constant_sum/pool.fc:56:        muldiv(_lp_amount, storage::reserve0, storage::total_supply_lp),
+contracts/pool/pools/constant_sum/pool.fc:57:        muldiv(_lp_amount, storage::reserve1, storage::total_supply_lp)
+contracts/pool/pools/stableswap/pool.fc:9:        storage::reserve0, 
+contracts/pool/pools/stableswap/pool.fc:10:        storage::reserve1, 
+contracts/pool/pools/stableswap/pool.fc:15:            storage::reserve0, 
+contracts/pool/pools/stableswap/pool.fc:16:            storage::reserve1
+contracts/pool/pools/stableswap/pool.fc:33:(int) pool::get_lp_provide_init_out(int _left_amount, int _right_amount) impure inline {
+contracts/pool/pools/stableswap/pool.fc:40:    int inv0 = calculate_invariant(storage::amp, storage::reserve0, storage::reserve1);
+contracts/pool/pools/stableswap/pool.fc:42:    int new_reserve0 = storage::reserve0 + _left_amount; 
+contracts/pool/pools/stableswap/pool.fc:43:    int new_reserve1 = storage::reserve1 + _right_amount; 
+contracts/pool/pools/stableswap/pool.fc:48:    int ideal_balance0 = muldiv(storage::reserve0, inv1, inv0);
+contracts/pool/pools/stableswap/pool.fc:55:    int ideal_balance1 = muldiv(storage::reserve1, inv1, inv0);
+contracts/pool/pools/stableswap/pool.fc:65:    return (muldiv((inv2 - inv0), storage::total_supply_lp, inv0), protocol_fee0, protocol_fee1);
+contracts/pool/pools/stableswap/pool.fc:71:        muldiv(_lp_amount, storage::reserve0, storage::total_supply_lp),
+contracts/pool/pools/stableswap/pool.fc:72:        muldiv(_lp_amount, storage::reserve1, storage::total_supply_lp)
+contracts/pool/msgs/lp_account.fc:4:    if ctx.at(OPCODE) == op::cb_add_liquidity {
+contracts/pool/msgs/lp_account.fc:31:        if storage::total_supply_lp == 0 { 
+contracts/pool/msgs/lp_account.fc:36:                liquidity = pool::get_lp_provide_init_out(tot_am0, tot_am1);
+contracts/pool/msgs/lp_account.fc:39:            storage::total_supply_lp = liquidity;
+contracts/pool/msgs/lp_account.fc:41:            ;; will be <0 if get_lp_provide_init_out returns 0, 
+contracts/pool/msgs/lp_account.fc:43:            liquidity -= params::required_min_liquidity;
+contracts/pool/msgs/lp_account.fc:45:            storage::reserve0 += tot_am0;
+contracts/pool/msgs/lp_account.fc:46:            storage::reserve1 += tot_am1;
+contracts/pool/msgs/lp_account.fc:55:            storage::total_supply_lp += liquidity;
+contracts/pool/msgs/lp_account.fc:60:            storage::reserve0 += (tot_am0 - new_collected_protocol_fees0);
+contracts/pool/msgs/lp_account.fc:61:            storage::reserve1 += (tot_am1 - new_collected_protocol_fees1);
+contracts/pool/msgs/lp_account.fc:70:            | (storage::total_supply_lp > math::MAX_COINS)
+contracts/pool/msgs/lp_account.fc:71:            | (storage::reserve0 > math::MAX_COINS) 
+contracts/pool/msgs/lp_account.fc:72:            | (storage::reserve1 > math::MAX_COINS) {
+contracts/pool/msgs/lp_account.fc:111:            int used_gas = ctx.at(FWD_FEE) + gas::pool::cb_add_liquidity;
+tests/ConstProduct.spec.ts:1580:                output: "provide_lp_payload1",
+tests/ConstProduct.spec.ts:1589:                output: "provide_lp_payload2",
+tests/ConstProduct.spec.ts:1650:                output: "provide_lp_payload_to1",
+tests/ConstProduct.spec.ts:1658:                output: "provide_lp_payload_to2",

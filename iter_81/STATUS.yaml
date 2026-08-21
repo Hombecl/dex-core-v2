@@ -1,0 +1,61 @@
+schema_version: shadow-v1
+iteration: 81
+phase: completed
+cell_id: U1
+cell_label: pool_first_liquidity_sender_initialization
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: U1
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_81/poc_pool_first_liquidity_sender_initialization.run.log
+    run_log_exists_on_disk: true
+    test_runtime: 25.234s
+    result: PASSED (13 passed, 102 skipped, 115 total)
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 first liquidity callback is:issue'
+      - 'repo:ston-fi/dex-core-v2 uninitialized pool reserve is:issue'
+      - 'repo:ston-fi/dex-core-v2 pool cb_add_liquidity sender is:pr'
+      - 'repo:ston-fi/dex-core-v2 lp_account state_init pool address is:issue'
+    results: all four GitHub searches returned total_count=0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 first liquidity callback is:issue'
+      - 'repo:ston-fi/dex-core-v2 uninitialized pool reserve is:issue'
+      - 'repo:ston-fi/dex-core-v2 pool cb_add_liquidity sender is:pr'
+      - 'repo:ston-fi/dex-core-v2 lp_account state_init pool address is:issue'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_81/callers-grep.txt
+  caller_grep_match_count: 36
+  caller_grep_unique_files: 8
+  prior_audit_path: iter_81/prior-audit-git.log
+  prior_audit_bytes: 0
+  r15_search_files:
+    - iter_81/R15-GH-first-liquidity-callback.json
+    - iter_81/R15-GH-uninitialized-pool-reserve.json
+    - iter_81/R15-GH-cb-add-sender.json
+    - iter_81/R15-GH-lp-account-state-init-pool.json
+  source_conclusion: 'The first-liquidity callback is accepted only from the LP account deterministically derived from the current pool and callback user. The pool static tuple is embedded in the state-init data and is loaded from the deployed pool state, while the router computes the same pool address from its own address, token wallets, and stored code. Initial reserves and LP supply are therefore created under a deterministic pool identity; permissionless first provisioning changes only the caller’s own pool position and does not capture another account’s assets. Deployment, initial provide, and single-side callback tests passed across four implementations.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_81-U1.md

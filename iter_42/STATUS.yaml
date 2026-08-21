@@ -1,0 +1,54 @@
+schema_version: shadow-v1
+iteration: 42
+phase: completed
+cell_id: P9xC2
+cell_label: getter_quote x amount_conservation
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: P9xC2
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_42/poc_getter_quote_amount_conservation.run.log
+    run_log_exists_on_disk: true
+    test_runtime: PASSED
+    duration_seconds: 7.727
+    numerical_evidence: "LPAccount.spec.ts, Router.spec.ts, and Pool.spec.ts: 4 passed, 5 skipped; stored LP amounts, pool address, version, and URI getter outputs."
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 getter amount mismatch is:issue"
+      - "repo:ston-fi/dex-core-v2 quote amount mismatch is:issue"
+      - "repo:ston-fi/dex-core-v2 getter amount is:pr"
+      - "repo:ston-fi/dex-core-v2 audit getter amount is:issue"
+    results: "Fresh GitHub API searches returned zero results; local audit/security/getter/quote/amount/reserve git search was empty."
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "repo:ston-fi/dex-core-v2 getter amount mismatch is:issue"
+      - "repo:ston-fi/dex-core-v2 quote amount mismatch is:issue"
+      - "repo:ston-fi/dex-core-v2 getter amount is:pr"
+      - "repo:ston-fi/dex-core-v2 audit getter amount is:issue"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_42-P9xC2.md
+  notes:
+    - "Getter outputs read stored coin fields or deterministic addresses; no getter output is consumed as a settlement authorization or transfer amount."
+    - "Stored LP amounts and getter responses matched in the executable test, with no extraction delta."

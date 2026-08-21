@@ -1,0 +1,139 @@
+contracts/pool.fc:16:    throw_unless(error::wrong_workchain, ctx.at(SENDER).address::check_workchain(params::workchain));
+contracts/lp_account.fc:15:    throw_unless(error::wrong_workchain, ctx.at(SENDER).address::check_workchain(params::workchain));
+contracts/router/dex.fc:22:            token_wallet1.address::check_workchain(params::workchain)
+contracts/router/dex.fc:23:            & refund_address.address::check_workchain(params::workchain)
+contracts/router/dex.fc:24:            & excesses_address.address::check_workchain(params::workchain)
+contracts/router/dex.fc:50:        throw_arg_unless(op::transfer_bounce_wrong_wc, 1, _caller.address::check_workchain(params::workchain));
+contracts/pool/get.fc:7:_ get_lp_account_address(slice owner_address) method_id {
+contracts/pool/get.fc:10:    throw_unless(error::wrong_workchain, owner_address.address::check_workchain(params::workchain));
+contracts/pool/get.fc:13:        lp_account_idata(my_address(), owner_address),
+contracts/pool/get.fc:39:slice get_wallet_address(slice owner_address) method_id {
+contracts/pool/get.fc:42:    throw_unless(error::wrong_workchain, owner_address.address::check_workchain(params::workchain));
+contracts/pool/get.fc:45:        lp_wallet_idata(owner_address, my_address(), storage::jetton_lp_wallet_code),
+contracts/test/pool_dummy.fc:89:    throw_unless(error::wrong_workchain, ctx.at(SENDER).address::check_workchain(params::workchain));
+contracts/router/pools/weighted_const_product/ext_admin.fc:24:        throw_unless(error::wrong_workchain, left_jetton_wallet.address::check_workchain(params::workchain)
+contracts/router/pools/weighted_const_product/ext_admin.fc:25:            & right_jetton_wallet.address::check_workchain(params::workchain)
+contracts/router/pools/weighted_const_product/ext_admin.fc:26:            & excesses_recipient.address::check_workchain(params::workchain));
+contracts/lp_wallet.fc:13:    slice to_owner_address = in_msg_body~load_msg_addr();
+contracts/lp_wallet.fc:15:    force_chain(params::workchain, to_owner_address, error::wrong_workchain);
+contracts/lp_wallet.fc:17:    (int balance, slice owner_address, slice jetton_master_address, cell jetton_wallet_code) = storage::load();
+contracts/lp_wallet.fc:20:    throw_unless(705, equal_slices(owner_address, sender_address));
+contracts/lp_wallet.fc:23:    cell state_init = calculate_jetton_lp_wallet_state_init(to_owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:25:    slice response_address = in_msg_body~load_msg_addr();
+contracts/lp_wallet.fc:40:        .store_slice(owner_address)
+contracts/lp_wallet.fc:41:        .store_slice(response_address)
+contracts/lp_wallet.fc:51:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:55:    (int balance, slice owner_address, slice jetton_master_address, cell jetton_wallet_code) = storage::load();
+contracts/lp_wallet.fc:60:    slice response_address = in_msg_body~load_msg_addr();
+contracts/lp_wallet.fc:82:            .store_slice(owner_address)
+contracts/lp_wallet.fc:89:    if ((response_address.preload_uint(2) != 0) & (msg_value > 0)) {
+contracts/lp_wallet.fc:92:        .store_slice(response_address)
+contracts/lp_wallet.fc:100:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:104:    (int balance, slice owner_address, slice jetton_master_address, cell jetton_wallet_code) = storage::load();
+contracts/lp_wallet.fc:107:    slice response_address = in_msg_body~load_msg_addr();
+contracts/lp_wallet.fc:111:    throw_unless(705, equal_slices(owner_address, sender_address));
+contracts/lp_wallet.fc:119:        .store_slice(owner_address)
+contracts/lp_wallet.fc:120:        .store_slice(response_address)
+contracts/lp_wallet.fc:133:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:138:    (int balance, slice owner_address, slice jetton_master_address, cell jetton_wallet_code) = storage::load();
+contracts/lp_wallet.fc:146:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/router/get.fc:7:    throw_unless(error::wrong_workchain, token0.address::check_workchain(params::workchain));
+contracts/router/get.fc:8:    throw_unless(error::wrong_workchain, token1.address::check_workchain(params::workchain));
+contracts/router/get.fc:21:    throw_unless(error::wrong_workchain, token.address::check_workchain(params::workchain));
+contracts/router/get.fc:22:    throw_unless(error::wrong_workchain, user.address::check_workchain(params::workchain));
+contracts/router/get.fc:25:        vault_idata(user, token, my_address()),
+contracts/lp_wallet/storage.fc:8:() storage::save(int balance, slice owner_address, slice jetton_master_address, cell jetton_wallet_code) impure inline {
+contracts/lp_wallet/storage.fc:9:    set_data(pack_jetton_lp_wallet_data(balance, owner_address, jetton_master_address, jetton_wallet_code));
+contracts/vault.fc:5:global slice storage::owner_address;
+contracts/vault.fc:12:    storage::owner_address = ds~load_msg_addr();
+contracts/vault.fc:21:        .store_slice(storage::owner_address)
+contracts/vault.fc:36:    throw_unless(error::wrong_workchain, ctx.at(SENDER).address::check_workchain(params::workchain));
+contracts/vault.fc:65:                storage::owner_address),
+contracts/vault.fc:80:        storage::owner_address,
+contracts/router/pools/weighted_stableswap/ext_admin.fc:33:        throw_unless(error::wrong_workchain, left_jetton_wallet.address::check_workchain(params::workchain) 
+contracts/router/pools/weighted_stableswap/ext_admin.fc:34:            & right_jetton_wallet.address::check_workchain(params::workchain)
+contracts/router/pools/weighted_stableswap/ext_admin.fc:35:            & excesses_recipient.address::check_workchain(params::workchain)
+contracts/lp_wallet/jetton-utils.fc:1:cell pack_jetton_lp_wallet_data(int balance, slice owner_address, slice jetton_master_address, cell jetton_wallet_code) inline {
+contracts/lp_wallet/jetton-utils.fc:4:    .store_slice(owner_address)
+contracts/lp_wallet/jetton-utils.fc:10:cell calculate_jetton_lp_wallet_state_init(slice owner_address, slice jetton_master_address, cell jetton_wallet_code) inline {
+contracts/lp_wallet/jetton-utils.fc:14:    .store_dict(pack_jetton_lp_wallet_data(0, owner_address, jetton_master_address, jetton_wallet_code))
+contracts/lp_wallet/jetton-utils.fc:26:slice calculate_user_jetton_lp_wallet_address(slice owner_address, slice jetton_master_address, cell jetton_wallet_code) inline {
+contracts/lp_wallet/jetton-utils.fc:27:  return calculate_jetton_lp_wallet_address(calculate_jetton_lp_wallet_state_init(owner_address, jetton_master_address, jetton_wallet_code));
+contracts/lp_wallet/jetton-utils.fc:35:() force_chain(int workchain, slice address, int error_code) impure inline {
+contracts/router.fc:15:    throw_unless(error::wrong_workchain, ctx.at(SENDER).address::check_workchain(params::workchain));
+contracts/router/msgs/vault.fc:6:        slice to_address = in_msg_body~load_msg_addr(); 
+contracts/router/msgs/vault.fc:10:            vault_idata(to_address, token_address, my_address()),
+contracts/router/msgs/vault.fc:16:        var msg = jetton_wallet::transfer(0, amount_out, to_address, to_address)
+contracts/pool/msgs/router.fc:6:        ;; usually not needed since it uses to_address and refund_address
+contracts/pool/msgs/router.fc:22:        slice to_address = null(); 
+contracts/pool/msgs/router.fc:28:        slice ref_address = null(); 
+contracts/pool/msgs/router.fc:34:            to_address = call_payload~load_msg_addr(); 
+contracts/pool/msgs/router.fc:40:            ref_address = call_payload~load_msg_addr(); 
+contracts/pool/msgs/router.fc:42:            to_address = to_address.address::is_none() ? from_user_address : to_address;
+contracts/pool/msgs/router.fc:45:                to_address.address::check_workchain(params::workchain)
+contracts/pool/msgs/router.fc:46:                & ref_address.address::check_workchain_nofail(params::workchain)
+contracts/pool/msgs/router.fc:90:            ref_value = ref_address.preload_uint(2) == 0 ? 0 : ref_value;
+contracts/pool/msgs/router.fc:121:            if (ref_address.preload_uint(2) != 0) & (ref_fee_out0 + ref_fee_out1 > 0) { ;; 2 messages, pay referral, check ref_fee_out
+contracts/pool/msgs/router.fc:125:                        ref_address, 
+contracts/pool/msgs/router.fc:140:                    to_address, 
+contracts/pool/msgs/router.fc:211:            throw_arg_unless(op::provide_refund_wrong_workchain, 1, to_user.address::check_workchain(params::workchain));
+contracts/pool/msgs/lp_account.fc:94:                    addr_none(), ;; force addr_none
+contracts/pool/msgs/lp_account.fc:96:                    addr_none(), ;; refund_address
+contracts/pool/msgs/lp_account.fc:103:                lp_wallet_idata(
+contracts/common/contracts.fc:1:(cell) vault_idata(slice _user_address, slice _token_address, slice _router_address) inline {
+contracts/common/contracts.fc:19:(cell) lp_wallet_idata(slice _owner_address, slice _jetton_master_address, cell _jetton_wallet_code) inline {
+contracts/common/contracts.fc:22:        .store_slice(_owner_address)
+contracts/common/contracts.fc:148:    slice _to_address, 
+contracts/common/contracts.fc:159:        .store_slice(_to_address)
+contracts/common/contracts.fc:177:    slice _to_address
+contracts/common/contracts.fc:182:        .store_slice(_to_address)
+contracts/common/contracts.fc:187:    slice _to_address, 
+contracts/common/contracts.fc:195:        .store_slice(_to_address)
+contracts/common/contracts.fc:208:    slice _response_address, 
+contracts/common/contracts.fc:216:        .store_slice(_response_address) ;; response_address
+contracts/common/contracts.fc:280:(builder) jetton_wallet::transfer(int _fwd_amount, int _jetton_amount, slice _to, slice _response_address) inline {
+contracts/common/contracts.fc:283:        .store_slice(_to) ;; to_owner_address
+contracts/common/contracts.fc:284:        .store_slice(_response_address) ;; responseAddress
+contracts/common/contracts.fc:291:    slice _response_address
+contracts/common/contracts.fc:295:        .store_slice(_response_address)
+contracts/common/utils.fc:2:    _addr = _addr.address::is_none() ? ctx.at(SENDER) : _addr;
+contracts/common/utils.fc:3:    throw_unless(error::wrong_workchain, _addr.address::check_workchain(params::workchain));
+contracts/common/utils.fc:8:    ifnot _addr.address::is_none() {
+contracts/common/op.fc:4:const op::cross_swap                      = "cross_swap token_wallet1:MsgAddress refund_address:MsgAddress excesses_address:MsgAddress tx_deadline:uint64 cross_swap_body:^[min_out:Coins receiver:MsgAddress fwd_gas:Coins custom_payload:(Maybe ^Cell) refund_fwd_gas:Coins refund_payload:(Maybe ^Cell) ref_fee:uint16 ref_address:MsgAddress] = DexPayload"c  & 0x7fffffff;
+contracts/common/op.fc:5:const op::swap                            = "swap query_id:uint64 from_user:MsgAddress left_amount:Coins right_amount:Coins dex_payload:^[transferred_op:uint32 token_wallet1:MsgAddress refund_address:MsgAddress excesses_address:MsgAddress tx_deadline:uint64 swap_body:^[min_out:Coins receiver:MsgAddress fwd_gas:Coins custom_payload:(Maybe ^Cell) refund_fwd_gas:Coins refund_payload:(Maybe ^Cell) ref_fee:uint16 ref_address:MsgAddress]] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:6:const op::provide_lp                      = "provide_lp query_id:uint64 from_user:MsgAddress left_amount:Coins right_amount:Coins dex_payload:^[transferred_op:uint32 token_wallet1:MsgAddress refund_address:MsgAddress excesses_address:MsgAddress tx_deadline:uint64 provide_lp_body:^[min_lp_out:Coins to_address:MsgAddress both_positive:uint1 fwd_amount:Coins custom_payload:(Maybe ^Cell)]] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:7:const op::burn_notification_ext           = "burn_notification_ext query_id:uint64 jetton_amount:Coins from_address:MsgAddress response_address:MsgAddress maybe_custom_payload:(Maybe ^Cell) = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:10:const op::pay_to                          = "pay_to query_id:uint64 to_address:MsgAddress excesses_address:MsgAddress original_caller:MsgAddress exit_code:uint32 custom_payload:(Maybe ^Cell) additional_info:^[fwd_ton_amount:Coins amount0_out:Coins token0_address:MsgAddress amount1_out:Coins token1_address:MsgAddress] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:26:const op::vault_pay_to                    = "vault_pay_to query_id:uint64 amount_out:Coins token_address:MsgAddress to_address:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+contracts/pool/msgs/getter.fc:48:        slice owner_address = in_msg_body~load_msg_addr();
+contracts/pool/msgs/getter.fc:52:        cell included_address = include_address? ? begin_cell().store_slice(owner_address).end_cell() : null();
+contracts/pool/msgs/getter.fc:56:        if owner_address.address::get_workchain() == params::workchain {
+contracts/pool/msgs/getter.fc:58:                lp_wallet_idata(owner_address, my_address(), storage::jetton_lp_wallet_code),
+contracts/pool/msgs/getter.fc:63:            msg = msg.store_uint(0, 2); ;; addr_none
+contracts/router/msgs/admin.fc:22:        throw_unless(error::wrong_workchain, jetton_wallet1.address::check_workchain(params::workchain) 
+contracts/router/msgs/admin.fc:23:            & jetton_wallet0.address::check_workchain(params::workchain) 
+contracts/router/msgs/admin.fc:24:            & new_protocol_fee_address.address::check_workchain(params::workchain)
+contracts/router/msgs/admin.fc:25:            & excesses_recipient.address::check_workchain(params::workchain));
+contracts/router/msgs/admin.fc:66:        throw_unless(error::wrong_workchain, jetton_wallet1.address::check_workchain(params::workchain)
+contracts/router/msgs/admin.fc:67:            & jetton_wallet0.address::check_workchain(params::workchain)
+contracts/router/msgs/admin.fc:68:            & excesses_recipient.address::check_workchain(params::workchain));
+contracts/router/msgs/admin.fc:97:        throw_unless(error::wrong_workchain, jetton_wallet1.address::check_workchain(params::workchain) 
+contracts/router/msgs/admin.fc:98:            & jetton_wallet0.address::check_workchain(params::workchain)
+contracts/router/msgs/admin.fc:99:            & excesses_recipient.address::check_workchain(params::workchain));
+contracts/router/msgs/admin.fc:129:        throw_unless(error::wrong_workchain, jetton_wallet1.address::check_workchain(params::workchain) 
+contracts/router/msgs/admin.fc:130:            & jetton_wallet0.address::check_workchain(params::workchain));
+contracts/router/msgs/admin.fc:177:        throw_unless(error::wrong_workchain, new_admin_address.address::check_workchain(params::workchain)); 
+contracts/router/msgs/admin.fc:215:        storage::temp_upgrade = pack_temp_upgrade(end_code, code, 0, addr_none(), end_pool_code, pool_code);
+contracts/router/msgs/admin.fc:248:            new_admin = addr_none();
+contracts/router/pools/stableswap/ext_admin.fc:27:        throw_unless(error::wrong_workchain, left_jetton_wallet.address::check_workchain(params::workchain) 
+contracts/router/pools/stableswap/ext_admin.fc:28:            & right_jetton_wallet.address::check_workchain(params::workchain)
+contracts/router/pools/stableswap/ext_admin.fc:29:            & excesses_recipient.address::check_workchain(params::workchain));
+contracts/pool/msgs/lp_wallet.fc:8:        slice response_address = in_msg_body~load_msg_addr();
+contracts/pool/msgs/lp_wallet.fc:12:            lp_wallet_idata(
+contracts/pool/msgs/lp_wallet.fc:23:        throw_unless(error::wrong_address, response_address.preload_uint(2) == 0); 
+contracts/router/msgs/getter.fc:13:        throw_unless(error::wrong_workchain, token0.address::check_workchain(params::workchain));
+contracts/router/msgs/getter.fc:14:        throw_unless(error::wrong_workchain, token1.address::check_workchain(params::workchain));
+contracts/router/msgs/pool.fc:119:            vault_idata(
+contracts/lp_account/msgs/user.fc:62:            to_user.address::check_workchain(params::workchain)
+contracts/lp_account/msgs/user.fc:63:            & refund_address.address::check_workchain(params::workchain)
+contracts/lp_account/msgs/user.fc:64:            & excesses_address.address::check_workchain(params::workchain));

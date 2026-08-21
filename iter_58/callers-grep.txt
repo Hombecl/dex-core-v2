@@ -1,0 +1,217 @@
+contracts/pool.fc:33:    if handle_lp_wallet_messages() {
+contracts/router/dex.fc:60:                + gas::router::pay_to
+contracts/router/msgs/pool.fc:45:        int used_gas = ctx.at(FWD_FEE) + gas::router::pay_to;
+contracts/common/contracts.fc:78:    int _total_supply_lp,
+contracts/common/contracts.fc:100:            .store_coins(_total_supply_lp)
+contracts/common/contracts.fc:146:(cell) router::pay_to(
+contracts/lp_wallet/jetton-utils.fc:26:slice calculate_user_jetton_lp_wallet_address(slice owner_address, slice jetton_master_address, cell jetton_wallet_code) inline {
+contracts/test/pool_dummy.fc:9:    storage::reserve0 = ds~load_coins();
+contracts/test/pool_dummy.fc:10:    storage::reserve1 = ds~load_coins();
+contracts/test/pool_dummy.fc:11:    storage::total_supply_lp = ds~load_coins();
+contracts/test/pool_dummy.fc:33:        .store_coins(storage::reserve0)
+contracts/test/pool_dummy.fc:34:        .store_coins(storage::reserve1)
+contracts/test/pool_dummy.fc:35:        .store_coins(storage::total_supply_lp)
+contracts/test/pool_dummy.fc:114:        storage::reserve0,
+contracts/test/pool_dummy.fc:115:        storage::reserve1,
+contracts/lp_wallet.fc:63:        | equal_slices(calculate_user_jetton_lp_wallet_address(from_address, jetton_master_address, jetton_wallet_code), sender_address));
+contracts/lp_wallet.fc:103:() burn_tokens (slice in_msg_body, slice sender_address, int msg_value, int fwd_fee) impure {
+contracts/lp_wallet.fc:116:        .store_uint(op::burn_notification_ext, 32)
+contracts/lp_wallet.fc:141:    throw_unless(709, (op == op::internal_transfer) | (op == op::burn_notification_ext));
+contracts/lp_wallet.fc:180:        burn_tokens(in_msg_body, sender_address, msg_value, fwd_fee);
+contracts/common/op.fc:7:const op::burn_notification_ext           = "burn_notification_ext query_id:uint64 jetton_amount:Coins from_address:MsgAddress response_address:MsgAddress maybe_custom_payload:(Maybe ^Cell) = InternalMsgBody"c & 0x7fffffff;
+contracts/common/gas.fc:3:const gas::router::pay_to = 16000000;
+contracts/pool/get.fc:36:    return (storage::total_supply_lp, -1, storage::router_address, content_lp, storage::jetton_lp_wallet_code);
+contracts/pool/headers.fc:5:global int   storage::reserve0;
+contracts/pool/headers.fc:6:global int   storage::reserve1; 
+contracts/pool/headers.fc:7:global int   storage::total_supply_lp;
+contracts/pool/pools/weighted_const_product/storage.fc:6:    storage::reserve0 = ds~load_coins();
+contracts/pool/pools/weighted_const_product/storage.fc:7:    storage::reserve1 = ds~load_coins();
+contracts/pool/pools/weighted_const_product/storage.fc:8:    storage::total_supply_lp = ds~load_coins();
+contracts/pool/pools/weighted_const_product/storage.fc:31:        .store_coins(storage::reserve0)
+contracts/pool/pools/weighted_const_product/storage.fc:32:        .store_coins(storage::reserve1)
+contracts/pool/pools/weighted_const_product/storage.fc:33:        .store_coins(storage::total_supply_lp)
+contracts/pool/msgs/router.fc:58:                router::pay_to(
+contracts/pool/msgs/router.fc:94:                (out1, protocol_fee_out, ref_fee_out1) = pool::get_swap_out(true, ref_value, amount0, storage::reserve0, storage::reserve1);
+contracts/pool/msgs/router.fc:95:                storage::reserve0 += amount0;
+contracts/pool/msgs/router.fc:96:                storage::reserve1 -= (out1 + protocol_fee_out + ref_fee_out1);
+contracts/pool/msgs/router.fc:101:                (out0, protocol_fee_out, ref_fee_out0) = pool::get_swap_out(false, ref_value, amount1, storage::reserve1, storage::reserve0);
+contracts/pool/msgs/router.fc:102:                storage::reserve0 -= (out0 + protocol_fee_out + ref_fee_out0);
+contracts/pool/msgs/router.fc:103:                storage::reserve1 += amount1;
+contracts/pool/msgs/router.fc:112:            throw_arg_if(op::swap_refund_no_liq, 1, storage::total_supply_lp <= 0);
+contracts/pool/msgs/router.fc:115:            throw_arg_if(op::swap_refund_reserve_err, 1, (storage::reserve0 > math::MAX_COINS) 
+contracts/pool/msgs/router.fc:116:                | (storage::reserve1 <= 0) 
+contracts/pool/msgs/router.fc:117:                | (storage::reserve1 > math::MAX_COINS) 
+contracts/pool/msgs/router.fc:118:                | (storage::reserve0 <= 0));
+contracts/pool/msgs/router.fc:138:                router::pay_to(
+contracts/pool/msgs/router.fc:160:                router::pay_to(
+contracts/pool/msgs/router.fc:219:                router::pay_to(
+contracts/pool/msgs/router.fc:270:                router::pay_to(
+contracts/pool/msgs/protocolfee.fc:10:            + storage_fee::router + gas::router::pay_to 
+contracts/pool/msgs/protocolfee.fc:11:            + gas::router::pay_to 
+contracts/pool/msgs/protocolfee.fc:25:            router::pay_to(
+contracts/pool/msgs/protocolfee.fc:42:            router::pay_to(
+contracts/pool/msgs/lp_wallet.fc:1:(int) handle_lp_wallet_messages() impure inline {
+contracts/pool/msgs/lp_wallet.fc:4:    if ctx.at(OPCODE) == op::burn_notification_ext { 
+contracts/pool/msgs/lp_wallet.fc:30:        storage::reserve0 -= amount0_out;
+contracts/pool/msgs/lp_wallet.fc:31:        storage::reserve1 -= amount1_out;
+contracts/pool/msgs/lp_wallet.fc:32:        storage::total_supply_lp -= jetton_amount;
+contracts/pool/msgs/lp_wallet.fc:34:        throw_unless(error::invalid_amount, (storage::reserve0 > 0) & (storage::reserve1 > 0));
+contracts/pool/msgs/lp_wallet.fc:35:        throw_unless(error::invalid_amount, (storage::total_supply_lp > 0));
+contracts/pool/msgs/lp_wallet.fc:41:            + storage_fee::router + gas::router::pay_to 
+contracts/pool/msgs/lp_wallet.fc:42:            + gas::router::pay_to  ;; do not sum again storage_fee::router
+contracts/pool/msgs/lp_wallet.fc:62:            router::pay_to(
+contracts/pool/msgs/lp_wallet.fc:80:            router::pay_to(
+contracts/pool/msgs/lp_account.fc:31:        if storage::total_supply_lp == 0 { 
+contracts/pool/msgs/lp_account.fc:39:            storage::total_supply_lp = liquidity;
+contracts/pool/msgs/lp_account.fc:45:            storage::reserve0 += tot_am0;
+contracts/pool/msgs/lp_account.fc:46:            storage::reserve1 += tot_am1;
+contracts/pool/msgs/lp_account.fc:55:            storage::total_supply_lp += liquidity;
+contracts/pool/msgs/lp_account.fc:60:            storage::reserve0 += (tot_am0 - new_collected_protocol_fees0);
+contracts/pool/msgs/lp_account.fc:61:            storage::reserve1 += (tot_am1 - new_collected_protocol_fees1);
+contracts/pool/msgs/lp_account.fc:70:            | (storage::total_supply_lp > math::MAX_COINS)
+contracts/pool/msgs/lp_account.fc:71:            | (storage::reserve0 > math::MAX_COINS) 
+contracts/pool/msgs/lp_account.fc:72:            | (storage::reserve1 > math::MAX_COINS) {
+contracts/pool/msgs/lp_account.fc:162:                router::pay_to(
+contracts/pool/msgs/lp_account.fc:182:                router::pay_to(
+contracts/pool/msgs/getter.fc:12:            storage::total_supply_lp,
+contracts/pool/msgs/getter.fc:13:            storage::reserve0,
+contracts/pool/msgs/getter.fc:14:            storage::reserve1,
+contracts/pool/pools/weighted_const_product/get.fc:6:        storage::total_supply_lp,
+contracts/pool/pools/weighted_const_product/get.fc:7:        storage::reserve0,
+contracts/pool/pools/weighted_const_product/get.fc:8:        storage::reserve1,
+contracts/lp_account/msgs/user.fc:17:            + storage_fee::router + gas::router::pay_to  
+contracts/pool/pools/weighted_const_product/pool.fc:42:    int inv0 = _invariant(storage::reserve0, storage::reserve1, _w0, _w1);
+contracts/pool/pools/weighted_const_product/pool.fc:44:    int new_reserve0 = storage::reserve0 + _left_amount; 
+contracts/pool/pools/weighted_const_product/pool.fc:45:    int new_reserve1 = storage::reserve1 + _right_amount; 
+contracts/pool/pools/weighted_const_product/pool.fc:47:    int inv1 = _invariant(new_reserve0, new_reserve1, _w0, _w1);
+contracts/pool/pools/weighted_const_product/pool.fc:50:    int ideal_balance0 = muldiv(storage::reserve0, inv1, inv0);
+contracts/pool/pools/weighted_const_product/pool.fc:51:    int diff0 = abs(new_reserve0 - ideal_balance0);
+contracts/pool/pools/weighted_const_product/pool.fc:52:    int protocol_fee0 = new_reserve0 > ideal_balance0 
+contracts/pool/pools/weighted_const_product/pool.fc:55:    new_reserve0 -= (lp_fee0 + protocol_fee0);
+contracts/pool/pools/weighted_const_product/pool.fc:57:    int ideal_balance1 = muldiv(storage::reserve1, inv1, inv0);
+contracts/pool/pools/weighted_const_product/pool.fc:58:    int diff1 = abs(new_reserve1 - ideal_balance1);
+contracts/pool/pools/weighted_const_product/pool.fc:59:    int protocol_fee1 = new_reserve1 > ideal_balance1 
+contracts/pool/pools/weighted_const_product/pool.fc:62:    new_reserve1 -= (lp_fee1 + protocol_fee1);
+contracts/pool/pools/weighted_const_product/pool.fc:64:    int inv2 = _invariant(new_reserve0, new_reserve1, _w0, _w1);
+contracts/pool/pools/weighted_const_product/pool.fc:67:    return (muldiv((inv2 - inv0), storage::total_supply_lp, inv0), protocol_fee0, protocol_fee1);
+contracts/pool/pools/weighted_const_product/pool.fc:73:        muldiv(_lp_amount, storage::reserve0, storage::total_supply_lp),
+contracts/pool/pools/weighted_const_product/pool.fc:74:        muldiv(_lp_amount, storage::reserve1, storage::total_supply_lp)
+contracts/pool/pools/weighted_const_product/state_init.fc:6:        .store_coins(0) ;; storage::reserve0
+contracts/pool/pools/weighted_const_product/state_init.fc:7:        .store_coins(0) ;; storage::reserve1
+contracts/pool/pools/weighted_const_product/state_init.fc:8:        .store_coins(0) ;; storage::total_supply_lp
+contracts/pool/pools/constant_product/storage.fc:4:    storage::reserve0 = ds~load_coins();
+contracts/pool/pools/constant_product/storage.fc:5:    storage::reserve1 = ds~load_coins();
+contracts/pool/pools/constant_product/storage.fc:6:    storage::total_supply_lp = ds~load_coins();
+contracts/pool/pools/constant_product/storage.fc:28:        .store_coins(storage::reserve0)
+contracts/pool/pools/constant_product/storage.fc:29:        .store_coins(storage::reserve1)
+contracts/pool/pools/constant_product/storage.fc:30:        .store_coins(storage::total_supply_lp)
+contracts/pool/pools/constant_sum/storage.fc:4:    storage::reserve0 = ds~load_coins();
+contracts/pool/pools/constant_sum/storage.fc:5:    storage::reserve1 = ds~load_coins();
+contracts/pool/pools/constant_sum/storage.fc:6:    storage::total_supply_lp = ds~load_coins();
+contracts/pool/pools/constant_sum/storage.fc:28:        .store_coins(storage::reserve0)
+contracts/pool/pools/constant_sum/storage.fc:29:        .store_coins(storage::reserve1)
+contracts/pool/pools/constant_sum/storage.fc:30:        .store_coins(storage::total_supply_lp)
+contracts/pool/pools/stableswap/storage.fc:6:    storage::reserve0 = ds~load_coins();
+contracts/pool/pools/stableswap/storage.fc:7:    storage::reserve1 = ds~load_coins();
+contracts/pool/pools/stableswap/storage.fc:8:    storage::total_supply_lp = ds~load_coins();
+contracts/pool/pools/stableswap/storage.fc:31:        .store_coins(storage::reserve0)
+contracts/pool/pools/stableswap/storage.fc:32:        .store_coins(storage::reserve1)
+contracts/pool/pools/stableswap/storage.fc:33:        .store_coins(storage::total_supply_lp)
+contracts/pool/pools/constant_product/get.fc:6:        storage::total_supply_lp,
+contracts/pool/pools/constant_product/get.fc:7:        storage::reserve0,
+contracts/pool/pools/constant_product/get.fc:8:        storage::reserve1,
+contracts/pool/pools/constant_sum/pool.fc:25:    int inv0 = norm_invariant(storage::reserve0, storage::reserve1);
+contracts/pool/pools/constant_sum/pool.fc:27:    int new_reserve0 = storage::reserve0 + _left_amount; 
+contracts/pool/pools/constant_sum/pool.fc:28:    int new_reserve1 = storage::reserve1 + _right_amount; 
+contracts/pool/pools/constant_sum/pool.fc:30:    int inv1 = norm_invariant(new_reserve0, new_reserve1);
+contracts/pool/pools/constant_sum/pool.fc:33:    int ideal_balance0 = muldiv(storage::reserve0, inv1, inv0);
+contracts/pool/pools/constant_sum/pool.fc:34:    int diff0 = abs(new_reserve0 - ideal_balance0);
+contracts/pool/pools/constant_sum/pool.fc:35:    int protocol_fee0 = new_reserve0 > ideal_balance0 
+contracts/pool/pools/constant_sum/pool.fc:38:    new_reserve0 -= (lp_fee0 + protocol_fee0);
+contracts/pool/pools/constant_sum/pool.fc:40:    int ideal_balance1 = muldiv(storage::reserve1, inv1, inv0);
+contracts/pool/pools/constant_sum/pool.fc:41:    int diff1 = abs(new_reserve1 - ideal_balance1);
+contracts/pool/pools/constant_sum/pool.fc:42:    int protocol_fee1 = new_reserve1 > ideal_balance1 
+contracts/pool/pools/constant_sum/pool.fc:45:    new_reserve1 -= (lp_fee1 + protocol_fee1);
+contracts/pool/pools/constant_sum/pool.fc:47:    int inv2 = norm_invariant(new_reserve0, new_reserve1);
+contracts/pool/pools/constant_sum/pool.fc:50:    return (muldiv((inv2 - inv0), storage::total_supply_lp, inv0), protocol_fee0, protocol_fee1);
+contracts/pool/pools/constant_sum/pool.fc:56:        muldiv(_lp_amount, storage::reserve0, storage::total_supply_lp),
+contracts/pool/pools/constant_sum/pool.fc:57:        muldiv(_lp_amount, storage::reserve1, storage::total_supply_lp)
+contracts/pool/pools/constant_sum/state_init.fc:6:        .store_coins(0) ;; storage::reserve0
+contracts/pool/pools/constant_sum/state_init.fc:7:        .store_coins(0) ;; storage::reserve1
+contracts/pool/pools/constant_sum/state_init.fc:8:        .store_coins(0) ;; storage::total_supply_lp
+contracts/pool/pools/constant_sum/get.fc:6:        storage::total_supply_lp,
+contracts/pool/pools/constant_sum/get.fc:7:        storage::reserve0,
+contracts/pool/pools/constant_sum/get.fc:8:        storage::reserve1,
+contracts/pool/pools/stableswap/get.fc:6:        storage::total_supply_lp,
+contracts/pool/pools/stableswap/get.fc:7:        storage::reserve0,
+contracts/pool/pools/stableswap/get.fc:8:        storage::reserve1,
+contracts/pool/pools/constant_product/pool.fc:26:    int inv0 = norm_invariant(storage::reserve0, storage::reserve1);
+contracts/pool/pools/constant_product/pool.fc:28:    int new_reserve0 = storage::reserve0 + _left_amount; 
+contracts/pool/pools/constant_product/pool.fc:29:    int new_reserve1 = storage::reserve1 + _right_amount; 
+contracts/pool/pools/constant_product/pool.fc:31:    int inv1 = norm_invariant(new_reserve0, new_reserve1);
+contracts/pool/pools/constant_product/pool.fc:34:    int ideal_balance0 = muldiv(storage::reserve0, inv1, inv0);
+contracts/pool/pools/constant_product/pool.fc:35:    int diff0 = abs(new_reserve0 - ideal_balance0);
+contracts/pool/pools/constant_product/pool.fc:36:    int protocol_fee0 = new_reserve0 > ideal_balance0 
+contracts/pool/pools/constant_product/pool.fc:39:    new_reserve0 -= (lp_fee0 + protocol_fee0);
+contracts/pool/pools/constant_product/pool.fc:41:    int ideal_balance1 = muldiv(storage::reserve1, inv1, inv0);
+contracts/pool/pools/constant_product/pool.fc:42:    int diff1 = abs(new_reserve1 - ideal_balance1);
+contracts/pool/pools/constant_product/pool.fc:43:    int protocol_fee1 = new_reserve1 > ideal_balance1 
+contracts/pool/pools/constant_product/pool.fc:46:    new_reserve1 -= (lp_fee1 + protocol_fee1);
+contracts/pool/pools/constant_product/pool.fc:48:    int inv2 = norm_invariant(new_reserve0, new_reserve1);
+contracts/pool/pools/constant_product/pool.fc:51:    return (muldiv((inv2 - inv0), storage::total_supply_lp, inv0), protocol_fee0, protocol_fee1);
+contracts/pool/pools/constant_product/pool.fc:55:    int left_amount = muldiv(_lp_amount, storage::reserve0, storage::total_supply_lp);
+contracts/pool/pools/constant_product/pool.fc:56:    int right_amount = muldiv(_lp_amount, storage::reserve1, storage::total_supply_lp);
+contracts/pool/pools/stableswap/state_init.fc:6:        .store_coins(0) ;; storage::reserve0
+contracts/pool/pools/stableswap/state_init.fc:7:        .store_coins(0) ;; storage::reserve1
+contracts/pool/pools/stableswap/state_init.fc:8:        .store_coins(0) ;; storage::total_supply_lp
+contracts/pool/pools/stableswap/pool.fc:9:        storage::reserve0, 
+contracts/pool/pools/stableswap/pool.fc:10:        storage::reserve1, 
+contracts/pool/pools/stableswap/pool.fc:15:            storage::reserve0, 
+contracts/pool/pools/stableswap/pool.fc:16:            storage::reserve1
+contracts/pool/pools/stableswap/pool.fc:40:    int inv0 = calculate_invariant(storage::amp, storage::reserve0, storage::reserve1);
+contracts/pool/pools/stableswap/pool.fc:42:    int new_reserve0 = storage::reserve0 + _left_amount; 
+contracts/pool/pools/stableswap/pool.fc:43:    int new_reserve1 = storage::reserve1 + _right_amount; 
+contracts/pool/pools/stableswap/pool.fc:45:    int inv1 = calculate_invariant(storage::amp, new_reserve0, new_reserve1);
+contracts/pool/pools/stableswap/pool.fc:48:    int ideal_balance0 = muldiv(storage::reserve0, inv1, inv0);
+contracts/pool/pools/stableswap/pool.fc:49:    int diff0 = abs(new_reserve0 - ideal_balance0);
+contracts/pool/pools/stableswap/pool.fc:50:    int protocol_fee0 = new_reserve0 > ideal_balance0 
+contracts/pool/pools/stableswap/pool.fc:53:    new_reserve0 -= (lp_fee0 + protocol_fee0);
+contracts/pool/pools/stableswap/pool.fc:55:    int ideal_balance1 = muldiv(storage::reserve1, inv1, inv0);
+contracts/pool/pools/stableswap/pool.fc:56:    int diff1 = abs(new_reserve1 - ideal_balance1);
+contracts/pool/pools/stableswap/pool.fc:57:    int protocol_fee1 = new_reserve1 > ideal_balance1 
+contracts/pool/pools/stableswap/pool.fc:60:    new_reserve1 -= (lp_fee1 + protocol_fee1);
+contracts/pool/pools/stableswap/pool.fc:62:    int inv2 = calculate_invariant(storage::amp, new_reserve0, new_reserve1);
+contracts/pool/pools/stableswap/pool.fc:65:    return (muldiv((inv2 - inv0), storage::total_supply_lp, inv0), protocol_fee0, protocol_fee1);
+contracts/pool/pools/stableswap/pool.fc:71:        muldiv(_lp_amount, storage::reserve0, storage::total_supply_lp),
+contracts/pool/pools/stableswap/pool.fc:72:        muldiv(_lp_amount, storage::reserve1, storage::total_supply_lp)
+contracts/pool/pools/weighted_stableswap/storage.fc:9:    storage::reserve0 = ds~load_coins();
+contracts/pool/pools/weighted_stableswap/storage.fc:10:    storage::reserve1 = ds~load_coins();
+contracts/pool/pools/weighted_stableswap/storage.fc:11:    storage::total_supply_lp = ds~load_coins();
+contracts/pool/pools/weighted_stableswap/storage.fc:41:        .store_coins(storage::reserve0)
+contracts/pool/pools/weighted_stableswap/storage.fc:42:        .store_coins(storage::reserve1)
+contracts/pool/pools/weighted_stableswap/storage.fc:43:        .store_coins(storage::total_supply_lp)
+contracts/pool/pools/constant_product/state_init.fc:6:        .store_coins(0) ;; storage::reserve0
+contracts/pool/pools/constant_product/state_init.fc:7:        .store_coins(0) ;; storage::reserve1
+contracts/pool/pools/constant_product/state_init.fc:8:        .store_coins(0) ;; storage::total_supply_lp
+contracts/pool/pools/weighted_stableswap/pool.fc:48:    int inv0 = _invariant(storage::reserve0, storage::reserve1, _w0, _w1);
+contracts/pool/pools/weighted_stableswap/pool.fc:50:    int new_reserve0 = storage::reserve0 + _left_amount; 
+contracts/pool/pools/weighted_stableswap/pool.fc:51:    int new_reserve1 = storage::reserve1 + _right_amount;
+contracts/pool/pools/weighted_stableswap/pool.fc:53:    int inv1 = _invariant(new_reserve0, new_reserve1, _w0, _w1);
+contracts/pool/pools/weighted_stableswap/pool.fc:56:    int ideal_balance0 = muldiv(storage::reserve0, inv1, inv0);
+contracts/pool/pools/weighted_stableswap/pool.fc:57:    int diff0 = abs(new_reserve0 - ideal_balance0);
+contracts/pool/pools/weighted_stableswap/pool.fc:58:    int protocol_fee0 = new_reserve0 > ideal_balance0 
+contracts/pool/pools/weighted_stableswap/pool.fc:61:    new_reserve0 -= (lp_fee0 + protocol_fee0);
+contracts/pool/pools/weighted_stableswap/pool.fc:63:    int ideal_balance1 = muldiv(storage::reserve1, inv1, inv0);
+contracts/pool/pools/weighted_stableswap/pool.fc:64:    int diff1 = abs(new_reserve1 - ideal_balance1);
+contracts/pool/pools/weighted_stableswap/pool.fc:65:    int protocol_fee1 = new_reserve1 > ideal_balance1 
+contracts/pool/pools/weighted_stableswap/pool.fc:68:    new_reserve1 -= (lp_fee1 + protocol_fee1);
+contracts/pool/pools/weighted_stableswap/pool.fc:70:    int inv2 = _invariant(new_reserve0, new_reserve1, _w0, _w1);
+contracts/pool/pools/weighted_stableswap/pool.fc:73:    return (muldiv((inv2 - inv0), storage::total_supply_lp, inv0), protocol_fee0, protocol_fee1);
+contracts/pool/pools/weighted_stableswap/pool.fc:79:        muldiv(_lp_amount, storage::reserve0, storage::total_supply_lp),
+contracts/pool/pools/weighted_stableswap/pool.fc:80:        muldiv(_lp_amount, storage::reserve1, storage::total_supply_lp)
+contracts/pool/pools/weighted_stableswap/get.fc:6:        storage::total_supply_lp,
+contracts/pool/pools/weighted_stableswap/get.fc:7:        storage::reserve0,
+contracts/pool/pools/weighted_stableswap/get.fc:8:        storage::reserve1,
+contracts/pool/pools/weighted_stableswap/state_init.fc:6:        .store_coins(0) ;; storage::reserve0
+contracts/pool/pools/weighted_stableswap/state_init.fc:7:        .store_coins(0) ;; storage::reserve1
+contracts/pool/pools/weighted_stableswap/state_init.fc:8:        .store_coins(0) ;; storage::total_supply_lp

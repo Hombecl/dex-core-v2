@@ -1,0 +1,55 @@
+schema_version: shadow-v1
+iteration: 59
+phase: completed
+cell_id: R4
+cell_label: code_upgrade_rollback
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: R4
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/Router.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_59/poc_code_upgrade_rollback.run.log
+    run_log_exists_on_disk: true
+    test_runtime: PASSED
+    duration_seconds: 12.656
+    numerical_evidence: "Router.spec.ts and ConstProduct.spec.ts: 7 passed, 33 skipped; admin upgrade, pool-code init/cancel/finalize, early-finalize retention, pool application, and empty-code bounce all completed."
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 code upgrade rollback is:issue"
+      - "repo:ston-fi/dex-core-v2 finalize_upgrades is:issue"
+      - "repo:ston-fi/dex-core-v2 pool code upgrade is:pr"
+      - "repo:ston-fi/dex-core-v2 audit upgrade admin is:issue"
+    results: "Fresh GitHub API searches returned zero results; local audit/security/upgrade/finalize/set_code/admin-upgrade git search was empty."
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "repo:ston-fi/dex-core-v2 code upgrade rollback is:issue"
+      - "repo:ston-fi/dex-core-v2 finalize_upgrades is:issue"
+      - "repo:ston-fi/dex-core-v2 pool code upgrade is:pr"
+      - "repo:ston-fi/dex-core-v2 audit upgrade admin is:issue"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_59-R4.md
+  notes:
+    - "router.fc invokes handle_admin_messages only when ctx.at(SENDER) equals storage::admin_address; all init/cancel/finalize upgrade operations are inside that handler, reject empty or conflicting pending cells, and persist the staged timers/state before returning."
+    - "finalize_upgrades applies each staged component only after its own timer; early finalization leaves the pending cell intact, while pool-code installation is staged in upgrade_pool_code and sent to a deterministic pool by update_pool_code. pool/msgs/router.fc accepts internal_update_pool_code only through the router sender branch. No external code takeover, rollback bypass, or fund-loss path was demonstrated."
+    - "Shadow mode: no emit-shippable.py, bb_findings, shippable-staging, IA queue, submission queue, or platform form was touched."

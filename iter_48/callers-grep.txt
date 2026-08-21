@@ -1,0 +1,207 @@
+contracts/router.fc:16:    storage::load();
+contracts/lp_account.fc:16:    storage::load();
+contracts/pool.fc:17:    storage::load();
+contracts/pool.fc:43:        print(`if equal_slices(ctx.at(SENDER), storage::rate_setter_address) { if handle_setter_messages() { return (); } }`);
+contracts/vault.fc:10:() storage::load() impure inline {
+contracts/vault.fc:19:() storage::save() impure inline_ref {
+contracts/vault.fc:37:    storage::load();
+contracts/vault.fc:44:        storage::save();
+contracts/vault.fc:45:        reserves::max_balance(storage_fee::vault);
+contracts/vault.fc:69:        storage::save();
+contracts/vault.fc:78:    storage::load();
+contracts/lp_wallet.fc:11:    int query_id = in_msg_body~load_uint(64);
+contracts/lp_wallet.fc:17:    (int balance, slice owner_address, slice jetton_master_address, cell jetton_wallet_code) = storage::load();
+contracts/lp_wallet.fc:38:        .store_uint(query_id, 64)
+contracts/lp_wallet.fc:51:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:55:    (int balance, slice owner_address, slice jetton_master_address, cell jetton_wallet_code) = storage::load();
+contracts/lp_wallet.fc:56:    int query_id = in_msg_body~load_uint(64);
+contracts/lp_wallet.fc:75:            .store_uint(query_id, 64)
+contracts/lp_wallet.fc:96:        .store_uint(query_id, 64);
+contracts/lp_wallet.fc:100:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:104:    (int balance, slice owner_address, slice jetton_master_address, cell jetton_wallet_code) = storage::load();
+contracts/lp_wallet.fc:105:    int query_id = in_msg_body~load_uint(64);
+contracts/lp_wallet.fc:117:        .store_uint(query_id, 64)
+contracts/lp_wallet.fc:133:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:138:    (int balance, slice owner_address, slice jetton_master_address, cell jetton_wallet_code) = storage::load();
+contracts/lp_wallet.fc:143:    int query_id = in_msg_body~load_uint(64);
+contracts/lp_wallet.fc:146:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:188:    return storage::load();
+contracts/lp_wallet/storage.fc:1:(int, slice, slice, cell) storage::load() inline {
+contracts/lp_wallet/storage.fc:8:() storage::save(int balance, slice owner_address, slice jetton_master_address, cell jetton_wallet_code) impure inline {
+contracts/router/storage.fc:12:() storage::load() impure inline {
+contracts/router/storage.fc:31:() storage::save() impure inline {
+contracts/lp_account/storage.fc:6:() storage::load() impure inline {
+contracts/lp_account/storage.fc:15:() storage::save() impure inline_ref {
+contracts/pool/get.fc:8:    storage::load();
+contracts/pool/get.fc:22:    storage::load();
+contracts/pool/get.fc:40:    storage::load();
+contracts/lp_account/get.fc:2:    storage::load();
+contracts/router/dex.fc:29:        reserves::max_balance(storage_fee::router);
+contracts/router/dex.fc:51:        throw_arg_unless(op::transfer_bounce_tx_expired, 1, tx_deadline > now());
+contracts/router/dex.fc:83:        reserves::max_balance(storage_fee::router);
+contracts/router/dex.fc:94:        reserves::max_balance(storage_fee::router);
+contracts/lp_account/msgs/getter.fc:7:        reserves::max_balance(storage_fee::lp_account);
+contracts/lp_account/msgs/pool.fc:51:            reserves::max_balance(storage_fee::lp_account);
+contracts/lp_account/msgs/pool.fc:55:        storage::save();
+contracts/router/get.fc:4:    storage::load();
+contracts/router/get.fc:19:    storage::load();
+contracts/router/get.fc:33:    storage::load();
+contracts/router/get.fc:49:    storage::load();
+contracts/pool/msgs/router.fc:54:            reserves::max_balance(storage_fee::pool);
+contracts/pool/msgs/router.fc:111:            throw_arg_unless(op::swap_refund_tx_expired, 1, tx_deadline > now());
+contracts/pool/msgs/router.fc:120:            reserves::max_balance(storage_fee::pool);
+contracts/pool/msgs/router.fc:152:            storage::save();
+contracts/pool/msgs/router.fc:156:            reserves::max_balance(storage_fee::pool);
+contracts/pool/msgs/router.fc:215:            reserves::max_balance(storage_fee::pool);
+contracts/pool/msgs/router.fc:238:            throw_arg_unless(op::provide_refund_tx_expired, 1, tx_deadline > now());
+contracts/pool/msgs/router.fc:245:            reserves::max_balance(storage_fee::pool);
+contracts/pool/msgs/router.fc:266:            reserves::max_balance(storage_fee::pool);
+contracts/pool/msgs/router.fc:296:        storage::save();
+contracts/pool/msgs/router.fc:297:        reserves::max_balance(storage_fee::pool);
+contracts/pool/msgs/router.fc:317:        storage::save();
+contracts/pool/msgs/router.fc:319:        reserves::max_balance(storage_fee::pool);
+contracts/pool/msgs/lp_account.fc:29:        reserves::max_balance(storage_fee::pool);
+contracts/pool/msgs/lp_account.fc:132:            storage::save();
+contracts/lp_account/msgs/user.fc:36:        storage::save();
+contracts/lp_account/msgs/user.fc:81:            reserves::max_balance(storage_fee::lp_account);
+contracts/lp_account/msgs/user.fc:100:        storage::save();
+contracts/router/msgs/vault.fc:15:        reserves::max_balance(storage_fee::router);
+contracts/pool/msgs/getter.fc:7:        reserves::max_balance(storage_fee::pool);
+contracts/pool/msgs/getter.fc:28:        reserves::max_balance(storage_fee::pool);
+contracts/pool/msgs/getter.fc:43:        reserves::max_balance(storage_fee::pool);
+contracts/pool/msgs/protocolfee.fc:21:        reserves::max_balance(storage_fee::pool);
+contracts/pool/msgs/protocolfee.fc:60:        storage::save();
+contracts/router/pools/weighted_const_product/contracts.fc:1:(cell) pool::internal_set_params(
+contracts/router/pools/weighted_const_product/contracts.fc:4:    int _new_w
+contracts/router/pools/weighted_const_product/contracts.fc:6:    return begin_message(op::internal_set_params)
+contracts/router/pools/weighted_const_product/contracts.fc:9:        .store_uint(_new_w, 128)
+contracts/pool/msgs/lp_wallet.fc:56:        reserves::max_balance(storage_fee::pool);
+contracts/pool/msgs/lp_wallet.fc:95:        storage::save();
+contracts/pool/pools/README.md:15:() storage::save();
+contracts/pool/pools/README.md:16:() storage::load();
+contracts/pool/pools/weighted_const_product/storage.fc:3:() storage::load() impure inline {
+contracts/pool/pools/weighted_const_product/storage.fc:28:() storage::save() impure inline {
+contracts/router/pools/weighted_stableswap/contracts.fc:1:(cell) pool::internal_set_params(
+contracts/router/pools/weighted_stableswap/contracts.fc:4:    int _new_amp,
+contracts/router/pools/weighted_stableswap/contracts.fc:5:    int _new_rate,
+contracts/router/pools/weighted_stableswap/contracts.fc:6:    int _new_w,
+contracts/router/pools/weighted_stableswap/contracts.fc:9:    return begin_message(op::internal_set_params)
+contracts/router/pools/weighted_stableswap/contracts.fc:12:        .store_uint(_new_amp, 128)
+contracts/router/pools/weighted_stableswap/contracts.fc:13:        .store_uint(_new_rate, 128)
+contracts/router/pools/weighted_stableswap/contracts.fc:14:        .store_uint(_new_w, 128)
+contracts/router/msgs/pool.fc:68:            reserves::max_balance(storage_fee::router);
+contracts/router/msgs/pool.fc:116:        reserves::max_balance(storage_fee::router);
+contracts/router/pools/weighted_stableswap/ext_admin.fc:6:    if ctx.at(OPCODE) == op::set_params {
+contracts/router/pools/weighted_stableswap/ext_admin.fc:7:        (int new_amp, int new_rate, int new_w) = (in_msg_body~load_uint128(), in_msg_body~load_uint128(), in_msg_body~load_uint128());
+contracts/router/pools/weighted_stableswap/ext_admin.fc:19:            + storage_fee::router + gas::router::set_params 
+contracts/router/pools/weighted_stableswap/ext_admin.fc:20:            + storage_fee::pool + gas::pool::internal_set_params);
+contracts/router/pools/weighted_stableswap/ext_admin.fc:23:        ;; 0 new_rate will leave pool param unchanged
+contracts/router/pools/weighted_stableswap/ext_admin.fc:25:        throw_unless(error::invalid_amount, (0 < new_w) & (new_w < math::ONE_DEC));
+contracts/router/pools/weighted_stableswap/ext_admin.fc:26:        throw_unless(error::math_error, (new_amp <= (2000 * math::ONE_DEC)));
+contracts/router/pools/weighted_stableswap/ext_admin.fc:43:        reserves::max_balance(storage_fee::router);
+contracts/router/pools/weighted_stableswap/ext_admin.fc:48:            pool::internal_set_params(
+contracts/router/pools/weighted_stableswap/ext_admin.fc:51:                new_amp,
+contracts/router/pools/weighted_stableswap/ext_admin.fc:52:                new_rate,
+contracts/router/pools/weighted_stableswap/ext_admin.fc:53:                new_w,
+contracts/router/pools/weighted_const_product/ext_admin.fc:6:    if ctx.at(OPCODE) == op::set_params {
+contracts/router/pools/weighted_const_product/ext_admin.fc:7:        (int new_w, slice side_wallet) = (in_msg_body~load_uint128(), in_msg_body~load_msg_addr());
+contracts/router/pools/weighted_const_product/ext_admin.fc:18:            + storage_fee::router + gas::router::set_params 
+contracts/router/pools/weighted_const_product/ext_admin.fc:19:            + storage_fee::pool + gas::pool::internal_set_params);
+contracts/router/pools/weighted_const_product/ext_admin.fc:22:        throw_unless(error::invalid_amount, (0 < new_w) & (new_w < math::ONE_DEC));
+contracts/router/pools/weighted_const_product/ext_admin.fc:38:        reserves::max_balance(storage_fee::router);
+contracts/router/pools/weighted_const_product/ext_admin.fc:43:            pool::internal_set_params(
+contracts/router/pools/weighted_const_product/ext_admin.fc:46:                new_w
+contracts/pool/pools/stableswap/storage.fc:3:() storage::load() impure inline {
+contracts/pool/pools/stableswap/storage.fc:28:() storage::save() impure inline {
+contracts/pool/pools/weighted_const_product/get.fc:2:    storage::load();
+contracts/router/msgs/admin.fc:39:        reserves::max_balance(storage_fee::router);
+contracts/router/msgs/admin.fc:75:        reserves::max_balance(storage_fee::router);
+contracts/router/msgs/admin.fc:106:        reserves::max_balance(storage_fee::router);
+contracts/router/msgs/admin.fc:137:        reserves::max_balance(storage_fee::router);
+contracts/router/msgs/admin.fc:150:        storage::save();
+contracts/router/msgs/admin.fc:151:        reserves::max_balance(storage_fee::router);
+contracts/router/msgs/admin.fc:161:        storage::temp_upgrade = pack_temp_upgrade(now() + params::sevendays, new_code, end_admin, admin, end_pool_code, pool_code);
+contracts/router/msgs/admin.fc:164:        storage::save();
+contracts/router/msgs/admin.fc:166:        reserves::max_balance(storage_fee::router);
+contracts/router/msgs/admin.fc:178:        storage::temp_upgrade = pack_temp_upgrade(end_code, new_code, now() + params::twodays, new_admin_address, end_pool_code, pool_code);
+contracts/router/msgs/admin.fc:179:        storage::save();
+contracts/router/msgs/admin.fc:181:        reserves::max_balance(storage_fee::router);
+contracts/router/msgs/admin.fc:191:        storage::temp_upgrade = pack_temp_upgrade(end_code, new_code, end_admin, admin, now() + params::twodays, new_pool_code);
+contracts/router/msgs/admin.fc:194:        storage::save();
+contracts/router/msgs/admin.fc:196:        reserves::max_balance(storage_fee::router);
+contracts/router/msgs/admin.fc:205:        storage::save();
+contracts/router/msgs/admin.fc:207:        reserves::max_balance(storage_fee::router);
+contracts/router/msgs/admin.fc:216:        storage::save();
+contracts/router/msgs/admin.fc:218:        reserves::max_balance(storage_fee::router);
+contracts/router/msgs/admin.fc:227:        storage::save();
+contracts/router/msgs/admin.fc:229:        reserves::max_balance(storage_fee::router);
+contracts/router/msgs/admin.fc:239:        if (end_code > 0) & (now() >= end_code) {
+contracts/router/msgs/admin.fc:245:        if (end_admin > 0) & (now() >= end_admin) {
+contracts/router/msgs/admin.fc:251:        if (end_pool_code > 0) & (now() >= end_pool_code) {
+contracts/router/msgs/admin.fc:258:        storage::save();
+contracts/router/msgs/jetton.fc:11:            reserves::max_balance(storage_fee::router);
+contracts/router/pools/stableswap/contracts.fc:1:(cell) pool::internal_set_params(slice _excesses_address, int _new_amp) inline {
+contracts/router/pools/stableswap/contracts.fc:2:    return begin_message(op::internal_set_params)
+contracts/router/pools/stableswap/contracts.fc:4:        .store_uint32(_new_amp)
+contracts/router/msgs/getter.fc:21:        reserves::max_balance(storage_fee::router);
+contracts/pool/pools/stableswap/get.fc:2:    storage::load();
+contracts/router/pools/stableswap/ext_admin.fc:9:    if ctx.at(OPCODE) == op::set_params {
+contracts/router/pools/stableswap/ext_admin.fc:10:        int new_amp = in_msg_body~load_uint32();
+contracts/router/pools/stableswap/ext_admin.fc:19:            + storage_fee::router + gas::router::set_params 
+contracts/router/pools/stableswap/ext_admin.fc:20:            + storage_fee::pool + gas::pool::internal_set_params);
+contracts/router/pools/stableswap/ext_admin.fc:23:        throw_unless(error::invalid_amount, (_MIN_AMP <= new_amp) & (new_amp <= _MAX_AMP));
+contracts/router/pools/stableswap/ext_admin.fc:42:        reserves::max_balance(storage_fee::router);
+contracts/router/pools/stableswap/ext_admin.fc:47:            pool::internal_set_params(
+contracts/router/pools/stableswap/ext_admin.fc:49:                new_amp
+contracts/pool/pools/stableswap/ext_router.fc:6:    if ctx.at(OPCODE) == op::internal_set_params {
+contracts/pool/pools/stableswap/ext_router.fc:8:        int new_amp = in_msg_body~load_uint32();
+contracts/pool/pools/stableswap/ext_router.fc:11:        storage::amp = new_amp;
+contracts/pool/pools/stableswap/ext_router.fc:13:        storage::save();
+contracts/pool/pools/stableswap/ext_router.fc:15:        reserves::max_balance(storage_fee::pool);
+contracts/pool/pools/weighted_stableswap/storage.fc:2:global int storage::rate;
+contracts/pool/pools/weighted_stableswap/storage.fc:4:global slice storage::rate_setter_address;
+contracts/pool/pools/weighted_stableswap/storage.fc:6:() storage::load() impure inline {
+contracts/pool/pools/weighted_stableswap/storage.fc:21:    storage::rate = w_params_data~load_uint(128);
+contracts/pool/pools/weighted_stableswap/storage.fc:23:    storage::rate_setter_address = w_params_data~load_msg_addr(); 
+contracts/pool/pools/weighted_stableswap/storage.fc:38:() storage::save() impure inline {
+contracts/pool/pools/weighted_stableswap/storage.fc:51:            .store_uint(storage::rate, 128)
+contracts/pool/pools/weighted_stableswap/storage.fc:53:            .store_slice(storage::rate_setter_address)
+contracts/pool/pools/weighted_const_product/ext_router.fc:6:    if ctx.at(OPCODE) == op::internal_set_params {
+contracts/pool/pools/weighted_const_product/ext_router.fc:9:        int new_w = in_msg_body~load_uint128();
+contracts/pool/pools/weighted_const_product/ext_router.fc:16:                storage::w0 = new_w;
+contracts/pool/pools/weighted_const_product/ext_router.fc:18:                storage::w0 = new_w.math::fp::complement();
+contracts/pool/pools/weighted_const_product/ext_router.fc:21:        storage::save();
+contracts/pool/pools/weighted_const_product/ext_router.fc:23:        reserves::max_balance(storage_fee::pool);
+contracts/pool/pools/constant_sum/storage.fc:1:() storage::load() impure inline {
+contracts/pool/pools/constant_sum/storage.fc:25:() storage::save() impure inline {
+contracts/pool/pools/weighted_stableswap/math.fc:14:    int p1 = (x + (storage::rate.math::fp::mul(y))).math::fp::mul(storage::amp);
+contracts/pool/pools/weighted_stableswap/math.fc:15:    int p2 = (x.math::fp::ow_pow(_p)).math::fp::mul((storage::rate.math::fp::mul(y)).math::fp::ow_pow(_q));
+contracts/pool/pools/weighted_stableswap/math.fc:25:    int p2_1 = p2_0.math::fp::mul(storage::rate.math::fp::ow_pow(_q));
+contracts/pool/pools/weighted_stableswap/math.fc:26:    return math::fp::mul(storage::amp, storage::rate) + p2_1.math::fp::mul(x.math::fp::ow_pow(_p));
+contracts/pool/pools/weighted_stableswap/math.fc:35:    int p2_1 = p2_0.math::fp::mul(storage::rate.math::fp::ow_pow(_q));
+contracts/pool/pools/weighted_stableswap/ext_router.fc:6:    if ctx.at(OPCODE) == op::internal_set_params {
+contracts/pool/pools/weighted_stableswap/ext_router.fc:8:        (int new_amp, int new_rate, int new_w) = (in_msg_body~load_uint128(), in_msg_body~load_uint128(), in_msg_body~load_uint128());
+contracts/pool/pools/weighted_stableswap/ext_router.fc:13:        storage::amp = new_amp;
+contracts/pool/pools/weighted_stableswap/ext_router.fc:14:        storage::rate = new_rate ? new_rate : storage::rate;
+contracts/pool/pools/weighted_stableswap/ext_router.fc:15:        storage::rate_setter_address = new_setter;
+contracts/pool/pools/weighted_stableswap/ext_router.fc:17:        if (storage::w0 == 0) & (new_w > 0) {
+contracts/pool/pools/weighted_stableswap/ext_router.fc:21:                storage::w0 = new_w;
+contracts/pool/pools/weighted_stableswap/ext_router.fc:23:                storage::w0 = new_w.math::fp::complement();
+contracts/pool/pools/weighted_stableswap/ext_router.fc:26:        storage::save();
+contracts/pool/pools/weighted_stableswap/ext_router.fc:28:        reserves::max_balance(storage_fee::pool);
+contracts/pool/pools/constant_product/storage.fc:1:() storage::load() impure inline {
+contracts/pool/pools/constant_product/storage.fc:25:() storage::save() impure inline {
+contracts/pool/pools/constant_sum/get.fc:2:    storage::load();
+contracts/pool/pools/weighted_stableswap/get.fc:2:    storage::load();
+contracts/pool/pools/weighted_stableswap/get.fc:17:        storage::rate,
+contracts/pool/pools/weighted_stableswap/get.fc:19:        storage::rate_setter_address
+contracts/pool/pools/weighted_stableswap/state_init.fc:22:            .store_uint(0, 128)                   ;; storage::rate (0.0)
+contracts/pool/pools/weighted_stableswap/state_init.fc:24:            .store_uint(0, 2)                     ;; storage::rate_setter_address  
+contracts/pool/pools/constant_product/get.fc:2:    storage::load();
+contracts/pool/pools/weighted_stableswap/pool.fc:32:    storage::rate = ex.math::fp::div(ey);
+contracts/pool/pools/weighted_stableswap/setter.fc:4:    if ctx.at(OPCODE) == op::set_rate {
+contracts/pool/pools/weighted_stableswap/setter.fc:5:        int new_rate = in_msg_body~load_uint128();
+contracts/pool/pools/weighted_stableswap/setter.fc:7:        throw_unless(error::invalid_amount, new_rate > 0);
+contracts/pool/pools/weighted_stableswap/setter.fc:8:        storage::rate = new_rate;
+contracts/pool/pools/weighted_stableswap/setter.fc:10:        storage::save();
+contracts/pool/pools/weighted_stableswap/setter.fc:11:        reserves::max_balance(storage_fee::pool);

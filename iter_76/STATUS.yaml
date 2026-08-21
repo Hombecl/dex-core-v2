@@ -1,0 +1,61 @@
+schema_version: shadow-v1
+iteration: 76
+phase: completed
+cell_id: T1
+cell_label: cross_swap_nested_refund_binding
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: T1
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_76/poc_cross_swap_nested_refund_binding.run.log
+    run_log_exists_on_disk: true
+    test_runtime: 44.593s
+    result: PASSED (20 passed, 95 skipped, 115 total)
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 nested cross swap receiver is:issue'
+      - 'repo:ston-fi/dex-core-v2 cross-swap refund payload is:issue'
+      - 'repo:ston-fi/dex-core-v2 route_dex_messages cross_swap is:pr'
+      - 'repo:ston-fi/dex-core-v2 cross router receiver binding is:issue'
+    results: all four GitHub searches returned total_count=0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 nested cross swap receiver is:issue'
+      - 'repo:ston-fi/dex-core-v2 cross-swap refund payload is:issue'
+      - 'repo:ston-fi/dex-core-v2 route_dex_messages cross_swap is:pr'
+      - 'repo:ston-fi/dex-core-v2 cross router receiver binding is:issue'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_76/callers-grep.txt
+  caller_grep_match_count: 72
+  caller_grep_unique_files: 8
+  prior_audit_path: iter_76/prior-audit-git.log
+  prior_audit_bytes: 0
+  r15_search_files:
+    - iter_76/R15-GH-nested-receiver.json
+    - iter_76/R15-GH-refund-payload.json
+    - iter_76/R15-GH-route-cross-pr.json
+    - iter_76/R15-GH-cross-router-binding.json
+  source_conclusion: 'Nested cross-swap payloads preserve the caller, refund, excess, deadline, and next-token-wallet fields through router::pay_to, route_dex_messages, pool::$route, and the pool swap refund/success branches. The router derives each next pool from its own address and the two token wallets, and pay_to accepts only a deterministic pool sender. The targeted same-router and two-router success/refund paths passed without a receiver substitution, cross-user credit, or attacker-controlled pool sender.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_76-T1.md

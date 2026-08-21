@@ -1,0 +1,61 @@
+schema_version: shadow-v1
+iteration: 79
+phase: completed
+cell_id: T4
+cell_label: initial_liquidity_minimum_boundary
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: T4
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_79/poc_initial_liquidity_minimum_boundary.run.log
+    run_log_exists_on_disk: true
+    test_runtime: 30.313s
+    result: PASSED (17 passed, 98 skipped, 115 total)
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 required_min_liquidity is:issue'
+      - 'repo:ston-fi/dex-core-v2 initial liquidity underflow is:issue'
+      - 'repo:ston-fi/dex-core-v2 cb_add_liquidity minimum supply is:pr'
+      - 'repo:ston-fi/dex-core-v2 initial lp mint zero is:issue'
+    results: all four GitHub searches returned total_count=0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 required_min_liquidity is:issue'
+      - 'repo:ston-fi/dex-core-v2 initial liquidity underflow is:issue'
+      - 'repo:ston-fi/dex-core-v2 cb_add_liquidity minimum supply is:pr'
+      - 'repo:ston-fi/dex-core-v2 initial lp mint zero is:issue'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_79/callers-grep.txt
+  caller_grep_match_count: 69
+  caller_grep_unique_files: 8
+  prior_audit_path: iter_79/prior-audit-git.log
+  prior_audit_bytes: 0
+  r15_search_files:
+    - iter_79/R15-GH-required-min-liquidity.json
+    - iter_79/R15-GH-initial-liquidity-underflow.json
+    - iter_79/R15-GH-cb-add-minimum-supply.json
+    - iter_79/R15-GH-initial-lp-mint-zero.json
+  source_conclusion: 'Initial cb_add_liquidity requires both amounts positive before calling the implementation invariant. It assigns total_supply_lp to the invariant, subtracts the fixed required minimum liquidity from the user-facing mint amount, and rejects any negative result through the liquidity < min_lp_out check; a zero user-facing mint with min_lp_out=0 only represents the intentionally locked minimum supply. Reserves and total supply are persisted only on the successful mint branch, while rejected boundary attempts re-credit the LP account. Constant-product, constant-sum, stableswap, weighted constant-product, and weighted stableswap implementations share this boundary behavior; targeted provide/direct-add tests passed across four suites.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_79-T4.md

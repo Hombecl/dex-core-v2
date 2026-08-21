@@ -1,0 +1,61 @@
+schema_version: shadow-v1
+iteration: 100
+phase: completed
+cell_id: X5
+cell_label: getter_payload_ref_shape_boundary
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: X5
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/Router.spec.ts,tests/Pool.spec.ts,tests/LPAccount.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_100/poc_getter_payload_ref_shape_boundary.run.log
+    run_log_exists_on_disk: true
+    test_runtime: 6.679s
+    result: PASSED (3 passed, 6 skipped, 9 total)
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 getter_pool_data response issue search'
+      - 'repo:ston-fi/dex-core-v2 take_wallet_address included_address issue search'
+      - 'repo:ston-fi/dex-core-v2 getter_lp_account_data pull request search'
+      - 'repo:ston-fi/dex-core-v2 getter_pool_address sender pull request search'
+    results: all four repository issue/PR pages showed No results
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'getter_pool_data response on repository issue page'
+      - 'take_wallet_address included_address on repository issue page'
+      - 'getter_lp_account_data on repository pull-request page'
+      - 'getter_pool_address sender on repository pull-request page'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_100/callers-grep.txt
+  caller_grep_match_count: 114
+  caller_grep_unique_files: 29
+  prior_audit_path: iter_100/prior-audit-git.log
+  prior_audit_bytes: 53
+  r15_search_files:
+    - iter_100/R15-GH-getter-pool-data-response-issue.html
+    - iter_100/R15-GH-take-wallet-included-address-issue.html
+    - iter_100/R15-GH-getter-lp-account-data-pr.html
+    - iter_100/R15-GH-getter-pool-address-sender-pr.html
+  source_conclusion: 'Getter handlers build response bodies from stored or explicitly requested read-only values and always send them to ctx.at(SENDER) with IGNORE_ERRORS. Optional included_address is the requester-provided owner slice, and pool/LP-account getters contain no state-changing opcode or ref interpreted by the target as authorization. Address/workchain checks occur before deterministic derivation where applicable, so no getter response can mutate or redirect another account.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_100-X5.md

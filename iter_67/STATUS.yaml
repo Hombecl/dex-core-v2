@@ -1,0 +1,61 @@
+schema_version: shadow-v1
+iteration: 67
+phase: completed
+cell_id: R12
+cell_label: provide_catch_state_rollback
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: R12
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/WeightedCPI.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_67/poc_provide_catch_state_rollback.run.log
+    run_log_exists_on_disk: true
+    test_runtime: 18.028s
+    result: PASSED (9 passed, 63 skipped, 72 total)
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 provide liquidity catch refund is:issue'
+      - 'repo:ston-fi/dex-core-v2 liquidity provision rollback is:issue'
+      - 'repo:ston-fi/dex-core-v2 provide_lp callback is:pr'
+      - 'repo:ston-fi/dex-core-v2 audit liquidity refund is:issue'
+    results: all four GitHub searches returned total_count=0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 provide liquidity catch refund is:issue'
+      - 'repo:ston-fi/dex-core-v2 liquidity provision rollback is:issue'
+      - 'repo:ston-fi/dex-core-v2 provide_lp callback is:pr'
+      - 'repo:ston-fi/dex-core-v2 audit liquidity refund is:issue'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_67/callers-grep.txt
+  caller_grep_match_count: 31
+  caller_grep_unique_files: 6
+  prior_audit_path: iter_67/prior-audit-git.log
+  prior_audit_bytes: 0
+  r15_search_files:
+    - iter_67/gh-provide-liquidity-catch-refund.json
+    - iter_67/gh-liquidity-provision-rollback.json
+    - iter_67/gh-provide-lp-callback-pr.json
+    - iter_67/gh-audit-liquidity-refund.json
+  source_conclusion: 'Pool provide_lp catches parse/deadline failures and refunds original amounts; cb_add_liquidity mutates only in-memory state and saves only on successful mint. Its failure branch sends a state-init refund without storage::save(), so pool state is not persisted on the failed path.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_67-R12.md

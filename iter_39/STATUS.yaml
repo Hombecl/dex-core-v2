@@ -1,0 +1,54 @@
+schema_version: shadow-v1
+iteration: 39
+phase: completed
+cell_id: P8xC4
+cell_label: referral_fee_deposit x bounce_reversal
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: P8xC4
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/WeightedCPI.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_39/poc_referral_fee_bounce_reversal.run.log
+    run_log_exists_on_disk: true
+    test_runtime: PASSED
+    duration_seconds: 7.885
+    numerical_evidence: "WeightedCPI.spec.ts: 4 passed, 21 skipped; referral-vault collection and swap refund, locked-pool refund, and fee-over-max refund."
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 referral fee bounce refund is:issue"
+      - "repo:ston-fi/dex-core-v2 vault bounced deposit is:issue"
+      - "repo:ston-fi/dex-core-v2 referral fee bounce is:pr"
+      - "repo:ston-fi/dex-core-v2 audit referral fee bounce is:issue"
+    results: "Fresh GitHub API searches returned zero results after response validation; local audit/security/referral/vault/bounce/refund/reversal git search was empty."
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "repo:ston-fi/dex-core-v2 referral fee bounce refund is:issue"
+      - "repo:ston-fi/dex-core-v2 vault bounced deposit is:issue"
+      - "repo:ston-fi/dex-core-v2 referral fee bounce is:pr"
+      - "repo:ston-fi/dex-core-v2 audit referral fee bounce is:issue"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_39-P8xC4.md
+  notes:
+    - "Vault itself ignores protocol bounces; the router's pay_vault path validates the deterministic vault before token payout, and swap refund branches return the original input through the router path."
+    - "No fee-credit retention, duplicate restoration, or cross-operation bounce reversal was demonstrated."

@@ -1,0 +1,54 @@
+schema_version: shadow-v1
+iteration: 7
+phase: completed
+cell_id: P2xC1
+cell_label: provide_lp x sender_binding
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: P2xC1
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_7/poc_provide_lp_sender_binding.run.log
+    run_log_exists_on_disk: true
+    test_runtime: PASSED
+    duration_seconds: 12.629
+    numerical_evidence: "ConstProduct.spec.ts: 9 passed, 27 skipped; provision, payload-to-different-address, direct-add all/partial, and partial/both-token refund cases."
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 provide liquidity sender is:issue"
+      - "repo:ston-fi/dex-core-v2 LP account caller is:issue"
+      - "repo:ston-fi/dex-core-v2 liquidity authorization is:pr"
+      - "repo:ston-fi/dex-core-v2 audit lp account is:issue"
+    results: "Fresh GitHub API searches returned zero results; local audit/security/liquidity git search was empty."
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "repo:ston-fi/dex-core-v2 provide liquidity sender is:issue"
+      - "repo:ston-fi/dex-core-v2 LP account caller is:issue"
+      - "repo:ston-fi/dex-core-v2 liquidity authorization is:pr"
+      - "repo:ston-fi/dex-core-v2 audit lp account is:issue"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_7-P2xC1.md
+  notes:
+    - "LP-account pool/user handlers enforce exact sender equality from immutable state, and pool callbacks recompute the deterministic LP-account address from the callback user."
+    - "The router's generic notification entrypoint accepts token-wallet senders as the pair's token identity, but no selected-asset path was found that impersonates an existing LP account or extracts a victim balance without a corresponding user transfer into that pair."

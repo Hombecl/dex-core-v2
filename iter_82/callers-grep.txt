@@ -1,0 +1,20 @@
+tests/Router.spec.ts:142:            const sendResetPoolGasResult = await router.sendGetterPoolAddress(admin.getSender(), {
+tests/Pool.spec.ts:178:            const deployPoolResult = await pool.sendGetterPoolData(router.getSender(), toNano('0.05'));
+contracts/router/msgs/getter.fc:6:    if ctx.at(OPCODE) == op::getter_pool_address { 
+contracts/router/msgs/getter.fc:24:            ctx.at(SENDER), 
+contracts/router/msgs/getter.fc:25:            anyone::getter_pool_address(pool~address(params::workchain)), 
+contracts/pool/msgs/getter.fc:6:    if ctx.at(OPCODE) == op::getter_pool_data { 
+contracts/pool/msgs/getter.fc:9:        var out_msg_body = anyone::getter_pool_data(
+contracts/pool/msgs/getter.fc:23:        msgs::send_simple(0, ctx.at(SENDER), out_msg_body, CARRY_ALL_BALANCE | IGNORE_ERRORS);
+contracts/pool/msgs/getter.fc:27:    if ctx.at(OPCODE) == op::getter_lp_account_address { 
+contracts/pool/msgs/getter.fc:37:        var out_msg_body = anyone::getter_lp_account_address(lp_account~address(params::workchain));
+contracts/pool/msgs/getter.fc:38:        msgs::send_simple(0, ctx.at(SENDER), out_msg_body, CARRY_ALL_BALANCE | IGNORE_ERRORS);
+contracts/pool/msgs/getter.fc:42:    if ctx.at(OPCODE) == op::ft::provide_wallet_address {
+contracts/pool/msgs/getter.fc:46:        throw_unless(75, ctx.at(MSG_VALUE) > ctx.at(FWD_FEE) + gas::pool::provide_wallet_address);
+contracts/pool/msgs/getter.fc:54:        var msg = begin_message(op::ft::take_wallet_address);
+contracts/pool/msgs/getter.fc:65:        msgs::send_simple(0, ctx.at(SENDER), msg.store_maybe_ref(included_address).end_cell(), CARRY_ALL_BALANCE | IGNORE_ERRORS);
+contracts/lp_account/msgs/getter.fc:6:    if (ctx.at(OPCODE) == op::getter_lp_account_data) { 
+contracts/lp_account/msgs/getter.fc:10:            ctx.at(SENDER), 
+contracts/lp_account/msgs/getter.fc:11:            anyone::getter_lp_account_data(
+tests/LPAccount.spec.ts:54:            const sendGetterLPAccData = await lpAcc.sendGetterLPAccountData(user.getSender());
+tests/LPAccount.spec.ts:55:            expect(sendGetterLPAccData.transactions).toHaveTransaction({

@@ -1,0 +1,18 @@
+
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/Pool.spec.ts -t refund provide lp|bounce
+
+PASS tests/Pool.spec.ts
+  Pool
+    Router calls
+      ✓ should refund provide lp if tx is expired (19 ms)
+      ✓ should bounce if tokens are the same (25 ms)
+      ○ skipped should refund swap if tx is expired
+    Getters
+      ○ skipped should generate valid URI
+
+Test Suites: 1 passed, 1 total
+Tests:       2 skipped, 2 passed, 4 total
+Snapshots:   0 total
+Time:        3.276 s, estimated 6 s
+Ran all test suites matching /tests\/Pool.spec.ts/i with tests matching "refund provide lp|bounce".

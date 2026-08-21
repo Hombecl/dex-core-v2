@@ -1,0 +1,61 @@
+schema_version: shadow-v1
+iteration: 82
+phase: completed
+cell_id: U2
+cell_label: async_getter_response_address_confusion
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: U2
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_82/poc_async_getter_response_address_confusion.run.log
+    run_log_exists_on_disk: true
+    test_runtime: 6.571s
+    result: PASSED (3 passed, 6 skipped, 9 total)
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 async getter response is:issue'
+      - 'repo:ston-fi/dex-core-v2 getter_pool_address sender is:issue'
+      - 'repo:ston-fi/dex-core-v2 LP account getter callback is:pr'
+      - 'repo:ston-fi/dex-core-v2 take_wallet_address response is:issue'
+    results: all four GitHub searches returned total_count=0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 async getter response is:issue'
+      - 'repo:ston-fi/dex-core-v2 getter_pool_address sender is:issue'
+      - 'repo:ston-fi/dex-core-v2 LP account getter callback is:pr'
+      - 'repo:ston-fi/dex-core-v2 take_wallet_address response is:issue'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_82/callers-grep.txt
+  caller_grep_match_count: 20
+  caller_grep_unique_files: 6
+  prior_audit_path: iter_82/prior-audit-git.log
+  prior_audit_bytes: 0
+  r15_search_files:
+    - iter_82/R15-GH-async-getter-response.json
+    - iter_82/R15-GH-getter-pool-address-sender.json
+    - iter_82/R15-GH-lp-account-getter-callback.json
+    - iter_82/R15-GH-take-wallet-address-response.json
+  source_conclusion: 'Asynchronous getter handlers always send responses to ctx.at(SENDER), while body-supplied fields are used only to derive the requested deterministic pool, LP account, or included wallet address. Pool and LP-account responses contain read-only values; the wallet-address response follows the standard owner-address discovery format. Direct getters validate workchain and token inequality, and targeted Router, Pool, and LPAccount getter tests passed without a state-bearing response alias.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_82-U2.md

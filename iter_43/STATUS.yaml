@@ -1,0 +1,54 @@
+schema_version: shadow-v1
+iteration: 43
+phase: completed
+cell_id: P9xC3
+cell_label: getter_quote x state_persistence
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: P9xC3
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_43/poc_getter_quote_state_persistence.run.log
+    run_log_exists_on_disk: true
+    test_runtime: PASSED
+    duration_seconds: 5.153
+    numerical_evidence: "Router.spec.ts and LPAccount.spec.ts: 4 passed, 1 skipped; upgrade transition, deterministic getters, and LP-account state getter."
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 stale getter state is:issue"
+      - "repo:ston-fi/dex-core-v2 quote stale state is:issue"
+      - "repo:ston-fi/dex-core-v2 getter stale state is:pr"
+      - "repo:ston-fi/dex-core-v2 audit stale getter is:issue"
+    results: "Fresh GitHub API searches returned zero results; local audit/security/getter/quote/stale/state/upgrade git search was empty."
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "repo:ston-fi/dex-core-v2 stale getter state is:issue"
+      - "repo:ston-fi/dex-core-v2 quote stale state is:issue"
+      - "repo:ston-fi/dex-core-v2 getter stale state is:pr"
+      - "repo:ston-fi/dex-core-v2 audit stale getter is:issue"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_43-P9xC3.md
+  notes:
+    - "Getter methods call storage::load on each invocation and return current state; upgrade tests observe the updated router state after the transition."
+    - "No stale getter response is consumed by a selected executable authorization or payout path."

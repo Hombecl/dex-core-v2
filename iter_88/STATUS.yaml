@@ -1,0 +1,61 @@
+schema_version: shadow-v1
+iteration: 88
+phase: completed
+cell_id: V3
+cell_label: vault_withdraw_carry_destroy_balance
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: V3
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts,tests/WeightedCPI.spec.ts,tests/Stableswap.spec.ts,tests/WeightedStableswap.spec.ts,tests/ConstSum.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_88/poc_vault_withdraw_carry_destroy_balance.run.log
+    run_log_exists_on_disk: true
+    test_runtime: 21.145s
+    result: PASSED (5 passed, 133 skipped, 138 total)
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 "withdraw_fee" "DESTROY_IF_ZERO" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "deposit_ref_fee" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "vault_pay_to" "vault" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "deposited_amount" "withdraw_fee" is:pr'
+    results: all four GitHub searches returned total_count=0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "withdraw_fee" "DESTROY_IF_ZERO" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "deposit_ref_fee" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "vault_pay_to" "vault" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "deposited_amount" "withdraw_fee" is:pr'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_88/callers-grep.txt
+  caller_grep_match_count: 89
+  caller_grep_unique_files: 31
+  prior_audit_path: iter_88/prior-audit-git.log
+  prior_audit_bytes: 53
+  r15_search_files:
+    - iter_88/R15-GH-withdraw-destroy-issue.json
+    - iter_88/R15-GH-deposit-ref-fee-issue.json
+    - iter_88/R15-GH-vault-pay-to-pr.json
+    - iter_88/R15-GH-deposited-withdraw-pr.json
+  source_conclusion: 'Vault deposits are accepted only from the stored router address and add the supplied referral fee to deposited_amount. Any caller may trigger withdrawal only when the stored amount is positive and the balance/gas guard passes; the vault sends the stored amount to the router with CARRY_ALL_BALANCE | DESTROY_IF_ZERO, then clears and saves state. The router derives the same vault from owner/token/router and rejects any other sender before sending the jettons to the owner. Repeated collection tests pass across all pool families, and no external caller can substitute a vault identity or claim another owner’s fee balance.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_88-V3.md

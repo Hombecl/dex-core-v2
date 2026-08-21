@@ -1,0 +1,54 @@
+schema_version: shadow-v1
+iteration: 53
+phase: completed
+cell_id: Q3
+cell_label: callback_payload_aliasing
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: Q3
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/WeightedCPI.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_53/poc_callback_payload_aliasing.run.log
+    run_log_exists_on_disk: true
+    test_runtime: PASSED
+    duration_seconds: 12.54
+    numerical_evidence: "WeightedCPI.spec.ts: 5 passed, 20 skipped; same-router and cross-router swaps plus input/mid-stage cross-swap refunds."
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 callback payload aliasing is:issue"
+      - "repo:ston-fi/dex-core-v2 pay_to callback caller is:issue"
+      - "repo:ston-fi/dex-core-v2 cross swap callback payload is:pr"
+      - "repo:ston-fi/dex-core-v2 audit callback payload is:issue"
+    results: "Fresh GitHub API searches returned zero results; local audit/security/callback/payload/pay_to/cross-swap git search was empty."
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "repo:ston-fi/dex-core-v2 callback payload aliasing is:issue"
+      - "repo:ston-fi/dex-core-v2 pay_to callback caller is:issue"
+      - "repo:ston-fi/dex-core-v2 cross swap callback payload is:pr"
+      - "repo:ston-fi/dex-core-v2 audit callback payload is:issue"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_53-Q3.md
+  notes:
+    - "Router pay_to and pay_vault validate the deterministic pool/vault sender before consuming nested payload fields; cross-swap routing preserves the original caller through the intended router path."
+    - "No cross-operation amount, recipient, or refund aliasing produced an asset delta."

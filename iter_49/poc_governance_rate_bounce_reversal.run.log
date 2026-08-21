@@ -1,0 +1,45 @@
+
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/WeightedStableswap.spec.ts -t should bounce set new rate by non-setter|should bounce set fees if not admin|should refund swap|should refund swap if pool locked
+
+PASS tests/WeightedStableswap.spec.ts (8.445 s)
+  Weighted Stableswap
+    Fees
+      ○ skipped should set fees
+      ○ skipped should collect fees
+      ○ skipped should collect ref fee from vault
+    Params
+      ○ skipped should set params
+      ○ skipped should set params (no setter)
+      ○ skipped should swap with different ratio
+      ○ skipped should set new rate with setter call
+    Dex
+      ○ skipped should deploy dex
+      ○ skipped should swap
+      ○ skipped should provide lp
+      ○ skipped should provide lp (single side)
+      ○ skipped should burn liquidity
+      ○ skipped should cross-swap on the same router
+      ○ skipped should cross-swap on 2 routers
+      ○ skipped should direct add liquidity (all)
+      ○ skipped should direct add liquidity (partial)
+      ○ skipped should swap with 0 ref fee
+      ○ skipped should swap with max ref fee
+    Refund
+      ✓ should refund swap (1113 ms)
+      ✓ should refund swap if pool locked (954 ms)
+      ✓ should refund swap if fee more than max (943 ms)
+      ○ skipped should refund partial liquidity
+      ○ skipped should refund cross-swap on the same router
+      ○ skipped should refund cross-swap on 2 routers (in)
+      ○ skipped should refund cross-swap on 2 routers (mid)
+    Bounce
+      ✓ should bounce set fees if not admin (904 ms)
+      ✓ should bounce set new rate by non-setter (847 ms)
+      ○ skipped should bounce collect fees if no fee
+
+Test Suites: 1 passed, 1 total
+Tests:       23 skipped, 5 passed, 28 total
+Snapshots:   0 total
+Time:        8.584 s
+Ran all test suites matching /tests\/WeightedStableswap.spec.ts/i with tests matching "should bounce set new rate by non-setter|should bounce set fees if not admin|should refund swap|should refund swap if pool locked".

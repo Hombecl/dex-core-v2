@@ -1,0 +1,62 @@
+schema_version: shadow-v1
+iteration: 98
+phase: completed
+cell_id: X3
+cell_label: admin_fee_address_none_transition
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: X3
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts,tests/WeightedCPI.spec.ts,tests/Stableswap.spec.ts,tests/WeightedStableswap.spec.ts,tests/ConstSum.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_98/poc_admin_fee_address_none_transition.run.log
+    run_log_exists_on_disk: true
+    test_runtime: 30.351s
+    result: PASSED (15 passed, 123 skipped, 138 total)
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 protocol_fee_address transition issue search'
+      - 'repo:ston-fi/dex-core-v2 set_fees addr_none issue search'
+      - 'repo:ston-fi/dex-core-v2 internal_set_fees recipient pull request search'
+      - 'repo:ston-fi/dex-core-v2 protocol_fee_address collect_fees pull request search'
+    results: all four repository issue/PR pages showed No results
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'protocol_fee_address transition on repository issue page'
+      - 'set_fees addr_none on repository issue page'
+      - 'internal_set_fees recipient on repository pull-request page'
+      - 'protocol_fee_address collect_fees on repository pull-request page'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_98/callers-grep.txt
+  caller_grep_match_count: 123
+  caller_grep_unique_files: 38
+  prior_audit_path: iter_98/prior-audit-git.log
+  prior_audit_bytes: 53
+  r15_search_files:
+    - iter_98/R15-GH-protocol-fee-address-transition-issue.html
+    - iter_98/R15-GH-set-fees-addr-none-issue.html
+    - iter_98/R15-GH-internal-set-fees-recipient-pr.html
+    - iter_98/R15-GH-fee-recipient-collect-pr.html
+  kill_filter: trusted-on-trusted-griefing
+  source_conclusion: 'The router accepts a new protocol fee address only through the admin-gated set_fees path, checks the configured workchain, forwards the tuple to the deterministic pool, and the pool saves it atomically. Fee collection then uses that stored address for both payout legs and upstream collection is also trusted-role controlled. A bad recipient transition is trusted-on-trusted economic configuration and is discarded by the requested kill filter; no external unauthorized path remains.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_98-X3.md

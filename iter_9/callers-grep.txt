@@ -1,0 +1,145 @@
+contracts/router.fc:11:    if ctx.at(IS_BOUNCED) { 
+contracts/pool.fc:11:    if ctx.at(IS_BOUNCED) { 
+contracts/lp_account.fc:10:    if ctx.at(IS_BOUNCED) { 
+contracts/lp_wallet.fc:51:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:100:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:133:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:136:() on_bounce (slice in_msg_body) impure {
+contracts/lp_wallet.fc:146:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:157:        on_bounce(in_msg_body);
+contracts/lp_account/storage.fc:15:() storage::save() impure inline_ref {
+contracts/common/contracts.fc:29:(cell) pool::cb_refund_me(int _left_amount, int _right_amount, cell _left_maybe_payload, cell _right_maybe_payload) inline {
+contracts/common/contracts.fc:30:    return begin_message(op::cb_refund_me)
+contracts/common/contracts.fc:39:(cell) pool::cb_add_liquidity(
+contracts/common/contracts.fc:50:    return begin_message(op::cb_add_liquidity)
+contracts/common/contracts.fc:120:(cell) lp_account::add_liquidity(
+contracts/common/contracts.fc:131:    return begin_message(op::add_liquidity)
+contracts/common/contracts.fc:206:(cell) jetton_wallet::mint(
+contracts/common/contracts.fc:280:(builder) jetton_wallet::transfer(int _fwd_amount, int _jetton_amount, slice _to, slice _response_address) inline {
+contracts/router/storage.fc:31:() storage::save() impure inline {
+contracts/common/op.fc:8:const op::direct_add_liquidity            = "direct_add_liquidity query_id:uint64 am0:Coins am1:Coins min_lp_out:Coins fwd_amount:Coins to_user:MsgAddress custom_payload_cs:(Maybe ^Cell) additional_fields:^[refund_address:MsgAddress excess_address:MsgAddress] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:9:const op::refund_me                       = "refund_me query_id:uint64 left_maybe_payload:(Maybe ^Cell) right_maybe_payload:(Maybe ^Cell) = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:15:const op::add_liquidity                   = "add_liquidity query_id:uint64 new_amount0:Coins new_amount1:Coins min_lp_out:Coins fwd_amount:Coins both_positive:uint1 to_user:MsgAddress custom_payload_cs:(Maybe ^Cell) additional_fields:^[refund_address:MsgAddress excess_address:MsgAddress] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:16:const op::cb_add_liquidity                = "cb_add_liquidity query_id:uint64 tot_am0:Coins tot_am1:Coins user_address:MsgAddress min_lp_out:Coins fwd_amount:Coins custom_payload_cs:(Maybe ^Cell) additional_fields:^[to_user_address:MsgAddress refund_address:MsgAddress excess_address:MsgAddress] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:17:const op::cb_refund_me                    = "cb_refund_me query_id:uint64 tot_am0:Coins tot_am1:Coins user_address:MsgAddress left_maybe_payload:(Maybe ^Cell) right_maybe_payload:(Maybe ^Cell) = InternalMsgBody"c & 0x7fffffff;
+contracts/lp_account/msgs/getter.fc:17:            CARRY_ALL_BALANCE | IGNORE_ERRORS
+contracts/router/dex.fc:1:() route_dex_messages(slice _jetton_address, int _available_gas, int _sent_amount, slice _caller, cell _dex_payload) impure inline {
+contracts/router/dex.fc:33:            jetton_wallet::transfer(0, _sent_amount, _caller, _caller)
+contracts/router/dex.fc:37:            QCARRY_ALL_BALANCE
+contracts/router/dex.fc:71:                + storage_fee::lp_account + gas::lp_account::add_liquidity
+contracts/router/dex.fc:72:                + gas::pool::cb_add_liquidity
+contracts/router/dex.fc:84:        msgs::send_with_stateinit(
+contracts/router/dex.fc:89:            CARRY_ALL_BALANCE
+contracts/router/dex.fc:95:        var out_msg_body = jetton_wallet::transfer(0, _sent_amount, refund_address, excesses_address)
+contracts/router/dex.fc:98:        msgs::send_simple(0, _jetton_address, out_msg_body.end_cell(), QCARRY_ALL_BALANCE);
+contracts/pool/msgs/lp_account.fc:4:    if ctx.at(OPCODE) == op::cb_add_liquidity {
+contracts/pool/msgs/lp_account.fc:84:            msgs::send_with_stateinit(
+contracts/pool/msgs/lp_account.fc:88:                lp_account::add_liquidity(
+contracts/pool/msgs/lp_account.fc:99:                CARRY_ALL_BALANCE
+contracts/pool/msgs/lp_account.fc:111:            int used_gas = ctx.at(FWD_FEE) + gas::pool::cb_add_liquidity;
+contracts/pool/msgs/lp_account.fc:119:            msgs::send_with_stateinit(
+contracts/pool/msgs/lp_account.fc:123:                jetton_wallet::mint(
+contracts/pool/msgs/lp_account.fc:130:                CARRY_ALL_BALANCE
+contracts/pool/msgs/lp_account.fc:132:            storage::save();
+contracts/pool/msgs/lp_account.fc:138:    if ctx.at(OPCODE) == op::cb_refund_me {
+contracts/pool/msgs/router.fc:70:                CARRY_ALL_BALANCE
+contracts/pool/msgs/router.fc:150:                CARRY_ALL_BALANCE
+contracts/pool/msgs/router.fc:152:            storage::save();
+contracts/pool/msgs/router.fc:172:                CARRY_ALL_BALANCE
+contracts/pool/msgs/router.fc:231:                CARRY_ALL_BALANCE
+contracts/pool/msgs/router.fc:246:            msgs::send_with_stateinit(
+contracts/pool/msgs/router.fc:250:                lp_account::add_liquidity(
+contracts/pool/msgs/router.fc:261:                CARRY_ALL_BALANCE
+contracts/pool/msgs/router.fc:282:                CARRY_ALL_BALANCE
+contracts/pool/msgs/router.fc:290:        utils::send_excesses(0, in_msg_body~load_msg_addr(), QCARRY_ALL_BALANCE);
+contracts/pool/msgs/router.fc:296:        storage::save();
+contracts/pool/msgs/router.fc:298:        utils::send_excesses(0, in_msg_body~load_msg_addr(), QCARRY_ALL_BALANCE);
+contracts/pool/msgs/router.fc:317:        storage::save();
+contracts/pool/msgs/router.fc:320:        utils::send_excesses(0, in_msg_body~load_msg_addr(), QCARRY_ALL_BALANCE);
+contracts/lp_account/msgs/user.fc:4:    if ctx.at(OPCODE) == op::refund_me { 
+contracts/lp_account/msgs/user.fc:24:            pool::cb_refund_me(
+contracts/lp_account/msgs/user.fc:30:            CARRY_ALL_BALANCE | DESTROY_IF_ZERO
+contracts/lp_account/msgs/user.fc:36:        storage::save();
+contracts/lp_account/msgs/user.fc:40:    if ctx.at(OPCODE) == op::direct_add_liquidity {
+contracts/lp_account/msgs/user.fc:44:            + storage_fee::lp_account + gas::lp_account::direct_add_liquidity 
+contracts/lp_account/msgs/user.fc:45:            + storage_fee::pool + gas::pool::cb_add_liquidity 
+contracts/lp_account/msgs/user.fc:87:            pool::cb_add_liquidity(
+contracts/lp_account/msgs/user.fc:98:            CARRY_ALL_BALANCE | DESTROY_IF_ZERO
+contracts/lp_account/msgs/user.fc:100:        storage::save();
+contracts/lp_account/msgs/user.fc:106:        msgs::send_empty(0, storage::user_address, CARRY_ALL_BALANCE);
+contracts/lp_account/msgs/pool.fc:6:    if ctx.at(OPCODE) == op::add_liquidity { 
+contracts/lp_account/msgs/pool.fc:34:                pool::cb_add_liquidity(
+contracts/lp_account/msgs/pool.fc:45:                CARRY_ALL_BALANCE | DESTROY_IF_ZERO
+contracts/lp_account/msgs/pool.fc:52:            utils::send_excesses(0, excess_address, QCARRY_ALL_BALANCE);
+contracts/lp_account/msgs/pool.fc:55:        storage::save();
+contracts/common/gas.fc:26:const gas::lp_account::direct_add_liquidity = 10000000;
+contracts/common/gas.fc:27:const gas::lp_account::add_liquidity = 10000000;
+contracts/pool/msgs/getter.fc:23:        msgs::send_simple(0, ctx.at(SENDER), out_msg_body, CARRY_ALL_BALANCE | IGNORE_ERRORS);
+contracts/pool/msgs/getter.fc:38:        msgs::send_simple(0, ctx.at(SENDER), out_msg_body, CARRY_ALL_BALANCE | IGNORE_ERRORS);
+contracts/pool/msgs/getter.fc:65:        msgs::send_simple(0, ctx.at(SENDER), msg.store_maybe_ref(included_address).end_cell(), CARRY_ALL_BALANCE | IGNORE_ERRORS);
+contracts/pool/msgs/protocolfee.fc:54:            CARRY_ALL_BALANCE ;; the above transfer fixed amount, in this transaction we can carry left gas
+contracts/pool/msgs/protocolfee.fc:60:        storage::save();
+contracts/pool/msgs/lp_wallet.fc:92:            CARRY_ALL_BALANCE ;; the above transfer fixed amount, in this transaction we can carry left gas
+contracts/pool/msgs/lp_wallet.fc:95:        storage::save();
+contracts/pool/pools/weighted_const_product/storage.fc:28:() storage::save() impure inline {
+contracts/pool/pools/README.md:15:() storage::save();
+contracts/router/msgs/vault.fc:16:        var msg = jetton_wallet::transfer(0, amount_out, to_address, to_address)
+contracts/router/msgs/vault.fc:19:        msgs::send_simple(0, token_address, msg.end_cell(), QCARRY_ALL_BALANCE);
+contracts/pool/pools/stableswap/storage.fc:28:() storage::save() impure inline {
+contracts/router/msgs/admin.fc:40:        msgs::send_with_stateinit(
+contracts/router/msgs/admin.fc:50:            CARRY_ALL_BALANCE
+contracts/router/msgs/admin.fc:76:        msgs::send_with_stateinit(
+contracts/router/msgs/admin.fc:81:            CARRY_ALL_BALANCE
+contracts/router/msgs/admin.fc:107:        msgs::send_with_stateinit(
+contracts/router/msgs/admin.fc:112:            CARRY_ALL_BALANCE
+contracts/router/msgs/admin.fc:138:        msgs::send_with_stateinit(
+contracts/router/msgs/admin.fc:143:            CARRY_ALL_BALANCE
+contracts/router/msgs/admin.fc:150:        storage::save();
+contracts/router/msgs/admin.fc:152:        utils::send_excesses(0, storage::admin_address, QCARRY_ALL_BALANCE);
+contracts/router/msgs/admin.fc:164:        storage::save();
+contracts/router/msgs/admin.fc:167:        utils::send_excesses(0, storage::admin_address, QCARRY_ALL_BALANCE);
+contracts/router/msgs/admin.fc:179:        storage::save();
+contracts/router/msgs/admin.fc:182:        utils::send_excesses(0, storage::admin_address, QCARRY_ALL_BALANCE);
+contracts/router/msgs/admin.fc:194:        storage::save();
+contracts/router/msgs/admin.fc:197:        utils::send_excesses(0, storage::admin_address, QCARRY_ALL_BALANCE);
+contracts/router/msgs/admin.fc:205:        storage::save();
+contracts/router/msgs/admin.fc:208:        utils::send_excesses(0, storage::admin_address, QCARRY_ALL_BALANCE);
+contracts/router/msgs/admin.fc:216:        storage::save();
+contracts/router/msgs/admin.fc:219:        utils::send_excesses(0, storage::admin_address, QCARRY_ALL_BALANCE);
+contracts/router/msgs/admin.fc:227:        storage::save();
+contracts/router/msgs/admin.fc:230:        utils::send_excesses(0, storage::admin_address, QCARRY_ALL_BALANCE);
+contracts/router/msgs/admin.fc:258:        storage::save();
+contracts/router/msgs/admin.fc:265:        utils::send_excesses(0, storage::admin_address, QCARRY_ALL_BALANCE);
+contracts/router/pools/weighted_const_product/ext_admin.fc:39:        msgs::send_with_stateinit(
+contracts/router/pools/weighted_const_product/ext_admin.fc:48:            CARRY_ALL_BALANCE
+contracts/router/msgs/getter.fc:26:            CARRY_ALL_BALANCE | IGNORE_ERRORS
+contracts/router/msgs/pool.fc:55:            route_dex_messages(sent_jetton_address, gas, swap_amount, original_caller, custom_payload);
+contracts/router/msgs/pool.fc:74:                    jetton_wallet::transfer(fwd_ton_amount, amount0_out, owner, excesses_address)
+contracts/router/msgs/pool.fc:77:                    QCARRY_ALL_BALANCE
+contracts/router/msgs/pool.fc:83:                    jetton_wallet::transfer(fwd_ton_amount, amount1_out, owner, excesses_address)
+contracts/router/msgs/pool.fc:86:                    QCARRY_ALL_BALANCE
+contracts/router/msgs/pool.fc:127:        msgs::send_with_stateinit(
+contracts/router/msgs/pool.fc:135:            QCARRY_ALL_BALANCE
+contracts/router/pools/weighted_stableswap/ext_admin.fc:44:        msgs::send_with_stateinit(
+contracts/router/pools/weighted_stableswap/ext_admin.fc:56:            CARRY_ALL_BALANCE
+contracts/pool/pools/weighted_const_product/gas.fc:1:const gas::pool::cb_add_liquidity = 100000000; ;; 0.100
+contracts/router/msgs/jetton.fc:15:                jetton_wallet::transfer(0, jetton_amount, from_address, from_address)
+contracts/router/msgs/jetton.fc:19:                QCARRY_ALL_BALANCE
+contracts/router/msgs/jetton.fc:24:        route_dex_messages(
+contracts/pool/pools/stableswap/gas.fc:1:const gas::pool::cb_add_liquidity = 30000000; ;; 0.03
+contracts/pool/pools/weighted_const_product/ext_router.fc:21:        storage::save();
+contracts/pool/pools/weighted_const_product/ext_router.fc:24:        utils::send_excesses(0, resp, QCARRY_ALL_BALANCE);
+contracts/pool/pools/constant_sum/storage.fc:25:() storage::save() impure inline {
+contracts/pool/pools/stableswap/ext_router.fc:13:        storage::save();
+contracts/pool/pools/stableswap/ext_router.fc:16:        utils::send_excesses(0, resp, QCARRY_ALL_BALANCE);
+contracts/router/pools/stableswap/ext_admin.fc:43:        msgs::send_with_stateinit(
+contracts/router/pools/stableswap/ext_admin.fc:51:            CARRY_ALL_BALANCE
+contracts/pool/pools/constant_product/storage.fc:25:() storage::save() impure inline {
+contracts/pool/pools/constant_product/gas.fc:1:const gas::pool::cb_add_liquidity = 27000000;
+contracts/pool/pools/constant_sum/gas.fc:1:const gas::pool::cb_add_liquidity = 22000000;
+contracts/pool/pools/weighted_stableswap/gas.fc:1:const gas::pool::cb_add_liquidity = 100000000; ;; 0.10
+contracts/pool/pools/weighted_stableswap/storage.fc:38:() storage::save() impure inline {
+contracts/pool/pools/weighted_stableswap/setter.fc:10:        storage::save();
+contracts/pool/pools/weighted_stableswap/setter.fc:12:        utils::send_excesses(0, ctx.at(SENDER), QCARRY_ALL_BALANCE);
+contracts/pool/pools/weighted_stableswap/ext_router.fc:26:        storage::save();
+contracts/pool/pools/weighted_stableswap/ext_router.fc:29:        utils::send_excesses(0, resp, QCARRY_ALL_BALANCE);

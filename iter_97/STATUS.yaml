@@ -1,0 +1,61 @@
+schema_version: shadow-v1
+iteration: 97
+phase: completed
+cell_id: X2
+cell_label: pool_protocol_fee_counter_reserve_conservation
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: X2
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/System.spec.ts,tests/ConstProduct.spec.ts,tests/WeightedCPI.spec.ts,tests/Stableswap.spec.ts,tests/WeightedStableswap.spec.ts,tests/ConstSum.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_97/poc_pool_protocol_fee_counter_reserve_conservation.run.log
+    run_log_exists_on_disk: true
+    test_runtime: 33.123s
+    result: PASSED (17 passed, 132 skipped, 149 total)
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 collect_fees protocol counter issue search'
+      - 'repo:ston-fi/dex-core-v2 protocol_fee_address reserve issue search'
+      - 'repo:ston-fi/dex-core-v2 collected_token0_protocol_fee pull request search'
+      - 'repo:ston-fi/dex-core-v2 collect_fees pay_to pull request search'
+    results: all four repository issue/PR pages showed No results
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'collect_fees protocol counter on repository issue page'
+      - 'protocol_fee_address reserve on repository issue page'
+      - 'collected_token0_protocol_fee on repository pull-request page'
+      - 'collect_fees pay_to on repository pull-request page'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_97/callers-grep.txt
+  caller_grep_match_count: 213
+  caller_grep_unique_files: 47
+  prior_audit_path: iter_97/prior-audit-git.log
+  prior_audit_bytes: 53
+  r15_search_files:
+    - iter_97/R15-GH-collect-fees-counter-issue.html
+    - iter_97/R15-GH-protocol-fee-reserve-issue.html
+    - iter_97/R15-GH-protocol-counter-pr.html
+    - iter_97/R15-GH-collect-fees-pay-to-pr.html
+  source_conclusion: 'Protocol fee outputs increment the per-token collected counters only after a valid swap/LP operation, while collect_fees requires both counters and emits two one-sided pay_to messages to the stored protocol_fee_address. The router verifies each originating pool, and the pool clears both counters only after constructing both messages and saving. Failed validation paths do not save provisional state, and collection is admin-gated upstream; no repeatable external counter/reserve mismatch or second claim survives.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_97-X2.md

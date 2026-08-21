@@ -1,0 +1,139 @@
+contracts/router/dex.fc:61:                + storage_fee::vault + gas::router::pay_vault + gas::vault::deposit_ref_fee
+contracts/common/params.fc:11:const params::fee_divider = 10000;
+contracts/common/params.fc:12:const params::min_fee = 0; ;; 0%
+contracts/common/params.fc:13:const params::max_fee = 100; ;; 1%
+contracts/pool/pools/constant_sum/pool.fc:1:(int, int, int) pool::get_swap_out(int _side, int _ref_value, int _amount_in, int _reserve_in, int _reserve_out) inline {
+contracts/pool/pools/constant_sum/pool.fc:2:    int base_out = muldiv(_amount_in, (params::fee_divider - storage::lp_fee), params::fee_divider);
+contracts/pool/pools/constant_sum/pool.fc:4:    int protocol_fee_out = 0;
+contracts/pool/pools/constant_sum/pool.fc:5:    int ref_fee_out = 0;
+contracts/pool/pools/constant_sum/pool.fc:7:    if storage::protocol_fee > 0 {
+contracts/pool/pools/constant_sum/pool.fc:8:        protocol_fee_out = divc(base_out * storage::protocol_fee, params::fee_divider);
+contracts/pool/pools/constant_sum/pool.fc:11:    if _ref_value > 0 {
+contracts/pool/pools/constant_sum/pool.fc:12:        ref_fee_out = divc(base_out * _ref_value, params::fee_divider);
+contracts/pool/pools/constant_sum/pool.fc:15:    base_out -= protocol_fee_out + ref_fee_out;
+contracts/pool/pools/constant_sum/pool.fc:16:    return (base_out, protocol_fee_out, ref_fee_out);
+contracts/pool/pools/constant_sum/pool.fc:35:    int protocol_fee0 = new_reserve0 > ideal_balance0 
+contracts/pool/pools/constant_sum/pool.fc:36:        ? muldiv(diff0, storage::protocol_fee, params::fee_divider) : 0;
+contracts/pool/pools/constant_sum/pool.fc:37:    int lp_fee0 = muldiv(diff0, divc(storage::lp_fee, 2), params::fee_divider);
+contracts/pool/pools/constant_sum/pool.fc:38:    new_reserve0 -= (lp_fee0 + protocol_fee0);
+contracts/pool/pools/constant_sum/pool.fc:42:    int protocol_fee1 = new_reserve1 > ideal_balance1 
+contracts/pool/pools/constant_sum/pool.fc:43:        ? muldiv(diff1, storage::protocol_fee, params::fee_divider) : 0;
+contracts/pool/pools/constant_sum/pool.fc:44:    int lp_fee1 = muldiv(diff1, divc(storage::lp_fee, 2), params::fee_divider);
+contracts/pool/pools/constant_sum/pool.fc:45:    new_reserve1 -= (lp_fee1 + protocol_fee1);
+contracts/pool/pools/constant_sum/pool.fc:50:    return (muldiv((inv2 - inv0), storage::total_supply_lp, inv0), protocol_fee0, protocol_fee1);
+contracts/pool/pools/stableswap/pool.fc:1:(int, int, int) pool::get_swap_out(int _side, int _ref_value, int _amount_in, int _reserve_in, int _reserve_out) inline {
+contracts/pool/pools/stableswap/pool.fc:2:    int protocol_fee_out = 0;
+contracts/pool/pools/stableswap/pool.fc:3:    int ref_fee_out = 0;
+contracts/pool/pools/stableswap/pool.fc:5:    int base_in_without_fee = muldiv(_amount_in, (params::fee_divider - storage::lp_fee), params::fee_divider);
+contracts/pool/pools/stableswap/pool.fc:21:    if storage::protocol_fee > 0 {
+contracts/pool/pools/stableswap/pool.fc:22:        protocol_fee_out = divc(base_out * storage::protocol_fee, params::fee_divider);
+contracts/pool/pools/stableswap/pool.fc:25:    if _ref_value > 0 {
+contracts/pool/pools/stableswap/pool.fc:26:        ref_fee_out = divc(base_out * _ref_value, params::fee_divider);
+contracts/pool/pools/stableswap/pool.fc:29:    base_out -= protocol_fee_out + ref_fee_out;
+contracts/pool/pools/stableswap/pool.fc:30:    return (base_out, protocol_fee_out, ref_fee_out);
+contracts/pool/pools/stableswap/pool.fc:50:    int protocol_fee0 = new_reserve0 > ideal_balance0 
+contracts/pool/pools/stableswap/pool.fc:51:        ? muldiv(diff0, storage::protocol_fee, params::fee_divider) : 0;
+contracts/pool/pools/stableswap/pool.fc:52:    int lp_fee0 = muldiv(diff0, divc(storage::lp_fee, 2), params::fee_divider);
+contracts/pool/pools/stableswap/pool.fc:53:    new_reserve0 -= (lp_fee0 + protocol_fee0);
+contracts/pool/pools/stableswap/pool.fc:57:    int protocol_fee1 = new_reserve1 > ideal_balance1 
+contracts/pool/pools/stableswap/pool.fc:58:        ? muldiv(diff1, storage::protocol_fee, params::fee_divider) : 0;
+contracts/pool/pools/stableswap/pool.fc:59:    int lp_fee1 = muldiv(diff1, divc(storage::lp_fee, 2), params::fee_divider);
+contracts/pool/pools/stableswap/pool.fc:60:    new_reserve1 -= (lp_fee1 + protocol_fee1);
+contracts/pool/pools/stableswap/pool.fc:65:    return (muldiv((inv2 - inv0), storage::total_supply_lp, inv0), protocol_fee0, protocol_fee1);
+contracts/pool/msgs/protocolfee.fc:5:        throw_unless(error::zero_output, (storage::collected_token0_protocol_fee > 0) & (storage::collected_token1_protocol_fee > 0));
+contracts/pool/msgs/protocolfee.fc:26:                storage::protocol_fee_address, 
+contracts/pool/msgs/protocolfee.fc:27:                storage::protocol_fee_address, 
+contracts/pool/msgs/protocolfee.fc:28:                storage::protocol_fee_address, 
+contracts/pool/msgs/protocolfee.fc:32:                storage::collected_token0_protocol_fee, 
+contracts/pool/msgs/protocolfee.fc:43:                storage::protocol_fee_address, 
+contracts/pool/msgs/protocolfee.fc:44:                storage::protocol_fee_address, 
+contracts/pool/msgs/protocolfee.fc:45:                storage::protocol_fee_address, 
+contracts/pool/msgs/protocolfee.fc:51:                storage::collected_token1_protocol_fee,
+contracts/pool/msgs/protocolfee.fc:57:        storage::collected_token0_protocol_fee = 0;
+contracts/pool/msgs/protocolfee.fc:58:        storage::collected_token1_protocol_fee = 0;
+contracts/pool/msgs/router.fc:27:        int ref_value = 0;
+contracts/pool/msgs/router.fc:39:            ref_value = call_payload~load_uint16(); 
+contracts/pool/msgs/router.fc:81:            throw_arg_if(op::swap_fee_out_of_bounds, 1, (ref_value > params::max_fee) | (ref_value < params::min_fee));
+contracts/pool/msgs/router.fc:86:            int protocol_fee_out = 0; 
+contracts/pool/msgs/router.fc:87:            int ref_fee_out0 = 0; 
+contracts/pool/msgs/router.fc:88:            int ref_fee_out1 = 0;
+contracts/pool/msgs/router.fc:90:            ref_value = ref_address.preload_uint(2) == 0 ? 0 : ref_value;
+contracts/pool/msgs/router.fc:94:                (out1, protocol_fee_out, ref_fee_out1) = pool::get_swap_out(true, ref_value, amount0, storage::reserve0, storage::reserve1);
+contracts/pool/msgs/router.fc:96:                storage::reserve1 -= (out1 + protocol_fee_out + ref_fee_out1);
+contracts/pool/msgs/router.fc:97:                storage::collected_token1_protocol_fee += protocol_fee_out;
+contracts/pool/msgs/router.fc:101:                (out0, protocol_fee_out, ref_fee_out0) = pool::get_swap_out(false, ref_value, amount1, storage::reserve1, storage::reserve0);
+contracts/pool/msgs/router.fc:102:                storage::reserve0 -= (out0 + protocol_fee_out + ref_fee_out0);
+contracts/pool/msgs/router.fc:104:                storage::collected_token0_protocol_fee += protocol_fee_out;
+contracts/pool/msgs/router.fc:121:            if (ref_address.preload_uint(2) != 0) & (ref_fee_out0 + ref_fee_out1 > 0) { ;; 2 messages, pay referral, check ref_fee_out
+contracts/pool/msgs/router.fc:122:                msgs::send_simple(ctx.at(FWD_FEE) * 3 + storage_fee::vault + gas::router::pay_vault + gas::vault::deposit_ref_fee, 
+contracts/pool/msgs/router.fc:124:                    router::pay_vault(
+contracts/pool/msgs/router.fc:127:                        ref_fee_out0, 
+contracts/pool/msgs/router.fc:129:                        ref_fee_out1, 
+contracts/pool/msgs/router.fc:310:        int new_protocol_fee = in_msg_body~load_uint16();
+contracts/pool/msgs/router.fc:311:        slice new_protocol_fee_address = in_msg_body~load_msg_addr();
+contracts/pool/msgs/router.fc:314:        storage::protocol_fee = new_protocol_fee;
+contracts/pool/msgs/router.fc:315:        storage::protocol_fee_address = new_protocol_fee_address;
+contracts/pool/pools/constant_product/pool.fc:1:(int, int, int) pool::get_swap_out(int _side, int _ref_value, int _amount_in, int _reserve_in, int _reserve_out) inline {
+contracts/pool/pools/constant_product/pool.fc:2:    int amount_in_with_fee = _amount_in * (params::fee_divider - storage::lp_fee);
+contracts/pool/pools/constant_product/pool.fc:3:    int base_out = muldiv(amount_in_with_fee, _reserve_out, (_reserve_in * params::fee_divider + amount_in_with_fee));
+contracts/pool/pools/constant_product/pool.fc:5:    int protocol_fee_out = 0;
+contracts/pool/pools/constant_product/pool.fc:6:    int ref_fee_out = 0;
+contracts/pool/pools/constant_product/pool.fc:8:    if storage::protocol_fee > 0 {
+contracts/pool/pools/constant_product/pool.fc:9:        protocol_fee_out = divc(base_out * storage::protocol_fee, params::fee_divider);
+contracts/pool/pools/constant_product/pool.fc:12:    if _ref_value > 0 {
+contracts/pool/pools/constant_product/pool.fc:13:        ref_fee_out = divc(base_out * _ref_value, params::fee_divider);
+contracts/pool/pools/constant_product/pool.fc:16:    base_out -= protocol_fee_out + ref_fee_out;
+contracts/pool/pools/constant_product/pool.fc:17:    return (base_out, protocol_fee_out, ref_fee_out);
+contracts/pool/pools/constant_product/pool.fc:36:    int protocol_fee0 = new_reserve0 > ideal_balance0 
+contracts/pool/pools/constant_product/pool.fc:37:        ? muldiv(diff0, storage::protocol_fee, params::fee_divider) : 0;
+contracts/pool/pools/constant_product/pool.fc:38:    int lp_fee0 = muldiv(diff0, divc(storage::lp_fee, 2), params::fee_divider);
+contracts/pool/pools/constant_product/pool.fc:39:    new_reserve0 -= (lp_fee0 + protocol_fee0);
+contracts/pool/pools/constant_product/pool.fc:43:    int protocol_fee1 = new_reserve1 > ideal_balance1 
+contracts/pool/pools/constant_product/pool.fc:44:        ? muldiv(diff1, storage::protocol_fee, params::fee_divider) : 0;
+contracts/pool/pools/constant_product/pool.fc:45:    int lp_fee1 = muldiv(diff1, divc(storage::lp_fee, 2), params::fee_divider);
+contracts/pool/pools/constant_product/pool.fc:46:    new_reserve1 -= (lp_fee1 + protocol_fee1);
+contracts/pool/pools/constant_product/pool.fc:51:    return (muldiv((inv2 - inv0), storage::total_supply_lp, inv0), protocol_fee0, protocol_fee1);
+contracts/pool/pools/weighted_stableswap/pool.fc:1:(int, int, int) pool::get_swap_out(int _side, int _ref_value, int _amount_in, int _reserve_in, int _reserve_out) inline {
+contracts/pool/pools/weighted_stableswap/pool.fc:2:    int protocol_fee_out = 0;
+contracts/pool/pools/weighted_stableswap/pool.fc:3:    int ref_fee_out = 0;
+contracts/pool/pools/weighted_stableswap/pool.fc:5:    int base_in_without_fee = muldiv(_amount_in, (params::fee_divider - storage::lp_fee), params::fee_divider);
+contracts/pool/pools/weighted_stableswap/pool.fc:15:    if storage::protocol_fee > 0 {
+contracts/pool/pools/weighted_stableswap/pool.fc:16:        protocol_fee_out = divc(base_out * storage::protocol_fee, params::fee_divider);
+contracts/pool/pools/weighted_stableswap/pool.fc:19:    if _ref_value > 0 {
+contracts/pool/pools/weighted_stableswap/pool.fc:20:        ref_fee_out = divc(base_out * _ref_value, params::fee_divider);
+contracts/pool/pools/weighted_stableswap/pool.fc:23:    base_out -= protocol_fee_out + ref_fee_out;
+contracts/pool/pools/weighted_stableswap/pool.fc:24:    return (base_out, protocol_fee_out, ref_fee_out);
+contracts/pool/pools/weighted_stableswap/pool.fc:58:    int protocol_fee0 = new_reserve0 > ideal_balance0 
+contracts/pool/pools/weighted_stableswap/pool.fc:59:        ? muldiv(diff0, storage::protocol_fee, params::fee_divider) : 0;
+contracts/pool/pools/weighted_stableswap/pool.fc:60:    int lp_fee0 = muldiv(diff0, divc(storage::lp_fee, 2), params::fee_divider);
+contracts/pool/pools/weighted_stableswap/pool.fc:61:    new_reserve0 -= (lp_fee0 + protocol_fee0);
+contracts/pool/pools/weighted_stableswap/pool.fc:65:    int protocol_fee1 = new_reserve1 > ideal_balance1 
+contracts/pool/pools/weighted_stableswap/pool.fc:66:        ? muldiv(diff1, storage::protocol_fee, params::fee_divider) : 0;
+contracts/pool/pools/weighted_stableswap/pool.fc:67:    int lp_fee1 = muldiv(diff1, divc(storage::lp_fee, 2), params::fee_divider);
+contracts/pool/pools/weighted_stableswap/pool.fc:68:    new_reserve1 -= (lp_fee1 + protocol_fee1);
+contracts/pool/pools/weighted_stableswap/pool.fc:73:    return (muldiv((inv2 - inv0), storage::total_supply_lp, inv0), protocol_fee0, protocol_fee1);
+contracts/pool/pools/weighted_const_product/pool.fc:1:(int, int, int) pool::get_swap_out(int _side, int _ref_value, int _amount_in, int _reserve_in, int _reserve_out) inline {
+contracts/pool/pools/weighted_const_product/pool.fc:2:    int protocol_fee_out = 0;
+contracts/pool/pools/weighted_const_product/pool.fc:3:    int ref_fee_out = 0;
+contracts/pool/pools/weighted_const_product/pool.fc:5:    int base_in_without_fee = muldiv(_amount_in, (params::fee_divider - storage::lp_fee), params::fee_divider);
+contracts/pool/pools/weighted_const_product/pool.fc:15:    if storage::protocol_fee > 0 {
+contracts/pool/pools/weighted_const_product/pool.fc:16:        protocol_fee_out = divc(base_out * storage::protocol_fee, params::fee_divider);
+contracts/pool/pools/weighted_const_product/pool.fc:19:    if _ref_value > 0 {
+contracts/pool/pools/weighted_const_product/pool.fc:20:        ref_fee_out = divc(base_out * _ref_value, params::fee_divider);
+contracts/pool/pools/weighted_const_product/pool.fc:23:    base_out -= protocol_fee_out + ref_fee_out;
+contracts/pool/pools/weighted_const_product/pool.fc:24:    return (base_out, protocol_fee_out, ref_fee_out);
+contracts/pool/pools/weighted_const_product/pool.fc:52:    int protocol_fee0 = new_reserve0 > ideal_balance0 
+contracts/pool/pools/weighted_const_product/pool.fc:53:        ? muldiv(diff0, storage::protocol_fee, params::fee_divider) : 0;
+contracts/pool/pools/weighted_const_product/pool.fc:54:    int lp_fee0 = muldiv(diff0, divc(storage::lp_fee, 2), params::fee_divider);
+contracts/pool/pools/weighted_const_product/pool.fc:55:    new_reserve0 -= (lp_fee0 + protocol_fee0);
+contracts/pool/pools/weighted_const_product/pool.fc:59:    int protocol_fee1 = new_reserve1 > ideal_balance1 
+contracts/pool/pools/weighted_const_product/pool.fc:60:        ? muldiv(diff1, storage::protocol_fee, params::fee_divider) : 0;
+contracts/pool/pools/weighted_const_product/pool.fc:61:    int lp_fee1 = muldiv(diff1, divc(storage::lp_fee, 2), params::fee_divider);
+contracts/pool/pools/weighted_const_product/pool.fc:62:    new_reserve1 -= (lp_fee1 + protocol_fee1);
+contracts/pool/pools/weighted_const_product/pool.fc:67:    return (muldiv((inv2 - inv0), storage::total_supply_lp, inv0), protocol_fee0, protocol_fee1);
+tests/WeightedCPI.spec.ts:1692:                debugGraph: "swap_max_fee",
+tests/ConstSum.spec.ts:1589:                debugGraph: "swap_max_fee",
+tests/ConstProduct.spec.ts:1875:                debugGraph: "provide_single_protocol_fee",
+tests/ConstProduct.spec.ts:2137:                debugGraph: "swap_max_fee",
+tests/WeightedStableswap.spec.ts:1790:                debugGraph: "swap_max_fee",
+tests/Stableswap.spec.ts:1693:                debugGraph: "swap_max_fee",

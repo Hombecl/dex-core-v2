@@ -1,0 +1,62 @@
+schema_version: shadow-v1
+iteration: 74
+phase: completed
+cell_id: S4
+cell_label: protocol_fee_dual_leg_clearance
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: S4
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_74/poc_protocol_fee_dual_leg_clearance.run.log
+    run_log_exists_on_disk: true
+    test_runtime: 21.401s
+    result: PASSED (6 passed, 132 skipped, 138 total)
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 protocol fee collection one side is:issue'
+      - 'repo:ston-fi/dex-core-v2 collect_fees zero is:issue'
+      - 'repo:ston-fi/dex-core-v2 collected_token_protocol_fee is:pr'
+      - 'repo:ston-fi/dex-core-v2 protocol fee stuck is:issue'
+    results: all four GitHub searches returned total_count=0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 protocol fee collection one side is:issue'
+      - 'repo:ston-fi/dex-core-v2 collect_fees zero is:issue'
+      - 'repo:ston-fi/dex-core-v2 collected_token_protocol_fee is:pr'
+      - 'repo:ston-fi/dex-core-v2 protocol fee stuck is:issue'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  impact_observation: 'Single-side liquidity can produce a one-sided protocol-fee counter, while collect_fees requires both counters > 0; this is a protocol-fee collection DoS/stranding observation, not an external attacker balance gain.'
+  caller_grep_path: iter_74/callers-grep.txt
+  caller_grep_match_count: 47
+  caller_grep_unique_files: 10
+  prior_audit_path: iter_74/prior-audit-git.log
+  prior_audit_bytes: 0
+  r15_search_files:
+    - iter_74/gh-protocol-fee-one-side.json
+    - iter_74/gh-collect-fees-zero.json
+    - iter_74/gh-collected-protocol-fee-pr.json
+    - iter_74/gh-protocol-fee-stuck.json
+  source_conclusion: 'handle_protocolfee_messages requires both collected token counters to be positive, but single-side liquidity can leave one counter zero and the other positive. This strands a protocol-owned fee until another fee accrues on the zero side. The caller is the stored protocol fee address, there is no attacker profit path, and the observed condition is not shippable H/C.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_74-S4.md

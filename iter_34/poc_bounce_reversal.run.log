@@ -1,0 +1,18 @@
+
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/Pool.spec.ts -t refund swap if tx is expired|refund provide lp if tx is expired|bounce if tokens are the same
+
+PASS tests/Pool.spec.ts
+  Pool
+    Router calls
+      ✓ should refund swap if tx is expired (19 ms)
+      ✓ should refund provide lp if tx is expired (16 ms)
+      ✓ should bounce if tokens are the same (23 ms)
+    Getters
+      ○ skipped should generate valid URI
+
+Test Suites: 1 passed, 1 total
+Tests:       1 skipped, 3 passed, 4 total
+Snapshots:   0 total
+Time:        3.186 s, estimated 4 s
+Ran all test suites matching /tests\/Pool.spec.ts/i with tests matching "refund swap if tx is expired|refund provide lp if tx is expired|bounce if tokens are the same".

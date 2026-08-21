@@ -1,0 +1,55 @@
+schema_version: shadow-v1
+iteration: 65
+phase: completed
+cell_id: R10
+cell_label: pool_router_message_replay
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: R10
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/WeightedCPI.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_65/poc_pool_router_message_replay.run.log
+    run_log_exists_on_disk: true
+    test_runtime: PASSED
+    duration_seconds: 12.733
+    numerical_evidence: "WeightedCPI.spec.ts and System.spec.ts: 6 passed, 30 skipped; direct swaps, same-router cross-swap, two-router cross-swap, swap refunds, and system swap/cross-swap paths completed."
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 query_id replay pool is:issue"
+      - "repo:ston-fi/dex-core-v2 callback replay is:issue"
+      - "repo:ston-fi/dex-core-v2 router callback replay is:pr"
+      - "repo:ston-fi/dex-core-v2 audit query id replay is:issue"
+    results: "Fresh GitHub API searches returned zero results; local audit/security/query-id/replay/callback git search was empty."
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "repo:ston-fi/dex-core-v2 query_id replay pool is:issue"
+      - "repo:ston-fi/dex-core-v2 callback replay is:issue"
+      - "repo:ston-fi/dex-core-v2 router callback replay is:pr"
+      - "repo:ston-fi/dex-core-v2 audit query id replay is:issue"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_65-R10.md
+  notes:
+    - "Pool router handlers do not use query ids as replay locks, but contracts/pool.fc dispatches those handlers only for ctx.at(SENDER)==storage::router_address; callback messages therefore require the trusted router account."
+    - "router/msgs/pool.fc independently reconstructs the pool from the token pair and rejects a pay_to sender that is not that deterministic pool. Reusing a query id in a new valid transfer still requires a real token-wallet/router message and does not duplicate a prior state transition. No replay-induced balance or reserve delta was demonstrated."
+    - "Shadow mode: no emit-shippable.py, bb_findings, shippable-staging, IA queue, submission queue, or platform form was touched."

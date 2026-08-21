@@ -1,0 +1,51 @@
+
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/WeightedCPI.spec.ts tests/Router.spec.ts -t should bounce set fees if not admin|should handle lock & unlock|should set fees|should handle upgrades
+
+PASS tests/WeightedCPI.spec.ts (5.734 s)
+  Weighted CPI
+    Fees
+      ✓ should set fees (1025 ms)
+      ○ skipped should collect fees
+      ○ skipped should collect ref fee from vault
+    Params
+      ○ skipped should set params
+      ○ skipped should swap with different ratio
+    Dex
+      ○ skipped should deploy dex
+      ○ skipped should swap
+      ○ skipped should provide lp
+      ○ skipped should provide lp (single side)
+      ○ skipped should burn liquidity
+      ○ skipped should cross-swap on the same router
+      ○ skipped should cross-swap on 2 routers
+      ○ skipped should direct add liquidity (all)
+      ○ skipped should direct add liquidity (partial)
+      ○ skipped should swap with 0 ref fee
+      ○ skipped should swap with max ref fee
+    Refund
+      ○ skipped should refund partial liquidity
+      ○ skipped should refund swap
+      ○ skipped should refund cross-swap on the same router
+      ○ skipped should refund swap if pool locked
+      ○ skipped should refund swap if fee more than max
+      ○ skipped should refund cross-swap on 2 routers (in)
+      ○ skipped should refund cross-swap on 2 routers (mid)
+    Bounce
+      ✓ should bounce set fees if not admin (891 ms)
+      ○ skipped should bounce collect fees if no fee
+
+PASS tests/Router.spec.ts
+  Router
+    Governance
+      ✓ should handle lock & unlock (58 ms)
+      ✓ should handle upgrades (56 ms)
+    Getters
+      ○ skipped should return valid pool address
+      ○ skipped should return correct dex version
+
+Test Suites: 2 passed, 2 total
+Tests:       25 skipped, 4 passed, 29 total
+Snapshots:   0 total
+Time:        8.64 s, estimated 12 s
+Ran all test suites matching /tests\/WeightedCPI.spec.ts|tests\/Router.spec.ts/i with tests matching "should bounce set fees if not admin|should handle lock & unlock|should set fees|should handle upgrades".

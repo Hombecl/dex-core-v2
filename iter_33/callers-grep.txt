@@ -1,0 +1,68 @@
+contracts/pool.fc:11:    if ctx.at(IS_BOUNCED) { 
+contracts/lp_account.fc:10:    if ctx.at(IS_BOUNCED) { 
+contracts/lp_account.fc:11:        ;; dont handle bounced messages
+contracts/vault.fc:32:    if ctx.at(IS_BOUNCED) { 
+contracts/vault.fc:60:        msgs::send_simple(0, 
+contracts/router.fc:11:    if ctx.at(IS_BOUNCED) { 
+contracts/lp_wallet.fc:11:    int query_id = in_msg_body~load_uint(64);
+contracts/lp_wallet.fc:37:        .store_uint(op::internal_transfer, 32)
+contracts/lp_wallet.fc:38:        .store_uint(query_id, 64)
+contracts/lp_wallet.fc:56:    int query_id = in_msg_body~load_uint(64);
+contracts/lp_wallet.fc:75:            .store_uint(query_id, 64)
+contracts/lp_wallet.fc:96:        .store_uint(query_id, 64);
+contracts/lp_wallet.fc:105:    int query_id = in_msg_body~load_uint(64);
+contracts/lp_wallet.fc:116:        .store_uint(op::burn_notification_ext, 32)
+contracts/lp_wallet.fc:117:        .store_uint(query_id, 64)
+contracts/lp_wallet.fc:136:() on_bounce (slice in_msg_body) impure {
+contracts/lp_wallet.fc:141:    throw_unless(709, (op == op::internal_transfer) | (op == op::burn_notification_ext));
+contracts/lp_wallet.fc:143:    int query_id = in_msg_body~load_uint(64);
+contracts/lp_wallet.fc:157:        on_bounce(in_msg_body);
+contracts/lp_wallet.fc:174:    if (op == op::internal_transfer) { 
+contracts/lp_wallet/op.fc:3:const op::internal_transfer = 0x178d4519;
+contracts/router/dex.fc:30:        msgs::send_simple(
+contracts/router/dex.fc:46:        throw_arg_if(op::transfer_bounce_invalid_request, 1, (transferred_op != op::swap) & (transferred_op != op::provide_lp));
+contracts/router/dex.fc:47:        throw_arg_if(op::transfer_bounce_invalid_pool, 1, equal_slices(_jetton_address, token_wallet1));
+contracts/router/dex.fc:48:        throw_arg_if(op::transfer_bounce_locked, 1, storage::is_locked);
+contracts/router/dex.fc:50:        throw_arg_unless(op::transfer_bounce_wrong_wc, 1, _caller.address::check_workchain(params::workchain));
+contracts/router/dex.fc:51:        throw_arg_unless(op::transfer_bounce_tx_expired, 1, tx_deadline > now());
+contracts/router/dex.fc:56:        throw_arg_if(op::transfer_bounce_low_gas, 1, (transferred_op == op::swap) 
+contracts/router/dex.fc:67:        throw_arg_if(op::transfer_bounce_low_gas, 1, (transferred_op == op::provide_lp) 
+contracts/router/dex.fc:84:        msgs::send_with_stateinit(
+contracts/router/dex.fc:98:        msgs::send_simple(0, _jetton_address, out_msg_body.end_cell(), QCARRY_ALL_BALANCE);
+contracts/lp_account/msgs/getter.fc:8:        msgs::send_simple(
+contracts/lp_account/msgs/pool.fc:31:            msgs::send_simple(
+contracts/pool/msgs/router.fc:55:            msgs::send_simple(
+contracts/pool/msgs/router.fc:122:                msgs::send_simple(ctx.at(FWD_FEE) * 3 + storage_fee::vault + gas::router::pay_vault + gas::vault::deposit_ref_fee, 
+contracts/pool/msgs/router.fc:135:            msgs::send_simple(
+contracts/pool/msgs/router.fc:157:            msgs::send_simple(
+contracts/pool/msgs/router.fc:216:            msgs::send_simple(
+contracts/pool/msgs/router.fc:246:            msgs::send_with_stateinit(
+contracts/pool/msgs/router.fc:267:            msgs::send_simple(
+contracts/lp_account/msgs/user.fc:21:        msgs::send_simple(
+contracts/lp_account/msgs/user.fc:84:        msgs::send_simple(
+contracts/pool/msgs/getter.fc:23:        msgs::send_simple(0, ctx.at(SENDER), out_msg_body, CARRY_ALL_BALANCE | IGNORE_ERRORS);
+contracts/pool/msgs/getter.fc:38:        msgs::send_simple(0, ctx.at(SENDER), out_msg_body, CARRY_ALL_BALANCE | IGNORE_ERRORS);
+contracts/pool/msgs/getter.fc:65:        msgs::send_simple(0, ctx.at(SENDER), msg.store_maybe_ref(included_address).end_cell(), CARRY_ALL_BALANCE | IGNORE_ERRORS);
+contracts/pool/msgs/lp_account.fc:84:            msgs::send_with_stateinit(
+contracts/pool/msgs/lp_account.fc:119:            msgs::send_with_stateinit(
+contracts/pool/msgs/lp_account.fc:159:            msgs::send_simple(
+contracts/pool/msgs/lp_account.fc:179:            msgs::send_simple(
+contracts/pool/msgs/protocolfee.fc:22:        msgs::send_simple(
+contracts/pool/msgs/protocolfee.fc:39:        msgs::send_simple(
+contracts/router/msgs/vault.fc:19:        msgs::send_simple(0, token_address, msg.end_cell(), QCARRY_ALL_BALANCE);
+contracts/pool/msgs/lp_wallet.fc:4:    if ctx.at(OPCODE) == op::burn_notification_ext { 
+contracts/pool/msgs/lp_wallet.fc:59:        msgs::send_simple(
+contracts/pool/msgs/lp_wallet.fc:77:        msgs::send_simple(
+contracts/router/msgs/pool.fc:71:                msgs::send_simple(
+contracts/router/msgs/pool.fc:80:                msgs::send_simple(
+contracts/router/msgs/pool.fc:127:        msgs::send_with_stateinit(
+contracts/router/msgs/getter.fc:22:        msgs::send_simple(
+contracts/router/msgs/jetton.fc:12:            msgs::send_simple(
+contracts/router/msgs/jetton.fc:17:                    .store_uint32(op::transfer_bounce_invalid_request)
+contracts/router/msgs/admin.fc:40:        msgs::send_with_stateinit(
+contracts/router/msgs/admin.fc:76:        msgs::send_with_stateinit(
+contracts/router/msgs/admin.fc:107:        msgs::send_with_stateinit(
+contracts/router/msgs/admin.fc:138:        msgs::send_with_stateinit(
+contracts/router/pools/weighted_const_product/ext_admin.fc:39:        msgs::send_with_stateinit(
+contracts/router/pools/weighted_stableswap/ext_admin.fc:44:        msgs::send_with_stateinit(
+contracts/router/pools/stableswap/ext_admin.fc:43:        msgs::send_with_stateinit(

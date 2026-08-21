@@ -1,0 +1,168 @@
+contracts/pool.fc:12:        ;; mint should never
+contracts/lp_wallet.fc:26:    cell custom_payload = in_msg_body~load_dict();
+contracts/lp_wallet.fc:74:            .store_uint(op::transfer_notification, 32)
+contracts/lp_wallet.fc:108:    cell custom_payload = in_msg_body~load_maybe_ref(); 
+contracts/lp_wallet.fc:121:        .store_maybe_ref(custom_payload)
+contracts/common/contracts.fc:39:(cell) pool::cb_add_liquidity(
+contracts/common/contracts.fc:44:    int _min_lp_out,
+contracts/common/contracts.fc:45:    int _fwd_amount,
+contracts/common/contracts.fc:46:    cell _custom_payload_cs,
+contracts/common/contracts.fc:47:    slice _refund_address,
+contracts/common/contracts.fc:48:    slice _excess_address
+contracts/common/contracts.fc:50:    return begin_message(op::cb_add_liquidity)
+contracts/common/contracts.fc:54:        .store_coins(_min_lp_out)
+contracts/common/contracts.fc:55:        .store_coins(_fwd_amount)
+contracts/common/contracts.fc:56:        .store_maybe_ref(_custom_payload_cs)
+contracts/common/contracts.fc:59:            .store_slice(_refund_address)
+contracts/common/contracts.fc:60:            .store_slice(_excess_address)
+contracts/common/contracts.fc:120:(cell) lp_account::add_liquidity(
+contracts/common/contracts.fc:123:    int _min_lp_out,
+contracts/common/contracts.fc:124:    int _fwd_amount,
+contracts/common/contracts.fc:125:    int _both_positive?,
+contracts/common/contracts.fc:127:    cell _custom_payload_cs,
+contracts/common/contracts.fc:128:    slice _refund_address,
+contracts/common/contracts.fc:129:    slice _excess_address
+contracts/common/contracts.fc:131:    return begin_message(op::add_liquidity)
+contracts/common/contracts.fc:134:        .store_coins(_min_lp_out)
+contracts/common/contracts.fc:135:        .store_coins(_fwd_amount)
+contracts/common/contracts.fc:136:        .store_bool(_both_positive?)
+contracts/common/contracts.fc:138:        .store_maybe_ref(_custom_payload_cs)
+contracts/common/contracts.fc:140:            .store_slice(_refund_address)
+contracts/common/contracts.fc:141:            .store_slice(_excess_address)
+contracts/common/contracts.fc:151:    int _ton_fwd_amount, 
+contracts/common/contracts.fc:152:    cell _maybe_custom_payload, 
+contracts/common/contracts.fc:163:        .store_maybe_ref(_maybe_custom_payload)
+contracts/common/contracts.fc:165:            .store_coins(_ton_fwd_amount)
+contracts/common/contracts.fc:206:(cell) jetton_wallet::mint(
+contracts/common/contracts.fc:210:    int _fwd_amount,
+contracts/common/contracts.fc:217:        .store_coins(_fwd_amount) ;; forward_ton_amount
+contracts/common/contracts.fc:280:(builder) jetton_wallet::transfer(int _fwd_amount, int _jetton_amount, slice _to, slice _response_address) inline {
+contracts/common/contracts.fc:286:        .store_coins(_fwd_amount); ;; forward_ton_amount
+contracts/common/op.fc:4:const op::cross_swap                      = "cross_swap token_wallet1:MsgAddress refund_address:MsgAddress excesses_address:MsgAddress tx_deadline:uint64 cross_swap_body:^[min_out:Coins receiver:MsgAddress fwd_gas:Coins custom_payload:(Maybe ^Cell) refund_fwd_gas:Coins refund_payload:(Maybe ^Cell) ref_fee:uint16 ref_address:MsgAddress] = DexPayload"c  & 0x7fffffff;
+contracts/common/op.fc:5:const op::swap                            = "swap query_id:uint64 from_user:MsgAddress left_amount:Coins right_amount:Coins dex_payload:^[transferred_op:uint32 token_wallet1:MsgAddress refund_address:MsgAddress excesses_address:MsgAddress tx_deadline:uint64 swap_body:^[min_out:Coins receiver:MsgAddress fwd_gas:Coins custom_payload:(Maybe ^Cell) refund_fwd_gas:Coins refund_payload:(Maybe ^Cell) ref_fee:uint16 ref_address:MsgAddress]] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:6:const op::provide_lp                      = "provide_lp query_id:uint64 from_user:MsgAddress left_amount:Coins right_amount:Coins dex_payload:^[transferred_op:uint32 token_wallet1:MsgAddress refund_address:MsgAddress excesses_address:MsgAddress tx_deadline:uint64 provide_lp_body:^[min_lp_out:Coins to_address:MsgAddress both_positive:uint1 fwd_amount:Coins custom_payload:(Maybe ^Cell)]] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:7:const op::burn_notification_ext           = "burn_notification_ext query_id:uint64 jetton_amount:Coins from_address:MsgAddress response_address:MsgAddress maybe_custom_payload:(Maybe ^Cell) = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:8:const op::direct_add_liquidity            = "direct_add_liquidity query_id:uint64 am0:Coins am1:Coins min_lp_out:Coins fwd_amount:Coins to_user:MsgAddress custom_payload_cs:(Maybe ^Cell) additional_fields:^[refund_address:MsgAddress excess_address:MsgAddress] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:10:const op::pay_to                          = "pay_to query_id:uint64 to_address:MsgAddress excesses_address:MsgAddress original_caller:MsgAddress exit_code:uint32 custom_payload:(Maybe ^Cell) additional_info:^[fwd_ton_amount:Coins amount0_out:Coins token0_address:MsgAddress amount1_out:Coins token1_address:MsgAddress] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:15:const op::add_liquidity                   = "add_liquidity query_id:uint64 new_amount0:Coins new_amount1:Coins min_lp_out:Coins fwd_amount:Coins both_positive:uint1 to_user:MsgAddress custom_payload_cs:(Maybe ^Cell) additional_fields:^[refund_address:MsgAddress excess_address:MsgAddress] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:16:const op::cb_add_liquidity                = "cb_add_liquidity query_id:uint64 tot_am0:Coins tot_am1:Coins user_address:MsgAddress min_lp_out:Coins fwd_amount:Coins custom_payload_cs:(Maybe ^Cell) additional_fields:^[to_user_address:MsgAddress refund_address:MsgAddress excess_address:MsgAddress] = InternalMsgBody"c & 0x7fffffff;
+contracts/router/dex.fc:9:    slice refund_address = null();
+contracts/router/dex.fc:17:        refund_address = dex_payload~load_msg_addr();
+contracts/router/dex.fc:23:            & refund_address.address::check_workchain(params::workchain)
+contracts/router/dex.fc:71:                + storage_fee::lp_account + gas::lp_account::add_liquidity
+contracts/router/dex.fc:72:                + gas::pool::cb_add_liquidity
+contracts/router/dex.fc:73:                + storage_fee::lp_wallet + gas::lp_wallet::mint)
+contracts/router/dex.fc:95:        var out_msg_body = jetton_wallet::transfer(0, _sent_amount, refund_address, excesses_address)
+contracts/pool/msgs/router.fc:6:        ;; usually not needed since it uses to_address and refund_address
+contracts/pool/msgs/router.fc:17:        slice refund_address = dex_payload~load_msg_addr();
+contracts/pool/msgs/router.fc:24:        cell custom_payload_cs = null(); 
+contracts/pool/msgs/router.fc:30:        try { ;; check call_payload body, refund to refund_address if fails
+contracts/pool/msgs/router.fc:36:            custom_payload_cs = call_payload~load_maybe_ref(); 
+contracts/pool/msgs/router.fc:60:                    refund_address, 
+contracts/pool/msgs/router.fc:144:                    custom_payload_cs, 
+contracts/pool/msgs/router.fc:162:                    refund_address, 
+contracts/pool/msgs/router.fc:166:                    refund_payload_cs, ;; clear custom_payload_cs, use refund_payload_cs
+contracts/pool/msgs/router.fc:189:        slice refund_address = dex_payload~load_msg_addr();
+contracts/pool/msgs/router.fc:193:        int min_lp_out = 0;
+contracts/pool/msgs/router.fc:195:        int both_positive? = 0;
+contracts/pool/msgs/router.fc:196:        int fwd_amount = 0;
+contracts/pool/msgs/router.fc:197:        cell custom_payload_cs = null(); 
+contracts/pool/msgs/router.fc:202:            min_lp_out = call_payload~load_coins();
+contracts/pool/msgs/router.fc:204:            both_positive? = call_payload~load_bool();
+contracts/pool/msgs/router.fc:205:            fwd_amount = call_payload~load_coins();
+contracts/pool/msgs/router.fc:206:            custom_payload_cs = call_payload~load_maybe_ref();
+contracts/pool/msgs/router.fc:221:                    refund_address, 
+contracts/pool/msgs/router.fc:250:                lp_account::add_liquidity(
+contracts/pool/msgs/router.fc:253:                    min_lp_out,
+contracts/pool/msgs/router.fc:254:                    fwd_amount,
+contracts/pool/msgs/router.fc:255:                    both_positive?,
+contracts/pool/msgs/router.fc:257:                    custom_payload_cs,
+contracts/pool/msgs/router.fc:258:                    refund_address,
+contracts/pool/msgs/router.fc:272:                    refund_address, 
+contracts/lp_account/msgs/pool.fc:6:    if ctx.at(OPCODE) == op::add_liquidity { 
+contracts/lp_account/msgs/pool.fc:9:        int min_lp_out = in_msg_body~load_coins();
+contracts/lp_account/msgs/pool.fc:10:        int fwd_amount = in_msg_body~load_coins();
+contracts/lp_account/msgs/pool.fc:11:        int both_positive? = in_msg_body~load_bool();
+contracts/lp_account/msgs/pool.fc:13:        cell custom_payload_cs = in_msg_body~load_maybe_ref(); 
+contracts/lp_account/msgs/pool.fc:15:        slice refund_address = additional_fields~load_msg_addr();
+contracts/lp_account/msgs/pool.fc:16:        slice excess_address = additional_fields~load_msg_addr();
+contracts/lp_account/msgs/pool.fc:21:        ;; logic needed to be able to pass min_lp_out > 0 and doesnt mint
+contracts/lp_account/msgs/pool.fc:23:        int mint? = false;
+contracts/lp_account/msgs/pool.fc:24:        if both_positive? {
+contracts/lp_account/msgs/pool.fc:25:            mint? = (min_lp_out > 0) & ((storage::amount0 > 0) & (storage::amount1 > 0));
+contracts/lp_account/msgs/pool.fc:27:            mint? = (min_lp_out > 0) & (storage::amount0 + storage::amount1 > 0);
+contracts/lp_account/msgs/pool.fc:30:        if mint? {
+contracts/lp_account/msgs/pool.fc:34:                pool::cb_add_liquidity(
+contracts/lp_account/msgs/pool.fc:39:                    min_lp_out,
+contracts/lp_account/msgs/pool.fc:40:                    fwd_amount,
+contracts/lp_account/msgs/pool.fc:41:                    custom_payload_cs,
+contracts/lp_account/msgs/pool.fc:42:                    refund_address,
+contracts/lp_account/msgs/pool.fc:43:                    excess_address
+contracts/lp_account/msgs/pool.fc:52:            utils::send_excesses(0, excess_address, QCARRY_ALL_BALANCE);
+contracts/pool/msgs/getter.fc:45:        ;; https://github.com/ton-blockchain/token-contract/blob/920c5aa3a33ede6405b5653147895c9e27bfe535/ft/jetton-minter-discoverable.fc#L100
+contracts/lp_account/msgs/user.fc:40:    if ctx.at(OPCODE) == op::direct_add_liquidity {
+contracts/lp_account/msgs/user.fc:44:            + storage_fee::lp_account + gas::lp_account::direct_add_liquidity 
+contracts/lp_account/msgs/user.fc:45:            + storage_fee::pool + gas::pool::cb_add_liquidity 
+contracts/lp_account/msgs/user.fc:46:            + storage_fee::lp_wallet + gas::lp_wallet::mint);
+contracts/lp_account/msgs/user.fc:50:        int min_lp_out = in_msg_body~load_coins();
+contracts/lp_account/msgs/user.fc:51:        int fwd_amount = in_msg_body~load_coins();
+contracts/lp_account/msgs/user.fc:53:        cell custom_payload_cs = in_msg_body~load_maybe_ref(); 
+contracts/lp_account/msgs/user.fc:55:        slice refund_address = additional_fields~load_msg_addr();
+contracts/lp_account/msgs/user.fc:63:            & refund_address.address::check_workchain(params::workchain)
+contracts/lp_account/msgs/user.fc:69:        ;; check if min_lp_out, am0, am1 are all `> 0`
+contracts/lp_account/msgs/user.fc:70:        throw_unless(error::zero_output, (min_lp_out > 0) & ((am0 > 0) & (am1 > 0)));
+contracts/lp_account/msgs/user.fc:87:            pool::cb_add_liquidity(
+contracts/lp_account/msgs/user.fc:92:                min_lp_out,
+contracts/lp_account/msgs/user.fc:93:                fwd_amount,
+contracts/lp_account/msgs/user.fc:94:                custom_payload_cs,
+contracts/lp_account/msgs/user.fc:95:                refund_address,
+contracts/common/gas.fc:26:const gas::lp_account::direct_add_liquidity = 10000000;
+contracts/common/gas.fc:27:const gas::lp_account::add_liquidity = 10000000;
+contracts/common/gas.fc:30:const gas::lp_wallet::mint = 20000000;
+contracts/pool/msgs/lp_wallet.fc:9:        cell maybe_custom_payload = in_msg_body~load_maybe_ref();
+contracts/pool/msgs/lp_wallet.fc:48:        ifnot maybe_custom_payload.null?() {
+contracts/pool/msgs/lp_wallet.fc:49:            slice maybe_custom_payload_sc = maybe_custom_payload.begin_parse();
+contracts/pool/msgs/lp_wallet.fc:50:            if maybe_custom_payload_sc.slice_bits() == 2 {
+contracts/pool/msgs/lp_wallet.fc:51:                left_maybe_payload = maybe_custom_payload_sc~load_maybe_ref();
+contracts/pool/msgs/lp_wallet.fc:52:                right_maybe_payload = maybe_custom_payload_sc~load_maybe_ref();
+contracts/pool/msgs/lp_account.fc:4:    if ctx.at(OPCODE) == op::cb_add_liquidity {
+contracts/pool/msgs/lp_account.fc:10:        int min_lp_out = in_msg_body~load_coins();
+contracts/pool/msgs/lp_account.fc:11:        int fwd_amount = in_msg_body~load_coins();
+contracts/pool/msgs/lp_account.fc:12:        cell custom_payload_cs = in_msg_body~load_maybe_ref(); 
+contracts/pool/msgs/lp_account.fc:15:        slice refund_address = additional_data~load_msg_addr();
+contracts/pool/msgs/lp_account.fc:16:        slice excess_address = additional_data~load_msg_addr();
+contracts/pool/msgs/lp_account.fc:40:            ;; 1000 LP tokens will be locked, excesses minted to user
+contracts/pool/msgs/lp_account.fc:42:            ;; but (liquidity < min_lp_out) is still true
+contracts/pool/msgs/lp_account.fc:69:            | (liquidity < min_lp_out)
+contracts/pool/msgs/lp_account.fc:73:            ;; hardcoded 0 to avoid minting loop between pool and lp_account
+contracts/pool/msgs/lp_account.fc:75:            ;; no need to forward again custom_payload_cs
+contracts/pool/msgs/lp_account.fc:79:                    refund_address
+contracts/pool/msgs/lp_account.fc:88:                lp_account::add_liquidity(
+contracts/pool/msgs/lp_account.fc:93:                    true, ;; both_positive? to true
+contracts/pool/msgs/lp_account.fc:96:                    addr_none(), ;; refund_address
+contracts/pool/msgs/lp_account.fc:97:                    excess_address
+contracts/pool/msgs/lp_account.fc:110:            ;; check if fwd_amount is enough
+contracts/pool/msgs/lp_account.fc:111:            int used_gas = ctx.at(FWD_FEE) + gas::pool::cb_add_liquidity;
+contracts/pool/msgs/lp_account.fc:113:            if (fwd_amount > 0) & (
+contracts/pool/msgs/lp_account.fc:114:                (gas_available - (gas::jetton_wallet::est_transfer + (ctx.at(FWD_FEE) * 2))) - fwd_amount <= 0
+contracts/pool/msgs/lp_account.fc:115:            ) { ;; do not send transfer_notification, if gas is too low, mint may revert
+contracts/pool/msgs/lp_account.fc:116:                fwd_amount = 0; 
+contracts/pool/msgs/lp_account.fc:123:                jetton_wallet::mint(
+contracts/pool/msgs/lp_account.fc:125:                    excess_address, 
+contracts/pool/msgs/lp_account.fc:127:                    fwd_amount,
+contracts/pool/msgs/lp_account.fc:128:                    custom_payload_cs
+contracts/router/msgs/pool.fc:10:        cell custom_payload = in_msg_body~load_maybe_ref();
+contracts/router/msgs/pool.fc:31:        ifnot(custom_payload.null?()) {
+contracts/router/msgs/pool.fc:32:            slice tmp_custom_payload_ds = custom_payload.begin_parse();
+contracts/router/msgs/pool.fc:33:            if (tmp_custom_payload_ds.slice_bits() > 32) { ;; cross_swap = 32 + address
+contracts/router/msgs/pool.fc:34:                fwd_opcode = tmp_custom_payload_ds.preload_uint(32);
+contracts/router/msgs/pool.fc:55:            route_dex_messages(sent_jetton_address, gas, swap_amount, original_caller, custom_payload);
+contracts/router/msgs/pool.fc:64:                ;; do not send transfer_notification, if gas is too low
+contracts/router/msgs/pool.fc:75:                        .store_maybe_ref(custom_payload)
+contracts/router/msgs/pool.fc:84:                        .store_maybe_ref(custom_payload)
+contracts/router/msgs/jetton.fc:5:    if ctx.at(OPCODE) == op::ft::transfer_notification {
+contracts/pool/pools/constant_sum/gas.fc:1:const gas::pool::cb_add_liquidity = 22000000;
+contracts/pool/pools/weighted_const_product/gas.fc:1:const gas::pool::cb_add_liquidity = 100000000; ;; 0.100
+contracts/pool/pools/constant_product/gas.fc:1:const gas::pool::cb_add_liquidity = 27000000;
+contracts/pool/pools/weighted_stableswap/gas.fc:1:const gas::pool::cb_add_liquidity = 100000000; ;; 0.10
+contracts/pool/pools/stableswap/gas.fc:1:const gas::pool::cb_add_liquidity = 30000000; ;; 0.03

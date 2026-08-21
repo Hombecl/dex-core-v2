@@ -1,0 +1,54 @@
+contracts/lp_account/storage.fc:3:global int storage::amount0;
+contracts/lp_account/storage.fc:4:global int storage::amount1;
+contracts/lp_account/storage.fc:10:    storage::amount0 = ds~load_coins();
+contracts/lp_account/storage.fc:11:    storage::amount1 = ds~load_coins();
+contracts/lp_account/storage.fc:19:        .store_coins(storage::amount0)
+contracts/lp_account/storage.fc:20:        .store_coins(storage::amount1)
+contracts/common/contracts.fc:29:(cell) pool::cb_refund_me(int _left_amount, int _right_amount, cell _left_maybe_payload, cell _right_maybe_payload) inline {
+contracts/common/contracts.fc:30:    return begin_message(op::cb_refund_me)
+contracts/common/contracts.fc:146:(cell) router::pay_to(
+contracts/pool.fc:28:    if equal_slices(ctx.at(SENDER), storage::router_address) {
+contracts/router/msgs/pool.fc:28:        throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER))); ;; check if its a valid pool
+contracts/router/msgs/pool.fc:45:        int used_gas = ctx.at(FWD_FEE) + gas::router::pay_to;
+contracts/router/msgs/pool.fc:77:                    QCARRY_ALL_BALANCE
+contracts/router/msgs/pool.fc:86:                    QCARRY_ALL_BALANCE
+contracts/router/msgs/pool.fc:113:        throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER))); ;; check if its a valid pool
+contracts/router/msgs/pool.fc:135:            QCARRY_ALL_BALANCE
+contracts/lp_account/msgs/user.fc:4:    if ctx.at(OPCODE) == op::refund_me { 
+contracts/lp_account/msgs/user.fc:10:        throw_unless(error::no_liquidity, (storage::amount0 > 0) | (storage::amount1 > 0));
+contracts/lp_account/msgs/user.fc:17:            + storage_fee::router + gas::router::pay_to  
+contracts/lp_account/msgs/user.fc:24:            pool::cb_refund_me(
+contracts/lp_account/msgs/user.fc:25:                storage::amount0, 
+contracts/lp_account/msgs/user.fc:26:                storage::amount1, 
+contracts/lp_account/msgs/user.fc:30:            CARRY_ALL_BALANCE | DESTROY_IF_ZERO
+contracts/lp_account/msgs/user.fc:33:        storage::amount0 = 0;
+contracts/lp_account/msgs/user.fc:34:        storage::amount1 = 0;
+contracts/lp_account/msgs/user.fc:67:        am0 = am0 ? am0 : storage::amount0;
+contracts/lp_account/msgs/user.fc:68:        am1 = am1 ? am1 : storage::amount1;
+contracts/lp_account/msgs/user.fc:72:        storage::amount0 -= am0;
+contracts/lp_account/msgs/user.fc:73:        storage::amount1 -= am1;
+contracts/lp_account/msgs/user.fc:77:        throw_unless(error::no_liquidity, (storage::amount0 >= 0) & (storage::amount1 >= 0));
+contracts/lp_account/msgs/user.fc:79:        if storage::amount0 + storage::amount1 > 0  {
+contracts/lp_account/msgs/user.fc:98:            CARRY_ALL_BALANCE | DESTROY_IF_ZERO
+contracts/lp_account/msgs/user.fc:106:        msgs::send_empty(0, storage::user_address, CARRY_ALL_BALANCE);
+contracts/pool/msgs/lp_account.fc:26:        throw_unless(error::invalid_caller, equal_slices(lp_account~address(params::workchain), ctx.at(SENDER)));
+contracts/pool/msgs/lp_account.fc:99:                CARRY_ALL_BALANCE
+contracts/pool/msgs/lp_account.fc:130:                CARRY_ALL_BALANCE
+contracts/pool/msgs/lp_account.fc:138:    if ctx.at(OPCODE) == op::cb_refund_me {
+contracts/pool/msgs/lp_account.fc:151:        throw_unless(error::invalid_caller, equal_slices(lp_account~address(params::workchain), ctx.at(SENDER)));
+contracts/pool/msgs/lp_account.fc:153:        (int gas, int mode) = (0, CARRY_REMAINING_GAS);
+contracts/pool/msgs/lp_account.fc:161:                storage::router_address, 
+contracts/pool/msgs/lp_account.fc:162:                router::pay_to(
+contracts/pool/msgs/lp_account.fc:181:                storage::router_address, 
+contracts/pool/msgs/lp_account.fc:182:                router::pay_to(
+tests/ConstProduct.spec.ts:2145:        it('should refund partial liquidity', async () => {
+tests/ConstProduct.spec.ts:2180:        it('should refund both lp tokens', async () => {
+tests/WeightedCPI.spec.ts:1700:        it('should refund partial liquidity', async () => {
+tests/System.spec.ts:205:        it('should handle refund partial liquidity', async () => {
+contracts/router/dex.fc:37:            QCARRY_ALL_BALANCE
+contracts/router/dex.fc:60:                + gas::router::pay_to
+contracts/router/dex.fc:89:            CARRY_ALL_BALANCE
+contracts/router/dex.fc:98:        msgs::send_simple(0, _jetton_address, out_msg_body.end_cell(), QCARRY_ALL_BALANCE);
+tests/ConstSum.spec.ts:1597:        it('should refund partial liquidity', async () => {
+tests/Stableswap.spec.ts:1701:        it('should refund partial liquidity', async () => {
+tests/WeightedStableswap.spec.ts:1798:        it('should refund partial liquidity', async () => {

@@ -1,0 +1,31 @@
+contracts/router.fc:18:    if handle_jetton_messages() {
+contracts/router/dex.fc:1:() route_dex_messages(slice _jetton_address, int _available_gas, int _sent_amount, slice _caller, cell _dex_payload) impure inline {
+contracts/router/dex.fc:33:            jetton_wallet::transfer(0, _sent_amount, _caller, _caller)
+contracts/router/dex.fc:46:        throw_arg_if(op::transfer_bounce_invalid_request, 1, (transferred_op != op::swap) & (transferred_op != op::provide_lp));
+contracts/router/dex.fc:47:        throw_arg_if(op::transfer_bounce_invalid_pool, 1, equal_slices(_jetton_address, token_wallet1));
+contracts/router/dex.fc:48:        throw_arg_if(op::transfer_bounce_locked, 1, storage::is_locked);
+contracts/router/dex.fc:50:        throw_arg_unless(op::transfer_bounce_wrong_wc, 1, _caller.address::check_workchain(params::workchain));
+contracts/router/dex.fc:51:        throw_arg_unless(op::transfer_bounce_tx_expired, 1, tx_deadline > now());
+contracts/router/dex.fc:56:        throw_arg_if(op::transfer_bounce_low_gas, 1, (transferred_op == op::swap) 
+contracts/router/dex.fc:67:        throw_arg_if(op::transfer_bounce_low_gas, 1, (transferred_op == op::provide_lp) 
+contracts/router/dex.fc:95:        var out_msg_body = jetton_wallet::transfer(0, _sent_amount, refund_address, excesses_address)
+contracts/router/msgs/vault.fc:16:        var msg = jetton_wallet::transfer(0, amount_out, to_address, to_address)
+tests/ConstSum.spec.ts:118:    customRefund?: SBCtrTreasury,
+tests/ConstSum.spec.ts:726:            let refundAddr = params.customRefund ?? sender;
+tests/ConstSum.spec.ts:835:            let refundAddr = params.customRefund ?? sender;
+tests/ConstSum.spec.ts:1646:                //customRefund: alice,
+tests/ConstSum.spec.ts:1666:                customRefund: alice,
+contracts/common/contracts.fc:280:(builder) jetton_wallet::transfer(int _fwd_amount, int _jetton_amount, slice _to, slice _response_address) inline {
+contracts/router/msgs/jetton.fc:1:(int) handle_jetton_messages() impure inline {
+contracts/router/msgs/jetton.fc:15:                jetton_wallet::transfer(0, jetton_amount, from_address, from_address)
+contracts/router/msgs/jetton.fc:17:                    .store_uint32(op::transfer_bounce_invalid_request)
+contracts/router/msgs/jetton.fc:24:        route_dex_messages(
+contracts/common/op.fc:59:const op::transfer_bounce_locked          = "transfer_bounce_locked"c;
+contracts/common/op.fc:60:const op::transfer_bounce_invalid_pool    = "transfer_bounce_invalid_pool"c;
+contracts/common/op.fc:61:const op::transfer_bounce_wrong_wc        = "transfer_bounce_wrong_wc"c;
+contracts/common/op.fc:62:const op::transfer_bounce_low_gas         = "transfer_bounce_low_gas"c;
+contracts/common/op.fc:63:const op::transfer_bounce_invalid_request = "transfer_bounce_invalid_request"c;
+contracts/common/op.fc:64:const op::transfer_bounce_tx_expired      = "transfer_bounce_tx_expired"c;
+contracts/router/msgs/pool.fc:55:            route_dex_messages(sent_jetton_address, gas, swap_amount, original_caller, custom_payload);
+contracts/router/msgs/pool.fc:74:                    jetton_wallet::transfer(fwd_ton_amount, amount0_out, owner, excesses_address)
+contracts/router/msgs/pool.fc:83:                    jetton_wallet::transfer(fwd_ton_amount, amount1_out, owner, excesses_address)

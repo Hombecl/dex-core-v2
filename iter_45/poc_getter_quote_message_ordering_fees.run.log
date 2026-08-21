@@ -1,0 +1,32 @@
+
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/Router.spec.ts tests/Pool.spec.ts tests/LPAccount.spec.ts -t return valid pool address|return correct dex version|generate valid URI|return valid data
+
+PASS tests/Router.spec.ts
+  Router
+    Governance
+      ○ skipped should handle lock & unlock
+      ○ skipped should handle upgrades
+    Getters
+      ✓ should return valid pool address (31 ms)
+      ✓ should return correct dex version (14 ms)
+
+PASS tests/Pool.spec.ts
+  Pool
+    Router calls
+      ○ skipped should refund swap if tx is expired
+      ○ skipped should refund provide lp if tx is expired
+      ○ skipped should bounce if tokens are the same
+    Getters
+      ✓ should generate valid URI (16 ms)
+
+PASS tests/LPAccount.spec.ts
+  LPAccount
+    Getters
+      ✓ should return valid data (11 ms)
+
+Test Suites: 3 passed, 3 total
+Tests:       5 skipped, 4 passed, 9 total
+Snapshots:   0 total
+Time:        6.657 s
+Ran all test suites matching /tests\/Router.spec.ts|tests\/Pool.spec.ts|tests\/LPAccount.spec.ts/i with tests matching "return valid pool address|return correct dex version|generate valid URI|return valid data".

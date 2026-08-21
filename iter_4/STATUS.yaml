@@ -1,0 +1,53 @@
+schema_version: shadow-v1
+iteration: 4
+phase: completed
+cell_id: P1xC4
+cell_label: swap x bounce_reversal
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: P1xC4
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/Pool.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-flash-wt/blind-test-vps/ston-dot-fi-dex-smart-contracts-v2-flash/iter_4/poc_swap_bounce_reversal.run.log
+    run_log_exists_on_disk: true
+    test_runtime: PASSED
+    duration_seconds: 5
+    numerical_evidence: "Pool.spec.ts: 2 passed for expired swap refund and same-token rejection; no persistent reserve delta observed."
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 swap is:issue"
+      - "repo:ston-fi/dex-core-v2 lp_account is:issue"
+      - "repo:ston-fi/dex-core-v2 swap is:pr"
+      - "repo:ston-fi/dex-core-v2 audit is:issue"
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "repo:ston-fi/dex-core-v2 swap is:issue"
+      - "repo:ston-fi/dex-core-v2 lp_account is:issue"
+      - "repo:ston-fi/dex-core-v2 swap is:pr"
+      - "repo:ston-fi/dex-core-v2 audit is:issue"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_4-P1xC4.md
+  notes:
+    - "Payout caller binding and pre-route gas/deadline checks close the selected-asset bounce path."
+    - "No CASCADE verbatim_hits emitted because this is not a candidate."

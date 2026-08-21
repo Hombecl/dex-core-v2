@@ -1,0 +1,460 @@
+contracts/vault.fc:32:    if ctx.at(IS_BOUNCED) { 
+contracts/vault.fc:66:            CARRY_ALL_BALANCE | DESTROY_IF_ZERO);
+contracts/router.fc:11:    if ctx.at(IS_BOUNCED) { 
+contracts/router.fc:23:    if handle_pool_messages() {
+contracts/router/dex.fc:72:                + gas::pool::cb_add_liquidity
+contracts/pool.fc:11:    if ctx.at(IS_BOUNCED) { 
+tests/ConstSum.spec.ts:45:        amount1: bigint,
+tests/ConstSum.spec.ts:73:    amount1: bigint,
+tests/ConstSum.spec.ts:102:    amount1: Exclude<bigint, 0n>,
+tests/ConstSum.spec.ts:105:    amount1?: bigint,
+tests/ConstSum.spec.ts:346:                jettonAmount: params.amount1,
+tests/ConstSum.spec.ts:379:                expect(balance).toEqual(oldBalance1 - params.amount1);
+tests/ConstSum.spec.ts:513:                expect(poolData.leftReserve).toEqual(poolData.leftJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2);
+tests/ConstSum.spec.ts:514:                expect(poolData.rightReserve).toEqual(poolData.rightJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2);
+tests/ConstSum.spec.ts:524:                params.mintAmount = params.mintAmount < maxBigint(params.createPool?.amount1, params.createPool?.amount2)
+tests/ConstSum.spec.ts:525:                    ? maxBigint(params.createPool?.amount1, params.createPool?.amount2) * 2n : params.mintAmount;
+tests/ConstSum.spec.ts:595:            if ((typeof params.amount1 !== "undefined") && (typeof params.amount2 !== "undefined")) {
+tests/ConstSum.spec.ts:597:            } else if (params.amount1) {
+tests/ConstSum.spec.ts:598:                params.amount1 = BigInt(params.amount1);
+tests/ConstSum.spec.ts:601:                const lpMint = params.amount1 * oldPoolJData.totalSupply / reserve;
+tests/ConstSum.spec.ts:608:                params.amount1 = divUp(lpMint * (isLeft ? oldPoolData.rightReserve : oldPoolData.leftReserve), oldPoolJData.totalSupply);
+tests/ConstSum.spec.ts:617:            if (params.amount1) {
+tests/ConstSum.spec.ts:620:                    jettonAmount: params.amount1,
+tests/ConstSum.spec.ts:654:                    expect(balance).toEqual(oldBalance1 - params.amount1);
+tests/ConstSum.spec.ts:703:                        //expect(poolData.leftReserve).toEqual(oldPoolData.leftReserve + (poolData.leftJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2));
+tests/ConstSum.spec.ts:704:                        //expect(poolData.rightReserve).toEqual(oldPoolData.rightReserve + (poolData.rightJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2));
+tests/ConstSum.spec.ts:716:                expect(isLeft ? accData.leftAmount - oldAccData.leftAmount : accData.rightAmount - oldAccData.rightAmount).toEqual(params.amount1);
+tests/ConstSum.spec.ts:1169:                    amount1: toNano(1000000),
+tests/ConstSum.spec.ts:1188:                    amount1: toNano(10000),
+tests/ConstSum.spec.ts:1227:                    amount1: toNano(1000),
+tests/ConstSum.spec.ts:1289:                    amount1: toNano(1000),
+tests/ConstSum.spec.ts:1304:                    amount1: toNano(1000),
+tests/ConstSum.spec.ts:1322:                    amount1: toNano(1000),
+tests/ConstSum.spec.ts:1335:                amount1: toNano(100),
+tests/ConstSum.spec.ts:1343:                    amount1: toNano(3000),
+tests/ConstSum.spec.ts:1351:                amount1: toNano(3),
+tests/ConstSum.spec.ts:1381:                    amount1: toNano(1000),
+tests/ConstSum.spec.ts:1388:                amount1: toNano(20),
+tests/ConstSum.spec.ts:1412:                    amount1: toNano(1000),
+tests/ConstSum.spec.ts:1426:                amount1: toNano(1000),
+tests/ConstSum.spec.ts:1450:                    amount1: toNano(1000),
+tests/ConstSum.spec.ts:1456:                    amount1: toNano(1000),
+tests/ConstSum.spec.ts:1479:                    amount1: toNano(1000),
+tests/ConstSum.spec.ts:1518:                    amount1: toNano(1000),
+tests/ConstSum.spec.ts:1536:                amount1: toNano(5),
+tests/ConstSum.spec.ts:1560:                    amount1: toNano(1000),
+tests/ConstSum.spec.ts:1579:                    amount1: toNano(1000),
+tests/ConstSum.spec.ts:1600:                    amount1: toNano(1000),
+tests/ConstSum.spec.ts:1607:                amount1: toNano(20),
+tests/ConstSum.spec.ts:1636:                    amount1: toNano(1000),
+tests/ConstSum.spec.ts:1656:                    amount1: toNano(1000),
+tests/ConstSum.spec.ts:1676:                    amount1: toNano(1000),
+tests/ConstSum.spec.ts:1690:                amount1: toNano(1000),
+tests/ConstSum.spec.ts:1714:                    amount1: toNano(1000),
+tests/ConstSum.spec.ts:1734:                    amount1: toNano(1000),
+tests/ConstSum.spec.ts:1740:                    amount1: toNano(1000),
+tests/ConstSum.spec.ts:1765:                    amount1: toNano(1000),
+tests/ConstSum.spec.ts:1771:                    amount1: toNano(1000),
+tests/ConstSum.spec.ts:1799:                    amount1: toNano(1000000),
+tests/ConstSum.spec.ts:1818:                    amount1: toNano(1000000),
+contracts/common/contracts.fc:29:(cell) pool::cb_refund_me(int _left_amount, int _right_amount, cell _left_maybe_payload, cell _right_maybe_payload) inline {
+contracts/common/contracts.fc:30:    return begin_message(op::cb_refund_me)
+contracts/common/contracts.fc:39:(cell) pool::cb_add_liquidity(
+contracts/common/contracts.fc:50:    return begin_message(op::cb_add_liquidity)
+contracts/common/contracts.fc:153:    int _amount0_out, 
+contracts/common/contracts.fc:155:    int _amount1_out,
+contracts/common/contracts.fc:166:            .store_coins(_amount0_out)
+contracts/common/contracts.fc:168:            .store_coins(_amount1_out)
+contracts/common/contracts.fc:189:    int _amount0_out, 
+contracts/common/contracts.fc:191:    int _amount1_out,
+contracts/common/contracts.fc:198:            .store_coins(_amount0_out)
+contracts/common/contracts.fc:200:            .store_coins(_amount1_out)
+tests/WeightedStableswap.spec.ts:45:        amount1: bigint,
+tests/WeightedStableswap.spec.ts:76:    amount1: bigint,
+tests/WeightedStableswap.spec.ts:116:    amount1: Exclude<bigint, 0n>,
+tests/WeightedStableswap.spec.ts:119:    amount1?: bigint,
+tests/WeightedStableswap.spec.ts:405:                jettonAmount: params.amount1,
+tests/WeightedStableswap.spec.ts:439:                expect(balance).toEqual(oldBalance1 - params.amount1);
+tests/WeightedStableswap.spec.ts:582:                expect(poolData.leftReserve).toEqual(poolData.leftJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2);
+tests/WeightedStableswap.spec.ts:583:                expect(poolData.rightReserve).toEqual(poolData.rightJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2);
+tests/WeightedStableswap.spec.ts:591:                expect(isLeft ? accData.leftAmount - oldAccData.leftAmount : accData.rightAmount - oldAccData.rightAmount).toEqual(params.amount1);
+tests/WeightedStableswap.spec.ts:601:                params.mintAmount = params.mintAmount < maxBigint(params.createPool?.amount1, params.createPool?.amount2)
+tests/WeightedStableswap.spec.ts:602:                    ? maxBigint(params.createPool?.amount1, params.createPool?.amount2) * 2n : params.mintAmount;
+tests/WeightedStableswap.spec.ts:672:            if ((typeof params.amount1 !== "undefined") && (typeof params.amount2 !== "undefined")) {
+tests/WeightedStableswap.spec.ts:674:            } else if (params.amount1) {
+tests/WeightedStableswap.spec.ts:675:                params.amount1 = BigInt(params.amount1);
+tests/WeightedStableswap.spec.ts:678:                const lpMint = params.amount1 * oldPoolJData.totalSupply / reserve;
+tests/WeightedStableswap.spec.ts:685:                params.amount1 = divUp(lpMint * (isLeft ? oldPoolData.rightReserve : oldPoolData.leftReserve), oldPoolJData.totalSupply);
+tests/WeightedStableswap.spec.ts:694:            if (params.amount1) {
+tests/WeightedStableswap.spec.ts:697:                    jettonAmount: params.amount1,
+tests/WeightedStableswap.spec.ts:734:                    expect(balance).toEqual(oldBalance1 - params.amount1);
+tests/WeightedStableswap.spec.ts:785:                        //expect(poolData.leftReserve).toEqual(oldPoolData.leftReserve + (poolData.leftJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2));
+tests/WeightedStableswap.spec.ts:786:                        //expect(poolData.rightReserve).toEqual(oldPoolData.rightReserve + (poolData.rightJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2));
+tests/WeightedStableswap.spec.ts:797:                expect(isLeft ? accData.leftAmount - oldAccData.leftAmount : accData.rightAmount - oldAccData.rightAmount).toEqual(params.amount1);
+tests/WeightedStableswap.spec.ts:1236:                    amount1: toNano(1000000),
+tests/WeightedStableswap.spec.ts:1255:                    amount1: toNano(10000),
+tests/WeightedStableswap.spec.ts:1294:                    amount1: toNano(1000),
+tests/WeightedStableswap.spec.ts:1356:                    amount1: toNano(1000000),
+tests/WeightedStableswap.spec.ts:1378:                    amount1: toNano(1000000),
+tests/WeightedStableswap.spec.ts:1400:                    amount1: toNano(4000000),
+tests/WeightedStableswap.spec.ts:1430:                    amount1: toNano(1000000),
+tests/WeightedStableswap.spec.ts:1467:                    amount1: toNano(1000),
+tests/WeightedStableswap.spec.ts:1481:                    amount1: toNano(1000),
+tests/WeightedStableswap.spec.ts:1500:                    amount1: toNano(1000),
+tests/WeightedStableswap.spec.ts:1507:                amount1: toNano(0),
+tests/WeightedStableswap.spec.ts:1514:                amount1: toNano(100),
+tests/WeightedStableswap.spec.ts:1526:                    amount1: toNano(1000),
+tests/WeightedStableswap.spec.ts:1536:                amount1: toNano(0),
+tests/WeightedStableswap.spec.ts:1568:                    amount1: toNano(1000),
+tests/WeightedStableswap.spec.ts:1575:                amount1: toNano(20),
+tests/WeightedStableswap.spec.ts:1581:                amount1: toNano(0),
+tests/WeightedStableswap.spec.ts:1607:                    amount1: toNano(1000),
+tests/WeightedStableswap.spec.ts:1621:                amount1: toNano(1000),
+tests/WeightedStableswap.spec.ts:1645:                    amount1: toNano(1000),
+tests/WeightedStableswap.spec.ts:1651:                    amount1: toNano(1000),
+tests/WeightedStableswap.spec.ts:1674:                    amount1: toNano(1000),
+tests/WeightedStableswap.spec.ts:1681:                amount1: toNano(20),
+tests/WeightedStableswap.spec.ts:1688:                amount1: toNano(0),
+tests/WeightedStableswap.spec.ts:1719:                    amount1: toNano(1000),
+tests/WeightedStableswap.spec.ts:1737:                amount1: toNano(5),
+tests/WeightedStableswap.spec.ts:1761:                    amount1: toNano(1000),
+tests/WeightedStableswap.spec.ts:1780:                    amount1: toNano(1000),
+tests/WeightedStableswap.spec.ts:1801:                    amount1: toNano(1000),
+tests/WeightedStableswap.spec.ts:1808:                amount1: toNano(20),
+tests/WeightedStableswap.spec.ts:1837:                    amount1: toNano(1000),
+tests/WeightedStableswap.spec.ts:1856:                    amount1: toNano(1000),
+tests/WeightedStableswap.spec.ts:1870:                amount1: toNano(1000),
+tests/WeightedStableswap.spec.ts:1894:                    amount1: toNano(1000),
+tests/WeightedStableswap.spec.ts:1913:                    amount1: toNano(1000),
+tests/WeightedStableswap.spec.ts:1933:                    amount1: toNano(1000),
+tests/WeightedStableswap.spec.ts:1939:                    amount1: toNano(1000),
+tests/WeightedStableswap.spec.ts:1964:                    amount1: toNano(1000),
+tests/WeightedStableswap.spec.ts:1970:                    amount1: toNano(1000),
+tests/WeightedStableswap.spec.ts:1998:                    amount1: toNano(1000000),
+tests/WeightedStableswap.spec.ts:2017:                    amount1: toNano(1000000),
+tests/WeightedStableswap.spec.ts:2039:                    amount1: toNano(1000000),
+tests/WeightedCPI.spec.ts:45:        amount1: bigint,
+tests/WeightedCPI.spec.ts:75:    amount1: bigint,
+tests/WeightedCPI.spec.ts:106:    amount1: Exclude<bigint, 0n>,
+tests/WeightedCPI.spec.ts:109:    amount1?: bigint,
+tests/WeightedCPI.spec.ts:392:                jettonAmount: params.amount1,
+tests/WeightedCPI.spec.ts:426:                expect(balance).toEqual(oldBalance1 - params.amount1);
+tests/WeightedCPI.spec.ts:570:                expect(poolData.leftReserve).toEqual(poolData.leftJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2);
+tests/WeightedCPI.spec.ts:571:                expect(poolData.rightReserve).toEqual(poolData.rightJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2);
+tests/WeightedCPI.spec.ts:578:                expect(isLeft ? accData.leftAmount - oldAccData.leftAmount : accData.rightAmount - oldAccData.rightAmount).toEqual(params.amount1);
+tests/WeightedCPI.spec.ts:587:                params.mintAmount = params.mintAmount < maxBigint(params.createPool?.amount1, params.createPool?.amount2)
+tests/WeightedCPI.spec.ts:588:                    ? maxBigint(params.createPool?.amount1, params.createPool?.amount2) * 2n : params.mintAmount;
+tests/WeightedCPI.spec.ts:658:            if ((typeof params.amount1 !== "undefined") && (typeof params.amount2 !== "undefined")) {
+tests/WeightedCPI.spec.ts:660:            } else if (params.amount1) {
+tests/WeightedCPI.spec.ts:661:                params.amount1 = BigInt(params.amount1);
+tests/WeightedCPI.spec.ts:664:                const lpMint = params.amount1 * oldPoolJData.totalSupply / reserve;
+tests/WeightedCPI.spec.ts:671:                params.amount1 = divUp(lpMint * (isLeft ? oldPoolData.rightReserve : oldPoolData.leftReserve), oldPoolJData.totalSupply);
+tests/WeightedCPI.spec.ts:680:            if (params.amount1) {
+tests/WeightedCPI.spec.ts:683:                    jettonAmount: params.amount1,
+tests/WeightedCPI.spec.ts:717:                    expect(balance).toEqual(oldBalance1 - params.amount1);
+tests/WeightedCPI.spec.ts:766:                        //expect(poolData.leftReserve).toEqual(oldPoolData.leftReserve + (poolData.leftJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2));
+tests/WeightedCPI.spec.ts:767:                        //expect(poolData.rightReserve).toEqual(oldPoolData.rightReserve + (poolData.rightJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2));
+tests/WeightedCPI.spec.ts:779:                expect(isLeft ? accData.leftAmount - oldAccData.leftAmount : accData.rightAmount - oldAccData.rightAmount).toEqual(params.amount1);
+tests/WeightedCPI.spec.ts:1210:                    amount1: toNano(1000000),
+tests/WeightedCPI.spec.ts:1229:                    amount1: toNano(10000),
+tests/WeightedCPI.spec.ts:1268:                    amount1: toNano(1000),
+tests/WeightedCPI.spec.ts:1330:                    amount1: toNano(1000000),
+tests/WeightedCPI.spec.ts:1347:                    amount1: toNano(1000000),
+tests/WeightedCPI.spec.ts:1375:                    amount1: toNano(1000),
+tests/WeightedCPI.spec.ts:1389:                    amount1: toNano(1000),
+tests/WeightedCPI.spec.ts:1408:                    amount1: toNano(1000),
+tests/WeightedCPI.spec.ts:1415:                amount1: toNano(0),
+tests/WeightedCPI.spec.ts:1422:                amount1: toNano(100),
+tests/WeightedCPI.spec.ts:1431:                    amount1: toNano(1000),
+tests/WeightedCPI.spec.ts:1446:                amount1: toNano(0),
+tests/WeightedCPI.spec.ts:1476:                    amount1: toNano(1000),
+tests/WeightedCPI.spec.ts:1483:                amount1: toNano(10),
+tests/WeightedCPI.spec.ts:1489:                amount1: toNano(0),
+tests/WeightedCPI.spec.ts:1515:                    amount1: toNano(1000),
+tests/WeightedCPI.spec.ts:1529:                amount1: toNano(1000),
+tests/WeightedCPI.spec.ts:1553:                    amount1: toNano(1000),
+tests/WeightedCPI.spec.ts:1559:                    amount1: toNano(1000),
+tests/WeightedCPI.spec.ts:1582:                    amount1: toNano(1000),
+tests/WeightedCPI.spec.ts:1621:                    amount1: toNano(1000),
+tests/WeightedCPI.spec.ts:1639:                amount1: toNano(5),
+tests/WeightedCPI.spec.ts:1663:                    amount1: toNano(1000),
+tests/WeightedCPI.spec.ts:1682:                    amount1: toNano(1000),
+tests/WeightedCPI.spec.ts:1703:                    amount1: toNano(1000),
+tests/WeightedCPI.spec.ts:1710:                amount1: toNano(20),
+tests/WeightedCPI.spec.ts:1739:                    amount1: toNano(1000),
+tests/WeightedCPI.spec.ts:1758:                    amount1: toNano(1000),
+tests/WeightedCPI.spec.ts:1772:                amount1: toNano(1000),
+tests/WeightedCPI.spec.ts:1796:                    amount1: toNano(1000),
+tests/WeightedCPI.spec.ts:1816:                    amount1: toNano(1000),
+tests/WeightedCPI.spec.ts:1836:                    amount1: toNano(1000),
+tests/WeightedCPI.spec.ts:1842:                    amount1: toNano(1000),
+tests/WeightedCPI.spec.ts:1867:                    amount1: toNano(1000),
+tests/WeightedCPI.spec.ts:1873:                    amount1: toNano(1000),
+tests/WeightedCPI.spec.ts:1901:                    amount1: toNano(1000000),
+tests/WeightedCPI.spec.ts:1920:                    amount1: toNano(1000000),
+contracts/lp_wallet.fc:11:    int query_id = in_msg_body~load_uint(64);
+contracts/lp_wallet.fc:38:        .store_uint(query_id, 64)
+contracts/lp_wallet.fc:56:    int query_id = in_msg_body~load_uint(64);
+contracts/lp_wallet.fc:75:            .store_uint(query_id, 64)
+contracts/lp_wallet.fc:96:        .store_uint(query_id, 64);
+contracts/lp_wallet.fc:105:    int query_id = in_msg_body~load_uint(64);
+contracts/lp_wallet.fc:117:        .store_uint(query_id, 64)
+contracts/lp_wallet.fc:136:() on_bounce (slice in_msg_body) impure {
+contracts/lp_wallet.fc:143:    int query_id = in_msg_body~load_uint(64);
+contracts/lp_wallet.fc:157:        on_bounce(in_msg_body);
+contracts/common/op.fc:5:const op::swap                            = "swap query_id:uint64 from_user:MsgAddress left_amount:Coins right_amount:Coins dex_payload:^[transferred_op:uint32 token_wallet1:MsgAddress refund_address:MsgAddress excesses_address:MsgAddress tx_deadline:uint64 swap_body:^[min_out:Coins receiver:MsgAddress fwd_gas:Coins custom_payload:(Maybe ^Cell) refund_fwd_gas:Coins refund_payload:(Maybe ^Cell) ref_fee:uint16 ref_address:MsgAddress]] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:6:const op::provide_lp                      = "provide_lp query_id:uint64 from_user:MsgAddress left_amount:Coins right_amount:Coins dex_payload:^[transferred_op:uint32 token_wallet1:MsgAddress refund_address:MsgAddress excesses_address:MsgAddress tx_deadline:uint64 provide_lp_body:^[min_lp_out:Coins to_address:MsgAddress both_positive:uint1 fwd_amount:Coins custom_payload:(Maybe ^Cell)]] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:7:const op::burn_notification_ext           = "burn_notification_ext query_id:uint64 jetton_amount:Coins from_address:MsgAddress response_address:MsgAddress maybe_custom_payload:(Maybe ^Cell) = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:8:const op::direct_add_liquidity            = "direct_add_liquidity query_id:uint64 am0:Coins am1:Coins min_lp_out:Coins fwd_amount:Coins to_user:MsgAddress custom_payload_cs:(Maybe ^Cell) additional_fields:^[refund_address:MsgAddress excess_address:MsgAddress] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:9:const op::refund_me                       = "refund_me query_id:uint64 left_maybe_payload:(Maybe ^Cell) right_maybe_payload:(Maybe ^Cell) = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:10:const op::pay_to                          = "pay_to query_id:uint64 to_address:MsgAddress excesses_address:MsgAddress original_caller:MsgAddress exit_code:uint32 custom_payload:(Maybe ^Cell) additional_info:^[fwd_ton_amount:Coins amount0_out:Coins token0_address:MsgAddress amount1_out:Coins token1_address:MsgAddress] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:11:const op::collect_fees                    = "collect_fees query_id:uint64 maybe_payload0:(Maybe ^Cell) maybe_payload1:(Maybe ^Cell) = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:12:const op::set_fees                        = "set_fees query_id:uint64 new_lp_fee:uint16 new_protocol_fee:uint16 new_protocol_fee_address:MsgAddress jetton_info:^[jetton_wallet0:MsgAddress jetton_wallet1:MsgAddress excesses_recipient:MsgAddress] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:13:const op::internal_set_fees               = "internal_set_fees query_id:uint64 new_lp_fee:uint16 new_protocol_fee:uint16 new_protocol_fee_address:MsgAddress excesses_address:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:14:const op::reset_gas                       = "reset_gas query_id:uint64 = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:15:const op::add_liquidity                   = "add_liquidity query_id:uint64 new_amount0:Coins new_amount1:Coins min_lp_out:Coins fwd_amount:Coins both_positive:uint1 to_user:MsgAddress custom_payload_cs:(Maybe ^Cell) additional_fields:^[refund_address:MsgAddress excess_address:MsgAddress] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:16:const op::cb_add_liquidity                = "cb_add_liquidity query_id:uint64 tot_am0:Coins tot_am1:Coins user_address:MsgAddress min_lp_out:Coins fwd_amount:Coins custom_payload_cs:(Maybe ^Cell) additional_fields:^[to_user_address:MsgAddress refund_address:MsgAddress excess_address:MsgAddress] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:17:const op::cb_refund_me                    = "cb_refund_me query_id:uint64 tot_am0:Coins tot_am1:Coins user_address:MsgAddress left_maybe_payload:(Maybe ^Cell) right_maybe_payload:(Maybe ^Cell) = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:18:const op::reset_pool_gas                  = "reset_pool_gas query_id:uint64 jetton_wallet0:MsgAddress jetton_wallet1:MsgAddress excesses_recipient:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:19:const op::init_code_upgrade               = "init_code_upgrade query_id:uint64 new_code:^Cell = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:20:const op::init_admin_upgrade              = "init_admin_upgrade query_id:uint64 new_admin_address:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:21:const op::cancel_code_upgrade             = "cancel_code_upgrade query_id:uint64 = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:22:const op::cancel_admin_upgrade            = "cancel_admin_upgrade query_id:uint64 = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:23:const op::finalize_upgrades               = "finalize_upgrades query_id:uint64 = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:24:const op::update_pool_status              = "update_pool_status query_id:uint64 jetton_wallet0:MsgAddress jetton_wallet1:MsgAddress excesses_recipient:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:25:const op::pay_vault                       = "pay_vault query_id:uint64 owner:MsgAddress excesses_address:MsgAddress additional_info:^[amount0_out:Coins token0_address:MsgAddress amount1_out:Coins token1_address:MsgAddress] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:26:const op::vault_pay_to                    = "vault_pay_to query_id:uint64 amount_out:Coins token_address:MsgAddress to_address:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:27:const op::deposit_ref_fee                 = "deposit_ref_fee query_id:uint64 jetton_amount:Coins excesses_address:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:28:const op::withdraw_fee                    = "withdraw_fee query_id:uint64 = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:29:const op::update_status                   = "update_status query_id:uint64 = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:30:const op::internal_update_status          = "internal_update_status query_id:uint64 excesses_recipient:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:31:const op::update_pool_code                = "update_pool_code query_id:uint64 jetton_wallet0:MsgAddress jetton_wallet1:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:32:const op::internal_update_pool_code       = "internal_update_pool_code query_id:uint64 upgrade_pool_code:^Cell = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:33:const op::init_pool_code_upgrade          = "init_pool_code_upgrade query_id:uint64 new_pool_code:^Cell = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:34:const op::cancel_pool_code_upgrade        = "cancel_pool_code_upgrade query_id:uint64 = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:37:const op::getter_lp_account_data          = "getter_lp_account_data query_id:uint64 = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:38:const op::getter_pool_data                = "getter_pool_data query_id:uint64 = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:39:const op::getter_lp_account_address       = "getter_lp_account_address query_id:uint64 user_address:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:40:const op::getter_pool_address             = "getter_pool_address query_id:uint64 token0:MsgAddress token1:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+contracts/router/msgs/pool.fc:1:(int) handle_pool_messages() impure inline {
+contracts/router/msgs/pool.fc:13:        int amount0_out = additional_info~load_coins();
+contracts/router/msgs/pool.fc:15:        int amount1_out = additional_info~load_coins();
+contracts/router/msgs/pool.fc:43:        ;; no need to check: ((amount0_out > 0) & (amount1_out == 0)) ^ ((amount0_out == 0) & (amount1_out > 0))
+contracts/router/msgs/pool.fc:50:            slice sent_jetton_address = amount0_out > 0 ? token0_address : token1_address;
+contracts/router/msgs/pool.fc:52:            int swap_amount = amount0_out + amount1_out; ;; one side is zero, so we can sum them
+contracts/router/msgs/pool.fc:70:            if amount0_out > 0 {
+contracts/router/msgs/pool.fc:74:                    jetton_wallet::transfer(fwd_ton_amount, amount0_out, owner, excesses_address)
+contracts/router/msgs/pool.fc:83:                    jetton_wallet::transfer(fwd_ton_amount, amount1_out, owner, excesses_address)
+contracts/router/msgs/pool.fc:98:        int amount0_out = additional_info~load_coins();
+contracts/router/msgs/pool.fc:100:        int amount1_out = additional_info~load_coins();
+contracts/router/msgs/pool.fc:121:                amount0_out > 0 ? token0_address : token1_address, 
+contracts/router/msgs/pool.fc:132:                amount0_out + amount1_out,
+contracts/lp_account/storage.fc:3:global int storage::amount0;
+contracts/lp_account/storage.fc:4:global int storage::amount1;
+contracts/lp_account/storage.fc:10:    storage::amount0 = ds~load_coins();
+contracts/lp_account/storage.fc:11:    storage::amount1 = ds~load_coins();
+contracts/lp_account/storage.fc:19:        .store_coins(storage::amount0)
+contracts/lp_account/storage.fc:20:        .store_coins(storage::amount1)
+tests/Stableswap.spec.ts:46:        amount1: bigint,
+tests/Stableswap.spec.ts:76:    amount1: bigint,
+tests/Stableswap.spec.ts:107:    amount1: Exclude<bigint, 0n>,
+tests/Stableswap.spec.ts:110:    amount1?: bigint,
+tests/Stableswap.spec.ts:391:                jettonAmount: params.amount1,
+tests/Stableswap.spec.ts:425:                expect(balance).toEqual(oldBalance1 - params.amount1);
+tests/Stableswap.spec.ts:568:                expect(poolData.leftReserve).toEqual(poolData.leftJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2);
+tests/Stableswap.spec.ts:569:                expect(poolData.rightReserve).toEqual(poolData.rightJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2);
+tests/Stableswap.spec.ts:577:                expect(isLeft ? accData.leftAmount - oldAccData.leftAmount : accData.rightAmount - oldAccData.rightAmount).toEqual(params.amount1);
+tests/Stableswap.spec.ts:587:                params.mintAmount = params.mintAmount < maxBigint(params.createPool?.amount1, params.createPool?.amount2)
+tests/Stableswap.spec.ts:588:                    ? maxBigint(params.createPool?.amount1, params.createPool?.amount2) * 2n : params.mintAmount;
+tests/Stableswap.spec.ts:659:            if ((typeof params.amount1 !== "undefined") && (typeof params.amount2 !== "undefined")) {
+tests/Stableswap.spec.ts:661:            } else if (params.amount1) {
+tests/Stableswap.spec.ts:662:                params.amount1 = BigInt(params.amount1);
+tests/Stableswap.spec.ts:676:            if (params.amount1) {
+tests/Stableswap.spec.ts:679:                    jettonAmount: params.amount1,
+tests/Stableswap.spec.ts:714:                    expect(balance).toEqual(oldBalance1 - params.amount1);
+tests/Stableswap.spec.ts:767:                //expect(poolData.leftReserve).toEqual(oldPoolData.leftReserve + (poolData.leftJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2));
+tests/Stableswap.spec.ts:768:                //expect(poolData.rightReserve).toEqual(oldPoolData.rightReserve + (poolData.rightJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2));
+tests/Stableswap.spec.ts:778:                expect(isLeft ? accData.leftAmount - oldAccData.leftAmount : accData.rightAmount - oldAccData.rightAmount).toEqual(params.amount1);
+tests/Stableswap.spec.ts:1198:                    amount1: toNano(1000000),
+tests/Stableswap.spec.ts:1217:                    amount1: toNano(10000),
+tests/Stableswap.spec.ts:1256:                    amount1: toNano(1000),
+tests/Stableswap.spec.ts:1318:                    amount1: toNano(1000000),
+tests/Stableswap.spec.ts:1336:                    amount1: toNano(1000000),
+tests/Stableswap.spec.ts:1357:                    amount1: toNano(1000),
+tests/Stableswap.spec.ts:1371:                    amount1: toNano(1000),
+tests/Stableswap.spec.ts:1390:                    amount1: toNano(100),
+tests/Stableswap.spec.ts:1405:                amount1: toNano(100),
+tests/Stableswap.spec.ts:1415:                    amount1: toNano(1000),
+tests/Stableswap.spec.ts:1424:                amount1: toNano(100),
+tests/Stableswap.spec.ts:1452:                    amount1: toNano(1000),
+tests/Stableswap.spec.ts:1459:                amount1: toNano(10),
+tests/Stableswap.spec.ts:1485:                    amount1: toNano(1000),
+tests/Stableswap.spec.ts:1499:                amount1: toNano(1000),
+tests/Stableswap.spec.ts:1523:                    amount1: toNano(1000),
+tests/Stableswap.spec.ts:1529:                    amount1: toNano(1000),
+tests/Stableswap.spec.ts:1552:                    amount1: toNano(1000),
+tests/Stableswap.spec.ts:1559:                amount1: toNano(10),
+tests/Stableswap.spec.ts:1594:                    amount1: toNano(1000),
+tests/Stableswap.spec.ts:1601:                amount1: toNano(10),
+tests/Stableswap.spec.ts:1613:                amount1: toNano(5),
+tests/Stableswap.spec.ts:1637:                    amount1: toNano(4000000),
+tests/Stableswap.spec.ts:1664:                    amount1: toNano(1000),
+tests/Stableswap.spec.ts:1683:                    amount1: toNano(1000),
+tests/Stableswap.spec.ts:1704:                    amount1: toNano(1000),
+tests/Stableswap.spec.ts:1711:                amount1: toNano(20),
+tests/Stableswap.spec.ts:1740:                    amount1: toNano(1000),
+tests/Stableswap.spec.ts:1759:                    amount1: toNano(1000),
+tests/Stableswap.spec.ts:1773:                amount1: toNano(1000),
+tests/Stableswap.spec.ts:1798:                    amount1: toNano(1000),
+tests/Stableswap.spec.ts:1817:                    amount1: toNano(1000),
+tests/Stableswap.spec.ts:1837:                    amount1: toNano(1000),
+tests/Stableswap.spec.ts:1843:                    amount1: toNano(1000),
+tests/Stableswap.spec.ts:1868:                    amount1: toNano(1000),
+tests/Stableswap.spec.ts:1874:                    amount1: toNano(1000),
+tests/Stableswap.spec.ts:1902:                    amount1: toNano(1000000),
+tests/Stableswap.spec.ts:1921:                    amount1: toNano(1000000),
+contracts/lp_account.fc:10:    if ctx.at(IS_BOUNCED) { 
+contracts/lp_account.fc:20:        if handle_pool_messages() {
+contracts/lp_account.fc:27:        if handle_user_messages() {
+contracts/test/pool_dummy.fc:84:    if ctx.at(IS_BOUNCED) { 
+contracts/lp_account/get.fc:3:    return (storage::user_address, storage::pool_address, storage::amount0, storage::amount1);
+contracts/lp_account/msgs/getter.fc:14:                storage::amount0, 
+contracts/lp_account/msgs/getter.fc:15:                storage::amount1
+tests/ConstProduct.spec.ts:47:        amount1: bigint,
+tests/ConstProduct.spec.ts:75:    amount1: bigint,
+tests/ConstProduct.spec.ts:103:    amount1: Exclude<bigint, 0n>,
+tests/ConstProduct.spec.ts:106:    amount1?: bigint,
+tests/ConstProduct.spec.ts:354:                jettonAmount: params.amount1,
+tests/ConstProduct.spec.ts:392:                expect(balance).toEqual(oldBalance1 - params.amount1);
+tests/ConstProduct.spec.ts:537:                expect(poolData.leftReserve).toEqual(poolData.leftJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2);
+tests/ConstProduct.spec.ts:538:                expect(poolData.rightReserve).toEqual(poolData.rightJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2);
+tests/ConstProduct.spec.ts:548:                params.mintAmount = params.mintAmount < maxBigint(params.createPool?.amount1, params.createPool?.amount2)
+tests/ConstProduct.spec.ts:549:                    ? maxBigint(params.createPool?.amount1, params.createPool?.amount2) * 2n : params.mintAmount;
+tests/ConstProduct.spec.ts:619:            if ((typeof params.amount1 !== "undefined") && (typeof params.amount2 !== "undefined")) {
+tests/ConstProduct.spec.ts:621:            } else if (params.amount1) {
+tests/ConstProduct.spec.ts:622:                params.amount1 = BigInt(params.amount1);
+tests/ConstProduct.spec.ts:625:                const lpMint = params.amount1 * oldPoolJData.totalSupply / reserve;
+tests/ConstProduct.spec.ts:632:                params.amount1 = divUp(lpMint * (isLeft ? oldPoolData.rightReserve : oldPoolData.leftReserve), oldPoolJData.totalSupply);
+tests/ConstProduct.spec.ts:640:            if (params.amount1) {
+tests/ConstProduct.spec.ts:643:                    jettonAmount: params.amount1,
+tests/ConstProduct.spec.ts:680:                    expect(balance).toEqual(oldBalance1 - params.amount1);
+tests/ConstProduct.spec.ts:731:                        //expect(poolData.leftReserve).toEqual(oldPoolData.leftReserve + (poolData.leftJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2));
+tests/ConstProduct.spec.ts:732:                        //expect(poolData.rightReserve).toEqual(oldPoolData.rightReserve + (poolData.rightJettonAddress.equals(routerWallet1.address) ? params.amount1 : params.amount2));
+tests/ConstProduct.spec.ts:743:                expect(isLeft ? accData.leftAmount - oldAccData.leftAmount : accData.rightAmount - oldAccData.rightAmount).toEqual(params.amount1);
+tests/ConstProduct.spec.ts:1100:                    amount1: toNano(1000),
+tests/ConstProduct.spec.ts:1131:                    amount1: toNano(1000),
+tests/ConstProduct.spec.ts:1166:                    amount1: toNano(1000),
+tests/ConstProduct.spec.ts:1206:                    amount1: toNano(1000),
+tests/ConstProduct.spec.ts:1246:                    amount1: toNano(1000),
+tests/ConstProduct.spec.ts:1305:                    amount1: toNano(1000),
+tests/ConstProduct.spec.ts:1338:                    amount1: toNano(1000000),
+tests/ConstProduct.spec.ts:1357:                    amount1: toNano(1000000),
+tests/ConstProduct.spec.ts:1393:                    amount1: toNano(1000),
+tests/ConstProduct.spec.ts:1457:                    amount1: toNano(1000),
+tests/ConstProduct.spec.ts:1472:                    amount1: toNano(1000),
+tests/ConstProduct.spec.ts:1491:                    amount1: toNano(2000),
+tests/ConstProduct.spec.ts:1499:                amount1: toNano(21),
+tests/ConstProduct.spec.ts:1507:                amount1: toNano(0),
+tests/ConstProduct.spec.ts:1517:                    amount1: toNano(1000),
+tests/ConstProduct.spec.ts:1597:                    amount1: toNano(1000),
+tests/ConstProduct.spec.ts:1682:                    amount1: toNano(1000),
+tests/ConstProduct.spec.ts:1703:                amount1: toNano(1000),
+tests/ConstProduct.spec.ts:1711:                amount1: toNano(1000),
+tests/ConstProduct.spec.ts:1772:                    amount1: toNano(1000) * toNano(1),
+tests/ConstProduct.spec.ts:1780:                amount1: toNano(1499.5),
+tests/ConstProduct.spec.ts:1789:                amount1: toNano(0),
+tests/ConstProduct.spec.ts:1818:                    amount1: toNano(1000) * toNano(1),
+tests/ConstProduct.spec.ts:1826:                amount1: toNano(10),
+tests/ConstProduct.spec.ts:1865:                    amount1: toNano(1000) * toNano(1),
+tests/ConstProduct.spec.ts:1873:                amount1: toNano(1499.5),
+tests/ConstProduct.spec.ts:1907:                    amount1: toNano(1000),
+tests/ConstProduct.spec.ts:1914:                amount1: toNano(10),
+tests/ConstProduct.spec.ts:1940:                    amount1: toNano(1000),
+tests/ConstProduct.spec.ts:1954:                amount1: toNano(1000),
+tests/ConstProduct.spec.ts:1978:                    amount1: toNano(1000),
+tests/ConstProduct.spec.ts:1984:                    amount1: toNano(1000),
+tests/ConstProduct.spec.ts:2008:                    amount1: toNano(1000),
+tests/ConstProduct.spec.ts:2046:                    amount1: toNano(1000),
+tests/ConstProduct.spec.ts:2064:                amount1: toNano(5),
+tests/ConstProduct.spec.ts:2087:                    amount1: toNano(1000),
+tests/ConstProduct.spec.ts:2108:                    amount1: toNano(1000),
+tests/ConstProduct.spec.ts:2127:                    amount1: toNano(1000),
+tests/ConstProduct.spec.ts:2148:                    amount1: toNano(1000),
+tests/ConstProduct.spec.ts:2155:                amount1: toNano(20),
+tests/ConstProduct.spec.ts:2183:                    amount1: toNano(1000),
+tests/ConstProduct.spec.ts:2216:                    amount1: toNano(1000),
+tests/ConstProduct.spec.ts:2235:                    amount1: toNano(1000),
+tests/ConstProduct.spec.ts:2249:                amount1: toNano(1000),
+tests/ConstProduct.spec.ts:2274:                    amount1: toNano(1000),
+tests/ConstProduct.spec.ts:2280:                    amount1: toNano(1000),
+tests/ConstProduct.spec.ts:2306:                    amount1: toNano(1000),
+tests/ConstProduct.spec.ts:2312:                    amount1: toNano(1000),
+tests/ConstProduct.spec.ts:2337:                    amount1: toNano(1000),
+tests/ConstProduct.spec.ts:2360:                    amount1: toNano(1000000),
+tests/ConstProduct.spec.ts:2392:                    amount1: toNano(1000000),
+contracts/pool/msgs/router.fc:9:        int amount0 = in_msg_body~load_coins();
+contracts/pool/msgs/router.fc:10:        int amount1 = in_msg_body~load_coins();
+contracts/pool/msgs/router.fc:65:                    amount0, 
+contracts/pool/msgs/router.fc:67:                    amount1, 
+contracts/pool/msgs/router.fc:92:            if amount0 { 
+contracts/pool/msgs/router.fc:94:                (out1, protocol_fee_out, ref_fee_out1) = pool::get_swap_out(true, ref_value, amount0, storage::reserve0, storage::reserve1);
+contracts/pool/msgs/router.fc:95:                storage::reserve0 += amount0;
+contracts/pool/msgs/router.fc:101:                (out0, protocol_fee_out, ref_fee_out0) = pool::get_swap_out(false, ref_value, amount1, storage::reserve1, storage::reserve0);
+contracts/pool/msgs/router.fc:103:                storage::reserve1 += amount1;
+contracts/pool/msgs/router.fc:167:                    amount0, 
+contracts/pool/msgs/router.fc:169:                    amount1, 
+contracts/pool/msgs/router.fc:181:        int amount0 = in_msg_body~load_coins(); 
+contracts/pool/msgs/router.fc:182:        int amount1 = in_msg_body~load_coins();
+contracts/pool/msgs/router.fc:226:                    amount0, 
+contracts/pool/msgs/router.fc:228:                    amount1, 
+contracts/pool/msgs/router.fc:251:                    amount0, 
+contracts/pool/msgs/router.fc:252:                    amount1, 
+contracts/pool/msgs/router.fc:277:                    amount0, 
+contracts/pool/msgs/router.fc:279:                    amount1, 
+contracts/lp_account/msgs/user.fc:1:(int) handle_user_messages() impure inline {
+contracts/lp_account/msgs/user.fc:4:    if ctx.at(OPCODE) == op::refund_me { 
+contracts/lp_account/msgs/user.fc:10:        throw_unless(error::no_liquidity, (storage::amount0 > 0) | (storage::amount1 > 0));
+contracts/lp_account/msgs/user.fc:24:            pool::cb_refund_me(
+contracts/lp_account/msgs/user.fc:25:                storage::amount0, 
+contracts/lp_account/msgs/user.fc:26:                storage::amount1, 
+contracts/lp_account/msgs/user.fc:30:            CARRY_ALL_BALANCE | DESTROY_IF_ZERO
+contracts/lp_account/msgs/user.fc:33:        storage::amount0 = 0;
+contracts/lp_account/msgs/user.fc:34:        storage::amount1 = 0;
+contracts/lp_account/msgs/user.fc:45:            + storage_fee::pool + gas::pool::cb_add_liquidity 
+contracts/lp_account/msgs/user.fc:67:        am0 = am0 ? am0 : storage::amount0;
+contracts/lp_account/msgs/user.fc:68:        am1 = am1 ? am1 : storage::amount1;
+contracts/lp_account/msgs/user.fc:72:        storage::amount0 -= am0;
+contracts/lp_account/msgs/user.fc:73:        storage::amount1 -= am1;
+contracts/lp_account/msgs/user.fc:77:        throw_unless(error::no_liquidity, (storage::amount0 >= 0) & (storage::amount1 >= 0));
+contracts/lp_account/msgs/user.fc:79:        if storage::amount0 + storage::amount1 > 0  {
+contracts/lp_account/msgs/user.fc:87:            pool::cb_add_liquidity(
+contracts/lp_account/msgs/user.fc:98:            CARRY_ALL_BALANCE | DESTROY_IF_ZERO
+contracts/lp_account/msgs/pool.fc:3:(int) handle_pool_messages() impure inline {
+contracts/lp_account/msgs/pool.fc:7:        int new_amount0 = in_msg_body~load_coins(); 
+contracts/lp_account/msgs/pool.fc:8:        int new_amount1 = in_msg_body~load_coins();  
+contracts/lp_account/msgs/pool.fc:18:        storage::amount0 += new_amount0;
+contracts/lp_account/msgs/pool.fc:19:        storage::amount1 += new_amount1;
+contracts/lp_account/msgs/pool.fc:25:            mint? = (min_lp_out > 0) & ((storage::amount0 > 0) & (storage::amount1 > 0));
+contracts/lp_account/msgs/pool.fc:27:            mint? = (min_lp_out > 0) & (storage::amount0 + storage::amount1 > 0);
+contracts/lp_account/msgs/pool.fc:34:                pool::cb_add_liquidity(
+contracts/lp_account/msgs/pool.fc:36:                    storage::amount0, 
+contracts/lp_account/msgs/pool.fc:37:                    storage::amount1, 
+contracts/lp_account/msgs/pool.fc:45:                CARRY_ALL_BALANCE | DESTROY_IF_ZERO
+contracts/lp_account/msgs/pool.fc:48:            storage::amount0 = 0;
+contracts/lp_account/msgs/pool.fc:49:            storage::amount1 = 0;
+contracts/pool/pools/constant_sum/gas.fc:1:const gas::pool::cb_add_liquidity = 22000000;
+contracts/pool/msgs/lp_wallet.fc:25:        (int amount0_out, int amount1_out) = pool::get_lp_burn_out(jetton_amount);
+contracts/pool/msgs/lp_wallet.fc:28:        throw_unless(error::zero_output, (amount0_out > 0) & (amount1_out > 0));
+contracts/pool/msgs/lp_wallet.fc:30:        storage::reserve0 -= amount0_out;
+contracts/pool/msgs/lp_wallet.fc:31:        storage::reserve1 -= amount1_out;
+contracts/pool/msgs/lp_wallet.fc:69:                amount0_out, 
+contracts/pool/msgs/lp_wallet.fc:89:                amount1_out, 
+contracts/pool/pools/stableswap/gas.fc:1:const gas::pool::cb_add_liquidity = 30000000; ;; 0.03
+contracts/pool/pools/weighted_const_product/gas.fc:1:const gas::pool::cb_add_liquidity = 100000000; ;; 0.100
+contracts/pool/msgs/lp_account.fc:4:    if ctx.at(OPCODE) == op::cb_add_liquidity {
+contracts/pool/msgs/lp_account.fc:111:            int used_gas = ctx.at(FWD_FEE) + gas::pool::cb_add_liquidity;
+contracts/pool/msgs/lp_account.fc:138:    if ctx.at(OPCODE) == op::cb_refund_me {
+contracts/pool/msgs/lp_account.fc:153:        (int gas, int mode) = (0, CARRY_REMAINING_GAS);
+contracts/pool/pools/constant_product/gas.fc:1:const gas::pool::cb_add_liquidity = 27000000;
+contracts/pool/pools/weighted_stableswap/gas.fc:1:const gas::pool::cb_add_liquidity = 100000000; ;; 0.10

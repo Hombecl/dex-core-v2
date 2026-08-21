@@ -1,0 +1,59 @@
+contracts/router/dex.fc:1:() route_dex_messages(slice _jetton_address, int _available_gas, int _sent_amount, slice _caller, cell _dex_payload) impure inline {
+contracts/router/dex.fc:8:    slice token_wallet1 = null();
+contracts/router/dex.fc:16:        token_wallet1 = dex_payload~load_msg_addr();
+contracts/router/dex.fc:22:            token_wallet1.address::check_workchain(params::workchain)
+contracts/router/dex.fc:32:            _jetton_address, 
+contracts/router/dex.fc:44:        transferred_op = transferred_op == op::cross_swap ? op::swap : transferred_op;
+contracts/router/dex.fc:46:        throw_arg_if(op::transfer_bounce_invalid_request, 1, (transferred_op != op::swap) & (transferred_op != op::provide_lp));
+contracts/router/dex.fc:47:        throw_arg_if(op::transfer_bounce_invalid_pool, 1, equal_slices(_jetton_address, token_wallet1));
+contracts/router/dex.fc:60:                + gas::router::pay_to
+contracts/router/dex.fc:79:            pool_idata(my_address(), _jetton_address, token_wallet1, storage::jetton_lp_wallet_code,  storage::lp_account_code),
+contracts/router/dex.fc:88:            pool::$route(transferred_op, _caller, _sent_amount, _jetton_address, token_wallet1, _dex_payload), 
+contracts/router/dex.fc:98:        msgs::send_simple(0, _jetton_address, out_msg_body.end_cell(), QCARRY_ALL_BALANCE);
+contracts/pool/msgs/lp_account.fc:26:        throw_unless(error::invalid_caller, equal_slices(lp_account~address(params::workchain), ctx.at(SENDER)));
+contracts/pool/msgs/lp_account.fc:115:            ) { ;; do not send transfer_notification, if gas is too low, mint may revert
+contracts/pool/msgs/lp_account.fc:151:        throw_unless(error::invalid_caller, equal_slices(lp_account~address(params::workchain), ctx.at(SENDER)));
+contracts/pool/msgs/lp_account.fc:162:                router::pay_to(
+contracts/pool/msgs/lp_account.fc:182:                router::pay_to(
+contracts/common/contracts.fc:146:(cell) router::pay_to(
+contracts/common/contracts.fc:158:    return begin_message(op::pay_to)
+contracts/common/contracts.fc:174:(cell) router::vault_pay_to(
+contracts/common/contracts.fc:179:    return begin_message(op::vault_pay_to)
+contracts/common/contracts.fc:222:(cell) pool::$route(
+contracts/common/contracts.fc:226:    slice _sender_jetton_address, 
+contracts/common/contracts.fc:227:    slice _other_jetton_address, 
+contracts/common/contracts.fc:233:    if _sender_jetton_address.slice_hash() > _other_jetton_address.slice_hash() {
+contracts/pool/msgs/router.fc:14:        dex_payload~load_msg_addr(); ;; skip token_wallet1
+contracts/pool/msgs/router.fc:58:                router::pay_to(
+contracts/pool/msgs/router.fc:138:                router::pay_to(
+contracts/pool/msgs/router.fc:160:                router::pay_to(
+contracts/pool/msgs/router.fc:186:        dex_payload~load_msg_addr(); ;; skip token_wallet1 
+contracts/pool/msgs/router.fc:219:                router::pay_to(
+contracts/pool/msgs/router.fc:270:                router::pay_to(
+contracts/router/msgs/pool.fc:5:    if ctx.at(OPCODE) == op::pay_to { 
+contracts/router/msgs/pool.fc:19:            pool_idata(
+contracts/router/msgs/pool.fc:28:        throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER))); ;; check if its a valid pool
+contracts/router/msgs/pool.fc:33:            if (tmp_custom_payload_ds.slice_bits() > 32) { ;; cross_swap = 32 + address
+contracts/router/msgs/pool.fc:38:        ;; handle cross_swap
+contracts/router/msgs/pool.fc:45:        int used_gas = ctx.at(FWD_FEE) + gas::router::pay_to;
+contracts/router/msgs/pool.fc:46:        if (fwd_opcode == op::cross_swap) 
+contracts/router/msgs/pool.fc:50:            slice sent_jetton_address = amount0_out > 0 ? token0_address : token1_address;
+contracts/router/msgs/pool.fc:55:            route_dex_messages(sent_jetton_address, gas, swap_amount, original_caller, custom_payload);
+contracts/router/msgs/pool.fc:64:                ;; do not send transfer_notification, if gas is too low
+contracts/router/msgs/pool.fc:104:            pool_idata(
+contracts/router/msgs/pool.fc:113:        throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER))); ;; check if its a valid pool
+contracts/router/msgs/jetton.fc:5:    if ctx.at(OPCODE) == op::ft::transfer_notification {
+contracts/router/msgs/jetton.fc:17:                    .store_uint32(op::transfer_bounce_invalid_request)
+contracts/router/msgs/jetton.fc:24:        route_dex_messages(
+tests/System.spec.ts:313:                output: "cross_swap_system",
+tests/WeightedCPI.spec.ts:1538:                debugGraph: "cross_swap",
+tests/WeightedCPI.spec.ts:1574:                debugGraph: "cross_swap_router",
+tests/WeightedCPI.spec.ts:1781:                debugGraph: "cross_swap_refund",
+tests/WeightedCPI.spec.ts:1857:                debugGraph: "cross_swap_router_refund_in",
+tests/WeightedCPI.spec.ts:1888:                debugGraph: "cross_swap_router_refund_mid",
+tests/ConstProduct.spec.ts:1751:                output: "cross_swap_payload_complex",
+tests/ConstProduct.spec.ts:1963:                debugGraph: "cross_swap",
+tests/ConstProduct.spec.ts:2000:                debugGraph: "cross_swap_router",
+tests/ConstProduct.spec.ts:2258:                debugGraph: "cross_swap_refund",
+tests/ConstProduct.spec.ts:2296:                debugGraph: "cross_swap_router_refund_in",
+tests/ConstProduct.spec.ts:2327:                debugGraph: "cross_swap_router_refund_mid",

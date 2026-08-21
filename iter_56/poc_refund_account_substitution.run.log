@@ -1,0 +1,42 @@
+
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/WeightedCPI.spec.ts -t should refund partial liquidity|should refund swap if pool locked|should refund swap if fee more than max|should refund cross-swap on 2 routers
+
+PASS tests/WeightedCPI.spec.ts (10.09 s)
+  Weighted CPI
+    Fees
+      ○ skipped should set fees
+      ○ skipped should collect fees
+      ○ skipped should collect ref fee from vault
+    Params
+      ○ skipped should set params
+      ○ skipped should swap with different ratio
+    Dex
+      ○ skipped should deploy dex
+      ○ skipped should swap
+      ○ skipped should provide lp
+      ○ skipped should provide lp (single side)
+      ○ skipped should burn liquidity
+      ○ skipped should cross-swap on the same router
+      ○ skipped should cross-swap on 2 routers
+      ○ skipped should direct add liquidity (all)
+      ○ skipped should direct add liquidity (partial)
+      ○ skipped should swap with 0 ref fee
+      ○ skipped should swap with max ref fee
+    Refund
+      ✓ should refund partial liquidity (1155 ms)
+      ✓ should refund swap if pool locked (905 ms)
+      ✓ should refund swap if fee more than max (907 ms)
+      ✓ should refund cross-swap on 2 routers (in) (1692 ms)
+      ✓ should refund cross-swap on 2 routers (mid) (1722 ms)
+      ○ skipped should refund swap
+      ○ skipped should refund cross-swap on the same router
+    Bounce
+      ○ skipped should bounce set fees if not admin
+      ○ skipped should bounce collect fees if no fee
+
+Test Suites: 1 passed, 1 total
+Tests:       20 skipped, 5 passed, 25 total
+Snapshots:   0 total
+Time:        10.227 s, estimated 13 s
+Ran all test suites matching /tests\/WeightedCPI.spec.ts/i with tests matching "should refund partial liquidity|should refund swap if pool locked|should refund swap if fee more than max|should refund cross-swap on 2 routers".

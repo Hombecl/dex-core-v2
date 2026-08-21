@@ -1,0 +1,54 @@
+schema_version: shadow-v1
+iteration: 46
+phase: completed
+cell_id: P10xC1
+cell_label: governance_rate x sender_binding
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: P10xC1
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/Router.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_46/poc_governance_rate_sender_binding.run.log
+    run_log_exists_on_disk: true
+    test_runtime: PASSED
+    duration_seconds: 8.64
+    numerical_evidence: "WeightedCPI.spec.ts and Router.spec.ts: 4 passed, 25 skipped; non-admin fee-setting bounce, admin lock/unlock, fee update, and upgrade handling."
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 governance sender binding is:issue"
+      - "repo:ston-fi/dex-core-v2 set fees admin authorization is:issue"
+      - "repo:ston-fi/dex-core-v2 governance authorization is:pr"
+      - "repo:ston-fi/dex-core-v2 audit governance sender is:issue"
+    results: "Fresh GitHub API searches returned zero results; local audit/security/governance/admin/sender/fee/rate git search was empty."
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "repo:ston-fi/dex-core-v2 governance sender binding is:issue"
+      - "repo:ston-fi/dex-core-v2 set fees admin authorization is:issue"
+      - "repo:ston-fi/dex-core-v2 governance authorization is:pr"
+      - "repo:ston-fi/dex-core-v2 audit governance sender is:issue"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_46-P10xC1.md
+  notes:
+    - "Router gates all admin handlers on storage::admin_address; pool gates internal governance handlers on storage::router_address, and the optional rate setter is separately sender-bound."
+    - "No unbound governance caller or unauthorized fee/rate mutation was demonstrated."

@@ -1,0 +1,67 @@
+
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/System.spec.ts tests/Pool.spec.ts tests/WeightedCPI.spec.ts -t should handle invalid transfers|should bounce if tokens are the same|should bounce set fees if not admin|should bounce collect fees if no fee
+
+PASS tests/WeightedCPI.spec.ts (5.594 s)
+  Weighted CPI
+    Fees
+      ○ skipped should set fees
+      ○ skipped should collect fees
+      ○ skipped should collect ref fee from vault
+    Params
+      ○ skipped should set params
+      ○ skipped should swap with different ratio
+    Dex
+      ○ skipped should deploy dex
+      ○ skipped should swap
+      ○ skipped should provide lp
+      ○ skipped should provide lp (single side)
+      ○ skipped should burn liquidity
+      ○ skipped should cross-swap on the same router
+      ○ skipped should cross-swap on 2 routers
+      ○ skipped should direct add liquidity (all)
+      ○ skipped should direct add liquidity (partial)
+      ○ skipped should swap with 0 ref fee
+      ○ skipped should swap with max ref fee
+    Refund
+      ○ skipped should refund partial liquidity
+      ○ skipped should refund swap
+      ○ skipped should refund cross-swap on the same router
+      ○ skipped should refund swap if pool locked
+      ○ skipped should refund swap if fee more than max
+      ○ skipped should refund cross-swap on 2 routers (in)
+      ○ skipped should refund cross-swap on 2 routers (mid)
+    Bounce
+      ✓ should bounce set fees if not admin (1002 ms)
+      ✓ should bounce collect fees if no fee (923 ms)
+
+PASS tests/System.spec.ts
+  System
+    Dex
+      ✓ should handle invalid transfers (219 ms)
+      ○ skipped should handle mint & burn liquidity
+      ○ skipped should handle refund partial liquidity
+      ○ skipped should handle swaps
+      ○ skipped should handle cross swap
+    Governance
+      ○ skipped should reset pool gas
+      ○ skipped should reset pool gas (different address)
+      ○ skipped should reset router gas
+      ○ skipped should lock & unlock pool
+      ○ skipped should set fees
+      ○ skipped should collect fees
+
+PASS tests/Pool.spec.ts
+  Pool
+    Router calls
+      ✓ should bounce if tokens are the same (23 ms)
+      ○ skipped should refund swap if tx is expired
+      ○ skipped should refund provide lp if tx is expired
+    Getters
+      ○ skipped should generate valid URI
+
+Test Suites: 3 passed, 3 total
+Tests:       36 skipped, 4 passed, 40 total
+Snapshots:   0 total
+Time:        10.228 s, estimated 11 s
+Ran all test suites matching /tests\/System.spec.ts|tests\/Pool.spec.ts|tests\/WeightedCPI.spec.ts/i with tests matching "should handle invalid transfers|should bounce if tokens are the same|should bounce set fees if not admin|should bounce collect fees if no fee".

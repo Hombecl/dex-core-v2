@@ -1,0 +1,31 @@
+tests/System.spec.ts:205:        it('should handle refund partial liquidity', async () => {
+contracts/pool/msgs/lp_account.fc:4:    if ctx.at(OPCODE) == op::cb_add_liquidity {
+contracts/pool/msgs/lp_account.fc:88:                lp_account::add_liquidity(
+contracts/pool/msgs/lp_account.fc:111:            int used_gas = ctx.at(FWD_FEE) + gas::pool::cb_add_liquidity;
+contracts/pool/msgs/lp_account.fc:132:            storage::save();
+tests/WeightedCPI.spec.ts:1700:        it('should refund partial liquidity', async () => {
+contracts/lp_account/msgs/pool.fc:18:        storage::amount0 += new_amount0;
+contracts/lp_account/msgs/pool.fc:19:        storage::amount1 += new_amount1;
+contracts/lp_account/msgs/pool.fc:25:            mint? = (min_lp_out > 0) & ((storage::amount0 > 0) & (storage::amount1 > 0));
+contracts/lp_account/msgs/pool.fc:27:            mint? = (min_lp_out > 0) & (storage::amount0 + storage::amount1 > 0);
+contracts/lp_account/msgs/pool.fc:34:                pool::cb_add_liquidity(
+contracts/lp_account/msgs/pool.fc:36:                    storage::amount0, 
+contracts/lp_account/msgs/pool.fc:37:                    storage::amount1, 
+contracts/lp_account/msgs/pool.fc:48:            storage::amount0 = 0;
+contracts/lp_account/msgs/pool.fc:49:            storage::amount1 = 0;
+contracts/lp_account/msgs/pool.fc:55:        storage::save();
+contracts/pool/msgs/router.fc:19:        int tx_deadline = dex_payload~load_time();
+contracts/pool/msgs/router.fc:111:            throw_arg_unless(op::swap_refund_tx_expired, 1, tx_deadline > now());
+contracts/pool/msgs/router.fc:152:            storage::save();
+contracts/pool/msgs/router.fc:178:    if ctx.at(OPCODE) == op::provide_lp { 
+contracts/pool/msgs/router.fc:191:        int tx_deadline = dex_payload~load_time();
+contracts/pool/msgs/router.fc:211:            throw_arg_unless(op::provide_refund_wrong_workchain, 1, to_user.address::check_workchain(params::workchain));
+contracts/pool/msgs/router.fc:238:            throw_arg_unless(op::provide_refund_tx_expired, 1, tx_deadline > now());
+contracts/pool/msgs/router.fc:250:                lp_account::add_liquidity(
+contracts/pool/msgs/router.fc:296:        storage::save();
+contracts/pool/msgs/router.fc:317:        storage::save();
+tests/ConstProduct.spec.ts:1580:                output: "provide_lp_payload1",
+tests/ConstProduct.spec.ts:1589:                output: "provide_lp_payload2",
+tests/ConstProduct.spec.ts:1650:                output: "provide_lp_payload_to1",
+tests/ConstProduct.spec.ts:1658:                output: "provide_lp_payload_to2",
+tests/ConstProduct.spec.ts:2145:        it('should refund partial liquidity', async () => {

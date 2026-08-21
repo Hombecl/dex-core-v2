@@ -1,0 +1,54 @@
+schema_version: shadow-v1
+iteration: 55
+phase: completed
+cell_id: Q5
+cell_label: ton_reserve_carry_value_flow
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: Q5
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/Pool.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_55/poc_ton_reserve_carry_value_flow.run.log
+    run_log_exists_on_disk: true
+    test_runtime: PASSED
+    duration_seconds: 10.233
+    numerical_evidence: "Pool.spec.ts, Router.spec.ts, LPAccount.spec.ts, and System.spec.ts: 7 passed, 13 skipped; expired refunds, same-token bounce, partial refund, invalid transfer, getters, and LP data."
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 reserve carry all balance is:issue"
+      - "repo:ston-fi/dex-core-v2 getter TON balance drain is:issue"
+      - "repo:ston-fi/dex-core-v2 reserve balance flow is:pr"
+      - "repo:ston-fi/dex-core-v2 audit reserve carry balance is:issue"
+    results: "Fresh GitHub API searches returned zero results; local audit/security/reserve/carry/balance/ton/drain git search was empty."
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "repo:ston-fi/dex-core-v2 reserve carry all balance is:issue"
+      - "repo:ston-fi/dex-core-v2 getter TON balance drain is:issue"
+      - "repo:ston-fi/dex-core-v2 reserve balance flow is:pr"
+      - "repo:ston-fi/dex-core-v2 audit reserve carry balance is:issue"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_55-Q5.md
+  notes:
+    - "Getter/refund/callback paths reserve configured storage floors before CARRY/QUICK-CARRY sends; reserves.fc retains pre-call balance plus storage fees and forwards only available surplus."
+    - "No TON drain, under-reserved contract, or refund value mismatch was demonstrated."

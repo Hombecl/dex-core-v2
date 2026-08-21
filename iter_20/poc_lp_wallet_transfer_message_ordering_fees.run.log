@@ -1,0 +1,25 @@
+
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/System.spec.ts -t should handle mint & burn liquidity|should handle refund partial liquidity|should handle invalid transfers
+
+PASS tests/System.spec.ts
+  System
+    Dex
+      ✓ should handle mint & burn liquidity (409 ms)
+      ✓ should handle refund partial liquidity (234 ms)
+      ✓ should handle invalid transfers (197 ms)
+      ○ skipped should handle swaps
+      ○ skipped should handle cross swap
+    Governance
+      ○ skipped should reset pool gas
+      ○ skipped should reset pool gas (different address)
+      ○ skipped should reset router gas
+      ○ skipped should lock & unlock pool
+      ○ skipped should set fees
+      ○ skipped should collect fees
+
+Test Suites: 1 passed, 1 total
+Tests:       8 skipped, 3 passed, 11 total
+Snapshots:   0 total
+Time:        4.828 s, estimated 5 s
+Ran all test suites matching /tests\/System.spec.ts/i with tests matching "should handle mint & burn liquidity|should handle refund partial liquidity|should handle invalid transfers".

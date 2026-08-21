@@ -1,0 +1,72 @@
+contracts/pool/msgs/lp_account.fc:4:    if ctx.at(OPCODE) == op::cb_add_liquidity {
+contracts/pool/msgs/lp_account.fc:19:            lp_account_idata(
+contracts/pool/msgs/lp_account.fc:77:                lp_account_idata(
+contracts/pool/msgs/lp_account.fc:103:                lp_wallet_idata(
+contracts/pool/msgs/lp_account.fc:111:            int used_gas = ctx.at(FWD_FEE) + gas::pool::cb_add_liquidity;
+contracts/pool/msgs/lp_account.fc:132:            storage::save();
+contracts/pool/msgs/lp_account.fc:138:    if ctx.at(OPCODE) == op::cb_refund_me {
+contracts/pool/msgs/lp_account.fc:147:            lp_account_idata(my_address(), user_address),
+contracts/common/contracts.fc:10:(cell) lp_account_idata(slice _pool_address, slice _user_address) inline {
+contracts/common/contracts.fc:19:(cell) lp_wallet_idata(slice _owner_address, slice _jetton_master_address, cell _jetton_wallet_code) inline {
+contracts/common/contracts.fc:29:(cell) pool::cb_refund_me(int _left_amount, int _right_amount, cell _left_maybe_payload, cell _right_maybe_payload) inline {
+contracts/common/contracts.fc:30:    return begin_message(op::cb_refund_me)
+contracts/common/contracts.fc:39:(cell) pool::cb_add_liquidity(
+contracts/common/contracts.fc:50:    return begin_message(op::cb_add_liquidity)
+contracts/lp_account/storage.fc:3:global int storage::amount0;
+contracts/lp_account/storage.fc:4:global int storage::amount1;
+contracts/lp_account/storage.fc:10:    storage::amount0 = ds~load_coins();
+contracts/lp_account/storage.fc:11:    storage::amount1 = ds~load_coins();
+contracts/lp_account/storage.fc:15:() storage::save() impure inline_ref {
+contracts/lp_account/storage.fc:19:        .store_coins(storage::amount0)
+contracts/lp_account/storage.fc:20:        .store_coins(storage::amount1)
+tests/ConstProduct.spec.ts:2005:        it('should direct add liquidity (all)', async () => {
+tests/ConstProduct.spec.ts:2025:            let msgResult = await acc.sendDirectAddLiquidity(deployer.getSender(), {}, toNano(1));
+tests/ConstProduct.spec.ts:2043:        it('should direct add liquidity (partial)', async () => {
+tests/ConstProduct.spec.ts:2063:            let msgResult = await acc.sendDirectAddLiquidity(deployer.getSender(), {
+contracts/lp_account/msgs/pool.fc:18:        storage::amount0 += new_amount0;
+contracts/lp_account/msgs/pool.fc:19:        storage::amount1 += new_amount1;
+contracts/lp_account/msgs/pool.fc:25:            mint? = (min_lp_out > 0) & ((storage::amount0 > 0) & (storage::amount1 > 0));
+contracts/lp_account/msgs/pool.fc:27:            mint? = (min_lp_out > 0) & (storage::amount0 + storage::amount1 > 0);
+contracts/lp_account/msgs/pool.fc:34:                pool::cb_add_liquidity(
+contracts/lp_account/msgs/pool.fc:36:                    storage::amount0, 
+contracts/lp_account/msgs/pool.fc:37:                    storage::amount1, 
+contracts/lp_account/msgs/pool.fc:48:            storage::amount0 = 0;
+contracts/lp_account/msgs/pool.fc:49:            storage::amount1 = 0;
+contracts/lp_account/msgs/pool.fc:55:        storage::save();
+contracts/lp_account.fc:27:        if handle_user_messages() {
+contracts/lp_account/msgs/user.fc:1:(int) handle_user_messages() impure inline {
+contracts/lp_account/msgs/user.fc:4:    if ctx.at(OPCODE) == op::refund_me { 
+contracts/lp_account/msgs/user.fc:10:        throw_unless(error::no_liquidity, (storage::amount0 > 0) | (storage::amount1 > 0));
+contracts/lp_account/msgs/user.fc:24:            pool::cb_refund_me(
+contracts/lp_account/msgs/user.fc:25:                storage::amount0, 
+contracts/lp_account/msgs/user.fc:26:                storage::amount1, 
+contracts/lp_account/msgs/user.fc:33:        storage::amount0 = 0;
+contracts/lp_account/msgs/user.fc:34:        storage::amount1 = 0;
+contracts/lp_account/msgs/user.fc:36:        storage::save();
+contracts/lp_account/msgs/user.fc:40:    if ctx.at(OPCODE) == op::direct_add_liquidity {
+contracts/lp_account/msgs/user.fc:44:            + storage_fee::lp_account + gas::lp_account::direct_add_liquidity 
+contracts/lp_account/msgs/user.fc:45:            + storage_fee::pool + gas::pool::cb_add_liquidity 
+contracts/lp_account/msgs/user.fc:67:        am0 = am0 ? am0 : storage::amount0;
+contracts/lp_account/msgs/user.fc:68:        am1 = am1 ? am1 : storage::amount1;
+contracts/lp_account/msgs/user.fc:72:        storage::amount0 -= am0;
+contracts/lp_account/msgs/user.fc:73:        storage::amount1 -= am1;
+contracts/lp_account/msgs/user.fc:77:        throw_unless(error::no_liquidity, (storage::amount0 >= 0) & (storage::amount1 >= 0));
+contracts/lp_account/msgs/user.fc:79:        if storage::amount0 + storage::amount1 > 0  {
+contracts/lp_account/msgs/user.fc:87:            pool::cb_add_liquidity(
+contracts/lp_account/msgs/user.fc:100:        storage::save();
+tests/WeightedCPI.spec.ts:1579:        it('should direct add liquidity (all)', async () => {
+tests/WeightedCPI.spec.ts:1599:            let msgResult = await acc.sendDirectAddLiquidity(deployer.getSender(), {}, toNano(1));
+tests/WeightedCPI.spec.ts:1618:        it('should direct add liquidity (partial)', async () => {
+tests/WeightedCPI.spec.ts:1638:            let msgResult = await acc.sendDirectAddLiquidity(deployer.getSender(), {
+tests/ConstSum.spec.ts:1476:        it('should direct add liquidity (all)', async () => {
+tests/ConstSum.spec.ts:1496:            let msgResult = await acc.sendDirectAddLiquidity(deployer.getSender(), {}, toNano(1));
+tests/ConstSum.spec.ts:1515:        it('should direct add liquidity (partial)', async () => {
+tests/ConstSum.spec.ts:1535:            let msgResult = await acc.sendDirectAddLiquidity(deployer.getSender(), {
+tests/Stableswap.spec.ts:1549:        it('should direct add liquidity (all)', async () => {
+tests/Stableswap.spec.ts:1572:            let msgResult = await acc.sendDirectAddLiquidity(deployer.getSender(), {}, toNano(1));
+tests/Stableswap.spec.ts:1591:        it('should direct add liquidity (partial)', async () => {
+tests/Stableswap.spec.ts:1612:            let msgResult = await acc.sendDirectAddLiquidity(deployer.getSender(), {
+tests/WeightedStableswap.spec.ts:1671:        it('should direct add liquidity (all)', async () => {
+tests/WeightedStableswap.spec.ts:1697:            let msgResult = await acc.sendDirectAddLiquidity(deployer.getSender(), {}, toNano(1));
+tests/WeightedStableswap.spec.ts:1716:        it('should direct add liquidity (partial)', async () => {
+tests/WeightedStableswap.spec.ts:1736:            let msgResult = await acc.sendDirectAddLiquidity(deployer.getSender(), {

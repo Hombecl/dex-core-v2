@@ -1,0 +1,144 @@
+contracts/lp_account.fc:19:    if equal_slices(ctx.at(SENDER), storage::pool_address) {
+contracts/lp_account.fc:26:    if equal_slices(ctx.at(SENDER), storage::user_address) {
+contracts/lp_account.fc:37:    throw(error::wrong_op);
+contracts/pool/headers.fc:8:global slice storage::protocol_fee_address;
+contracts/lp_account/storage.fc:15:() storage::save() impure inline_ref {
+contracts/vault.fc:19:() storage::save() impure inline_ref {
+contracts/vault.fc:40:    if (ctx.at(OPCODE) == op::deposit_ref_fee) & equal_slices(ctx.at(SENDER), storage::router_address) {
+contracts/vault.fc:44:        storage::save();
+contracts/vault.fc:69:        storage::save();
+contracts/vault.fc:73:    throw(error::wrong_op);
+contracts/pool.fc:22:    if equal_slices(ctx.at(SENDER), storage::protocol_fee_address) {
+contracts/pool.fc:28:    if equal_slices(ctx.at(SENDER), storage::router_address) {
+contracts/pool.fc:43:        print(`if equal_slices(ctx.at(SENDER), storage::rate_setter_address) { if handle_setter_messages() { return (); } }`);
+contracts/pool.fc:52:    throw(error::wrong_op);
+contracts/lp_wallet/storage.fc:8:() storage::save(int balance, slice owner_address, slice jetton_master_address, cell jetton_wallet_code) impure inline {
+contracts/lp_wallet.fc:51:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:100:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:133:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:146:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:184:    throw(error::wrong_op);
+contracts/router/storage.fc:3:global slice storage::admin_address; 
+contracts/router/storage.fc:15:    storage::admin_address = ds~load_msg_addr();
+contracts/router/storage.fc:31:() storage::save() impure inline {
+contracts/router/storage.fc:34:        .store_slice(storage::admin_address)
+contracts/router.fc:28:    if equal_slices(ctx.at(SENDER), storage::admin_address) {
+contracts/router.fc:44:    throw(error::wrong_op);
+contracts/pool/msgs/lp_account.fc:26:        throw_unless(error::invalid_caller, equal_slices(lp_account~address(params::workchain), ctx.at(SENDER)));
+contracts/pool/msgs/lp_account.fc:132:            storage::save();
+contracts/pool/msgs/lp_account.fc:151:        throw_unless(error::invalid_caller, equal_slices(lp_account~address(params::workchain), ctx.at(SENDER)));
+contracts/pool/msgs/router.fc:152:            storage::save();
+contracts/pool/msgs/router.fc:294:    if ctx.at(OPCODE) == op::internal_update_status {
+contracts/pool/msgs/router.fc:296:        storage::save();
+contracts/pool/msgs/router.fc:308:    if ctx.at(OPCODE) == op::internal_set_fees { 
+contracts/pool/msgs/router.fc:311:        slice new_protocol_fee_address = in_msg_body~load_msg_addr();
+contracts/pool/msgs/router.fc:315:        storage::protocol_fee_address = new_protocol_fee_address;
+contracts/pool/msgs/router.fc:317:        storage::save();
+contracts/pool/msgs/router.fc:331:    throw(error::wrong_op);
+contracts/lp_account/msgs/pool.fc:55:        storage::save();
+contracts/router/get.fc:39:        storage::admin_address,
+contracts/pool/msgs/lp_wallet.fc:20:        throw_unless(error::invalid_caller, equal_slices(lp_wallet~address(params::workchain), ctx.at(SENDER)));
+contracts/pool/msgs/lp_wallet.fc:95:        storage::save();
+contracts/router/msgs/vault.fc:13:        throw_unless(error::invalid_caller, equal_slices(vault~address(params::workchain), ctx.at(SENDER))); ;; check if its a valid vault
+contracts/pool/msgs/protocolfee.fc:26:                storage::protocol_fee_address, 
+contracts/pool/msgs/protocolfee.fc:27:                storage::protocol_fee_address, 
+contracts/pool/msgs/protocolfee.fc:28:                storage::protocol_fee_address, 
+contracts/pool/msgs/protocolfee.fc:43:                storage::protocol_fee_address, 
+contracts/pool/msgs/protocolfee.fc:44:                storage::protocol_fee_address, 
+contracts/pool/msgs/protocolfee.fc:45:                storage::protocol_fee_address, 
+contracts/pool/msgs/protocolfee.fc:60:        storage::save();
+contracts/pool/msgs/protocolfee.fc:64:    throw(error::wrong_op);
+contracts/lp_account/msgs/user.fc:36:        storage::save();
+contracts/lp_account/msgs/user.fc:100:        storage::save();
+contracts/pool/msgs/getter.fc:19:            storage::protocol_fee_address,
+contracts/router/msgs/pool.fc:28:        throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER))); ;; check if its a valid pool
+contracts/router/msgs/pool.fc:113:        throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER))); ;; check if its a valid pool
+contracts/pool/pools/weighted_const_product/storage.fc:11:    storage::protocol_fee_address = ds~load_msg_addr();
+contracts/pool/pools/weighted_const_product/storage.fc:28:() storage::save() impure inline {
+contracts/pool/pools/weighted_const_product/storage.fc:36:        .store_slice(storage::protocol_fee_address)
+contracts/pool/pools/README.md:15:() storage::save();
+contracts/router/msgs/admin.fc:6:    if ctx.at(OPCODE) == op::set_fees { 
+contracts/router/msgs/admin.fc:9:            + storage_fee::router + gas::router::set_fees 
+contracts/router/msgs/admin.fc:10:            + storage_fee::pool + gas::pool::set_fees);
+contracts/router/msgs/admin.fc:14:        slice new_protocol_fee_address = in_msg_body~load_msg_addr();
+contracts/router/msgs/admin.fc:24:            & new_protocol_fee_address.address::check_workchain(params::workchain)
+contracts/router/msgs/admin.fc:44:            pool::internal_set_fees(
+contracts/router/msgs/admin.fc:47:                new_protocol_fee_address,
+contracts/router/msgs/admin.fc:86:    if ctx.at(OPCODE) == op::update_pool_status { 
+contracts/router/msgs/admin.fc:89:            + storage_fee::router + gas::router::update_pool_status
+contracts/router/msgs/admin.fc:90:            + storage_fee::pool + gas::pool::internal_update_status);
+contracts/router/msgs/admin.fc:111:            pool::internal_update_status(excesses_recipient), 
+contracts/router/msgs/admin.fc:148:    if ctx.at(OPCODE) == op::update_status { 
+contracts/router/msgs/admin.fc:150:        storage::save();
+contracts/router/msgs/admin.fc:152:        utils::send_excesses(0, storage::admin_address, QCARRY_ALL_BALANCE);
+contracts/router/msgs/admin.fc:164:        storage::save();
+contracts/router/msgs/admin.fc:167:        utils::send_excesses(0, storage::admin_address, QCARRY_ALL_BALANCE);
+contracts/router/msgs/admin.fc:173:        slice new_admin_address = in_msg_body~load_msg_addr();
+contracts/router/msgs/admin.fc:177:        throw_unless(error::wrong_workchain, new_admin_address.address::check_workchain(params::workchain)); 
+contracts/router/msgs/admin.fc:178:        storage::temp_upgrade = pack_temp_upgrade(end_code, new_code, now() + params::twodays, new_admin_address, end_pool_code, pool_code);
+contracts/router/msgs/admin.fc:179:        storage::save();
+contracts/router/msgs/admin.fc:182:        utils::send_excesses(0, storage::admin_address, QCARRY_ALL_BALANCE);
+contracts/router/msgs/admin.fc:194:        storage::save();
+contracts/router/msgs/admin.fc:197:        utils::send_excesses(0, storage::admin_address, QCARRY_ALL_BALANCE);
+contracts/router/msgs/admin.fc:205:        storage::save();
+contracts/router/msgs/admin.fc:208:        utils::send_excesses(0, storage::admin_address, QCARRY_ALL_BALANCE);
+contracts/router/msgs/admin.fc:216:        storage::save();
+contracts/router/msgs/admin.fc:219:        utils::send_excesses(0, storage::admin_address, QCARRY_ALL_BALANCE);
+contracts/router/msgs/admin.fc:227:        storage::save();
+contracts/router/msgs/admin.fc:230:        utils::send_excesses(0, storage::admin_address, QCARRY_ALL_BALANCE);
+contracts/router/msgs/admin.fc:246:            storage::admin_address = new_admin;
+contracts/router/msgs/admin.fc:258:        storage::save();
+contracts/router/msgs/admin.fc:265:        utils::send_excesses(0, storage::admin_address, QCARRY_ALL_BALANCE);
+contracts/pool/pools/weighted_const_product/state_init.fc:11:        .store_uint(0, 2)   ;; storage::protocol_fee_address
+contracts/pool/pools/constant_sum/storage.fc:9:    storage::protocol_fee_address = ds~load_msg_addr();
+contracts/pool/pools/constant_sum/storage.fc:25:() storage::save() impure inline {
+contracts/pool/pools/constant_sum/storage.fc:33:        .store_slice(storage::protocol_fee_address)
+contracts/pool/pools/constant_product/storage.fc:9:    storage::protocol_fee_address = ds~load_msg_addr();
+contracts/pool/pools/constant_product/storage.fc:25:() storage::save() impure inline {
+contracts/pool/pools/constant_product/storage.fc:33:        .store_slice(storage::protocol_fee_address)
+contracts/pool/pools/weighted_const_product/ext_router.fc:6:    if ctx.at(OPCODE) == op::internal_set_params {
+contracts/pool/pools/weighted_const_product/ext_router.fc:21:        storage::save();
+contracts/pool/pools/stableswap/storage.fc:11:    storage::protocol_fee_address = ds~load_msg_addr();
+contracts/pool/pools/stableswap/storage.fc:28:() storage::save() impure inline {
+contracts/pool/pools/stableswap/storage.fc:36:        .store_slice(storage::protocol_fee_address)
+contracts/pool/pools/constant_sum/get.fc:13:        storage::protocol_fee_address,
+contracts/pool/pools/weighted_const_product/get.fc:13:        storage::protocol_fee_address,
+contracts/pool/pools/constant_product/get.fc:13:        storage::protocol_fee_address,
+contracts/router/pools/weighted_const_product/contracts.fc:1:(cell) pool::internal_set_params(
+contracts/router/pools/weighted_const_product/contracts.fc:6:    return begin_message(op::internal_set_params)
+contracts/pool/pools/stableswap/get.fc:13:        storage::protocol_fee_address,
+contracts/router/pools/weighted_const_product/ext_admin.fc:6:    if ctx.at(OPCODE) == op::set_params {
+contracts/router/pools/weighted_const_product/ext_admin.fc:18:            + storage_fee::router + gas::router::set_params 
+contracts/router/pools/weighted_const_product/ext_admin.fc:19:            + storage_fee::pool + gas::pool::internal_set_params);
+contracts/router/pools/weighted_const_product/ext_admin.fc:43:            pool::internal_set_params(
+contracts/router/pools/stableswap/contracts.fc:1:(cell) pool::internal_set_params(slice _excesses_address, int _new_amp) inline {
+contracts/router/pools/stableswap/contracts.fc:2:    return begin_message(op::internal_set_params)
+contracts/pool/pools/stableswap/state_init.fc:11:        .store_uint(0, 2)   ;; storage::protocol_fee_address
+contracts/router/pools/weighted_stableswap/contracts.fc:1:(cell) pool::internal_set_params(
+contracts/router/pools/weighted_stableswap/contracts.fc:9:    return begin_message(op::internal_set_params)
+contracts/router/pools/stableswap/ext_admin.fc:9:    if ctx.at(OPCODE) == op::set_params {
+contracts/router/pools/stableswap/ext_admin.fc:19:            + storage_fee::router + gas::router::set_params 
+contracts/router/pools/stableswap/ext_admin.fc:20:            + storage_fee::pool + gas::pool::internal_set_params);
+contracts/router/pools/stableswap/ext_admin.fc:47:            pool::internal_set_params(
+contracts/pool/pools/stableswap/ext_router.fc:6:    if ctx.at(OPCODE) == op::internal_set_params {
+contracts/pool/pools/stableswap/ext_router.fc:13:        storage::save();
+contracts/router/pools/weighted_stableswap/ext_admin.fc:6:    if ctx.at(OPCODE) == op::set_params {
+contracts/router/pools/weighted_stableswap/ext_admin.fc:19:            + storage_fee::router + gas::router::set_params 
+contracts/router/pools/weighted_stableswap/ext_admin.fc:20:            + storage_fee::pool + gas::pool::internal_set_params);
+contracts/router/pools/weighted_stableswap/ext_admin.fc:48:            pool::internal_set_params(
+contracts/pool/pools/constant_product/state_init.fc:11:        .store_uint(0, 2)   ;; storage::protocol_fee_address
+contracts/pool/pools/constant_sum/state_init.fc:11:        .store_uint(0, 2)   ;; storage::protocol_fee_address
+contracts/pool/pools/weighted_stableswap/storage.fc:4:global slice storage::rate_setter_address;
+contracts/pool/pools/weighted_stableswap/storage.fc:14:    storage::protocol_fee_address = ds~load_msg_addr();
+contracts/pool/pools/weighted_stableswap/storage.fc:23:    storage::rate_setter_address = w_params_data~load_msg_addr(); 
+contracts/pool/pools/weighted_stableswap/storage.fc:38:() storage::save() impure inline {
+contracts/pool/pools/weighted_stableswap/storage.fc:46:        .store_slice(storage::protocol_fee_address)
+contracts/pool/pools/weighted_stableswap/storage.fc:53:            .store_slice(storage::rate_setter_address)
+contracts/pool/pools/weighted_stableswap/ext_router.fc:6:    if ctx.at(OPCODE) == op::internal_set_params {
+contracts/pool/pools/weighted_stableswap/ext_router.fc:15:        storage::rate_setter_address = new_setter;
+contracts/pool/pools/weighted_stableswap/ext_router.fc:26:        storage::save();
+contracts/pool/pools/weighted_stableswap/state_init.fc:11:        .store_uint(0, 2)   ;; storage::protocol_fee_address
+contracts/pool/pools/weighted_stableswap/state_init.fc:24:            .store_uint(0, 2)                     ;; storage::rate_setter_address  
+contracts/pool/pools/weighted_stableswap/setter.fc:10:        storage::save();
+contracts/pool/pools/weighted_stableswap/get.fc:13:        storage::protocol_fee_address,
+contracts/pool/pools/weighted_stableswap/get.fc:19:        storage::rate_setter_address

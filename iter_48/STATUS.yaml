@@ -1,0 +1,54 @@
+schema_version: shadow-v1
+iteration: 48
+phase: completed
+cell_id: P10xC3
+cell_label: governance_rate x state_persistence
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: P10xC3
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/WeightedStableswap.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_48/poc_governance_rate_state_persistence.run.log
+    run_log_exists_on_disk: true
+    test_runtime: PASSED
+    duration_seconds: 7.839
+    numerical_evidence: "WeightedStableswap.spec.ts: 4 passed, 24 skipped; parameter update, ratio swap, setter rate update, and non-setter rate bounce."
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 rate update stale state is:issue"
+      - "repo:ston-fi/dex-core-v2 rate setter persistence is:issue"
+      - "repo:ston-fi/dex-core-v2 rate update replay is:pr"
+      - "repo:ston-fi/dex-core-v2 audit rate state is:issue"
+    results: "Fresh GitHub API searches returned zero results; local audit/security/rate/replay/persistence/state git search was empty."
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "repo:ston-fi/dex-core-v2 rate update stale state is:issue"
+      - "repo:ston-fi/dex-core-v2 rate setter persistence is:issue"
+      - "repo:ston-fi/dex-core-v2 rate update replay is:pr"
+      - "repo:ston-fi/dex-core-v2 audit rate state is:issue"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_48-P10xC3.md
+  notes:
+    - "Weighted-stableswap parameter/rate handlers save the updated state; subsequent swap/getter paths use the saved state, while non-setter rate calls are rejected at the pool sender gate."
+    - "No stale authorized replay or duplicate parameter mutation was demonstrated."

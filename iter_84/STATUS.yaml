@@ -1,0 +1,61 @@
+schema_version: shadow-v1
+iteration: 84
+phase: completed
+cell_id: U4
+cell_label: lp_wallet_codecell_sender_collision
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: U4
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_84/poc_lp_wallet_codecell_sender_collision.run.log
+    run_log_exists_on_disk: true
+    test_runtime: 18.63s
+    result: PASSED (6 passed, 109 skipped, 115 total)
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 LP wallet state init collision is:issue'
+      - 'repo:ston-fi/dex-core-v2 jetton_lp_wallet_code owner master is:issue'
+      - 'repo:ston-fi/dex-core-v2 calculate_user_jetton_lp_wallet_address is:pr'
+      - 'repo:ston-fi/dex-core-v2 LP wallet alternate recipient is:issue'
+    results: all four GitHub searches returned total_count=0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 LP wallet state init collision is:issue'
+      - 'repo:ston-fi/dex-core-v2 jetton_lp_wallet_code owner master is:issue'
+      - 'repo:ston-fi/dex-core-v2 calculate_user_jetton_lp_wallet_address is:pr'
+      - 'repo:ston-fi/dex-core-v2 LP wallet alternate recipient is:issue'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_84/callers-grep.txt
+  caller_grep_match_count: 127
+  caller_grep_unique_files: 9
+  prior_audit_path: iter_84/prior-audit-git.log
+  prior_audit_bytes: 0
+  r15_search_files:
+    - iter_84/R15-GH-lp-wallet-state-init-collision.json
+    - iter_84/R15-GH-lp-wallet-code-owner-master.json
+    - iter_84/R15-GH-user-lp-wallet-address.json
+    - iter_84/R15-GH-lp-wallet-alternate-recipient.json
+  source_conclusion: 'LP-wallet state-init data consistently orders owner, LP master, and wallet code; the derived address includes the full state-init hash. Pool getters and mint paths use the same ordering, while receive_tokens accepts either the master or the deterministic source-owner wallet. Separate pool/user combinations therefore produce separate addresses, and alternate recipient payloads change only the recipient of a valid owner transfer. Payload, alternate-recipient, and burn tests passed without an identity collision or cross-user balance credit.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_84-U4.md

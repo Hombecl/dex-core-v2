@@ -1,0 +1,62 @@
+schema_version: shadow-v1
+iteration: 85
+phase: completed
+cell_id: U5
+cell_label: weighted_rate_setter_domain_boundary
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: U5
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/WeightedStableswap.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_85/poc_weighted_rate_setter_domain_boundary.run.log
+    run_log_exists_on_disk: true
+    test_runtime: 7.569s
+    result: PASSED (4 passed, 24 skipped, 28 total)
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 weighted stableswap rate setter is:issue'
+      - 'repo:ston-fi/dex-core-v2 set_rate weighted_stableswap is:issue'
+      - 'repo:ston-fi/dex-core-v2 rate setter reserve extraction is:pr'
+      - 'repo:ston-fi/dex-core-v2 weighted invariant rate boundary is:issue'
+    results: all four GitHub searches returned total_count=0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 weighted stableswap rate setter is:issue'
+      - 'repo:ston-fi/dex-core-v2 set_rate weighted_stableswap is:issue'
+      - 'repo:ston-fi/dex-core-v2 rate setter reserve extraction is:pr'
+      - 'repo:ston-fi/dex-core-v2 weighted invariant rate boundary is:issue'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_85/callers-grep.txt
+  caller_grep_match_count: 59
+  caller_grep_unique_files: 10
+  prior_audit_path: iter_85/prior-audit-git.log
+  prior_audit_bytes: 0
+  r15_search_files:
+    - iter_85/R15-GH-weighted-rate-setter.json
+    - iter_85/R15-GH-set-rate-weighted-stableswap.json
+    - iter_85/R15-GH-rate-setter-reserve-extraction.json
+    - iter_85/R15-GH-weighted-invariant-rate-boundary.json
+  kill_filter: trusted-on-trusted-griefing
+  source_conclusion: 'Weighted-stableswap rate mutation is reachable only through the stored rate_setter_address or the router/admin parameter path. The public pool dispatcher checks the configured setter before handle_setter_messages, and set_rate requires new_rate > 0 before saving. Router-side validation bounds the weight and amplification and gates the parameter message behind admin. The domain concern is therefore trusted-role economic configuration rather than an external attacker path and is discarded by the trusted-on-trusted kill filter.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_85-U5.md

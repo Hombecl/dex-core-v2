@@ -1,0 +1,55 @@
+schema_version: shadow-v1
+iteration: 63
+phase: completed
+cell_id: R8
+cell_label: lp_wallet_receive_master_alias
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: R8
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/WeightedCPI.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_63/poc_lp_wallet_receive_master_alias.run.log
+    run_log_exists_on_disk: true
+    test_runtime: PASSED
+    duration_seconds: 9.481
+    numerical_evidence: "WeightedCPI.spec.ts and System.spec.ts: 3 passed, 33 skipped; dual-sided LP mint, single-sided LP mint, and system mint/burn paths completed."
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 LP wallet receive internal transfer is:issue"
+      - "repo:ston-fi/dex-core-v2 internal_transfer sender is:issue"
+      - "repo:ston-fi/dex-core-v2 LP wallet authorization is:pr"
+      - "repo:ston-fi/dex-core-v2 audit LP wallet receive is:issue"
+    results: "Fresh GitHub API searches returned zero results; local audit/security/lp-wallet/internal-transfer/receive-tokens git search was empty."
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "repo:ston-fi/dex-core-v2 LP wallet receive internal transfer is:issue"
+      - "repo:ston-fi/dex-core-v2 internal_transfer sender is:issue"
+      - "repo:ston-fi/dex-core-v2 LP wallet authorization is:pr"
+      - "repo:ston-fi/dex-core-v2 audit LP wallet receive is:issue"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_63-R8.md
+  notes:
+    - "lp_wallet.fc receive_tokens computes the deterministic source-owner LP-wallet address from body from_address, the configured master, and the configured wallet code; it accepts that sender or the configured master, and saves only after all parsing/forwarding checks."
+    - "The apparent balance increment occurs before the sender check but is transaction-local; an exception reverts the whole message. The normal LP mint tests showed only pool/master-authorized or source-wallet-authorized credits, with no arbitrary recipient balance increase."
+    - "Shadow mode: no emit-shippable.py, bb_findings, shippable-staging, IA queue, submission queue, or platform form was touched."

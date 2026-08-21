@@ -1,0 +1,61 @@
+schema_version: shadow-v1
+iteration: 70
+phase: completed
+cell_id: R15
+cell_label: upgraded_pool_address_binding
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: R15
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_70/poc_upgraded_pool_address_binding.run.log
+    run_log_exists_on_disk: true
+    test_runtime: 9.05s
+    result: PASSED (6 passed, 30 skipped, 36 total)
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 pool code upgrade binding is:issue'
+      - 'repo:ston-fi/dex-core-v2 upgrade_pool_code is:issue'
+      - 'repo:ston-fi/dex-core-v2 internal_update_pool_code is:pr'
+      - 'repo:ston-fi/dex-core-v2 state_init pool upgrade is:issue'
+    results: all four GitHub searches returned total_count=0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 pool code upgrade binding is:issue'
+      - 'repo:ston-fi/dex-core-v2 upgrade_pool_code is:issue'
+      - 'repo:ston-fi/dex-core-v2 internal_update_pool_code is:pr'
+      - 'repo:ston-fi/dex-core-v2 state_init pool upgrade is:issue'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_70/callers-grep.txt
+  caller_grep_match_count: 33
+  caller_grep_unique_files: 7
+  prior_audit_path: iter_70/prior-audit-git.log
+  prior_audit_bytes: 0
+  r15_search_files:
+    - iter_70/gh-pool-code-upgrade-binding.json
+    - iter_70/gh-upgrade-pool-code.json
+    - iter_70/gh-internal-update-pool-code-pr.json
+    - iter_70/gh-state-init-pool-upgrade.json
+  source_conclusion: 'Router admin handling is gated by the router main dispatcher to storage::admin_address; pool upgrade messages are sent to a pool address derived from the router and ordered token wallets. The pool main dispatcher accepts router governance only from storage::router_address, so internal_update_pool_code cannot be injected by an external caller and changing code does not change the existing account address.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_70-R15.md

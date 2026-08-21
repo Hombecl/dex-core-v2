@@ -1,0 +1,33 @@
+contracts/router/storage.fc:9:global cell storage::upgrade_pool_code;
+contracts/router/storage.fc:27:    storage::upgrade_pool_code = ds~load_ref();
+contracts/router/storage.fc:37:        .store_ref(storage::upgrade_pool_code)
+contracts/router/msgs/admin.fc:35:            pool_idata(my_address(), jetton_wallet0, jetton_wallet1, storage::jetton_lp_wallet_code,  storage::lp_account_code),
+contracts/router/msgs/admin.fc:43:            pool~state_init(), 
+contracts/router/msgs/admin.fc:71:            pool_idata(my_address(), jetton_wallet0, jetton_wallet1, storage::jetton_lp_wallet_code,  storage::lp_account_code),
+contracts/router/msgs/admin.fc:79:            pool~state_init(), 
+contracts/router/msgs/admin.fc:102:            pool_idata(my_address(), jetton_wallet0, jetton_wallet1, storage::jetton_lp_wallet_code, storage::lp_account_code),
+contracts/router/msgs/admin.fc:110:            pool~state_init(), 
+contracts/router/msgs/admin.fc:117:    if ctx.at(OPCODE) == op::update_pool_code { 
+contracts/router/msgs/admin.fc:120:            + storage_fee::router + gas::router::update_pool_code
+contracts/router/msgs/admin.fc:121:            + storage_fee::pool + gas::pool::internal_update_pool_code);
+contracts/router/msgs/admin.fc:127:        throw_if(error::empty_cell, storage::upgrade_pool_code.cell::is_empty());
+contracts/router/msgs/admin.fc:133:            pool_idata(my_address(), jetton_wallet0, jetton_wallet1, storage::jetton_lp_wallet_code, storage::lp_account_code),
+contracts/router/msgs/admin.fc:141:            pool~state_init(), 
+contracts/router/msgs/admin.fc:142:            pool::internal_update_pool_code(storage::upgrade_pool_code), 
+contracts/router/msgs/admin.fc:186:    if ctx.at(OPCODE) == op::init_pool_code_upgrade { 
+contracts/router/msgs/admin.fc:201:    if ctx.at(OPCODE) == op::cancel_pool_code_upgrade { 
+contracts/router/msgs/admin.fc:235:    if ctx.at(OPCODE) == op::finalize_upgrades { 
+contracts/router/msgs/admin.fc:252:            storage::upgrade_pool_code = pool_code;
+contracts/common/contracts.fc:262:(cell) pool::internal_update_pool_code(cell _new_pool_code) inline {
+contracts/common/contracts.fc:263:    return begin_message(op::internal_update_pool_code)
+contracts/pool.fc:22:    if equal_slices(ctx.at(SENDER), storage::protocol_fee_address) {
+contracts/pool.fc:28:    if equal_slices(ctx.at(SENDER), storage::router_address) {
+contracts/pool.fc:43:        print(`if equal_slices(ctx.at(SENDER), storage::rate_setter_address) { if handle_setter_messages() { return (); } }`);
+contracts/router.fc:28:    if equal_slices(ctx.at(SENDER), storage::admin_address) {
+contracts/test/pool_dummy.fc:20:    storage::router_address = static_data~load_msg_addr();
+contracts/test/pool_dummy.fc:66:    if ctx.at(OPCODE) == op::internal_update_pool_code {
+contracts/test/pool_dummy.fc:95:    if equal_slices(ctx.at(SENDER), storage::protocol_fee_address) {
+contracts/test/pool_dummy.fc:100:    if equal_slices(ctx.at(SENDER), storage::router_address) {
+contracts/test/pool_dummy.fc:112:        storage::router_address,
+contracts/pool/msgs/router.fc:249:                lp_account~state_init(), 
+contracts/pool/msgs/router.fc:302:    if ctx.at(OPCODE) == op::internal_update_pool_code {

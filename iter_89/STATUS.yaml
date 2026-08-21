@@ -1,0 +1,61 @@
+schema_version: shadow-v1
+iteration: 89
+phase: completed
+cell_id: V4
+cell_label: router_route_error_refund_encoding
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: V4
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts,tests/WeightedCPI.spec.ts,tests/Stableswap.spec.ts,tests/WeightedStableswap.spec.ts,tests/ConstSum.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_89/poc_router_route_error_refund_encoding.run.log
+    run_log_exists_on_disk: true
+    test_runtime: 24.105s
+    result: PASSED (7 passed, 131 skipped, 138 total)
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 "transfer_bounce_invalid_request" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "refund_address" "excesses_address" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "route_dex_messages" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "transfer_bounce_low_gas" "refund" is:pr'
+    results: all four searches returned no matching issue or PR; query 1 used the repository search page after API rate limiting
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "transfer_bounce_invalid_request" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "refund_address" "excesses_address" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "route_dex_messages" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "transfer_bounce_low_gas" "refund" is:pr'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_89/callers-grep.txt
+  caller_grep_match_count: 31
+  caller_grep_unique_files: 8
+  prior_audit_path: iter_89/prior-audit-git.log
+  prior_audit_bytes: 53
+  r15_search_files:
+    - iter_89/R15-GH-invalid-request-refund-issue.html
+    - iter_89/R15-GH-refund-excess-destinations-issue.json
+    - iter_89/R15-GH-route-dex-messages-pr.json
+    - iter_89/R15-GH-low-gas-refund-pr.json
+  source_conclusion: 'The outer parser catch cannot read refund_address or excesses_address and therefore sends the original amount to _caller, which is the notification sender owner. Once the destination fields parse, the inner validation catch sends the original amount to the explicitly supplied refund_address with excesses_address as the response destination and encodes only the error code in the payload. The caller path reaches route_dex_messages only from transfer_notification or a trusted router pay_to cross-route, and the tests cover malformed payload and downstream validation refunds without an unauthorized balance delta.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_89-V4.md

@@ -1,0 +1,61 @@
+schema_version: shadow-v1
+iteration: 75
+phase: completed
+cell_id: S5
+cell_label: getter_static_code_identity
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: S5
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_75/poc_getter_static_code_identity.run.log
+    run_log_exists_on_disk: true
+    test_runtime: 13.345s
+    result: PASSED (8 passed, 39 skipped, 47 total)
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 getter pool address upgrade is:issue'
+      - 'repo:ston-fi/dex-core-v2 get_lp_account_address is:issue'
+      - 'repo:ston-fi/dex-core-v2 state_init getter is:pr'
+      - 'repo:ston-fi/dex-core-v2 static identity pool is:issue'
+    results: all four GitHub searches returned total_count=0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 getter pool address upgrade is:issue'
+      - 'repo:ston-fi/dex-core-v2 get_lp_account_address is:issue'
+      - 'repo:ston-fi/dex-core-v2 state_init getter is:pr'
+      - 'repo:ston-fi/dex-core-v2 static identity pool is:issue'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_75/callers-grep.txt
+  caller_grep_match_count: 56
+  caller_grep_unique_files: 9
+  prior_audit_path: iter_75/prior-audit-git.log
+  prior_audit_bytes: 0
+  r15_search_files:
+    - iter_75/gh-getter-pool-address-upgrade.json
+    - iter_75/gh-get-lp-account-address.json
+    - iter_75/gh-state-init-getter-pr.json
+    - iter_75/gh-static-identity-pool.json
+  source_conclusion: 'Pool/router getters derive addresses from the same router/token/user data used by runtime state-init messages. Pool code upgrade changes the existing account code but not its persistent/static identity data; router getters intentionally keep the original pool_code for address derivation. LP-account and LP-wallet getters then derive from the stable pool address. Upgrade and normal stateful flows passed without an address alias.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_75-S5.md

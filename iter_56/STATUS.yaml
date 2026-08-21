@@ -1,0 +1,55 @@
+schema_version: shadow-v1
+iteration: 56
+phase: completed
+cell_id: R3
+cell_label: refund_account_substitution
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: R3
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/WeightedCPI.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_56/poc_refund_account_substitution.run.log
+    run_log_exists_on_disk: true
+    test_runtime: PASSED
+    duration_seconds: 10.227
+    numerical_evidence: "WeightedCPI.spec.ts: 5 passed, 20 skipped; partial-liquidity refund, locked-pool refund, excessive-fee refund, and cross-swap refunds through two routers all completed."
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 refund LP account ownership is:issue"
+      - "repo:ston-fi/dex-core-v2 refund_address LP account is:issue"
+      - "repo:ston-fi/dex-core-v2 LP refund address is:pr"
+      - "repo:ston-fi/dex-core-v2 audit LP refund account is:issue"
+    results: "Fresh GitHub API searches returned zero results; local audit/security/refund/refund_address/lp account/ownership git search was empty."
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "repo:ston-fi/dex-core-v2 refund LP account ownership is:issue"
+      - "repo:ston-fi/dex-core-v2 refund_address LP account is:issue"
+      - "repo:ston-fi/dex-core-v2 LP refund address is:pr"
+      - "repo:ston-fi/dex-core-v2 audit LP refund account is:issue"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_56-R3.md
+  notes:
+    - "pool/msgs/lp_account.fc derives the failed-add refund LP account from the body-supplied refund_address, but the upstream LP account handler accepts add_liquidity only from storage::pool_address and the failed path uses min_lp_out=0 with both_positive=true; the address is a user-selected refund destination, not attacker-controlled ownership of an existing user's LP account."
+    - "pool/msgs/lp_account.fc and lp_account/msgs/pool.fc use the same lp_account_idata(my_address(), user_address) derivation and deterministic sender check; lp_account/msgs/user.fc gates refund_me and direct_add_liquidity on storage::user_address. No unauthorized claim, balance delta, or cross-user refund was demonstrated."
+    - "Shadow mode: no emit-shippable.py, bb_findings, shippable-staging, IA queue, submission queue, or platform form was touched."

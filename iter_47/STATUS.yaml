@@ -1,0 +1,54 @@
+schema_version: shadow-v1
+iteration: 47
+phase: completed
+cell_id: P10xC2
+cell_label: governance_rate x amount_conservation
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: P10xC2
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/WeightedStableswap.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_47/poc_governance_rate_amount_conservation.run.log
+    run_log_exists_on_disk: true
+    test_runtime: PASSED
+    duration_seconds: 10.364
+    numerical_evidence: "WeightedStableswap.spec.ts: 6 passed, 22 skipped; fee update, parameter updates, setter rate update, non-setter rejection, and maximum referral-fee swap."
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 rate parameter amount conservation is:issue"
+      - "repo:ston-fi/dex-core-v2 fee bounds extraction is:issue"
+      - "repo:ston-fi/dex-core-v2 rate parameter amount is:pr"
+      - "repo:ston-fi/dex-core-v2 audit rate fee bounds is:issue"
+    results: "Fresh GitHub API searches returned zero results; local audit/security/rate/fee/amount/bounds git search was empty."
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "repo:ston-fi/dex-core-v2 rate parameter amount conservation is:issue"
+      - "repo:ston-fi/dex-core-v2 fee bounds extraction is:issue"
+      - "repo:ston-fi/dex-core-v2 rate parameter amount is:pr"
+      - "repo:ston-fi/dex-core-v2 audit rate fee bounds is:issue"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_47-P10xC2.md
+  notes:
+    - "Router fee handlers enforce min/max fee bounds; weighted-stableswap parameter handling enforces amp/weight/rate constraints and setter updates require the configured setter."
+    - "No reserve/output conservation break or attacker-controlled rate/fee mutation was demonstrated."

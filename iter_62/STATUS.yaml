@@ -1,0 +1,55 @@
+schema_version: shadow-v1
+iteration: 62
+phase: completed
+cell_id: R7
+cell_label: vault_state_init_owner_token_collision
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: R7
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/WeightedCPI.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_62/poc_vault_state_init_owner_token_collision.run.log
+    run_log_exists_on_disk: true
+    test_runtime: PASSED
+    duration_seconds: 9.66
+    numerical_evidence: "WeightedCPI.spec.ts and ConstProduct.spec.ts: 2 passed, 59 skipped; both model variants routed referral fees to distinct deterministic owner/token vaults and withdrew them to the matching owner."
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 vault state init owner token is:issue"
+      - "repo:ston-fi/dex-core-v2 vault address collision is:issue"
+      - "repo:ston-fi/dex-core-v2 vault state init is:pr"
+      - "repo:ston-fi/dex-core-v2 audit vault address is:issue"
+    results: "Fresh GitHub API searches returned zero results; local audit/security/vault/state-init/address-collision git search was empty."
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "repo:ston-fi/dex-core-v2 vault state init owner token is:issue"
+      - "repo:ston-fi/dex-core-v2 vault address collision is:issue"
+      - "repo:ston-fi/dex-core-v2 vault state init is:pr"
+      - "repo:ston-fi/dex-core-v2 audit vault address is:issue"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_62-R7.md
+  notes:
+    - "common/contracts.fc vault_idata stores user, token, router in that order; router/get.fc get_vault_address, pool/msgs/router.fc deposit construction, and router/msgs/vault.fc payout verification all reuse the same tuple and vault code."
+    - "The two-model referral-fee PoC exercised distinct owners and output tokens, then withdrew from the derived address; no cross-owner credit, token alias, or state-init collision was demonstrated."
+    - "Shadow mode: no emit-shippable.py, bb_findings, shippable-staging, IA queue, submission queue, or platform form was touched."

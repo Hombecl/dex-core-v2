@@ -1,0 +1,59 @@
+contracts/router/pools/weighted_stableswap/contracts.fc:1:(cell) pool::internal_set_params(
+contracts/router/pools/weighted_stableswap/contracts.fc:5:    int _new_rate,
+contracts/router/pools/weighted_stableswap/contracts.fc:9:    return begin_message(op::internal_set_params)
+contracts/router/pools/weighted_stableswap/contracts.fc:13:        .store_uint(_new_rate, 128)
+contracts/pool/pools/weighted_stableswap/storage.fc:1:global int storage::amp;
+contracts/pool/pools/weighted_stableswap/storage.fc:2:global int storage::rate;
+contracts/pool/pools/weighted_stableswap/storage.fc:3:global int storage::w0;
+contracts/pool/pools/weighted_stableswap/storage.fc:4:global slice storage::rate_setter_address;
+contracts/pool/pools/weighted_stableswap/storage.fc:20:    storage::amp = w_params_data~load_uint(128);
+contracts/pool/pools/weighted_stableswap/storage.fc:21:    storage::rate = w_params_data~load_uint(128);
+contracts/pool/pools/weighted_stableswap/storage.fc:22:    storage::w0 = w_params_data~load_uint(128); 
+contracts/pool/pools/weighted_stableswap/storage.fc:23:    storage::rate_setter_address = w_params_data~load_msg_addr(); 
+contracts/pool/pools/weighted_stableswap/storage.fc:50:            .store_uint(storage::amp, 128)
+contracts/pool/pools/weighted_stableswap/storage.fc:51:            .store_uint(storage::rate, 128)
+contracts/pool/pools/weighted_stableswap/storage.fc:52:            .store_uint(storage::w0, 128)
+contracts/pool/pools/weighted_stableswap/storage.fc:53:            .store_slice(storage::rate_setter_address)
+tests/WeightedStableswap.spec.ts:1446:            let msgResult = await pool.sendSetRate(alice.getSender(), {
+tests/WeightedStableswap.spec.ts:2055:            let msgResult = await pool.sendSetRate(bob.getSender(), {
+contracts/pool/pools/weighted_stableswap/get.fc:16:        storage::amp,
+contracts/pool/pools/weighted_stableswap/get.fc:17:        storage::rate,
+contracts/pool/pools/weighted_stableswap/get.fc:18:        storage::w0,
+contracts/pool/pools/weighted_stableswap/get.fc:19:        storage::rate_setter_address
+contracts/router/pools/weighted_stableswap/ext_admin.fc:7:        (int new_amp, int new_rate, int new_w) = (in_msg_body~load_uint128(), in_msg_body~load_uint128(), in_msg_body~load_uint128());
+contracts/router/pools/weighted_stableswap/ext_admin.fc:20:            + storage_fee::pool + gas::pool::internal_set_params);
+contracts/router/pools/weighted_stableswap/ext_admin.fc:23:        ;; 0 new_rate will leave pool param unchanged
+contracts/router/pools/weighted_stableswap/ext_admin.fc:48:            pool::internal_set_params(
+contracts/router/pools/weighted_stableswap/ext_admin.fc:52:                new_rate,
+contracts/pool/pools/weighted_stableswap/pool.fc:32:    storage::rate = ex.math::fp::div(ey);
+contracts/pool/pools/weighted_stableswap/pool.fc:37:        storage::w0, 
+contracts/pool/pools/weighted_stableswap/pool.fc:38:        storage::w0.math::fp::complement()
+contracts/pool/pools/weighted_stableswap/pool.fc:45:    int _w0 = storage::w0;
+contracts/pool/pools/weighted_stableswap/pool.fc:46:    int _w1 = storage::w0.math::fp::complement();
+contracts/pool/pools/weighted_stableswap/ext_router.fc:6:    if ctx.at(OPCODE) == op::internal_set_params {
+contracts/pool/pools/weighted_stableswap/ext_router.fc:8:        (int new_amp, int new_rate, int new_w) = (in_msg_body~load_uint128(), in_msg_body~load_uint128(), in_msg_body~load_uint128());
+contracts/pool/pools/weighted_stableswap/ext_router.fc:13:        storage::amp = new_amp;
+contracts/pool/pools/weighted_stableswap/ext_router.fc:14:        storage::rate = new_rate ? new_rate : storage::rate;
+contracts/pool/pools/weighted_stableswap/ext_router.fc:15:        storage::rate_setter_address = new_setter;
+contracts/pool/pools/weighted_stableswap/ext_router.fc:17:        if (storage::w0 == 0) & (new_w > 0) {
+contracts/pool/pools/weighted_stableswap/ext_router.fc:21:                storage::w0 = new_w;
+contracts/pool/pools/weighted_stableswap/ext_router.fc:23:                storage::w0 = new_w.math::fp::complement();
+contracts/pool/pools/weighted_stableswap/math.fc:14:    int p1 = (x + (storage::rate.math::fp::mul(y))).math::fp::mul(storage::amp);
+contracts/pool/pools/weighted_stableswap/math.fc:15:    int p2 = (x.math::fp::ow_pow(_p)).math::fp::mul((storage::rate.math::fp::mul(y)).math::fp::ow_pow(_q));
+contracts/pool/pools/weighted_stableswap/math.fc:25:    int p2_1 = p2_0.math::fp::mul(storage::rate.math::fp::ow_pow(_q));
+contracts/pool/pools/weighted_stableswap/math.fc:26:    return math::fp::mul(storage::amp, storage::rate) + p2_1.math::fp::mul(x.math::fp::ow_pow(_p));
+contracts/pool/pools/weighted_stableswap/math.fc:35:    int p2_1 = p2_0.math::fp::mul(storage::rate.math::fp::ow_pow(_q));
+contracts/pool/pools/weighted_stableswap/math.fc:37:    return storage::amp + p2_2;
+contracts/pool/pools/weighted_stableswap/math.fc:41:    int p = storage::w0;
+contracts/pool/pools/weighted_stableswap/math.fc:42:    int q = storage::w0.math::fp::complement();
+contracts/pool/pools/weighted_stableswap/math.fc:64:    int p = storage::w0;
+contracts/pool/pools/weighted_stableswap/math.fc:65:    int q = storage::w0.math::fp::complement();
+contracts/pool/pools/weighted_stableswap/state_init.fc:21:            .store_uint(1000000000000000000, 128) ;; storage::amp  (1)
+contracts/pool/pools/weighted_stableswap/state_init.fc:22:            .store_uint(0, 128)                   ;; storage::rate (0.0)
+contracts/pool/pools/weighted_stableswap/state_init.fc:23:            .store_uint(0, 128)                   ;; storage::w0   (0)
+contracts/pool/pools/weighted_stableswap/state_init.fc:24:            .store_uint(0, 2)                     ;; storage::rate_setter_address  
+contracts/pool/pools/weighted_stableswap/setter.fc:1:(int) handle_setter_messages() impure inline {
+contracts/pool/pools/weighted_stableswap/setter.fc:4:    if ctx.at(OPCODE) == op::set_rate {
+contracts/pool/pools/weighted_stableswap/setter.fc:5:        int new_rate = in_msg_body~load_uint128();
+contracts/pool/pools/weighted_stableswap/setter.fc:7:        throw_unless(error::invalid_amount, new_rate > 0);
+contracts/pool/pools/weighted_stableswap/setter.fc:8:        storage::rate = new_rate;

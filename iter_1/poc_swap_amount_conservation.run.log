@@ -1,0 +1,54 @@
+
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/ConstProduct.spec.ts
+
+PASS tests/ConstProduct.spec.ts (39.651 s)
+  Const Product
+    wip
+      ✓ 123 (215 ms)
+    Pool code upgrade
+      ✓ should init new pool code (850 ms)
+      ✓ should cancel new pool code (784 ms)
+      ✓ should finalize new pool code (820 ms)
+      ✓ should not finalize new pool code if time not passed (756 ms)
+      ✓ should set new pool code on pool (785 ms)
+      ✓ should not set new pool code if empty (748 ms)
+    Fees
+      ✓ should set fees (739 ms)
+      ✓ should collect fees (1046 ms)
+      ✓ should collect ref fee from vault (1034 ms)
+    Dex
+      ✓ should deploy dex (703 ms)
+      ✓ should swap (807 ms)
+      ✓ should provide lp (957 ms)
+      ✓ should provide lp with payload (809 ms)
+      ✓ should provide lp with payload to a different address (1052 ms)
+      ✓ should handle more complex scenarios (1829 ms)
+      ✓ should provide lp (single side) (972 ms)
+      ✓ should burn lp and swap (901 ms)
+      ✓ should provide lp (single side) with protocol fees (881 ms)
+      ✓ should burn liquidity (934 ms)
+      ✓ should cross-swap on the same router (1396 ms)
+      ✓ should cross-swap on 2 routers (1548 ms)
+      ✓ should direct add liquidity (all) (890 ms)
+      ✓ should direct add liquidity (partial) (979 ms)
+      ✓ should refund swap if tx is expired (785 ms)
+      ✓ should swap with 0 ref fee (804 ms)
+      ✓ should swap with max ref fee (839 ms)
+    Refund
+      ✓ should refund partial liquidity (857 ms)
+      ✓ should refund both lp tokens (953 ms)
+      ✓ should refund swap (836 ms)
+      ✓ should refund cross-swap on the same router (1330 ms)
+      ✓ should refund cross-swap on 2 routers (in) (1480 ms)
+      ✓ should refund cross-swap on 2 routers (mid) (1516 ms)
+      ✓ should refund swap if fee more than max (930 ms)
+    Bounce
+      ✓ should bounce set fees if not admin (936 ms)
+      ✓ should bounce collect fees if no fee (801 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       36 passed, 36 total
+Snapshots:   0 total
+Time:        39.817 s
+Ran all test suites matching /tests\/ConstProduct.spec.ts/i.

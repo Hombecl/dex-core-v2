@@ -1,0 +1,392 @@
+contracts/lp_account.fc:19:    if equal_slices(ctx.at(SENDER), storage::pool_address) {
+contracts/vault.fc:5:global slice storage::owner_address;
+contracts/vault.fc:7:global slice storage::router_address; 
+contracts/vault.fc:12:    storage::owner_address = ds~load_msg_addr();
+contracts/vault.fc:14:    storage::router_address = ds~load_msg_addr(); 
+contracts/vault.fc:21:        .store_slice(storage::owner_address)
+contracts/vault.fc:22:        .store_slice(storage::token_address)
+contracts/vault.fc:23:        .store_slice(storage::router_address)
+contracts/vault.fc:40:    if (ctx.at(OPCODE) == op::deposit_ref_fee) & equal_slices(ctx.at(SENDER), storage::router_address) {
+contracts/vault.fc:61:            storage::router_address, 
+contracts/vault.fc:65:                storage::owner_address),
+contracts/vault.fc:80:        storage::owner_address,
+contracts/vault.fc:82:        storage::router_address,
+contracts/lp_wallet.fc:13:    slice to_owner_address = in_msg_body~load_msg_addr();
+contracts/lp_wallet.fc:15:    force_chain(params::workchain, to_owner_address, error::wrong_workchain);
+contracts/lp_wallet.fc:17:    (int balance, slice owner_address, slice jetton_master_address, cell jetton_wallet_code) = storage::load();
+contracts/lp_wallet.fc:20:    throw_unless(705, equal_slices(owner_address, sender_address));
+contracts/lp_wallet.fc:23:    cell state_init = calculate_jetton_lp_wallet_state_init(to_owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:24:    slice to_wallet_address = calculate_jetton_lp_wallet_address(state_init);
+contracts/lp_wallet.fc:32:        .store_slice(to_wallet_address)
+contracts/lp_wallet.fc:35:        .store_ref(state_init);
+contracts/lp_wallet.fc:40:        .store_slice(owner_address)
+contracts/lp_wallet.fc:41:        .store_slice(response_address)
+contracts/lp_wallet.fc:43:        .store_slice(either_forward_payload)
+contracts/lp_wallet.fc:45:    msg = msg.store_ref(msg_body);
+contracts/lp_wallet.fc:51:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:55:    (int balance, slice owner_address, slice jetton_master_address, cell jetton_wallet_code) = storage::load();
+contracts/lp_wallet.fc:77:            .store_slice(from_address)
+contracts/lp_wallet.fc:78:            .store_slice(either_forward_payload)
+contracts/lp_wallet.fc:82:            .store_slice(owner_address)
+contracts/lp_wallet.fc:85:            .store_ref(msg_body);
+contracts/lp_wallet.fc:92:        .store_slice(response_address)
+contracts/lp_wallet.fc:100:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:104:    (int balance, slice owner_address, slice jetton_master_address, cell jetton_wallet_code) = storage::load();
+contracts/lp_wallet.fc:111:    throw_unless(705, equal_slices(owner_address, sender_address));
+contracts/lp_wallet.fc:119:        .store_slice(owner_address)
+contracts/lp_wallet.fc:120:        .store_slice(response_address)
+contracts/lp_wallet.fc:126:        .store_slice(jetton_master_address)
+contracts/lp_wallet.fc:129:        .store_ref(msg_body);
+contracts/lp_wallet.fc:133:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:138:    (int balance, slice owner_address, slice jetton_master_address, cell jetton_wallet_code) = storage::load();
+contracts/lp_wallet.fc:146:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/pool.fc:19:    throw_if(error::invalid_token, equal_slices(storage::token0_address, storage::token1_address));
+contracts/pool.fc:28:    if equal_slices(ctx.at(SENDER), storage::router_address) {
+contracts/router/get.fc:3:_ get_pool_address(slice token0, slice token1) method_id {
+contracts/router/get.fc:6:    throw_if(error::wrong_address, equal_slices(token0, token1)); 
+contracts/router/get.fc:7:    throw_unless(error::wrong_workchain, token0.address::check_workchain(params::workchain));
+contracts/router/get.fc:8:    throw_unless(error::wrong_workchain, token1.address::check_workchain(params::workchain));
+contracts/router/get.fc:10:    var pool = contracts::from_sources(
+contracts/router/get.fc:11:        pool_idata(my_address(), token0, token1, storage::jetton_lp_wallet_code,  storage::lp_account_code),
+contracts/router/get.fc:24:    var vault = contracts::from_sources(
+contracts/router/get.fc:25:        vault_idata(user, token, my_address()),
+contracts/router/storage.fc:34:        .store_slice(storage::admin_address)
+contracts/router/storage.fc:35:        .store_ref(storage::temp_upgrade)
+contracts/router/storage.fc:36:        .store_ref(storage::_static)
+contracts/router/storage.fc:37:        .store_ref(storage::upgrade_pool_code)
+contracts/pool/get.fc:7:_ get_lp_account_address(slice owner_address) method_id {
+contracts/pool/get.fc:10:    throw_unless(error::wrong_workchain, owner_address.address::check_workchain(params::workchain));
+contracts/pool/get.fc:12:    var lp_account = contracts::from_sources(
+contracts/pool/get.fc:13:        lp_account_idata(my_address(), owner_address),
+contracts/pool/get.fc:27:        .store_slice(params::uri_base)
+contracts/pool/get.fc:28:        .store_slice(params::uri_version)
+contracts/pool/get.fc:29:        .store_slice("/")
+contracts/pool/get.fc:30:        .store_slice(utils::number_to_slice(params::workchain))
+contracts/pool/get.fc:31:        .store_slice(":")
+contracts/pool/get.fc:32:        .store_slice(utils::address_to_hex_string(hashpart))
+contracts/pool/get.fc:33:        .store_slice(params::uri_end)
+contracts/pool/get.fc:36:    return (storage::total_supply_lp, -1, storage::router_address, content_lp, storage::jetton_lp_wallet_code);
+contracts/pool/get.fc:39:slice get_wallet_address(slice owner_address) method_id {
+contracts/pool/get.fc:42:    throw_unless(error::wrong_workchain, owner_address.address::check_workchain(params::workchain));
+contracts/pool/get.fc:44:    var lp_wallet = contracts::from_sources(
+contracts/pool/get.fc:45:        lp_wallet_idata(owner_address, my_address(), storage::jetton_lp_wallet_code),
+contracts/pool/pools/weighted_const_product/storage.fc:9:    storage::collected_token0_protocol_fee = ds~load_coins();
+contracts/pool/pools/weighted_const_product/storage.fc:10:    storage::collected_token1_protocol_fee = ds~load_coins();
+contracts/pool/pools/weighted_const_product/storage.fc:18:    storage::router_address = static_data~load_msg_addr();
+contracts/pool/pools/weighted_const_product/storage.fc:19:    storage::token0_address = static_data~load_msg_addr();
+contracts/pool/pools/weighted_const_product/storage.fc:20:    storage::token1_address = static_data~load_msg_addr();
+contracts/pool/pools/weighted_const_product/storage.fc:34:        .store_coins(storage::collected_token0_protocol_fee)
+contracts/pool/pools/weighted_const_product/storage.fc:35:        .store_coins(storage::collected_token1_protocol_fee)
+contracts/pool/pools/weighted_const_product/storage.fc:36:        .store_slice(storage::protocol_fee_address)
+contracts/pool/pools/weighted_const_product/storage.fc:40:        .store_ref(storage::_static)
+contracts/pool/pools/README.md:5:;; state_init
+contracts/pool/pools/README.md:6:(cell) pool_idata(slice _router_address, slice _first_jetton_address, slice _second_jetton_address, cell _jetton_lp_wallet_code, cell _lp_account_code);
+contracts/lp_account/storage.fc:2:global slice storage::pool_address; 
+contracts/lp_account/storage.fc:9:    storage::pool_address = ds~load_msg_addr(); 
+contracts/lp_account/storage.fc:17:        .store_slice(storage::user_address)
+contracts/lp_account/storage.fc:18:        .store_slice(storage::pool_address)
+contracts/lp_wallet/storage.fc:8:() storage::save(int balance, slice owner_address, slice jetton_master_address, cell jetton_wallet_code) impure inline {
+contracts/lp_wallet/storage.fc:9:    set_data(pack_jetton_lp_wallet_data(balance, owner_address, jetton_master_address, jetton_wallet_code));
+contracts/pool/headers.fc:3:global int   storage::collected_token0_protocol_fee;
+contracts/pool/headers.fc:4:global int   storage::collected_token1_protocol_fee;
+contracts/pool/headers.fc:14:global slice storage::router_address;
+contracts/pool/headers.fc:15:global slice storage::token0_address;
+contracts/pool/headers.fc:16:global slice storage::token1_address;
+contracts/router/utils.fc:6:        .store_slice(admin)
+contracts/router/utils.fc:7:        .store_ref(code)
+contracts/router/utils.fc:8:        .store_ref(pool_code)
+contracts/pool/pools/stableswap/storage.fc:9:    storage::collected_token0_protocol_fee = ds~load_coins();
+contracts/pool/pools/stableswap/storage.fc:10:    storage::collected_token1_protocol_fee = ds~load_coins();
+contracts/pool/pools/stableswap/storage.fc:18:    storage::router_address = static_data~load_msg_addr();
+contracts/pool/pools/stableswap/storage.fc:19:    storage::token0_address = static_data~load_msg_addr();
+contracts/pool/pools/stableswap/storage.fc:20:    storage::token1_address = static_data~load_msg_addr();
+contracts/pool/pools/stableswap/storage.fc:34:        .store_coins(storage::collected_token0_protocol_fee)
+contracts/pool/pools/stableswap/storage.fc:35:        .store_coins(storage::collected_token1_protocol_fee)
+contracts/pool/pools/stableswap/storage.fc:36:        .store_slice(storage::protocol_fee_address)
+contracts/pool/pools/stableswap/storage.fc:40:        .store_ref(storage::_static)
+contracts/lp_account/get.fc:3:    return (storage::user_address, storage::pool_address, storage::amount0, storage::amount1);
+contracts/router/msgs/vault.fc:9:        var vault = contracts::from_sources(
+contracts/router/msgs/vault.fc:10:            vault_idata(to_address, token_address, my_address()),
+contracts/lp_wallet/jetton-utils.fc:1:cell pack_jetton_lp_wallet_data(int balance, slice owner_address, slice jetton_master_address, cell jetton_wallet_code) inline {
+contracts/lp_wallet/jetton-utils.fc:4:    .store_slice(owner_address)
+contracts/lp_wallet/jetton-utils.fc:5:    .store_slice(jetton_master_address)
+contracts/lp_wallet/jetton-utils.fc:6:    .store_ref(jetton_wallet_code)
+contracts/lp_wallet/jetton-utils.fc:10:cell calculate_jetton_lp_wallet_state_init(slice owner_address, slice jetton_master_address, cell jetton_wallet_code) inline {
+contracts/lp_wallet/jetton-utils.fc:14:    .store_dict(pack_jetton_lp_wallet_data(0, owner_address, jetton_master_address, jetton_wallet_code))
+contracts/lp_wallet/jetton-utils.fc:19:slice calculate_jetton_lp_wallet_address(cell state_init) inline {
+contracts/lp_wallet/jetton-utils.fc:22:    .store_uint(cell_hash(state_init), 256)
+contracts/lp_wallet/jetton-utils.fc:26:slice calculate_user_jetton_lp_wallet_address(slice owner_address, slice jetton_master_address, cell jetton_wallet_code) inline {
+contracts/lp_wallet/jetton-utils.fc:27:  return calculate_jetton_lp_wallet_address(calculate_jetton_lp_wallet_state_init(owner_address, jetton_master_address, jetton_wallet_code));
+contracts/pool/msgs/router.fc:66:                    storage::token0_address, 
+contracts/pool/msgs/router.fc:68:                    storage::token1_address
+contracts/pool/msgs/router.fc:93:                ;; swap token0 for token1
+contracts/pool/msgs/router.fc:97:                storage::collected_token1_protocol_fee += protocol_fee_out;
+contracts/pool/msgs/router.fc:100:                ;; swap token1 for token0
+contracts/pool/msgs/router.fc:104:                storage::collected_token0_protocol_fee += protocol_fee_out;
+contracts/pool/msgs/router.fc:128:                        storage::token0_address, 
+contracts/pool/msgs/router.fc:130:                        storage::token1_address), 
+contracts/pool/msgs/router.fc:146:                    storage::token0_address, 
+contracts/pool/msgs/router.fc:148:                    storage::token1_address
+contracts/pool/msgs/router.fc:168:                    storage::token0_address, 
+contracts/pool/msgs/router.fc:170:                    storage::token1_address
+contracts/pool/msgs/router.fc:227:                    storage::token0_address, 
+contracts/pool/msgs/router.fc:229:                    storage::token1_address
+contracts/pool/msgs/router.fc:240:            var lp_account = contracts::from_sources(
+contracts/pool/msgs/router.fc:241:                lp_account_idata(my_address(), from_user),
+contracts/pool/msgs/router.fc:246:            msgs::send_with_stateinit(
+contracts/pool/msgs/router.fc:249:                lp_account~state_init(), 
+contracts/pool/msgs/router.fc:278:                    storage::token0_address, 
+contracts/pool/msgs/router.fc:280:                    storage::token1_address
+contracts/router/dex.fc:78:        var pool = contracts::from_sources(
+contracts/router/dex.fc:79:            pool_idata(my_address(), _jetton_address, token_wallet1, storage::jetton_lp_wallet_code,  storage::lp_account_code),
+contracts/router/dex.fc:84:        msgs::send_with_stateinit(
+contracts/router/dex.fc:87:            pool~state_init(), 
+contracts/pool/pools/weighted_const_product/get.fc:5:        storage::router_address,
+contracts/pool/pools/weighted_const_product/get.fc:9:        storage::token0_address,
+contracts/pool/pools/weighted_const_product/get.fc:10:        storage::token1_address,
+contracts/pool/pools/weighted_const_product/get.fc:14:        storage::collected_token0_protocol_fee, 
+contracts/pool/pools/weighted_const_product/get.fc:15:        storage::collected_token1_protocol_fee,
+contracts/pool/pools/stableswap/get.fc:5:        storage::router_address,
+contracts/pool/pools/stableswap/get.fc:9:        storage::token0_address,
+contracts/pool/pools/stableswap/get.fc:10:        storage::token1_address,
+contracts/pool/pools/stableswap/get.fc:14:        storage::collected_token0_protocol_fee, 
+contracts/pool/pools/stableswap/get.fc:15:        storage::collected_token1_protocol_fee,
+contracts/lp_account/msgs/getter.fc:13:                storage::pool_address, 
+contracts/pool/msgs/getter.fc:11:            storage::router_address,
+contracts/pool/msgs/getter.fc:15:            storage::token0_address,
+contracts/pool/msgs/getter.fc:16:            storage::token1_address,
+contracts/pool/msgs/getter.fc:20:            storage::collected_token0_protocol_fee,
+contracts/pool/msgs/getter.fc:21:            storage::collected_token1_protocol_fee
+contracts/pool/msgs/getter.fc:32:        var lp_account = contracts::from_sources(
+contracts/pool/msgs/getter.fc:33:            lp_account_idata(my_address(), user_address),
+contracts/pool/msgs/getter.fc:48:        slice owner_address = in_msg_body~load_msg_addr();
+contracts/pool/msgs/getter.fc:52:        cell included_address = include_address? ? begin_cell().store_slice(owner_address).end_cell() : null();
+contracts/pool/msgs/getter.fc:56:        if owner_address.address::get_workchain() == params::workchain {
+contracts/pool/msgs/getter.fc:57:            var lp_wallet = contracts::from_sources(
+contracts/pool/msgs/getter.fc:58:                lp_wallet_idata(owner_address, my_address(), storage::jetton_lp_wallet_code),
+contracts/pool/msgs/getter.fc:61:            msg = msg.store_slice(lp_wallet~address(params::workchain));
+contracts/lp_account/msgs/pool.fc:33:                storage::pool_address, 
+contracts/pool/pools/stableswap/state_init.fc:9:        .store_coins(0) ;; storage::collected_token0_protocol_fee
+contracts/pool/pools/stableswap/state_init.fc:10:        .store_coins(0) ;; storage::collected_token1_protocol_fee
+contracts/pool/pools/stableswap/state_init.fc:17:(slice) _pool_idata() inline asm "<b <%= defaultIsLocked %> 1 u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, b{00} s, <%= defaultLPFee %> 16 u, <%= defaultProtocolFee %> 16 u, 1 32 u, b> <s PUSHSLICE";
+contracts/pool/pools/stableswap/state_init.fc:19:(cell) pool_idata(slice _router_address, slice _first_jetton_address, slice _second_jetton_address, cell _jetton_lp_wallet_code, cell _lp_account_code) inline {    
+contracts/pool/pools/stableswap/state_init.fc:21:        .store_slice(_router_address); ;; storage::router_address
+contracts/pool/pools/stableswap/state_init.fc:22:    if _first_jetton_address.slice_hash() > _second_jetton_address.slice_hash() {
+contracts/pool/pools/stableswap/state_init.fc:24:            .store_slice(_first_jetton_address)   ;; storage::token0_address
+contracts/pool/pools/stableswap/state_init.fc:25:            .store_slice(_second_jetton_address); ;; storage::token1_address
+contracts/pool/pools/stableswap/state_init.fc:28:            .store_slice(_second_jetton_address) ;; storage::token0_address
+contracts/pool/pools/stableswap/state_init.fc:29:            .store_slice(_first_jetton_address); ;; storage::token1_address
+contracts/pool/pools/stableswap/state_init.fc:32:            .store_ref(_jetton_lp_wallet_code)  ;; storage::jetton_lp_wallet_code
+contracts/pool/pools/stableswap/state_init.fc:33:            .store_ref(_lp_account_code);        ;; storage::lp_account_code
+contracts/pool/pools/stableswap/state_init.fc:36:        .store_slice(_pool_idata())
+contracts/pool/pools/stableswap/state_init.fc:37:        .store_ref(_pool_2_data.end_cell()) 
+contracts/lp_account/msgs/user.fc:23:            storage::pool_address, 
+contracts/lp_account/msgs/user.fc:86:            storage::pool_address, 
+contracts/router/msgs/admin.fc:34:        var pool = contracts::from_sources(
+contracts/router/msgs/admin.fc:35:            pool_idata(my_address(), jetton_wallet0, jetton_wallet1, storage::jetton_lp_wallet_code,  storage::lp_account_code),
+contracts/router/msgs/admin.fc:40:        msgs::send_with_stateinit(
+contracts/router/msgs/admin.fc:43:            pool~state_init(), 
+contracts/router/msgs/admin.fc:70:        var pool = contracts::from_sources(
+contracts/router/msgs/admin.fc:71:            pool_idata(my_address(), jetton_wallet0, jetton_wallet1, storage::jetton_lp_wallet_code,  storage::lp_account_code),
+contracts/router/msgs/admin.fc:76:        msgs::send_with_stateinit(
+contracts/router/msgs/admin.fc:79:            pool~state_init(), 
+contracts/router/msgs/admin.fc:101:        var pool = contracts::from_sources(
+contracts/router/msgs/admin.fc:102:            pool_idata(my_address(), jetton_wallet0, jetton_wallet1, storage::jetton_lp_wallet_code, storage::lp_account_code),
+contracts/router/msgs/admin.fc:107:        msgs::send_with_stateinit(
+contracts/router/msgs/admin.fc:110:            pool~state_init(), 
+contracts/router/msgs/admin.fc:132:        var pool = contracts::from_sources(
+contracts/router/msgs/admin.fc:133:            pool_idata(my_address(), jetton_wallet0, jetton_wallet1, storage::jetton_lp_wallet_code, storage::lp_account_code),
+contracts/router/msgs/admin.fc:138:        msgs::send_with_stateinit(
+contracts/router/msgs/admin.fc:141:            pool~state_init(), 
+contracts/pool/msgs/lp_wallet.fc:11:        var lp_wallet = contracts::from_sources(
+contracts/pool/msgs/lp_wallet.fc:12:            lp_wallet_idata(
+contracts/pool/msgs/lp_wallet.fc:61:            storage::router_address, 
+contracts/pool/msgs/lp_wallet.fc:70:                storage::token0_address, 
+contracts/pool/msgs/lp_wallet.fc:72:                storage::token1_address
+contracts/pool/msgs/lp_wallet.fc:79:            storage::router_address, 
+contracts/pool/msgs/lp_wallet.fc:88:                storage::token0_address, 
+contracts/pool/msgs/lp_wallet.fc:90:                storage::token1_address
+contracts/router/msgs/pool.fc:14:        slice token0_address = additional_info~load_msg_addr();
+contracts/router/msgs/pool.fc:16:        slice token1_address = additional_info~load_msg_addr();
+contracts/router/msgs/pool.fc:18:        var pool = contracts::from_sources(
+contracts/router/msgs/pool.fc:19:            pool_idata(
+contracts/router/msgs/pool.fc:21:                token0_address, 
+contracts/router/msgs/pool.fc:22:                token1_address, 
+contracts/router/msgs/pool.fc:50:            slice sent_jetton_address = amount0_out > 0 ? token0_address : token1_address;
+contracts/router/msgs/pool.fc:73:                    token0_address, 
+contracts/router/msgs/pool.fc:82:                    token1_address, 
+contracts/router/msgs/pool.fc:99:        slice token0_address = additional_info~load_msg_addr();
+contracts/router/msgs/pool.fc:101:        slice token1_address = additional_info~load_msg_addr();
+contracts/router/msgs/pool.fc:103:        var pool = contracts::from_sources(
+contracts/router/msgs/pool.fc:104:            pool_idata(
+contracts/router/msgs/pool.fc:106:                token0_address, 
+contracts/router/msgs/pool.fc:107:                token1_address, 
+contracts/router/msgs/pool.fc:118:        var vault = contracts::from_sources(
+contracts/router/msgs/pool.fc:119:            vault_idata(
+contracts/router/msgs/pool.fc:121:                amount0_out > 0 ? token0_address : token1_address, 
+contracts/router/msgs/pool.fc:127:        msgs::send_with_stateinit(
+contracts/router/msgs/pool.fc:130:            vault~state_init(), 
+contracts/pool/msgs/protocolfee.fc:5:        throw_unless(error::zero_output, (storage::collected_token0_protocol_fee > 0) & (storage::collected_token1_protocol_fee > 0));
+contracts/pool/msgs/protocolfee.fc:24:            storage::router_address, 
+contracts/pool/msgs/protocolfee.fc:32:                storage::collected_token0_protocol_fee, 
+contracts/pool/msgs/protocolfee.fc:33:                storage::token0_address,
+contracts/pool/msgs/protocolfee.fc:35:                storage::token1_address
+contracts/pool/msgs/protocolfee.fc:41:            storage::router_address, 
+contracts/pool/msgs/protocolfee.fc:50:                storage::token0_address,
+contracts/pool/msgs/protocolfee.fc:51:                storage::collected_token1_protocol_fee,
+contracts/pool/msgs/protocolfee.fc:52:                storage::token1_address
+contracts/pool/msgs/protocolfee.fc:57:        storage::collected_token0_protocol_fee = 0;
+contracts/pool/msgs/protocolfee.fc:58:        storage::collected_token1_protocol_fee = 0;
+contracts/router/pools/weighted_const_product/contracts.fc:7:        .store_slice(_excesses_address)
+contracts/router/pools/weighted_const_product/contracts.fc:8:        .store_slice(_side_wallet)
+contracts/router/msgs/getter.fc:6:    if ctx.at(OPCODE) == op::getter_pool_address { 
+contracts/router/msgs/getter.fc:8:        slice token0 = in_msg_body~load_msg_addr();
+contracts/router/msgs/getter.fc:9:        slice token1 = in_msg_body~load_msg_addr();
+contracts/router/msgs/getter.fc:12:        throw_if(error::wrong_address, equal_slices(token0, token1)); 
+contracts/router/msgs/getter.fc:13:        throw_unless(error::wrong_workchain, token0.address::check_workchain(params::workchain));
+contracts/router/msgs/getter.fc:14:        throw_unless(error::wrong_workchain, token1.address::check_workchain(params::workchain));
+contracts/router/msgs/getter.fc:16:        var pool = contracts::from_sources(
+contracts/router/msgs/getter.fc:17:            pool_idata(my_address(), token0, token1, storage::jetton_lp_wallet_code,  storage::lp_account_code),
+contracts/router/msgs/getter.fc:25:            anyone::getter_pool_address(pool~address(params::workchain)), 
+contracts/router/pools/weighted_stableswap/contracts.fc:10:        .store_slice(_excesses_address)
+contracts/router/pools/weighted_stableswap/contracts.fc:11:        .store_slice(_side)
+contracts/router/pools/weighted_stableswap/contracts.fc:15:        .store_ref(begin_cell()
+contracts/router/pools/weighted_stableswap/contracts.fc:16:            .store_slice(_setter_address)
+contracts/pool/pools/weighted_const_product/state_init.fc:9:        .store_coins(0) ;; storage::collected_token0_protocol_fee
+contracts/pool/pools/weighted_const_product/state_init.fc:10:        .store_coins(0) ;; storage::collected_token1_protocol_fee
+contracts/pool/pools/weighted_const_product/state_init.fc:17:(slice) _pool_idata() inline asm "<b <%= defaultIsLocked %> 1 u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, b{00} s, <%= defaultLPFee %> 16 u, <%= defaultProtocolFee %> 16 u, 0 64 u, b> <s PUSHSLICE";
+contracts/pool/pools/weighted_const_product/state_init.fc:19:(cell) pool_idata(slice _router_address, slice _first_jetton_address, slice _second_jetton_address, cell _jetton_lp_wallet_code, cell _lp_account_code) inline {    
+contracts/pool/pools/weighted_const_product/state_init.fc:21:        .store_slice(_router_address); ;; storage::router_address
+contracts/pool/pools/weighted_const_product/state_init.fc:22:    if _first_jetton_address.slice_hash() > _second_jetton_address.slice_hash() {
+contracts/pool/pools/weighted_const_product/state_init.fc:24:            .store_slice(_first_jetton_address)   ;; storage::token0_address
+contracts/pool/pools/weighted_const_product/state_init.fc:25:            .store_slice(_second_jetton_address); ;; storage::token1_address
+contracts/pool/pools/weighted_const_product/state_init.fc:28:            .store_slice(_second_jetton_address) ;; storage::token0_address
+contracts/pool/pools/weighted_const_product/state_init.fc:29:            .store_slice(_first_jetton_address); ;; storage::token1_address
+contracts/pool/pools/weighted_const_product/state_init.fc:32:            .store_ref(_jetton_lp_wallet_code)  ;; storage::jetton_lp_wallet_code
+contracts/pool/pools/weighted_const_product/state_init.fc:33:            .store_ref(_lp_account_code);        ;; storage::lp_account_code
+contracts/pool/pools/weighted_const_product/state_init.fc:36:        .store_slice(_pool_idata())
+contracts/pool/pools/weighted_const_product/state_init.fc:37:        .store_ref(_pool_2_data.end_cell()) 
+contracts/pool/pools/constant_sum/storage.fc:7:    storage::collected_token0_protocol_fee = ds~load_coins();
+contracts/pool/pools/constant_sum/storage.fc:8:    storage::collected_token1_protocol_fee = ds~load_coins();
+contracts/pool/pools/constant_sum/storage.fc:15:    storage::router_address = static_data~load_msg_addr();
+contracts/pool/pools/constant_sum/storage.fc:16:    storage::token0_address = static_data~load_msg_addr();
+contracts/pool/pools/constant_sum/storage.fc:17:    storage::token1_address = static_data~load_msg_addr();
+contracts/pool/pools/constant_sum/storage.fc:31:        .store_coins(storage::collected_token0_protocol_fee)
+contracts/pool/pools/constant_sum/storage.fc:32:        .store_coins(storage::collected_token1_protocol_fee)
+contracts/pool/pools/constant_sum/storage.fc:33:        .store_slice(storage::protocol_fee_address)
+contracts/pool/pools/constant_sum/storage.fc:36:        .store_ref(storage::_static)
+contracts/pool/msgs/lp_account.fc:18:        var lp_account = contracts::from_sources(
+contracts/pool/msgs/lp_account.fc:19:            lp_account_idata(
+contracts/pool/msgs/lp_account.fc:57:            storage::collected_token0_protocol_fee += new_collected_protocol_fees0;
+contracts/pool/msgs/lp_account.fc:58:            storage::collected_token1_protocol_fee += new_collected_protocol_fees1;
+contracts/pool/msgs/lp_account.fc:74:            ;; state_init needed since lp_account might be already destroyed
+contracts/pool/msgs/lp_account.fc:76:            var lp_account_new = contracts::from_sources(
+contracts/pool/msgs/lp_account.fc:77:                lp_account_idata(
+contracts/pool/msgs/lp_account.fc:84:            msgs::send_with_stateinit(
+contracts/pool/msgs/lp_account.fc:87:                lp_account_new~state_init(), 
+contracts/pool/msgs/lp_account.fc:102:            var lp_wallet = contracts::from_sources(
+contracts/pool/msgs/lp_account.fc:103:                lp_wallet_idata(
+contracts/pool/msgs/lp_account.fc:119:            msgs::send_with_stateinit(
+contracts/pool/msgs/lp_account.fc:122:                lp_wallet~state_init(),
+contracts/pool/msgs/lp_account.fc:146:        var lp_account = contracts::from_sources(
+contracts/pool/msgs/lp_account.fc:147:            lp_account_idata(my_address(), user_address),
+contracts/pool/msgs/lp_account.fc:161:                storage::router_address, 
+contracts/pool/msgs/lp_account.fc:170:                    storage::token0_address, 
+contracts/pool/msgs/lp_account.fc:172:                    storage::token1_address
+contracts/pool/msgs/lp_account.fc:181:                storage::router_address, 
+contracts/pool/msgs/lp_account.fc:190:                    storage::token0_address, 
+contracts/pool/msgs/lp_account.fc:192:                    storage::token1_address
+contracts/pool/pools/weighted_const_product/ext_router.fc:15:            if equal_slices(side, storage::token0_address) {
+contracts/router/pools/weighted_stableswap/ext_admin.fc:38:        var pool = contracts::from_sources(
+contracts/router/pools/weighted_stableswap/ext_admin.fc:39:            pool_idata(my_address(), left_jetton_wallet, right_jetton_wallet, storage::jetton_lp_wallet_code, storage::lp_account_code),
+contracts/router/pools/weighted_stableswap/ext_admin.fc:44:        msgs::send_with_stateinit(
+contracts/router/pools/weighted_stableswap/ext_admin.fc:47:            pool~state_init(), 
+contracts/pool/pools/weighted_stableswap/storage.fc:12:    storage::collected_token0_protocol_fee = ds~load_coins();
+contracts/pool/pools/weighted_stableswap/storage.fc:13:    storage::collected_token1_protocol_fee = ds~load_coins();
+contracts/pool/pools/weighted_stableswap/storage.fc:27:    storage::router_address = static_data~load_msg_addr();
+contracts/pool/pools/weighted_stableswap/storage.fc:28:    storage::token0_address = static_data~load_msg_addr();
+contracts/pool/pools/weighted_stableswap/storage.fc:29:    storage::token1_address = static_data~load_msg_addr();
+contracts/pool/pools/weighted_stableswap/storage.fc:44:        .store_coins(storage::collected_token0_protocol_fee)
+contracts/pool/pools/weighted_stableswap/storage.fc:45:        .store_coins(storage::collected_token1_protocol_fee)
+contracts/pool/pools/weighted_stableswap/storage.fc:46:        .store_slice(storage::protocol_fee_address)
+contracts/pool/pools/weighted_stableswap/storage.fc:49:        .store_ref(begin_cell()
+contracts/pool/pools/weighted_stableswap/storage.fc:53:            .store_slice(storage::rate_setter_address)
+contracts/pool/pools/weighted_stableswap/storage.fc:55:        .store_ref(storage::_static)
+contracts/pool/pools/constant_product/storage.fc:7:    storage::collected_token0_protocol_fee = ds~load_coins();
+contracts/pool/pools/constant_product/storage.fc:8:    storage::collected_token1_protocol_fee = ds~load_coins();
+contracts/pool/pools/constant_product/storage.fc:15:    storage::router_address = static_data~load_msg_addr();
+contracts/pool/pools/constant_product/storage.fc:16:    storage::token0_address = static_data~load_msg_addr();
+contracts/pool/pools/constant_product/storage.fc:17:    storage::token1_address = static_data~load_msg_addr();
+contracts/pool/pools/constant_product/storage.fc:31:        .store_coins(storage::collected_token0_protocol_fee)
+contracts/pool/pools/constant_product/storage.fc:32:        .store_coins(storage::collected_token1_protocol_fee)
+contracts/pool/pools/constant_product/storage.fc:33:        .store_slice(storage::protocol_fee_address)
+contracts/pool/pools/constant_product/storage.fc:36:        .store_ref(storage::_static)
+contracts/pool/pools/constant_sum/get.fc:5:        storage::router_address,
+contracts/pool/pools/constant_sum/get.fc:9:        storage::token0_address,
+contracts/pool/pools/constant_sum/get.fc:10:        storage::token1_address,
+contracts/pool/pools/constant_sum/get.fc:14:        storage::collected_token0_protocol_fee, 
+contracts/pool/pools/constant_sum/get.fc:15:        storage::collected_token1_protocol_fee
+contracts/router/pools/weighted_const_product/ext_admin.fc:33:        var pool = contracts::from_sources(
+contracts/router/pools/weighted_const_product/ext_admin.fc:34:            pool_idata(my_address(), left_jetton_wallet, right_jetton_wallet, storage::jetton_lp_wallet_code, storage::lp_account_code),
+contracts/router/pools/weighted_const_product/ext_admin.fc:39:        msgs::send_with_stateinit(
+contracts/router/pools/weighted_const_product/ext_admin.fc:42:            pool~state_init(), 
+contracts/pool/pools/weighted_stableswap/get.fc:5:        storage::router_address,
+contracts/pool/pools/weighted_stableswap/get.fc:9:        storage::token0_address,
+contracts/pool/pools/weighted_stableswap/get.fc:10:        storage::token1_address,
+contracts/pool/pools/weighted_stableswap/get.fc:14:        storage::collected_token0_protocol_fee, 
+contracts/pool/pools/weighted_stableswap/get.fc:15:        storage::collected_token1_protocol_fee,
+contracts/router/pools/stableswap/contracts.fc:3:        .store_slice(_excesses_address)
+contracts/pool/pools/constant_product/get.fc:5:        storage::router_address,
+contracts/pool/pools/constant_product/get.fc:9:        storage::token0_address,
+contracts/pool/pools/constant_product/get.fc:10:        storage::token1_address,
+contracts/pool/pools/constant_product/get.fc:14:        storage::collected_token0_protocol_fee, 
+contracts/pool/pools/constant_product/get.fc:15:        storage::collected_token1_protocol_fee
+contracts/pool/pools/constant_sum/state_init.fc:9:        .store_coins(0) ;; storage::collected_token0_protocol_fee
+contracts/pool/pools/constant_sum/state_init.fc:10:        .store_coins(0) ;; storage::collected_token1_protocol_fee
+contracts/pool/pools/constant_sum/state_init.fc:16:(slice) _pool_idata() inline asm "<b <%= defaultIsLocked %> 1 u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, b{00} s, <%= defaultLPFee %> 16 u, <%= defaultProtocolFee %> 16 u, b> <s PUSHSLICE";
+contracts/pool/pools/constant_sum/state_init.fc:18:(cell) pool_idata(slice _router_address, slice _first_jetton_address, slice _second_jetton_address, cell _jetton_lp_wallet_code, cell _lp_account_code) inline {    
+contracts/pool/pools/constant_sum/state_init.fc:20:        .store_slice(_router_address); ;; storage::router_address
+contracts/pool/pools/constant_sum/state_init.fc:21:    if _first_jetton_address.slice_hash() > _second_jetton_address.slice_hash() {
+contracts/pool/pools/constant_sum/state_init.fc:23:            .store_slice(_first_jetton_address)   ;; storage::token0_address
+contracts/pool/pools/constant_sum/state_init.fc:24:            .store_slice(_second_jetton_address); ;; storage::token1_address
+contracts/pool/pools/constant_sum/state_init.fc:27:            .store_slice(_second_jetton_address) ;; storage::token0_address
+contracts/pool/pools/constant_sum/state_init.fc:28:            .store_slice(_first_jetton_address); ;; storage::token1_address
+contracts/pool/pools/constant_sum/state_init.fc:31:            .store_ref(_jetton_lp_wallet_code)  ;; storage::jetton_lp_wallet_code
+contracts/pool/pools/constant_sum/state_init.fc:32:            .store_ref(_lp_account_code);        ;; storage::lp_account_code
+contracts/pool/pools/constant_sum/state_init.fc:34:        .store_slice(_pool_idata())
+contracts/pool/pools/constant_sum/state_init.fc:35:        .store_ref(_pool_2_data.end_cell()) 
+contracts/router/pools/stableswap/ext_admin.fc:31:        var pool = contracts::from_sources(
+contracts/router/pools/stableswap/ext_admin.fc:32:            pool_idata(
+contracts/router/pools/stableswap/ext_admin.fc:43:        msgs::send_with_stateinit(
+contracts/router/pools/stableswap/ext_admin.fc:46:            pool~state_init(), 
+contracts/pool/pools/constant_product/state_init.fc:9:        .store_coins(0) ;; storage::collected_token0_protocol_fee
+contracts/pool/pools/constant_product/state_init.fc:10:        .store_coins(0) ;; storage::collected_token1_protocol_fee
+contracts/pool/pools/constant_product/state_init.fc:16:(slice) _pool_idata() inline asm "<b <%= defaultIsLocked %> 1 u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, b{00} s, <%= defaultLPFee %> 16 u, <%= defaultProtocolFee %> 16 u, b> <s PUSHSLICE";
+contracts/pool/pools/constant_product/state_init.fc:18:(cell) pool_idata(slice _router_address, slice _first_jetton_address, slice _second_jetton_address, cell _jetton_lp_wallet_code, cell _lp_account_code) inline {    
+contracts/pool/pools/constant_product/state_init.fc:20:        .store_slice(_router_address); ;; storage::router_address
+contracts/pool/pools/constant_product/state_init.fc:21:    if _first_jetton_address.slice_hash() > _second_jetton_address.slice_hash() {
+contracts/pool/pools/constant_product/state_init.fc:23:            .store_slice(_first_jetton_address)   ;; storage::token0_address
+contracts/pool/pools/constant_product/state_init.fc:24:            .store_slice(_second_jetton_address); ;; storage::token1_address
+contracts/pool/pools/constant_product/state_init.fc:27:            .store_slice(_second_jetton_address) ;; storage::token0_address
+contracts/pool/pools/constant_product/state_init.fc:28:            .store_slice(_first_jetton_address); ;; storage::token1_address
+contracts/pool/pools/constant_product/state_init.fc:31:            .store_ref(_jetton_lp_wallet_code)  ;; storage::jetton_lp_wallet_code
+contracts/pool/pools/constant_product/state_init.fc:32:            .store_ref(_lp_account_code);        ;; storage::lp_account_code
+contracts/pool/pools/constant_product/state_init.fc:34:        .store_slice(_pool_idata())
+contracts/pool/pools/constant_product/state_init.fc:35:        .store_ref(_pool_2_data.end_cell()) 
+contracts/pool/pools/weighted_stableswap/state_init.fc:9:        .store_coins(0) ;; storage::collected_token0_protocol_fee
+contracts/pool/pools/weighted_stableswap/state_init.fc:10:        .store_coins(0) ;; storage::collected_token1_protocol_fee
+contracts/pool/pools/weighted_stableswap/state_init.fc:16:(slice) _pool_idata() inline asm "<b <%= defaultIsLocked %> 1 u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, b{00} s, <%= defaultLPFee %> 16 u, <%= defaultProtocolFee %> 16 u, b> <s PUSHSLICE";
+contracts/pool/pools/weighted_stableswap/state_init.fc:27:(cell) _pool_idata2() inline asm "<b 1000000000000000000 128 u, 0 128 u, 0 128 u, b{00} s, b> PUSHREF";
+contracts/pool/pools/weighted_stableswap/state_init.fc:29:(cell) pool_idata(slice _router_address, slice _first_jetton_address, slice _second_jetton_address, cell _jetton_lp_wallet_code, cell _lp_account_code) inline {    
+contracts/pool/pools/weighted_stableswap/state_init.fc:31:        .store_slice(_router_address); ;; storage::router_address
+contracts/pool/pools/weighted_stableswap/state_init.fc:32:    if _first_jetton_address.slice_hash() > _second_jetton_address.slice_hash() {
+contracts/pool/pools/weighted_stableswap/state_init.fc:34:            .store_slice(_first_jetton_address)   ;; storage::token0_address
+contracts/pool/pools/weighted_stableswap/state_init.fc:35:            .store_slice(_second_jetton_address); ;; storage::token1_address
+contracts/pool/pools/weighted_stableswap/state_init.fc:38:            .store_slice(_second_jetton_address) ;; storage::token0_address
+contracts/pool/pools/weighted_stableswap/state_init.fc:39:            .store_slice(_first_jetton_address); ;; storage::token1_address
+contracts/pool/pools/weighted_stableswap/state_init.fc:42:            .store_ref(_jetton_lp_wallet_code)  ;; storage::jetton_lp_wallet_code
+contracts/pool/pools/weighted_stableswap/state_init.fc:43:            .store_ref(_lp_account_code);        ;; storage::lp_account_code
+contracts/pool/pools/weighted_stableswap/state_init.fc:46:        .store_slice(_pool_idata())
+contracts/pool/pools/weighted_stableswap/state_init.fc:47:        .store_ref(_pool_idata2())
+contracts/pool/pools/weighted_stableswap/state_init.fc:48:        .store_ref(_pool_2_data.end_cell()) 
+contracts/pool/pools/weighted_stableswap/ext_router.fc:20:            if equal_slices(side, storage::token0_address) {

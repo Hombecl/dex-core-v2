@@ -1,0 +1,55 @@
+schema_version: shadow-v1
+iteration: 57
+phase: completed
+cell_id: R1
+cell_label: protocol_fee_callback
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: R1
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/WeightedCPI.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_57/poc_protocol_fee_callback.run.log
+    run_log_exists_on_disk: true
+    test_runtime: PASSED
+    duration_seconds: 7.064
+    numerical_evidence: "WeightedCPI.spec.ts: 3 passed, 22 skipped; admin fee rotation, two-sided protocol-fee collection, and no-fee collection bounce all completed."
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 protocol fee collect fees is:issue"
+      - "repo:ston-fi/dex-core-v2 protocol_fee_address is:issue"
+      - "repo:ston-fi/dex-core-v2 protocol fee callback is:pr"
+      - "repo:ston-fi/dex-core-v2 audit protocol fee is:issue"
+    results: "Fresh GitHub API searches returned zero results; local audit/security/protocol fee/protocol_fee/collect-fees git search was empty."
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "repo:ston-fi/dex-core-v2 protocol fee collect fees is:issue"
+      - "repo:ston-fi/dex-core-v2 protocol_fee_address is:issue"
+      - "repo:ston-fi/dex-core-v2 protocol fee callback is:pr"
+      - "repo:ston-fi/dex-core-v2 audit protocol fee is:issue"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_57-R1.md
+  notes:
+    - "pool.fc routes collect_fees only when ctx.at(SENDER) equals storage::protocol_fee_address; protocolfee.fc then requires both accumulated protocol-fee counters to be positive, validates gas, forwards fixed token amounts through router::pay_to, and zeroes both counters only after constructing the transfers."
+    - "router/msgs/pool.fc validates every pay_to sender against the deterministic pool derived from the supplied token wallets; the only fee-address mutation is router/msgs/admin.fc set_fees, which is gated by storage::admin_address and range/workchain checks. No external unauthorized fee withdrawal or accounting mismatch was demonstrated."
+    - "Shadow mode: no emit-shippable.py, bb_findings, shippable-staging, IA queue, submission queue, or platform form was touched."

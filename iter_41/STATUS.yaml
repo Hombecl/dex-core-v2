@@ -1,0 +1,54 @@
+schema_version: shadow-v1
+iteration: 41
+phase: completed
+cell_id: P9xC1
+cell_label: getter_quote x sender_binding
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: P9xC1
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_41/poc_getter_quote_sender_binding.run.log
+    run_log_exists_on_disk: true
+    test_runtime: PASSED
+    duration_seconds: 6.711
+    numerical_evidence: "Router.spec.ts and Pool.spec.ts: 3 passed, 5 skipped; deterministic pool address, router version, and pool URI getters."
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 getter sender authorization is:issue"
+      - "repo:ston-fi/dex-core-v2 quote getter issue is:issue"
+      - "repo:ston-fi/dex-core-v2 getter authorization is:pr"
+      - "repo:ston-fi/dex-core-v2 audit getter quote is:issue"
+    results: "Fresh GitHub API searches returned zero results; local audit/security/getter/quote/sender git search was empty."
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "repo:ston-fi/dex-core-v2 getter sender authorization is:issue"
+      - "repo:ston-fi/dex-core-v2 quote getter issue is:issue"
+      - "repo:ston-fi/dex-core-v2 getter authorization is:pr"
+      - "repo:ston-fi/dex-core-v2 audit getter quote is:issue"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_41-P9xC1.md
+  notes:
+    - "Selected getter methods are read-only and return deterministic addresses, version, URI, or storage snapshots; input addresses are restricted to the configured workchain."
+    - "No getter sender context can mutate another account or redirect an asset transfer."

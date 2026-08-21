@@ -1,0 +1,54 @@
+schema_version: shadow-v1
+iteration: 11
+phase: completed
+cell_id: P3xC1
+cell_label: withdraw_lp x sender_binding
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: P3xC1
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_11/poc_withdraw_lp_sender_binding.run.log
+    run_log_exists_on_disk: true
+    test_runtime: PASSED
+    duration_seconds: 11.469
+    numerical_evidence: "ConstProduct.spec.ts: 8 passed, 28 skipped; provision, LP burn, burn-and-swap, and two-token refund paths."
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 withdraw LP sender is:issue"
+      - "repo:ston-fi/dex-core-v2 burn notification caller is:issue"
+      - "repo:ston-fi/dex-core-v2 LP withdrawal authorization is:pr"
+      - "repo:ston-fi/dex-core-v2 audit LP burn is:issue"
+    results: "Fresh GitHub API searches returned zero results; local audit/security/burn/withdraw/liquidity git search was empty."
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "repo:ston-fi/dex-core-v2 withdraw LP sender is:issue"
+      - "repo:ston-fi/dex-core-v2 burn notification caller is:issue"
+      - "repo:ston-fi/dex-core-v2 LP withdrawal authorization is:pr"
+      - "repo:ston-fi/dex-core-v2 audit LP burn is:issue"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_11-P3xC1.md
+  notes:
+    - "LP wallet burn requires the owner as the immediate sender, and pool burn-notification handling requires the deterministic LP wallet derived from that owner and the pool."
+    - "Pool reserve/LP-supply mutation precedes only the deterministic router payout, with no alternate caller path that redirects another user's withdrawal."

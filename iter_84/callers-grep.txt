@@ -1,0 +1,127 @@
+contracts/lp_wallet.fc:10:() send_tokens (slice in_msg_body, slice sender_address, int msg_value, int fwd_fee) impure {
+contracts/lp_wallet.fc:23:    cell state_init = calculate_jetton_lp_wallet_state_init(to_owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:54:() receive_tokens (slice in_msg_body, slice sender_address, int my_ton_balance, int fwd_fee, int msg_value) impure {
+contracts/lp_wallet.fc:63:        | equal_slices(calculate_user_jetton_lp_wallet_address(from_address, jetton_master_address, jetton_wallet_code), sender_address));
+contracts/lp_wallet.fc:74:            .store_uint(op::transfer_notification, 32)
+contracts/lp_wallet.fc:103:() burn_tokens (slice in_msg_body, slice sender_address, int msg_value, int fwd_fee) impure {
+contracts/lp_wallet.fc:170:        send_tokens(in_msg_body, sender_address, msg_value, fwd_fee);
+contracts/lp_wallet.fc:175:        receive_tokens(in_msg_body, sender_address, my_balance, fwd_fee, msg_value);
+contracts/lp_wallet.fc:180:        burn_tokens(in_msg_body, sender_address, msg_value, fwd_fee);
+contracts/common/contracts.fc:19:(cell) lp_wallet_idata(slice _owner_address, slice _jetton_master_address, cell _jetton_wallet_code) inline {
+contracts/pool/get.fc:36:    return (storage::total_supply_lp, -1, storage::router_address, content_lp, storage::jetton_lp_wallet_code);
+contracts/pool/get.fc:45:        lp_wallet_idata(owner_address, my_address(), storage::jetton_lp_wallet_code),
+contracts/pool/get.fc:46:        storage::jetton_lp_wallet_code
+contracts/pool/msgs/lp_wallet.fc:12:            lp_wallet_idata(
+contracts/pool/msgs/lp_wallet.fc:15:                storage::jetton_lp_wallet_code
+contracts/pool/msgs/lp_wallet.fc:17:            storage::jetton_lp_wallet_code
+contracts/lp_wallet/jetton-utils.fc:10:cell calculate_jetton_lp_wallet_state_init(slice owner_address, slice jetton_master_address, cell jetton_wallet_code) inline {
+contracts/lp_wallet/jetton-utils.fc:26:slice calculate_user_jetton_lp_wallet_address(slice owner_address, slice jetton_master_address, cell jetton_wallet_code) inline {
+contracts/lp_wallet/jetton-utils.fc:27:  return calculate_jetton_lp_wallet_address(calculate_jetton_lp_wallet_state_init(owner_address, jetton_master_address, jetton_wallet_code));
+tests/Stableswap.spec.ts:325:            addressMap.set((await minter.getWalletAddress(deployer.address)), `Deployer<br/>${params.name}<br/>Wallet`);
+tests/Stableswap.spec.ts:326:            addressMap.set((await minter.getWalletAddress(alice.address)), `Alice<br/>${params.name}<br/>Wallet`);
+tests/Stableswap.spec.ts:327:            addressMap.set((await minter.getWalletAddress(bob.address)), `Bob<br/>${params.name}<br/>Wallet`);
+tests/Stableswap.spec.ts:328:            addressMap.set((await minter.getWalletAddress(HOLE_ADDRESS)), `Hole<br/>${params.name}<br/>Wallet`);
+tests/Stableswap.spec.ts:331:                addressMap.set((await minter.getWalletAddress(params.router.address)), `Router${routerId}<br/>${params.name}<br/>Wallet`);
+tests/Stableswap.spec.ts:335:            storageMap.set((await minter.getWalletAddress(deployer.address)), jettonWalletStorageParser);
+tests/Stableswap.spec.ts:336:            storageMap.set((await minter.getWalletAddress(alice.address)), jettonWalletStorageParser);
+tests/Stableswap.spec.ts:337:            storageMap.set((await minter.getWalletAddress(bob.address)), jettonWalletStorageParser);
+tests/Stableswap.spec.ts:338:            storageMap.set((await minter.getWalletAddress(HOLE_ADDRESS)), jettonWalletStorageParser);
+tests/Stableswap.spec.ts:340:                storageMap.set((await minter.getWalletAddress(params.router.address)), jettonWalletStorageParser);
+tests/Stableswap.spec.ts:436:            addressMap.set((await pool.getWalletAddress(deployer.address)), `Deployer<br/>${name1}-${name2}<br/>Lp Wallet${routerId}`);
+tests/Stableswap.spec.ts:437:            addressMap.set((await pool.getWalletAddress(alice.address)), `Alice<br/>${name1}-${name2}<br/>Lp Wallet${routerId}`);
+tests/Stableswap.spec.ts:438:            addressMap.set((await pool.getWalletAddress(bob.address)), `Bob<br/>${name1}-${name2}<br/>Lp Wallet${routerId}`);
+tests/Stableswap.spec.ts:439:            addressMap.set((await pool.getWalletAddress(HOLE_ADDRESS)), `Hole<br/>${name1}-${name2}<br/>Lp Wallet${routerId}`);
+tests/Stableswap.spec.ts:444:            storageMap.set((await pool.getWalletAddress(deployer.address)), lpWalletStorageParser);
+tests/Stableswap.spec.ts:445:            storageMap.set((await pool.getWalletAddress(alice.address)), lpWalletStorageParser);
+tests/Stableswap.spec.ts:446:            storageMap.set((await pool.getWalletAddress(bob.address)), lpWalletStorageParser);
+tests/Stableswap.spec.ts:447:            storageMap.set((await pool.getWalletAddress(HOLE_ADDRESS)), lpWalletStorageParser);
+tests/Stableswap.spec.ts:655:            let lpWallet = bc.openContract(LPWallet.createFromAddress(await pool.getWalletAddress(sender.address)));
+tests/Stableswap.spec.ts:1429:            let lpWalletAddress = await pool.getWalletAddress(alice.address);
+tests/Stableswap.spec.ts:1433:            let msgResult = await lpWallet.sendBurnExt(alice.getSender(), {
+tests/Stableswap.spec.ts:1464:            let lpWalletAddress = await pool.getWalletAddress(deployer.address);
+tests/Stableswap.spec.ts:1469:            let msgResult = await lpWallet.sendBurnExt(deployer.getSender(), {
+tests/WeightedCPI.spec.ts:326:            addressMap.set((await minter.getWalletAddress(deployer.address)), `Deployer<br/>${params.name}<br/>Wallet`);
+tests/WeightedCPI.spec.ts:327:            addressMap.set((await minter.getWalletAddress(alice.address)), `Alice<br/>${params.name}<br/>Wallet`);
+tests/WeightedCPI.spec.ts:328:            addressMap.set((await minter.getWalletAddress(bob.address)), `Bob<br/>${params.name}<br/>Wallet`);
+tests/WeightedCPI.spec.ts:329:            addressMap.set((await minter.getWalletAddress(HOLE_ADDRESS)), `Hole<br/>${params.name}<br/>Wallet`);
+tests/WeightedCPI.spec.ts:332:                addressMap.set((await minter.getWalletAddress(params.router.address)), `Router${routerId}<br/>${params.name}<br/>Wallet`);
+tests/WeightedCPI.spec.ts:336:            storageMap.set((await minter.getWalletAddress(deployer.address)), jettonWalletStorageParser);
+tests/WeightedCPI.spec.ts:337:            storageMap.set((await minter.getWalletAddress(alice.address)), jettonWalletStorageParser);
+tests/WeightedCPI.spec.ts:338:            storageMap.set((await minter.getWalletAddress(bob.address)), jettonWalletStorageParser);
+tests/WeightedCPI.spec.ts:339:            storageMap.set((await minter.getWalletAddress(HOLE_ADDRESS)), jettonWalletStorageParser);
+tests/WeightedCPI.spec.ts:341:                storageMap.set((await minter.getWalletAddress(params.router.address)), jettonWalletStorageParser);
+tests/WeightedCPI.spec.ts:437:            addressMap.set((await pool.getWalletAddress(deployer.address)), `Deployer<br/>${name1}-${name2}<br/>Lp Wallet${routerId}`);
+tests/WeightedCPI.spec.ts:438:            addressMap.set((await pool.getWalletAddress(alice.address)), `Alice<br/>${name1}-${name2}<br/>Lp Wallet${routerId}`);
+tests/WeightedCPI.spec.ts:439:            addressMap.set((await pool.getWalletAddress(bob.address)), `Bob<br/>${name1}-${name2}<br/>Lp Wallet${routerId}`);
+tests/WeightedCPI.spec.ts:440:            addressMap.set((await pool.getWalletAddress(HOLE_ADDRESS)), `Hole<br/>${name1}-${name2}<br/>Lp Wallet${routerId}`);
+tests/WeightedCPI.spec.ts:445:            storageMap.set((await pool.getWalletAddress(deployer.address)), lpWalletStorageParser);
+tests/WeightedCPI.spec.ts:446:            storageMap.set((await pool.getWalletAddress(alice.address)), lpWalletStorageParser);
+tests/WeightedCPI.spec.ts:447:            storageMap.set((await pool.getWalletAddress(bob.address)), lpWalletStorageParser);
+tests/WeightedCPI.spec.ts:448:            storageMap.set((await pool.getWalletAddress(HOLE_ADDRESS)), lpWalletStorageParser);
+tests/WeightedCPI.spec.ts:655:            let lpWallet = bc.openContract(LPWallet.createFromAddress(await pool.getWalletAddress(sender.address)));
+tests/WeightedCPI.spec.ts:1452:            let lpWalletAddress = await pool.getWalletAddress(alice.address);
+tests/WeightedCPI.spec.ts:1456:            let msgResult = await lpWallet.sendBurnExt(alice.getSender(), {
+tests/WeightedCPI.spec.ts:1494:            let lpWalletAddress = await pool.getWalletAddress(deployer.address);
+tests/WeightedCPI.spec.ts:1499:            let msgResult = await lpWallet.sendBurnExt(deployer.getSender(), {
+tests/ConstProduct.spec.ts:309:            addressMap.set((await minter.getWalletAddress(deployer.address)), `Deployer<br/>${params.name}<br/>Wallet`);
+tests/ConstProduct.spec.ts:310:            addressMap.set((await minter.getWalletAddress(alice.address)), `Alice<br/>${params.name}<br/>Wallet`);
+tests/ConstProduct.spec.ts:311:            addressMap.set((await minter.getWalletAddress(bob.address)), `Bob<br/>${params.name}<br/>Wallet`);
+tests/ConstProduct.spec.ts:312:            addressMap.set((await minter.getWalletAddress(HOLE_ADDRESS)), `Hole<br/>${params.name}<br/>Wallet`);
+tests/ConstProduct.spec.ts:315:                addressMap.set((await minter.getWalletAddress(params.router.address)), `Router${routerId}<br/>${params.name}<br/>Wallet`);
+tests/ConstProduct.spec.ts:319:            storageMap.set((await minter.getWalletAddress(deployer.address)), jettonWalletStorageParser);
+tests/ConstProduct.spec.ts:320:            storageMap.set((await minter.getWalletAddress(alice.address)), jettonWalletStorageParser);
+tests/ConstProduct.spec.ts:321:            storageMap.set((await minter.getWalletAddress(bob.address)), jettonWalletStorageParser);
+tests/ConstProduct.spec.ts:322:            storageMap.set((await minter.getWalletAddress(HOLE_ADDRESS)), jettonWalletStorageParser);
+tests/ConstProduct.spec.ts:324:                storageMap.set((await minter.getWalletAddress(params.router.address)), jettonWalletStorageParser);
+tests/ConstProduct.spec.ts:401:            addressMap.set((await pool.getWalletAddress(deployer.address)), `Deployer<br/>${name1}-${name2}<br/>Lp Wallet${routerId}`);
+tests/ConstProduct.spec.ts:402:            addressMap.set((await pool.getWalletAddress(alice.address)), `Alice<br/>${name1}-${name2}<br/>Lp Wallet${routerId}`);
+tests/ConstProduct.spec.ts:403:            addressMap.set((await pool.getWalletAddress(bob.address)), `Bob<br/>${name1}-${name2}<br/>Lp Wallet${routerId}`);
+tests/ConstProduct.spec.ts:404:            addressMap.set((await pool.getWalletAddress(HOLE_ADDRESS)), `Hole<br/>${name1}-${name2}<br/>Lp Wallet${routerId}`);
+tests/ConstProduct.spec.ts:409:            storageMap.set((await pool.getWalletAddress(deployer.address)), lpWalletStorageParser);
+tests/ConstProduct.spec.ts:410:            storageMap.set((await pool.getWalletAddress(alice.address)), lpWalletStorageParser);
+tests/ConstProduct.spec.ts:411:            storageMap.set((await pool.getWalletAddress(bob.address)), lpWalletStorageParser);
+tests/ConstProduct.spec.ts:412:            storageMap.set((await pool.getWalletAddress(HOLE_ADDRESS)), lpWalletStorageParser);
+tests/ConstProduct.spec.ts:616:            let lpWallet = bc.openContract(LPWallet.createFromAddress(await pool.getWalletAddress(sender.address)));
+tests/ConstProduct.spec.ts:1109:            let wallet1 = await jetton1.getWalletAddress(router.address)
+tests/ConstProduct.spec.ts:1110:            let wallet2 = await jetton2.getWalletAddress(router.address)
+tests/ConstProduct.spec.ts:1140:            let wallet1 = await jetton1.getWalletAddress(router.address)
+tests/ConstProduct.spec.ts:1141:            let wallet2 = await jetton2.getWalletAddress(router.address)
+tests/ConstProduct.spec.ts:1175:            let wallet1 = await jetton1.getWalletAddress(router.address)
+tests/ConstProduct.spec.ts:1176:            let wallet2 = await jetton2.getWalletAddress(router.address)
+tests/ConstProduct.spec.ts:1215:            let wallet1 = await jetton1.getWalletAddress(router.address)
+tests/ConstProduct.spec.ts:1216:            let wallet2 = await jetton2.getWalletAddress(router.address)
+tests/ConstProduct.spec.ts:1255:            let wallet1 = await jetton1.getWalletAddress(router.address)
+tests/ConstProduct.spec.ts:1256:            let wallet2 = await jetton2.getWalletAddress(router.address)
+tests/ConstProduct.spec.ts:1314:            let wallet1 = await jetton1.getWalletAddress(router.address)
+tests/ConstProduct.spec.ts:1315:            let wallet2 = await jetton2.getWalletAddress(router.address)
+tests/ConstProduct.spec.ts:1795:            let lpWalletAddress = await pool.getWalletAddress(alice.address);
+tests/ConstProduct.spec.ts:1799:            let msgResult = await lpWallet.sendBurnExt(alice.getSender(), {
+tests/ConstProduct.spec.ts:1832:            let lpWalletAddress = await pool.getWalletAddress(alice.address);
+tests/ConstProduct.spec.ts:1837:            let msgResult = await lpWallet.sendBurnExt(alice.getSender(), {
+tests/ConstProduct.spec.ts:1884:            let lpWalletAddress = await pool.getWalletAddress(alice.address);
+tests/ConstProduct.spec.ts:1888:            let msgResult = await lpWallet.sendBurnExt(alice.getSender(), {
+tests/ConstProduct.spec.ts:1918:            let lpWalletAddress = await pool.getWalletAddress(deployer.address);
+tests/ConstProduct.spec.ts:1923:            let msgResult = await lpWallet.sendBurnExt(deployer.getSender(), {
+tests/WeightedStableswap.spec.ts:338:            addressMap.set((await minter.getWalletAddress(deployer.address)), `Deployer<br/>${params.name}<br/>Wallet`);
+tests/WeightedStableswap.spec.ts:339:            addressMap.set((await minter.getWalletAddress(alice.address)), `Alice<br/>${params.name}<br/>Wallet`);
+tests/WeightedStableswap.spec.ts:340:            addressMap.set((await minter.getWalletAddress(bob.address)), `Bob<br/>${params.name}<br/>Wallet`);
+tests/WeightedStableswap.spec.ts:341:            addressMap.set((await minter.getWalletAddress(HOLE_ADDRESS)), `Hole<br/>${params.name}<br/>Wallet`);
+tests/WeightedStableswap.spec.ts:344:                addressMap.set((await minter.getWalletAddress(params.router.address)), `Router${routerId}<br/>${params.name}<br/>Wallet`);
+tests/WeightedStableswap.spec.ts:348:            storageMap.set((await minter.getWalletAddress(deployer.address)), jettonWalletStorageParser);
+tests/WeightedStableswap.spec.ts:349:            storageMap.set((await minter.getWalletAddress(alice.address)), jettonWalletStorageParser);
+tests/WeightedStableswap.spec.ts:350:            storageMap.set((await minter.getWalletAddress(bob.address)), jettonWalletStorageParser);
+tests/WeightedStableswap.spec.ts:351:            storageMap.set((await minter.getWalletAddress(HOLE_ADDRESS)), jettonWalletStorageParser);
+tests/WeightedStableswap.spec.ts:353:                storageMap.set((await minter.getWalletAddress(params.router.address)), jettonWalletStorageParser);
+tests/WeightedStableswap.spec.ts:450:            addressMap.set((await pool.getWalletAddress(deployer.address)), `Deployer<br/>${name1}-${name2}<br/>Lp Wallet${routerId}`);
+tests/WeightedStableswap.spec.ts:451:            addressMap.set((await pool.getWalletAddress(alice.address)), `Alice<br/>${name1}-${name2}<br/>Lp Wallet${routerId}`);
+tests/WeightedStableswap.spec.ts:452:            addressMap.set((await pool.getWalletAddress(bob.address)), `Bob<br/>${name1}-${name2}<br/>Lp Wallet${routerId}`);
+tests/WeightedStableswap.spec.ts:453:            addressMap.set((await pool.getWalletAddress(HOLE_ADDRESS)), `Hole<br/>${name1}-${name2}<br/>Lp Wallet${routerId}`);
+tests/WeightedStableswap.spec.ts:458:            storageMap.set((await pool.getWalletAddress(deployer.address)), lpWalletStorageParser);
+tests/WeightedStableswap.spec.ts:459:            storageMap.set((await pool.getWalletAddress(alice.address)), lpWalletStorageParser);
+tests/WeightedStableswap.spec.ts:460:            storageMap.set((await pool.getWalletAddress(bob.address)), lpWalletStorageParser);
+tests/WeightedStableswap.spec.ts:461:            storageMap.set((await pool.getWalletAddress(HOLE_ADDRESS)), lpWalletStorageParser);
+tests/WeightedStableswap.spec.ts:669:            let lpWallet = bc.openContract(LPWallet.createFromAddress(await pool.getWalletAddress(sender.address)));
+tests/WeightedStableswap.spec.ts:1544:            let lpWalletAddress = await pool.getWalletAddress(alice.address);
+tests/WeightedStableswap.spec.ts:1549:            let msgResult = await lpWallet.sendBurnExt(alice.getSender(), {
+tests/WeightedStableswap.spec.ts:1586:            let lpWalletAddress = await pool.getWalletAddress(deployer.address);
+tests/WeightedStableswap.spec.ts:1591:            let msgResult = await lpWallet.sendBurnExt(deployer.getSender(), {

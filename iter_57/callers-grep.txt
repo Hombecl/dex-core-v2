@@ -1,0 +1,132 @@
+contracts/router/dex.fc:60:                + gas::router::pay_to
+contracts/pool.fc:21:    ;; handle collect_fees
+contracts/pool.fc:22:    if equal_slices(ctx.at(SENDER), storage::protocol_fee_address) {
+contracts/pool.fc:23:        handle_protocolfee_messages();
+contracts/router/msgs/admin.fc:14:        slice new_protocol_fee_address = in_msg_body~load_msg_addr();
+contracts/router/msgs/admin.fc:24:            & new_protocol_fee_address.address::check_workchain(params::workchain)
+contracts/router/msgs/admin.fc:47:                new_protocol_fee_address,
+contracts/router/msgs/pool.fc:45:        int used_gas = ctx.at(FWD_FEE) + gas::router::pay_to;
+contracts/common/contracts.fc:85:    slice _protocol_fee_address,
+contracts/common/contracts.fc:99:            .store_slice(_protocol_fee_address)
+contracts/common/contracts.fc:146:(cell) router::pay_to(
+contracts/common/contracts.fc:251:    slice _new_protocol_fee_address,
+contracts/common/contracts.fc:257:        .store_slice(_new_protocol_fee_address)
+contracts/common/gas.fc:3:const gas::router::pay_to = 16000000;
+contracts/common/gas.fc:14:const gas::pool::collect_fees = 20000000;
+contracts/test/pool_dummy.fc:12:    storage::collected_token0_protocol_fee = ds~load_coins();
+contracts/test/pool_dummy.fc:13:    storage::collected_token1_protocol_fee = ds~load_coins();
+contracts/test/pool_dummy.fc:14:    storage::protocol_fee_address = ds~load_msg_addr();
+contracts/test/pool_dummy.fc:36:        .store_coins(storage::collected_token0_protocol_fee)
+contracts/test/pool_dummy.fc:37:        .store_coins(storage::collected_token1_protocol_fee)
+contracts/test/pool_dummy.fc:38:        .store_slice(storage::protocol_fee_address)
+contracts/test/pool_dummy.fc:94:    ;; handle collect_fees
+contracts/test/pool_dummy.fc:95:    if equal_slices(ctx.at(SENDER), storage::protocol_fee_address) {
+contracts/test/pool_dummy.fc:120:        storage::protocol_fee_address,
+contracts/test/pool_dummy.fc:121:        storage::collected_token0_protocol_fee, 
+contracts/test/pool_dummy.fc:122:        storage::collected_token1_protocol_fee
+contracts/pool/headers.fc:3:global int   storage::collected_token0_protocol_fee;
+contracts/pool/headers.fc:4:global int   storage::collected_token1_protocol_fee;
+contracts/pool/headers.fc:8:global slice storage::protocol_fee_address;
+contracts/pool/msgs/router.fc:58:                router::pay_to(
+contracts/pool/msgs/router.fc:97:                storage::collected_token1_protocol_fee += protocol_fee_out;
+contracts/pool/msgs/router.fc:104:                storage::collected_token0_protocol_fee += protocol_fee_out;
+contracts/pool/msgs/router.fc:138:                router::pay_to(
+contracts/pool/msgs/router.fc:160:                router::pay_to(
+contracts/pool/msgs/router.fc:219:                router::pay_to(
+contracts/pool/msgs/router.fc:270:                router::pay_to(
+contracts/pool/msgs/router.fc:311:        slice new_protocol_fee_address = in_msg_body~load_msg_addr();
+contracts/pool/msgs/router.fc:315:        storage::protocol_fee_address = new_protocol_fee_address;
+contracts/lp_account/msgs/user.fc:17:            + storage_fee::router + gas::router::pay_to  
+contracts/pool/msgs/getter.fc:19:            storage::protocol_fee_address,
+contracts/pool/msgs/getter.fc:20:            storage::collected_token0_protocol_fee,
+contracts/pool/msgs/getter.fc:21:            storage::collected_token1_protocol_fee
+contracts/pool/msgs/lp_account.fc:57:            storage::collected_token0_protocol_fee += new_collected_protocol_fees0;
+contracts/pool/msgs/lp_account.fc:58:            storage::collected_token1_protocol_fee += new_collected_protocol_fees1;
+contracts/pool/msgs/lp_account.fc:162:                router::pay_to(
+contracts/pool/msgs/lp_account.fc:182:                router::pay_to(
+contracts/pool/msgs/protocolfee.fc:1:() handle_protocolfee_messages() impure inline {
+contracts/pool/msgs/protocolfee.fc:4:    if ctx.at(OPCODE) == op::collect_fees { ;; throwable
+contracts/pool/msgs/protocolfee.fc:5:        throw_unless(error::zero_output, (storage::collected_token0_protocol_fee > 0) & (storage::collected_token1_protocol_fee > 0));
+contracts/pool/msgs/protocolfee.fc:9:            + storage_fee::pool + gas::pool::collect_fees 
+contracts/pool/msgs/protocolfee.fc:10:            + storage_fee::router + gas::router::pay_to 
+contracts/pool/msgs/protocolfee.fc:11:            + gas::router::pay_to 
+contracts/pool/msgs/protocolfee.fc:19:        int gas = ((ctx.at(MSG_VALUE) - (ctx.at(FWD_FEE) + storage_fee::pool + gas::pool::collect_fees + storage_fee::router)) / 2) + storage_fee::router;
+contracts/pool/msgs/protocolfee.fc:25:            router::pay_to(
+contracts/pool/msgs/protocolfee.fc:26:                storage::protocol_fee_address, 
+contracts/pool/msgs/protocolfee.fc:27:                storage::protocol_fee_address, 
+contracts/pool/msgs/protocolfee.fc:28:                storage::protocol_fee_address, 
+contracts/pool/msgs/protocolfee.fc:32:                storage::collected_token0_protocol_fee, 
+contracts/pool/msgs/protocolfee.fc:42:            router::pay_to(
+contracts/pool/msgs/protocolfee.fc:43:                storage::protocol_fee_address, 
+contracts/pool/msgs/protocolfee.fc:44:                storage::protocol_fee_address, 
+contracts/pool/msgs/protocolfee.fc:45:                storage::protocol_fee_address, 
+contracts/pool/msgs/protocolfee.fc:51:                storage::collected_token1_protocol_fee,
+contracts/pool/msgs/protocolfee.fc:57:        storage::collected_token0_protocol_fee = 0;
+contracts/pool/msgs/protocolfee.fc:58:        storage::collected_token1_protocol_fee = 0;
+contracts/common/op.fc:11:const op::collect_fees                    = "collect_fees query_id:uint64 maybe_payload0:(Maybe ^Cell) maybe_payload1:(Maybe ^Cell) = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:12:const op::set_fees                        = "set_fees query_id:uint64 new_lp_fee:uint16 new_protocol_fee:uint16 new_protocol_fee_address:MsgAddress jetton_info:^[jetton_wallet0:MsgAddress jetton_wallet1:MsgAddress excesses_recipient:MsgAddress] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:13:const op::internal_set_fees               = "internal_set_fees query_id:uint64 new_lp_fee:uint16 new_protocol_fee:uint16 new_protocol_fee_address:MsgAddress excesses_address:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+contracts/pool/msgs/lp_wallet.fc:41:            + storage_fee::router + gas::router::pay_to 
+contracts/pool/msgs/lp_wallet.fc:42:            + gas::router::pay_to  ;; do not sum again storage_fee::router
+contracts/pool/msgs/lp_wallet.fc:62:            router::pay_to(
+contracts/pool/msgs/lp_wallet.fc:80:            router::pay_to(
+contracts/pool/pools/weighted_const_product/storage.fc:9:    storage::collected_token0_protocol_fee = ds~load_coins();
+contracts/pool/pools/weighted_const_product/storage.fc:10:    storage::collected_token1_protocol_fee = ds~load_coins();
+contracts/pool/pools/weighted_const_product/storage.fc:11:    storage::protocol_fee_address = ds~load_msg_addr();
+contracts/pool/pools/weighted_const_product/storage.fc:34:        .store_coins(storage::collected_token0_protocol_fee)
+contracts/pool/pools/weighted_const_product/storage.fc:35:        .store_coins(storage::collected_token1_protocol_fee)
+contracts/pool/pools/weighted_const_product/storage.fc:36:        .store_slice(storage::protocol_fee_address)
+contracts/pool/pools/weighted_const_product/state_init.fc:9:        .store_coins(0) ;; storage::collected_token0_protocol_fee
+contracts/pool/pools/weighted_const_product/state_init.fc:10:        .store_coins(0) ;; storage::collected_token1_protocol_fee
+contracts/pool/pools/weighted_const_product/state_init.fc:11:        .store_uint(0, 2)   ;; storage::protocol_fee_address
+contracts/pool/pools/weighted_stableswap/storage.fc:12:    storage::collected_token0_protocol_fee = ds~load_coins();
+contracts/pool/pools/weighted_stableswap/storage.fc:13:    storage::collected_token1_protocol_fee = ds~load_coins();
+contracts/pool/pools/weighted_stableswap/storage.fc:14:    storage::protocol_fee_address = ds~load_msg_addr();
+contracts/pool/pools/weighted_stableswap/storage.fc:44:        .store_coins(storage::collected_token0_protocol_fee)
+contracts/pool/pools/weighted_stableswap/storage.fc:45:        .store_coins(storage::collected_token1_protocol_fee)
+contracts/pool/pools/weighted_stableswap/storage.fc:46:        .store_slice(storage::protocol_fee_address)
+contracts/pool/pools/stableswap/storage.fc:9:    storage::collected_token0_protocol_fee = ds~load_coins();
+contracts/pool/pools/stableswap/storage.fc:10:    storage::collected_token1_protocol_fee = ds~load_coins();
+contracts/pool/pools/stableswap/storage.fc:11:    storage::protocol_fee_address = ds~load_msg_addr();
+contracts/pool/pools/stableswap/storage.fc:34:        .store_coins(storage::collected_token0_protocol_fee)
+contracts/pool/pools/stableswap/storage.fc:35:        .store_coins(storage::collected_token1_protocol_fee)
+contracts/pool/pools/stableswap/storage.fc:36:        .store_slice(storage::protocol_fee_address)
+contracts/pool/pools/weighted_const_product/get.fc:13:        storage::protocol_fee_address,
+contracts/pool/pools/weighted_const_product/get.fc:14:        storage::collected_token0_protocol_fee, 
+contracts/pool/pools/weighted_const_product/get.fc:15:        storage::collected_token1_protocol_fee,
+contracts/pool/pools/constant_sum/storage.fc:7:    storage::collected_token0_protocol_fee = ds~load_coins();
+contracts/pool/pools/constant_sum/storage.fc:8:    storage::collected_token1_protocol_fee = ds~load_coins();
+contracts/pool/pools/constant_sum/storage.fc:9:    storage::protocol_fee_address = ds~load_msg_addr();
+contracts/pool/pools/constant_sum/storage.fc:31:        .store_coins(storage::collected_token0_protocol_fee)
+contracts/pool/pools/constant_sum/storage.fc:32:        .store_coins(storage::collected_token1_protocol_fee)
+contracts/pool/pools/constant_sum/storage.fc:33:        .store_slice(storage::protocol_fee_address)
+contracts/pool/pools/constant_product/storage.fc:7:    storage::collected_token0_protocol_fee = ds~load_coins();
+contracts/pool/pools/constant_product/storage.fc:8:    storage::collected_token1_protocol_fee = ds~load_coins();
+contracts/pool/pools/constant_product/storage.fc:9:    storage::protocol_fee_address = ds~load_msg_addr();
+contracts/pool/pools/constant_product/storage.fc:31:        .store_coins(storage::collected_token0_protocol_fee)
+contracts/pool/pools/constant_product/storage.fc:32:        .store_coins(storage::collected_token1_protocol_fee)
+contracts/pool/pools/constant_product/storage.fc:33:        .store_slice(storage::protocol_fee_address)
+contracts/pool/pools/constant_sum/get.fc:13:        storage::protocol_fee_address,
+contracts/pool/pools/constant_sum/get.fc:14:        storage::collected_token0_protocol_fee, 
+contracts/pool/pools/constant_sum/get.fc:15:        storage::collected_token1_protocol_fee
+contracts/pool/pools/weighted_stableswap/get.fc:13:        storage::protocol_fee_address,
+contracts/pool/pools/weighted_stableswap/get.fc:14:        storage::collected_token0_protocol_fee, 
+contracts/pool/pools/weighted_stableswap/get.fc:15:        storage::collected_token1_protocol_fee,
+contracts/pool/pools/stableswap/get.fc:13:        storage::protocol_fee_address,
+contracts/pool/pools/stableswap/get.fc:14:        storage::collected_token0_protocol_fee, 
+contracts/pool/pools/stableswap/get.fc:15:        storage::collected_token1_protocol_fee,
+contracts/pool/pools/constant_product/get.fc:13:        storage::protocol_fee_address,
+contracts/pool/pools/constant_product/get.fc:14:        storage::collected_token0_protocol_fee, 
+contracts/pool/pools/constant_product/get.fc:15:        storage::collected_token1_protocol_fee
+contracts/pool/pools/constant_sum/state_init.fc:9:        .store_coins(0) ;; storage::collected_token0_protocol_fee
+contracts/pool/pools/constant_sum/state_init.fc:10:        .store_coins(0) ;; storage::collected_token1_protocol_fee
+contracts/pool/pools/constant_sum/state_init.fc:11:        .store_uint(0, 2)   ;; storage::protocol_fee_address
+contracts/pool/pools/stableswap/state_init.fc:9:        .store_coins(0) ;; storage::collected_token0_protocol_fee
+contracts/pool/pools/stableswap/state_init.fc:10:        .store_coins(0) ;; storage::collected_token1_protocol_fee
+contracts/pool/pools/stableswap/state_init.fc:11:        .store_uint(0, 2)   ;; storage::protocol_fee_address
+contracts/pool/pools/weighted_stableswap/state_init.fc:9:        .store_coins(0) ;; storage::collected_token0_protocol_fee
+contracts/pool/pools/weighted_stableswap/state_init.fc:10:        .store_coins(0) ;; storage::collected_token1_protocol_fee
+contracts/pool/pools/weighted_stableswap/state_init.fc:11:        .store_uint(0, 2)   ;; storage::protocol_fee_address
+contracts/pool/pools/constant_product/state_init.fc:9:        .store_coins(0) ;; storage::collected_token0_protocol_fee
+contracts/pool/pools/constant_product/state_init.fc:10:        .store_coins(0) ;; storage::collected_token1_protocol_fee
+contracts/pool/pools/constant_product/state_init.fc:11:        .store_uint(0, 2)   ;; storage::protocol_fee_address
