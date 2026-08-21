@@ -1,0 +1,195 @@
+contracts/vault.fc-4-
+contracts/vault.fc:5:global slice storage::owner_address;
+contracts/vault.fc:6:global slice storage::token_address; 
+contracts/vault.fc-7-global slice storage::router_address; 
+contracts/vault.fc:8:global int storage::deposited_amount;
+contracts/vault.fc-9-
+--
+contracts/vault.fc-11-    slice ds = get_data().begin_parse();
+contracts/vault.fc:12:    storage::owner_address = ds~load_msg_addr();
+contracts/vault.fc:13:    storage::token_address = ds~load_msg_addr(); 
+contracts/vault.fc-14-    storage::router_address = ds~load_msg_addr(); 
+contracts/vault.fc:15:    storage::deposited_amount = ds~load_coins();
+contracts/vault.fc-16-    ds.end_parse();
+--
+contracts/vault.fc-18-
+contracts/vault.fc:19:() storage::save() impure inline_ref {
+contracts/vault.fc-20-    set_data(begin_cell()
+contracts/vault.fc:21:        .store_slice(storage::owner_address)
+contracts/vault.fc:22:        .store_slice(storage::token_address)
+contracts/vault.fc-23-        .store_slice(storage::router_address)
+contracts/vault.fc:24:        .store_coins(storage::deposited_amount)
+contracts/vault.fc-25-    .end_cell());
+--
+contracts/vault.fc-41-        slice in_msg_body = ctx.at(BODY);
+contracts/vault.fc:42:        ;; assume deposited_amount will never exceed max coin limit
+contracts/vault.fc:43:        storage::deposited_amount += in_msg_body~load_coins();
+contracts/vault.fc:44:        storage::save();
+contracts/vault.fc-45-        reserves::max_balance(storage_fee::vault);
+--
+contracts/vault.fc-51-    if ctx.at(OPCODE) == op::withdraw_fee { 
+contracts/vault.fc:52:        throw_unless(error::zero_output, storage::deposited_amount > 0);
+contracts/vault.fc-53-
+--
+contracts/vault.fc-55-        throw_unless(error::insufficient_gas, ctx.at(BALANCE) > ctx.at(FWD_FEE) * 5
+contracts/vault.fc:56:            + gas::router::vault_pay_to + gas::vault::withdraw_fee
+contracts/vault.fc-57-            + storage_fee::router
+--
+contracts/vault.fc-61-            storage::router_address, 
+contracts/vault.fc:62:            router::vault_pay_to(
+contracts/vault.fc:63:                storage::deposited_amount, 
+contracts/vault.fc:64:                storage::token_address, 
+contracts/vault.fc:65:                storage::owner_address),
+contracts/vault.fc-66-            CARRY_ALL_BALANCE | DESTROY_IF_ZERO);
+contracts/vault.fc-67-            
+contracts/vault.fc:68:        storage::deposited_amount = 0;    
+contracts/vault.fc:69:        storage::save();
+contracts/vault.fc-70-        return ();
+--
+contracts/vault.fc-79-    return (
+contracts/vault.fc:80:        storage::owner_address,
+contracts/vault.fc:81:        storage::token_address,
+contracts/vault.fc-82-        storage::router_address,
+contracts/vault.fc:83:        storage::deposited_amount
+contracts/vault.fc-84-    );
+--
+contracts/router/dex.fc-32-            _jetton_address, 
+contracts/router/dex.fc:33:            jetton_wallet::transfer(0, _sent_amount, _caller, _caller)
+contracts/router/dex.fc-34-                .store_uint(0, 1) ;; store same cell
+--
+contracts/router/dex.fc-94-        reserves::max_balance(storage_fee::router);
+contracts/router/dex.fc:95:        var out_msg_body = jetton_wallet::transfer(0, _sent_amount, refund_address, excesses_address)
+contracts/router/dex.fc-96-            .store_uint(0, 1) ;; store same cell
+--
+contracts/router/msgs/pool.fc-27-        );
+contracts/router/msgs/pool.fc:28:        throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER))); ;; check if its a valid pool
+contracts/router/msgs/pool.fc-29-
+--
+contracts/router/msgs/pool.fc-73-                    token0_address, 
+contracts/router/msgs/pool.fc:74:                    jetton_wallet::transfer(fwd_ton_amount, amount0_out, owner, excesses_address)
+contracts/router/msgs/pool.fc-75-                        .store_maybe_ref(custom_payload)
+--
+contracts/router/msgs/pool.fc-82-                    token1_address, 
+contracts/router/msgs/pool.fc:83:                    jetton_wallet::transfer(fwd_ton_amount, amount1_out, owner, excesses_address)
+contracts/router/msgs/pool.fc-84-                        .store_maybe_ref(custom_payload)
+--
+contracts/router/msgs/pool.fc-112-        );
+contracts/router/msgs/pool.fc:113:        throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER))); ;; check if its a valid pool
+contracts/router/msgs/pool.fc-114-
+--
+contracts/router/msgs/pool.fc-118-        var vault = contracts::from_sources(
+contracts/router/msgs/pool.fc:119:            vault_idata(
+contracts/router/msgs/pool.fc-120-                owner, 
+--
+contracts/common/contracts.fc:1:(cell) vault_idata(slice _user_address, slice _token_address, slice _router_address) inline {
+contracts/common/contracts.fc-2-    return begin_cell()
+contracts/common/contracts.fc-3-        .store_slice(_user_address)
+contracts/common/contracts.fc:4:        .store_slice(_token_address)
+contracts/common/contracts.fc-5-        .store_slice(_router_address)
+--
+contracts/common/contracts.fc-18-
+contracts/common/contracts.fc:19:(cell) lp_wallet_idata(slice _owner_address, slice _jetton_master_address, cell _jetton_wallet_code) inline {
+contracts/common/contracts.fc-20-    return begin_cell()
+contracts/common/contracts.fc-21-        .store_coins(0) ;; balance
+contracts/common/contracts.fc:22:        .store_slice(_owner_address)
+contracts/common/contracts.fc-23-        .store_slice(_jetton_master_address)
+--
+contracts/common/contracts.fc-80-    int _right_reserve,
+contracts/common/contracts.fc:81:    slice _left_token_address,
+contracts/common/contracts.fc:82:    slice _right_token_address,
+contracts/common/contracts.fc-83-    int _lp_fee,
+--
+contracts/common/contracts.fc-92-        .store_coins(_right_reserve)
+contracts/common/contracts.fc:93:        .store_slice(_left_token_address)
+contracts/common/contracts.fc:94:        .store_slice(_right_token_address)
+contracts/common/contracts.fc-95-        .store_ref(begin_cell()
+--
+contracts/common/contracts.fc-147-    slice _original_caller,
+contracts/common/contracts.fc:148:    slice _to_address, 
+contracts/common/contracts.fc-149-    slice _excesses_address,
+--
+contracts/common/contracts.fc-158-    return begin_message(op::pay_to)
+contracts/common/contracts.fc:159:        .store_slice(_to_address)
+contracts/common/contracts.fc-160-        .store_slice(_excesses_address)
+--
+contracts/common/contracts.fc-173-
+contracts/common/contracts.fc:174:(cell) router::vault_pay_to(
+contracts/common/contracts.fc-175-    int _amount_out, 
+contracts/common/contracts.fc:176:    slice _token_address,
+contracts/common/contracts.fc:177:    slice _to_address
+contracts/common/contracts.fc-178-) inline {
+contracts/common/contracts.fc:179:    return begin_message(op::vault_pay_to)
+contracts/common/contracts.fc-180-        .store_coins(_amount_out)
+contracts/common/contracts.fc:181:        .store_slice(_token_address)
+contracts/common/contracts.fc:182:        .store_slice(_to_address)
+contracts/common/contracts.fc-183-    .end_cell();
+--
+contracts/common/contracts.fc-186-(cell) router::pay_vault(
+contracts/common/contracts.fc:187:    slice _to_address, 
+contracts/common/contracts.fc-188-    slice _excesses_address,
+--
+contracts/common/contracts.fc-194-    return begin_message(op::pay_vault)
+contracts/common/contracts.fc:195:        .store_slice(_to_address)
+contracts/common/contracts.fc-196-        .store_slice(_excesses_address)
+--
+contracts/common/contracts.fc-279-
+contracts/common/contracts.fc:280:(builder) jetton_wallet::transfer(int _fwd_amount, int _jetton_amount, slice _to, slice _response_address) inline {
+contracts/common/contracts.fc-281-    return begin_message(op::ft::transfer)
+contracts/common/contracts.fc-282-        .store_coins(_jetton_amount)
+contracts/common/contracts.fc:283:        .store_slice(_to) ;; to_owner_address
+contracts/common/contracts.fc-284-        .store_slice(_response_address) ;; responseAddress
+--
+contracts/router/msgs/vault.fc-2-    slice in_msg_body = ctx.at(BODY);
+contracts/router/msgs/vault.fc:3:    if ctx.at(OPCODE) == op::vault_pay_to {
+contracts/router/msgs/vault.fc-4-        int amount_out = in_msg_body~load_coins();
+contracts/router/msgs/vault.fc:5:        slice token_address = in_msg_body~load_msg_addr();
+contracts/router/msgs/vault.fc:6:        slice to_address = in_msg_body~load_msg_addr(); 
+contracts/router/msgs/vault.fc-7-        in_msg_body.end_parse();
+--
+contracts/router/msgs/vault.fc-9-        var vault = contracts::from_sources(
+contracts/router/msgs/vault.fc:10:            vault_idata(to_address, token_address, my_address()),
+contracts/router/msgs/vault.fc-11-            storage::vault_code
+contracts/router/msgs/vault.fc-12-        );
+contracts/router/msgs/vault.fc:13:        throw_unless(error::invalid_caller, equal_slices(vault~address(params::workchain), ctx.at(SENDER))); ;; check if its a valid vault
+contracts/router/msgs/vault.fc-14-
+contracts/router/msgs/vault.fc-15-        reserves::max_balance(storage_fee::router);
+contracts/router/msgs/vault.fc:16:        var msg = jetton_wallet::transfer(0, amount_out, to_address, to_address)
+contracts/router/msgs/vault.fc-17-            .store_uint(0, 1);
+contracts/router/msgs/vault.fc-18-
+contracts/router/msgs/vault.fc:19:        msgs::send_simple(0, token_address, msg.end_cell(), QCARRY_ALL_BALANCE);
+contracts/router/msgs/vault.fc-20-        return (true);
+--
+contracts/pool/msgs/router.fc-5-        ;; common dex fields
+contracts/pool/msgs/router.fc:6:        ;; usually not needed since it uses to_address and refund_address
+contracts/pool/msgs/router.fc-7-        slice from_user_address = in_msg_body~load_msg_addr();
+--
+contracts/pool/msgs/router.fc-21-        int min_out = 1;
+contracts/pool/msgs/router.fc:22:        slice to_address = null(); 
+contracts/pool/msgs/router.fc-23-        int fwd_ton_amount = 0;
+--
+contracts/pool/msgs/router.fc-33-            min_out = call_payload~load_coins();
+contracts/pool/msgs/router.fc:34:            to_address = call_payload~load_msg_addr(); 
+contracts/pool/msgs/router.fc-35-            fwd_ton_amount = call_payload~load_coins();
+--
+contracts/pool/msgs/router.fc-41-
+contracts/pool/msgs/router.fc:42:            to_address = to_address.address::is_none() ? from_user_address : to_address;
+contracts/pool/msgs/router.fc-43-
+contracts/pool/msgs/router.fc-44-            throw_arg_unless(error::wrong_workchain, 1, 
+contracts/pool/msgs/router.fc:45:                to_address.address::check_workchain(params::workchain)
+contracts/pool/msgs/router.fc-46-                & ref_address.address::check_workchain_nofail(params::workchain)
+--
+contracts/pool/msgs/router.fc-139-                    from_user_address,
+contracts/pool/msgs/router.fc:140:                    to_address, 
+contracts/pool/msgs/router.fc-141-                    excesses_address,
+--
+contracts/pool/msgs/router.fc-151-            );
+contracts/pool/msgs/router.fc:152:            storage::save();
+contracts/pool/msgs/router.fc-153-        } catch(err_arg, err_code) {
+--
+contracts/pool/msgs/router.fc-295-        storage::is_locked = storage::is_locked ? false : true; 
+contracts/pool/msgs/router.fc:296:        storage::save();
+contracts/pool/msgs/router.fc-297-        reserves::max_balance(storage_fee::pool);
+--
+contracts/pool/msgs/router.fc-316-
+contracts/pool/msgs/router.fc:317:        storage::save();
+contracts/pool/msgs/router.fc-318-        

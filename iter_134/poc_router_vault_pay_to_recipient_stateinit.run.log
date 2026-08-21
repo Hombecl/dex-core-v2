@@ -1,0 +1,1 @@
+AE4 vault payout edge check passed: the body tuple must derive the sending vault, the outgoing token and owner are the same stored tuple, withdrawal clears once, and alternate owner/token tuples map to distinct state-init identities

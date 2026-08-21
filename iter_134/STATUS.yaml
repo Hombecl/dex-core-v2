@@ -1,0 +1,75 @@
+schema_version: shadow-v1
+iteration: 134
+phase: completed
+cell_id: AE4
+cell_label: router_vault_pay_to_recipient_stateinit
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AE4
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - 'contracts/router/msgs/vault.fc:4: int amount_out = in_msg_body~load_coins();'
+      - 'contracts/router/msgs/vault.fc:5: slice token_address = in_msg_body~load_msg_addr();'
+      - 'contracts/router/msgs/vault.fc:6: slice to_address = in_msg_body~load_msg_addr();'
+      - 'contracts/router/msgs/vault.fc:10: vault_idata(to_address, token_address, my_address()),'
+      - 'contracts/router/msgs/vault.fc:13: throw_unless(error::invalid_caller, equal_slices(vault~address(params::workchain), ctx.at(SENDER)));'
+      - 'contracts/router/msgs/vault.fc:16: var msg = jetton_wallet::transfer(0, amount_out, to_address, to_address)'
+      - 'contracts/router/msgs/vault.fc:19: msgs::send_simple(0, token_address, msg.end_cell(), QCARRY_ALL_BALANCE);'
+      - 'contracts/vault.fc:62: router::vault_pay_to('
+      - 'contracts/vault.fc:63: storage::deposited_amount,'
+      - 'contracts/vault.fc:64: storage::token_address, '
+      - 'contracts/vault.fc:65: storage::owner_address),'
+      - 'contracts/vault.fc:68: storage::deposited_amount = 0;'
+      - 'contracts/common/contracts.fc:1: (cell) vault_idata(slice _user_address, slice _token_address, slice _router_address) inline {'
+      - 'contracts/router/msgs/pool.fc:118: var vault = contracts::from_sources('
+  poc_execution:
+    test_file_path: iter_134/poc_router_vault_pay_to_recipient_stateinit.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_134/poc_router_vault_pay_to_recipient_stateinit.run.log,iter_134/integration.run.log
+    run_log_exists_on_disk: true
+    test_runtime: '20.303s integration; model passed'
+    result: 'PASSED (integration: 5 passed, 133 skipped, 138 total across 5 suites; model: passed)'
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 "vault_pay_to" "state_init" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "vault_pay_to" "state_init" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "withdraw_fee" "owner_address" "token_address" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "withdraw_fee" "owner_address" "token_address" is:pr'
+    results: all four returned total_count 0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'router vault pay_to state-init repository issue search'
+      - 'router vault pay_to state-init repository pull-request search'
+      - 'vault withdraw owner token repository issue search'
+      - 'vault withdraw owner token repository pull-request search'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_134/callers-grep.txt
+  caller_grep_match_count: 195
+  caller_grep_unique_files: 6
+  prior_audit_path: iter_134/prior-audit-git.log
+  prior_audit_bytes: 29
+  r15_search_files:
+    - iter_134/R15-GH-router-vault-pay-to-stateinit-issue.json
+    - iter_134/R15-GH-router-vault-pay-to-stateinit-pr.json
+    - iter_134/R15-GH-vault-withdraw-owner-token-issue.json
+    - iter_134/R15-GH-vault-withdraw-owner-token-pr.json
+  source_conclusion: 'Vault withdrawal sends the stored deposited_amount, token_address, and owner_address in router::vault_pay_to after requiring a positive stored amount, then clears and saves the vault amount. Router parses the tuple strictly, derives vault_idata(to_address, token_address, router), and accepts only the matching vault sender before sending the exact amount to the exact owner through the exact token wallet. Alternate owner/token tuples produce distinct state-init identities; no recipient or token substitution is reachable.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_134-AE4.md
