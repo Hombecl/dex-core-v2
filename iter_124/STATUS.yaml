@@ -1,0 +1,66 @@
+schema_version: shadow-v1
+iteration: 124
+phase: completed
+cell_id: AC4
+cell_label: lp_wallet_forward_payload_reference_depth
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AC4
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - 'contracts/lp_wallet.fc:18: balance -= jetton_amount;'
+      - 'contracts/lp_wallet.fc:26: cell custom_payload = in_msg_body~load_dict();'
+      - 'contracts/lp_wallet.fc:43: .store_slice(either_forward_payload)'
+      - 'contracts/lp_wallet.fc:63: | equal_slices(calculate_user_jetton_lp_wallet_address(from_address, jetton_master_address, jetton_wallet_code), sender_address));'
+      - 'contracts/lp_wallet.fc:145: balance += jetton_amount;'
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/System.spec.ts,tests/ConstProduct.spec.ts,tests/ConstSum.spec.ts,tests/Stableswap.spec.ts,tests/WeightedCPI.spec.ts,tests/WeightedStableswap.spec.ts,iter_124/poc_lp_wallet_forward_payload_reference_depth.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_124/poc_lp_wallet_forward_payload_reference_depth.run.log,iter_124/poc_lp_wallet_forward_payload_reference_depth.model.run.log
+    run_log_exists_on_disk: true
+    test_runtime: '12.48s integration; model passed'
+    result: 'PASSED (integration: 4 passed, 145 skipped, 149 total; model: passed)'
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 LPWallet load_dict forward_payload is:issue'
+      - 'repo:ston-fi/dex-core-v2 LPWallet load_dict forward_payload is:pr'
+      - 'repo:ston-fi/dex-core-v2 internal_transfer payload debit balance is:issue'
+      - 'repo:ston-fi/dex-core-v2 internal_transfer payload debit balance is:pr'
+    results: all four returned total_count 0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'LPWallet load_dict forward_payload repository issue search'
+      - 'LPWallet load_dict forward_payload repository pull-request search'
+      - 'internal_transfer payload debit balance repository issue search'
+      - 'internal_transfer payload debit balance repository pull-request search'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_124/callers-grep.txt
+  caller_grep_match_count: 60
+  caller_grep_unique_files: 26
+  prior_audit_path: iter_124/prior-audit-git.log
+  prior_audit_bytes: 78
+  r15_search_files:
+    - iter_124/R15-GH-lp-wallet-load-dict-forward-issue.json
+    - iter_124/R15-GH-lp-wallet-load-dict-forward-pr.json
+    - iter_124/R15-GH-internal-transfer-payload-debit-issue.json
+    - iter_124/R15-GH-internal-transfer-payload-debit-pr.json
+  source_conclusion: 'send_tokens debits before validation but saves only after the outbound message is built; custom_payload is parsed but does not populate amount, owner, destination, or the trailing forward payload. receive_tokens authenticates the master or deterministic source wallet before crediting, and notification fields are fixed before the remaining payload slice. Bounce accepts only internal_transfer or burn_notification_ext and restores the exact encoded amount. No payload-depth or reference-shape path produced a persistent debit, owner substitution, or token/TON diversion in integration or executable modeling.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_124-AC4.md

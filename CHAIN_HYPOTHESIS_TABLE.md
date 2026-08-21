@@ -127,6 +127,7 @@ Scope is limited to the five selected entrypoint assets recorded in `R1-SURFACE-
 | AC1 | router_pool_pair_orientation_stateinit | pair_orientation | Reversing token-wallet order between router routing, pool state-init, and pay_to could make a valid pool send one asset under the other asset's wallet. | 121 | deadend_with_proof |
 | AC2 | pool_swap_fee_rounding_zero_output | fee_rounding | Fee/referral ceil rounding at exact small outputs could subtract more than the computed output or bypass the positive-output/refund invariant. | 122 | deadend_with_proof |
 | AC3 | lp_account_refund_then_direct_add_lifecycle | callback_lifecycle | A failed minimum-LP callback followed by direct add/refund ordering could reuse stale LP-account amounts or mint against cleared state. | 123 | deadend_with_proof |
+| AC4 | lp_wallet_forward_payload_reference_depth | payload_reference | Nested forward-payload reference depth or trailing bits could alter owner notification while leaving LP debit committed. | 124 | deadend_with_proof |
 
 ## Cell execution contract
 

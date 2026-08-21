@@ -1,0 +1,1 @@
+AC4 payload-depth edge check passed: fixed fields stay amount/owner-bound, payload remains trailing data, and bounce restores the exact debit
