@@ -1,0 +1,7 @@
+{
+  "total_count": 0,
+  "incomplete_results": false,
+  "items": [],
+  "search_type": "lexical",
+  "query": "repo:ston-fi/dex-core-v2 \"insufficient_gas\" \"burn_ext\" \"reserve0\" is:issue"
+}

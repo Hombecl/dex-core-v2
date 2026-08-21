@@ -1,0 +1,13 @@
+$ node iter_249/poc_pool_burn_insufficient_gas_rollback.test.js
+{
+  "result": "PASS",
+  "classification": "PRE_KILLED_DUPLICATE",
+  "cell": "BB1",
+  "cross_file_anchors": 20,
+  "gas_cases": 3,
+  "strict_boundary_checks": 3,
+  "rollback_cases": 2,
+  "exact_success_deltas": 2,
+  "reason": "Pool burn working-state reserve/supply subtraction occurs before a strict gas guard but no storage save occurs before that guard; failure reverts the transaction and the LPWallet debit is covered by the typed bounce restore. Successful paths save only after fixed two-leg payout construction and Router sender authentication"
+}
+exit=0

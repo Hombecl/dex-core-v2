@@ -1,0 +1,19 @@
+COMMAND:
+rg -n --no-heading -i 'burn.*gas|insufficient_gas|burn_ext|reserve.*rollback|burn.*rollback|dual.output' CHAIN_HYPOTHESIS_TABLE.md iter_*/STATUS.yaml
+
+RELEVANT PRIOR RESULTS:
+iter_77 burn_dual_output_bounce_accounting: DEADEND_WITH_PROOF
+  LPWallet debit is restored on a typed protocol bounce; Pool validates sender/output/gas before save and Router authenticates each fixed payout leg.
+iter_95 addr_none_recipient_semantics: DEADEND_WITH_PROOF
+  Burn response_address must be addr_none before Pool payout; the response field cannot redirect value.
+iter_137 pool_burn_payload_wrapper_leg_split: PRE_KILLED_DUPLICATE
+  Pool parses burn payloads after identity fields and saves only after fixed two-leg output construction.
+iter_178 lp_wallet_burn_bounce_accounting: DEADEND_WITH_PROOF
+  Pool's burn working-state reserve/supply subtraction and downstream LPWallet bounce restoration preserve conservation.
+iter_194 lp_burn_dual_output_bounce_correlation: DEADEND_WITH_PROOF
+  Exact dual-output burn and bounce paths were live-tested; no attacker-positive delta or persistent failed-branch mutation.
+iter_243/AG5 reserve/carry family: PRE_KILLED_DUPLICATE
+  Reserve helpers retain storage floors and carry only surplus TON; failure/success persistence ordering did not expose a value split.
+
+CONCLUSION:
+BB1 is a strict-gas re-drill of the already audited Pool burn rollback family. Provisional reserve/supply mutation is not persistent because the guard throws before storage::save; LPWallet restores its debit on the protocol bounce. No attacker-positive token, LP, or TON delta was demonstrated.

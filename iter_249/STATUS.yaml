@@ -1,0 +1,193 @@
+schema_version: shadow-v1
+iteration: 249
+phase: completed
+cell_id: BB1
+cell_label: pool_burn_insufficient_gas_working_state
+final_verdict: PRE_KILLED_DUPLICATE
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: BB1
+  final_verdict: PRE_KILLED_DUPLICATE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 6
+        text: 'int jetton_amount = in_msg_body~load_coins();'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 25
+        text: 'pool::get_lp_burn_out(jetton_amount)'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 30
+        text: 'storage::reserve0 -= amount0_out;'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 31
+        text: 'storage::reserve1 -= amount1_out;'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 32
+        text: 'storage::total_supply_lp -= jetton_amount;'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 39
+        text: 'throw_unless(error::insufficient_gas'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 40
+        text: ' + storage_fee::pool + gas::pool::burn_ext'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 41
+        text: ' + storage_fee::router + gas::router::pay_to'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 56
+        text: 'reserves::max_balance(storage_fee::pool);'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 69
+        text: 'amount0_out'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 89
+        text: 'amount1_out'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 95
+        text: 'storage::save();'
+      - file: contracts/pool.fc
+        line: 33
+        text: 'if handle_lp_wallet_messages()'
+      - file: contracts/lp_wallet.fc
+        line: 109
+        text: 'balance -= jetton_amount;'
+      - file: contracts/lp_wallet.fc
+        line: 116
+        text: '.store_uint(op::burn_notification_ext, 32)'
+      - file: contracts/lp_wallet.fc
+        line: 145
+        text: 'balance += jetton_amount;'
+      - file: contracts/router/msgs/pool.fc
+        line: 28
+        text: 'throw_unless(error::invalid_caller'
+      - file: contracts/common/contracts.fc
+        line: 146
+        text: '(cell) router::pay_to('
+      - file: tests/System.spec.ts
+        line: 175
+        text: 'const sendBurnLPResult = await lpWallet.sendBurnExt(admin.getSender(), {'
+      - file: tests/ConstProduct.spec.ts
+        line: 1799
+        text: 'let msgResult = await lpWallet.sendBurnExt(alice.getSender(), {'
+  source_scope_restricted: true
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  required_evidence_complete: true
+  no_fabrication: true
+  scope_assets_only: true
+  methodology_audit_exit: NOT_AVAILABLE
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_DEADEND
+  shippable: false
+  rejection_reason: 'Pool burn mutates working reserve/supply variables before the strict gas guard, but the guard throws before any storage::save; failure therefore reverts the transaction and the LPWallet typed bounce restores its exact debit. Success saves only after fixed dual-leg payout construction, with Router Pool authentication on each route. No persistent state split or attacker-positive asset delta exists.'
+  duplicate_family: 'iter_77/T2 burn dual-output bounce accounting, iter_95 addr_none semantics, iter_137/AF2 burn payload wrapper, iter_178/AP1 burn bounce accounting, iter_194/AR4 dual-output bounce, and iter_248/BA5 typed LPWallet bounce family'
+  caller_match_count: 161
+  caller_unique_files: 41
+  cascade_verbatim_hit_count: 20
+  cross_file_anchor_count: 20
+  caller_paths:
+    - contracts/common/contracts.fc
+    - contracts/common/op.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/pool/msgs/lp_wallet.fc
+    - contracts/pool/msgs/router.fc
+    - contracts/router/msgs/pool.fc
+    - contracts/router/msgs/jetton.fc
+    - contracts/vault.fc
+    - tests/System.spec.ts
+    - tests/ConstProduct.spec.ts
+  callers_grep_artifact: iter_249/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_249/poc_pool_burn_insufficient_gas_rollback.test.js
+    poc_run_log: iter_249/poc_pool_burn_insufficient_gas_rollback.run.log
+    live_regression_log: iter_249/live-pool-burn-gas-boundary-regression.run.log
+    prior_audit: iter_249/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_249/poc_pool_burn_insufficient_gas_rollback.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_249/poc_pool_burn_insufficient_gas_rollback.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.1s static; 9.48s integration'
+    result: 'PASS (20 cross-file anchors; three strict-gas cases; two rollback cases; two exact success deltas; System/ConstProduct burn regressions)'
+  prior_art_check:
+    queries:
+      - 'cell_label burn/gas/insufficient_gas/reserve/supply/rollback scan across iter_*/STATUS.yaml'
+    results:
+      - 'iter_77 burn_dual_output_bounce_accounting: DEADEND_WITH_PROOF'
+      - 'iter_95 addr_none_recipient_semantics: DEADEND_WITH_PROOF'
+      - 'iter_137 pool_burn_payload_wrapper_leg_split: PRE_KILLED_DUPLICATE'
+      - 'iter_178 lp_wallet_burn_bounce_accounting: DEADEND_WITH_PROOF'
+      - 'iter_194 lp_burn_dual_output_bounce_correlation: DEADEND_WITH_PROOF'
+      - 'iter_248 lp_wallet_bounce_query_id_noncorrelation: PRE_KILLED_DUPLICATE'
+    r15_disclosure_check:
+      gh_search_terms_used:
+        - 'repo:ston-fi/dex-core-v2 "insufficient_gas" "burn_ext" "reserve0" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "insufficient_gas" "burn_ext" "reserve0" is:pr'
+        - 'repo:ston-fi/dex-core-v2 "total_supply_lp -= jetton_amount" "burn_ext" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "total_supply_lp -= jetton_amount" "burn_ext" is:pr'
+      gh_search_hits: 0
+      evidence_files:
+        - iter_249/r15-pool-burn-insufficient-gas-issue.json
+        - iter_249/r15-pool-burn-insufficient-gas-pr.json
+        - iter_249/r15-pool-burn-supply-debit-issue.json
+        - iter_249/r15-pool-burn-supply-debit-pr.json
+    attacker_privilege:
+      privilege_required: external_unauth
+    fund_loss_demonstrated: false
+    concrete_impact_demonstrated: false
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "insufficient_gas" "burn_ext" "reserve0" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "insufficient_gas" "burn_ext" "reserve0" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "total_supply_lp -= jetton_amount" "burn_ext" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "total_supply_lp -= jetton_amount" "burn_ext" is:pr'
+    gh_search_hits: 0
+    evidence_files:
+      - iter_249/r15-pool-burn-insufficient-gas-issue.json
+      - iter_249/r15-pool-burn-insufficient-gas-pr.json
+      - iter_249/r15-pool-burn-supply-debit-issue.json
+      - iter_249/r15-pool-burn-supply-debit-pr.json
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: PRE_KILLED_DUPLICATE
+  shadow_mode: true
+  caller_path: iter_249/callers-grep.txt
+  caller_match_count: 161
+  caller_unique_files: 41
+  prior_audit_path: iter_249/prior-audit-git.log
+  prior_family_matches: [iter77, iter95, iter137, iter178, iter194, iter248]
+  r15_evidence_files:
+    - iter_249/r15-pool-burn-insufficient-gas-issue.json
+    - iter_249/r15-pool-burn-insufficient-gas-pr.json
+    - iter_249/r15-pool-burn-supply-debit-issue.json
+    - iter_249/r15-pool-burn-supply-debit-pr.json
+  source_conclusion: 'BB1 is the strict-gas duplicate of the Pool burn rollback family. Working-state reserve/supply subtraction is reverted on a thrown gas failure because save is later; LPWallet bounce restores the exact debit, while successful fixed payouts and Router sender checks remain bound. No attacker-positive token, LP, or TON delta was demonstrated.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_249/poc_pool_burn_insufficient_gas_rollback.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_249/poc_pool_burn_insufficient_gas_rollback.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_249/live-pool-burn-gas-boundary-regression.run.log
+    result: PASS
