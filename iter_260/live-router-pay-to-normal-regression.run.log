@@ -1,0 +1,15 @@
+COMMAND: npm test -- --runInBand tests/Pool.spec.ts tests/System.spec.ts -t 'should refund swap if tx is expired|should handle cross swap|should handle mint & burn liquidity'
+
+PASS tests/System.spec.ts (5.254 s)
+  System / Dex
+    ✓ should handle mint & burn liquidity (494 ms)
+    ✓ should handle cross swap (300 ms)
+
+PASS tests/Pool.spec.ts
+  Pool / Router calls
+    ✓ should refund swap if tx is expired (17 ms)
+
+Test Suites: 2 passed, 2 total
+Tests: 12 skipped, 3 passed, 15 total
+Time: 7.837 s
+Result: PASS

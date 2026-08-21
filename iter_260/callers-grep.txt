@@ -1,0 +1,32 @@
+COMMAND: rg -n --no-heading 'pay_to|fwd_ton_amount|forward_ton_amount|excesses_address|response_address|QCARRY_ALL_BALANCE|gas_available|send_tokens|receive_tokens|transfer_notification|storage::save|should handle cross swap|should refund swap if tx is expired|should handle mint & burn liquidity' contracts/router/msgs/pool.fc contracts/common/contracts.fc contracts/pool/msgs/router.fc contracts/lp_wallet.fc contracts/common/op.fc contracts/pool.fc tests/Pool.spec.ts tests/System.spec.ts
+MATCH_COUNT: 94
+UNIQUE_FILE_COUNT: 7
+contracts/common/contracts.fc
+contracts/common/op.fc
+contracts/lp_wallet.fc
+contracts/pool/msgs/router.fc
+contracts/router/msgs/pool.fc
+tests/Pool.spec.ts
+tests/System.spec.ts
+KEY_CALLER_HITS:
+contracts/router/msgs/pool.fc:5: if ctx.at(OPCODE) == op::pay_to {
+contracts/router/msgs/pool.fc:28: throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER))); ;; check if its a valid pool
+contracts/router/msgs/pool.fc:45: int used_gas = ctx.at(FWD_FEE) + gas::router::pay_to;
+contracts/router/msgs/pool.fc:60: int gas_available = ctx.at(MSG_VALUE) - (used_gas + storage_fee::router); ;; estimate free gas after this call
+contracts/router/msgs/pool.fc:62: (gas_available - (gas::jetton_wallet::est_transfer + (ctx.at(FWD_FEE) * 2))) - fwd_ton_amount <= 0
+contracts/router/msgs/pool.fc:74: jetton_wallet::transfer(fwd_ton_amount, amount0_out, owner, excesses_address)
+contracts/router/msgs/pool.fc:83: jetton_wallet::transfer(fwd_ton_amount, amount1_out, owner, excesses_address)
+contracts/router/msgs/pool.fc:77: QCARRY_ALL_BALANCE
+contracts/router/msgs/pool.fc:86: QCARRY_ALL_BALANCE
+contracts/common/contracts.fc:146: (cell) router::pay_to(
+contracts/common/contracts.fc:158: return begin_message(op::pay_to)
+contracts/common/contracts.fc:160: .store_slice(_excesses_address)
+contracts/common/contracts.fc:165: .store_coins(_ton_fwd_amount)
+contracts/common/contracts.fc:280: (builder) jetton_wallet::transfer(int _fwd_amount, int _jetton_amount, slice _to, slice _response_address) inline {
+contracts/lp_wallet.fc:70: if(forward_ton_amount) {
+contracts/lp_wallet.fc:89: if ((response_address.preload_uint(2) != 0) & (msg_value > 0)) {
+contracts/lp_wallet.fc:100: storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/pool/msgs/router.fc:138: router::pay_to(
+tests/Pool.spec.ts:84: it('should refund swap if tx is expired', async () => {
+tests/System.spec.ts:263: it('should handle cross swap', async () => {
+tests/System.spec.ts:132: it('should handle mint & burn liquidity', async () => {

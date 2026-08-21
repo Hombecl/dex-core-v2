@@ -1,0 +1,14 @@
+{
+  "result": "PASS",
+  "classification": "PRE_KILLED_DUPLICATE",
+  "cell": "DD2",
+  "cross_file_anchors": 26,
+  "cases": 5,
+  "branches": ["ordinary_fixed_transfer", "ordinary_fixed_transfer", "ordinary_fixed_transfer", "ordinary_fixed_transfer", "reject_before_payload"],
+  "fixed_token_amounts": [100, 100, 100, 100, 0],
+  "forward_amounts": [10, 0, 0, 10, 0],
+  "excess_routes": ["EXCESS_A", "EXCESS_B", "EXCESS_C", null, null],
+  "asset_deltas": [0, 0, 0, 0, 0],
+  "persistent_deltas": [0, 0, 0, 0, 0],
+  "reason": "Router pay_to authenticates the deterministic Pool before the normal branch. It carries a fixed one-sided jetton amount to the selected token wallet, passes the owner and excess response fields in the canonical transfer body, and uses QCARRY_ALL_BALANCE only for remaining TON. At the explicit low-gas boundary it suppresses forward_ton_amount rather than changing the token amount; addr_none suppresses only the residual excess response. The response/forward split therefore has no attacker-positive token, reserve, or persistent delta."
+}

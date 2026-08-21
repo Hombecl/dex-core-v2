@@ -1,0 +1,199 @@
+schema_version: shadow-v1
+iteration: 260
+phase: completed
+cell_id: DD2
+cell_label: router_pay_to_normal_fwd_response_excess_split
+final_verdict: PRE_KILLED_DUPLICATE
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: DD2
+  final_verdict: PRE_KILLED_DUPLICATE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/router/msgs/pool.fc
+        line: 5
+        text: 'if ctx.at(OPCODE) == op::pay_to {'
+      - file: contracts/router/msgs/pool.fc
+        line: 6
+        text: 'slice owner = in_msg_body~load_msg_addr();'
+      - file: contracts/router/msgs/pool.fc
+        line: 7
+        text: 'slice excesses_address = in_msg_body~load_msg_addr();'
+      - file: contracts/router/msgs/pool.fc
+        line: 8
+        text: 'slice original_caller = in_msg_body~load_msg_addr();'
+      - file: contracts/router/msgs/pool.fc
+        line: 12
+        text: 'int fwd_ton_amount = additional_info~load_coins();'
+      - file: contracts/router/msgs/pool.fc
+        line: 28
+        text: 'throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER))); ;; check if its a valid pool'
+      - file: contracts/router/msgs/pool.fc
+        line: 45
+        text: 'int used_gas = ctx.at(FWD_FEE) + gas::router::pay_to;'
+      - file: contracts/router/msgs/pool.fc
+        line: 60
+        text: 'int gas_available = ctx.at(MSG_VALUE) - (used_gas + storage_fee::router); ;; estimate free gas after this call'
+      - file: contracts/router/msgs/pool.fc
+        line: 62
+        text: '(gas_available - (gas::jetton_wallet::est_transfer + (ctx.at(FWD_FEE) * 2))) - fwd_ton_amount <= 0'
+      - file: contracts/router/msgs/pool.fc
+        line: 65
+        text: 'fwd_ton_amount = 0;'
+      - file: contracts/router/msgs/pool.fc
+        line: 74
+        text: 'jetton_wallet::transfer(fwd_ton_amount, amount0_out, owner, excesses_address)'
+      - file: contracts/router/msgs/pool.fc
+        line: 77
+        text: 'QCARRY_ALL_BALANCE'
+      - file: contracts/router/msgs/pool.fc
+        line: 83
+        text: 'jetton_wallet::transfer(fwd_ton_amount, amount1_out, owner, excesses_address)'
+      - file: contracts/router/msgs/pool.fc
+        line: 86
+        text: 'QCARRY_ALL_BALANCE'
+      - file: contracts/common/contracts.fc
+        line: 146
+        text: '(cell) router::pay_to('
+      - file: contracts/common/contracts.fc
+        line: 158
+        text: 'return begin_message(op::pay_to)'
+      - file: contracts/common/contracts.fc
+        line: 160
+        text: '.store_slice(_excesses_address)'
+      - file: contracts/common/contracts.fc
+        line: 165
+        text: '.store_coins(_ton_fwd_amount)'
+      - file: contracts/common/contracts.fc
+        line: 280
+        text: '(builder) jetton_wallet::transfer(int _fwd_amount, int _jetton_amount, slice _to, slice _response_address) inline {'
+      - file: contracts/common/contracts.fc
+        line: 284
+        text: '.store_slice(_response_address) ;; responseAddress'
+      - file: contracts/common/contracts.fc
+        line: 286
+        text: '.store_coins(_fwd_amount); ;; forward_ton_amount'
+      - file: contracts/pool/msgs/router.fc
+        line: 138
+        text: 'router::pay_to('
+      - file: contracts/lp_wallet.fc
+        line: 74
+        text: '.store_uint(op::transfer_notification, 32)'
+      - file: contracts/lp_wallet.fc
+        line: 89
+        text: 'if ((response_address.preload_uint(2) != 0) & (msg_value > 0)) {'
+      - file: contracts/lp_wallet.fc
+        line: 100
+        text: 'storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);'
+      - file: contracts/common/op.fc
+        line: 10
+        text: 'const op::pay_to                          = "pay_to query_id:uint64 to_address:MsgAddress excesses_address:MsgAddress original_caller:MsgAddress exit_code:uint32 custom_payload:(Maybe ^Cell) additional_info:^[fwd_ton_amount:Coins amount0_out:Coins token0_address:MsgAddress amount1_out:Coins token1_address:MsgAddress] = InternalMsgBody"c & 0x7fffffff;'
+  source_scope_restricted: true
+  scope_assets_only: true
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  methodology_audit_exit: NOT_AVAILABLE
+  required_evidence_complete: true
+  no_fabrication: true
+  shippable: false
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_DEADEND
+  rejection_reason: 'Router authenticates the deterministic Pool before consuming pay_to routing fields. The normal branch sends one fixed token leg to the selected token wallet with owner and excess response fields; its explicit low-gas check suppresses only forward_ton_amount, and QCARRY_ALL_BALANCE carries only remaining TON. addr_none suppresses residual excess routing. No attacker-positive token, reserve, or persistent delta is reachable, and the behavior is covered by prior pay_to/carry/response audits.'
+  duplicate_family: 'iter_64 pay_to zero leg, iter_80 dual-leg cross route, iter_86 cross-swap gas threshold, iter_87 response/excess, iter_89 route parser refund, iter_90 pay_to custom dispatch, iter_92 zero-side selection, iter_95 addr_none semantics, iter_99 carry/reentry, iter_231 forward amount accounting, iter_234 response excess destination, iter_251 pay_to 32-bit cutoff, and iter_255 notification ref/forward payload'
+  caller_match_count: 94
+  caller_unique_files: 7
+  cascade_verbatim_hit_count: 26
+  cross_file_anchor_count: 26
+  caller_paths:
+    - contracts/common/contracts.fc
+    - contracts/common/op.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool/msgs/router.fc
+    - contracts/router/msgs/pool.fc
+    - tests/Pool.spec.ts
+    - tests/System.spec.ts
+  callers_grep_artifact: iter_260/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_260/poc_router_pay_to_normal_fwd_response_excess_split.test.js
+    poc_run_log: iter_260/poc_router_pay_to_normal_fwd_response_excess_split.run.log
+    live_regression_log: iter_260/live-router-pay-to-normal-regression.run.log
+    prior_audit: iter_260/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_260/poc_router_pay_to_normal_fwd_response_excess_split.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_260/poc_router_pay_to_normal_fwd_response_excess_split.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.2s static; 7.837s integration'
+    result: 'PASS (26 cross-file anchors; five fixed-transfer/forward/excess/sender cases; zero modeled asset or persistent deltas; three live regressions)'
+  prior_art_check:
+    queries:
+      - 'pay_to/forward_ton_amount/response_address/excess/QCARRY_ALL_BALANCE/gas boundary scan across CHAIN_HYPOTHESIS_TABLE.md and iter_*/STATUS.yaml'
+      - 'git history and prior status scan for Router pay_to, LPWallet response/excess, carry, and route-refund families'
+    results:
+      - 'iter_64, iter_80, iter_86, iter_87, iter_89, iter_90, iter_92, iter_95, iter_99, iter_231, iter_234, iter_251, and iter_255: adjacent pay_to/forward/excess/carry families closed'
+    r15_disclosure_check:
+      gh_search_terms_used:
+        - 'repo:ston-fi/dex-core-v2 "fwd_ton_amount" "excesses_address" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "fwd_ton_amount" "excesses_address" is:pr'
+        - 'repo:ston-fi/dex-core-v2 "QCARRY_ALL_BALANCE" "pay_to" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "QCARRY_ALL_BALANCE" "pay_to" is:pr'
+      gh_search_hits: 0
+      evidence_files:
+        - iter_260/r15-router-payto-forward-excess-issue.json
+        - iter_260/r15-router-payto-forward-excess-pr.json
+        - iter_260/r15-router-payto-carry-issue.json
+        - iter_260/r15-router-payto-carry-pr.json
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "fwd_ton_amount" "excesses_address" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "fwd_ton_amount" "excesses_address" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "QCARRY_ALL_BALANCE" "pay_to" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "QCARRY_ALL_BALANCE" "pay_to" is:pr'
+    gh_search_hits: 0
+    evidence_files:
+      - iter_260/r15-router-payto-forward-excess-issue.json
+      - iter_260/r15-router-payto-forward-excess-pr.json
+      - iter_260/r15-router-payto-carry-issue.json
+      - iter_260/r15-router-payto-carry-pr.json
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: PRE_KILLED_DUPLICATE
+  shadow_mode: true
+  caller_path: iter_260/callers-grep.txt
+  caller_match_count: 94
+  caller_unique_files: 7
+  prior_audit_path: iter_260/prior-audit-git.log
+  prior_family_matches: [iter64, iter80, iter86, iter87, iter89, iter90, iter92, iter95, iter99, iter231, iter234, iter251, iter255]
+  r15_evidence_files:
+    - iter_260/r15-router-payto-forward-excess-issue.json
+    - iter_260/r15-router-payto-forward-excess-pr.json
+    - iter_260/r15-router-payto-carry-issue.json
+    - iter_260/r15-router-payto-carry-pr.json
+  source_conclusion: 'DD2 is a direct duplicate of the Router pay_to and LPWallet response/forward families. Pool authentication occurs before the normal transfer branch; token amount and owner are fixed by the canonical message, forward TON is suppressed at the documented boundary, and the response address controls only residual TON. The fresh five-case model and live regressions show no attacker-positive selected-asset or persistent-state delta.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_260/poc_router_pay_to_normal_fwd_response_excess_split.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_260/poc_router_pay_to_normal_fwd_response_excess_split.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_260/live-router-pay-to-normal-regression.run.log
+    result: PASS

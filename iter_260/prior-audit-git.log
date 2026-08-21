@@ -1,0 +1,25 @@
+COMMAND: git log --all --oneline -- CHAIN_HYPOTHESIS_TABLE.md | head -n 12
+LATEST_COMMITS:
+8518247 shadow: complete iter259 DD1
+eba2cc6 shadow: complete iter258 CC5
+4393dcb shadow: complete iter257 CC4
+610be24 shadow: complete iter256 CC3
+63fca62 shadow: complete iter255 CC2
+
+COMMAND: rg -n -i 'cell_label:.*(pay_to|forward|response|excess|carry)|duplicate_family:.*(pay_to|forward|response|excess|carry)|source_conclusion:.*(pay_to|forward|response|excess|carry)' iter_64/STATUS.yaml iter_80/STATUS.yaml iter_86/STATUS.yaml iter_87/STATUS.yaml iter_89/STATUS.yaml iter_90/STATUS.yaml iter_92/STATUS.yaml iter_95/STATUS.yaml iter_99/STATUS.yaml iter_231/STATUS.yaml iter_234/STATUS.yaml iter_251/STATUS.yaml iter_255/STATUS.yaml
+PRIOR_MATCHES:
+iter_64 router_pay_to_zero_leg: closed; zero-leg fallback is bounded by producer invariants and deterministic sender checks.
+iter_80 pay_to_dual_leg_cross_route: closed; valid producers supply one positive and one zero output leg.
+iter_86 router_cross_swap_gas_threshold_residual: closed; only strict-above threshold enters nested route, equality/below uses normal payout.
+iter_87 response/excess: closed; response_address controls only sender-supplied residual excess.
+iter_89 router route parser refund: closed; malformed route refund preserves the original amount and caller.
+iter_90 pool_pay_to_custom_payload_dispatch: closed; deterministic Pool authentication precedes payload routing.
+iter_92 router_pay_to_zero_amount_side_selection: closed; one-sided producer invariants prevent token aliasing.
+iter_95 addr_none boundary semantics: closed; none suppresses only optional excess/referral behavior.
+iter_99 callback carry/reentry: closed; fixed token legs and destinations are assembled before carry modes.
+iter_231 LPWallet forward amount accounting: closed; low-gas path zeroes forward amount before the final save.
+iter_234 LPWallet response excess destination: closed; response address changes only residual TON destination.
+iter_251 router_pay_to custom payload 32-bit cutoff: PRE_KILLED_DUPLICATE; ordinary and malformed nested paths preserve amount/caller.
+iter_255 router notification ref/forward payload family: PRE_KILLED_DUPLICATE.
+
+CONCLUSION: DD2 is a direct response/forward/carry duplicate of the Router pay_to, LPWallet notification, and prior carry families. The fresh PoC tests the normal one-sided path, exact suppression boundary, both token sides, addr_none, and sender rejection without a new state or asset delta.
