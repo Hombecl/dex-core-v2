@@ -1,0 +1,11 @@
+{
+  "result": "PASS",
+  "classification": "PRE_KILLED_DUPLICATE",
+  "cell": "CC1",
+  "cross_file_anchors": 17,
+  "floor_cases": 6,
+  "persistent_deltas": [25, 25, 25, 25, 25, 0],
+  "action_sets": [[], [], ["transfer_notification"], ["transfer_notification"], ["transfer_notification", "excesses"], []],
+  "source_observation": "receive has no explicit msg_value funding throw; it computes storage/gas deductions, optionally schedules notification/excess actions, and saves the source-authorized encoded credit after compute",
+  "reason": "The TON floor changes optional action availability, not the accepted LP amount. The sender gate remains the stored master or exact deterministic source wallet, and an unauthorized sender throws before save. Prior forwarding/funding audits cover the same source-bound credit and no attacker-positive asset delta is reachable"
+}

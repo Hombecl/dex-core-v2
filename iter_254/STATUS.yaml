@@ -1,0 +1,161 @@
+schema_version: shadow-v1
+iteration: 254
+phase: completed
+cell_id: CC1
+cell_label: lp_wallet_receive_storage_fee_floor_notification_order
+final_verdict: PRE_KILLED_DUPLICATE
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: CC1
+  final_verdict: PRE_KILLED_DUPLICATE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/lp_wallet.fc
+        line: 54
+        text: '() receive_tokens (slice in_msg_body, slice sender_address, int my_ton_balance, int fwd_fee, int msg_value) impure {'
+      - file: contracts/lp_wallet.fc
+        line: 58
+        text: 'balance += jetton_amount;'
+      - file: contracts/lp_wallet.fc
+        line: 68
+        text: 'int storage_fee = REQUIRED_TON_STORAGE - min(ton_balance_before_msg, REQUIRED_TON_STORAGE);'
+      - file: contracts/lp_wallet.fc
+        line: 74
+        text: 'msg_value -= (forward_ton_amount + fwd_fee);'
+      - file: contracts/lp_wallet.fc
+        line: 89
+        text: 'if ((response_address.preload_uint(2) != 0) & (msg_value > 0)) {'
+      - file: contracts/lp_wallet.fc
+        line: 100
+        text: 'storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);'
+      - file: contracts/lp_wallet/storage.fc
+        line: 9
+        text: 'set_data(pack_jetton_lp_wallet_data(balance, owner_address, jetton_master_address, jetton_wallet_code));'
+      - file: contracts/common/contracts.fc
+        line: 206
+        text: '(cell) jetton_wallet::mint('
+      - file: contracts/router/msgs/jetton.fc
+        line: 5
+        text: 'if ctx.at(OPCODE) == op::ft::transfer_notification {'
+      - file: tests/System.spec.ts
+        line: 132
+        text: "it('should handle mint & burn liquidity', async () => {"
+      - file: tests/ConstProduct.spec.ts
+        line: 1679
+        text: "it('should handle more complex scenarios', async () => {"
+  source_scope_restricted: true
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  required_evidence_complete: true
+  no_fabrication: true
+  scope_assets_only: true
+  methodology_audit_exit: NOT_AVAILABLE
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_DEADEND
+  shippable: false
+  rejection_reason: 'LPWallet receive computes storage/gas deductions, optionally schedules notification and excess actions, and saves the source-authorized encoded LP credit. The TON floor changes optional action availability only; the stored master/source gate remains binding and unauthorized messages throw before save. No attacker-positive selected-asset delta was demonstrated.'
+  duplicate_family: 'iter_73 lp_wallet_forward_payload_balance, iter_87 lp_wallet_notification_payload_alias, iter_208 lp_wallet_send_tokens_stateinit_bounce_debit_restore, iter_231 lp_wallet_receive_forward_funding_boundary, iter_234 lp_wallet_receive_response_excess_destination, and iter_235 lp_wallet_receive_forward_payload_notification_alias'
+  caller_match_count: 37
+  caller_unique_files: 6
+  cascade_verbatim_hit_count: 11
+  cross_file_anchor_count: 17
+  caller_paths:
+    - contracts/common/contracts.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool/msgs/lp_account.fc
+    - contracts/router/msgs/jetton.fc
+    - tests/ConstProduct.spec.ts
+    - tests/System.spec.ts
+  callers_grep_artifact: iter_254/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_254/poc_lp_wallet_receive_storage_fee_floor_notification_order.test.js
+    poc_run_log: iter_254/poc_lp_wallet_receive_storage_fee_floor_notification_order.run.log
+    live_regression_log: iter_254/live-lp-wallet-receive-floor-regression.run.log
+    prior_audit: iter_254/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_254/poc_lp_wallet_receive_storage_fee_floor_notification_order.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_254/poc_lp_wallet_receive_storage_fee_floor_notification_order.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.2s static; 10.214s integration'
+    result: 'PASS (17 cross-file anchors; six floor cases; accepted credit remains +25; unauthorized sender zero; three live regressions)'
+  prior_art_check:
+    queries:
+      - 'receive_tokens/forwarding/storage_fee/REQUIRED_GAS/underfund/msg_value/transfer_notification/excesses scan across CHAIN_HYPOTHESIS_TABLE.md and iter_*/STATUS.yaml'
+    results:
+      - 'iter_73 lp_wallet_forward_payload_balance: DEADEND_WITH_PROOF'
+      - 'iter_87 lp_wallet_notification_payload_alias: DEADEND_WITH_PROOF'
+      - 'iter_208 lp_wallet_send_tokens_stateinit_bounce_debit_restore: DEADEND_WITH_PROOF'
+      - 'iter_231 lp_wallet_receive_forward_funding_boundary: PRE_KILLED_DUPLICATE'
+      - 'iter_234 lp_wallet_receive_response_excess_destination: PRE_KILLED_DUPLICATE'
+      - 'iter_235 lp_wallet_receive_forward_payload_notification_alias: PRE_KILLED_DUPLICATE'
+    r15_disclosure_check:
+      gh_search_terms_used:
+        - 'repo:ston-fi/dex-core-v2 "ton_balance_before_msg" "response_address" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "ton_balance_before_msg" "response_address" is:pr'
+        - 'repo:ston-fi/dex-core-v2 "REQUIRED_TON_STORAGE" "forward_ton_amount" "transfer_notification" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "REQUIRED_TON_STORAGE" "forward_ton_amount" "transfer_notification" is:pr'
+      gh_search_hits: 0
+      evidence_files:
+        - iter_254/r15-lp-wallet-floor-issue.json
+        - iter_254/r15-lp-wallet-floor-pr.json
+        - iter_254/r15-lp-wallet-ton-floor-issue.json
+        - iter_254/r15-lp-wallet-ton-floor-pr.json
+    attacker_privilege:
+      privilege_required: external_unauth
+    fund_loss_demonstrated: false
+    concrete_impact_demonstrated: false
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "ton_balance_before_msg" "response_address" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "ton_balance_before_msg" "response_address" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "REQUIRED_TON_STORAGE" "forward_ton_amount" "transfer_notification" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "REQUIRED_TON_STORAGE" "forward_ton_amount" "transfer_notification" is:pr'
+    gh_search_hits: 0
+    evidence_files:
+      - iter_254/r15-lp-wallet-floor-issue.json
+      - iter_254/r15-lp-wallet-floor-pr.json
+      - iter_254/r15-lp-wallet-ton-floor-issue.json
+      - iter_254/r15-lp-wallet-ton-floor-pr.json
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: PRE_KILLED_DUPLICATE
+  shadow_mode: true
+  caller_path: iter_254/callers-grep.txt
+  caller_match_count: 37
+  caller_unique_files: 6
+  prior_audit_path: iter_254/prior-audit-git.log
+  prior_family_matches: [iter73, iter87, iter208, iter231, iter234, iter235]
+  r15_evidence_files:
+    - iter_254/r15-lp-wallet-floor-issue.json
+    - iter_254/r15-lp-wallet-floor-pr.json
+    - iter_254/r15-lp-wallet-ton-floor-issue.json
+    - iter_254/r15-lp-wallet-ton-floor-pr.json
+  source_conclusion: 'CC1 is the LPWallet receive storage/gas floor duplicate. Optional notification/excess actions change at TON boundaries, but source authorization and the encoded LP credit remain unchanged; no attacker-positive token, LP, or TON delta was demonstrated.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_254/poc_lp_wallet_receive_storage_fee_floor_notification_order.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_254/poc_lp_wallet_receive_storage_fee_floor_notification_order.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_254/live-lp-wallet-receive-floor-regression.run.log
+    result: PASS

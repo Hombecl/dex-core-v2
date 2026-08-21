@@ -1,0 +1,11 @@
+COMMAND: rg -n --no-heading -i 'receive_tokens|forward_payload|forwarding|storage_fee|REQUIRED_GAS|underfund|msg_value|transfer_notification|excesses|balance +=|save.*receive|mint.*notification' CHAIN_HYPOTHESIS_TABLE.md iter_*/STATUS.yaml
+
+Prior matching audit records:
+iter_73/STATUS.yaml: receive_tokens authenticates the master/source wallet before save; malformed or underfunded forwarding does not create an unmatched credit.
+iter_87/STATUS.yaml: response_address controls only sender-supplied excess and addr_none suppresses it; notification goes to stored owner.
+iter_208/STATUS.yaml: receive side accepts only master/deterministic source and successful transfer/bounce conserves balance.
+iter_231/STATUS.yaml: storage/gas and forward deductions occur before final save; underfunded notification is suppressed or fails before attacker-positive credit.
+iter_234/STATUS.yaml: response excess routing is destination-only and does not change LP amount or wallet identity.
+iter_235/STATUS.yaml: forward payload notification is metadata-only after sender authentication.
+
+Conclusion: CC1 is a fresh wording of the already closed LPWallet receive forwarding/funding family. The storage floor changes optional TON actions, not source-authorized LP credit, and does not yield an attacker-positive selected-asset delta.
