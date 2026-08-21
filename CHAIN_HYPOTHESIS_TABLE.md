@@ -129,6 +129,7 @@ Scope is limited to the five selected entrypoint assets recorded in `R1-SURFACE-
 | AC3 | lp_account_refund_then_direct_add_lifecycle | callback_lifecycle | A failed minimum-LP callback followed by direct add/refund ordering could reuse stale LP-account amounts or mint against cleared state. | 123 | deadend_with_proof |
 | AC4 | lp_wallet_forward_payload_reference_depth | payload_reference | Nested forward-payload reference depth or trailing bits could alter owner notification while leaving LP debit committed. | 124 | deadend_with_proof |
 | AC5 | vault_concurrent_deposit_withdraw_transition | vault_lifecycle | Interleaved referral-fee deposits and permissionless withdrawals could reuse a stale deposited amount, lose a post-withdraw deposit, or route a payout through a destroyed/redeployed vault incorrectly. | 125 | deadend_with_proof |
+| AD1 | lp_account_both_positive_flag_mint_gate | mint_gate | A caller-controlled `both_positive` bit could cross router → pool → LP-account boundaries and mint LP against mismatched token legs or bypass the pool’s reserve accounting. | 126 | deadend_with_proof |
 
 ## Cell execution contract
 
