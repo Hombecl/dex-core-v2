@@ -1,0 +1,18 @@
+COMMAND: rg -n --no-heading -i 'on_bounce|truncated|query_id|internal_transfer|burn_notification_ext|bounce restore|load_coins|replay' CHAIN_HYPOTHESIS_TABLE.md iter_*/STATUS.yaml
+
+Prior matching audit records:
+iter_96/STATUS.yaml:6:final_verdict: DEADEND_WITH_PROOF
+iter_96/STATUS.yaml:60: LP wallet enters on_bounce only from the VM bounced flag; accepts only internal_transfer or burn_notification_ext; restores the encoded amount into the same wallet balance.
+iter_124/STATUS.yaml:6:final_verdict: DEADEND_WITH_PROOF
+iter_124/STATUS.yaml:65: Bounce accepts only internal_transfer or burn_notification_ext and restores the exact encoded amount; no payload-depth or reference-shape path produced a persistent debit.
+iter_136/STATUS.yaml:6:final_verdict: DEADEND_WITH_PROOF
+iter_136/STATUS.yaml:77: LP-wallet on_bounce is reached only through the incoming bounced-header flag, skips the bounce wrapper, accepts only internal_transfer or burn_notification_ext, and restores the body amount once before saving.
+iter_178/STATUS.yaml:6:final_verdict: DEADEND_WITH_PROOF
+iter_178/STATUS.yaml:92: LP wallet debits before burn_notification_ext and restores the exact amount if the Pool rejects; no attacker-positive delta.
+iter_194/STATUS.yaml:6:final_verdict: DEADEND_WITH_PROOF
+iter_194/STATUS.yaml:119: deterministic LP wallet and fixed owner-directed output legs; LP-wallet bounce restoration is limited to its own burn notification.
+iter_248/STATUS.yaml:6:final_verdict: PRE_KILLED_DUPLICATE
+iter_248/STATUS.yaml:93: duplicate_family includes iter_96, iter_124, iter_136, iter_178, and iter_194.
+iter_248/STATUS.yaml:169: BA5 is the already audited LPWallet typed-bounce family; query_id is metadata only and no attacker-positive delta was demonstrated.
+
+Conclusion: BB2's truncated parser boundary is already covered by the typed-bounce and exact-amount restoration audits above. A short body throws during skip/op/query/Coins parsing before restoration or save; it does not create a new persistent state transition.

@@ -1,0 +1,197 @@
+schema_version: shadow-v1
+iteration: 250
+phase: completed
+cell_id: BB2
+cell_label: lp_wallet_bounce_truncated_body_parse
+final_verdict: PRE_KILLED_DUPLICATE
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: BB2
+  final_verdict: PRE_KILLED_DUPLICATE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/lp_wallet.fc
+        line: 137
+        text: 'in_msg_body~skip_bits(32);'
+      - file: contracts/lp_wallet.fc
+        line: 139
+        text: 'int op = in_msg_body~load_uint(32);'
+      - file: contracts/lp_wallet.fc
+        line: 141
+        text: 'throw_unless(709, (op == op::internal_transfer) | (op == op::burn_notification_ext));'
+      - file: contracts/lp_wallet.fc
+        line: 143
+        text: 'int query_id = in_msg_body~load_uint(64);'
+      - file: contracts/lp_wallet.fc
+        line: 144
+        text: 'int jetton_amount = in_msg_body~load_coins();'
+      - file: contracts/lp_wallet.fc
+        line: 145
+        text: 'balance += jetton_amount;'
+      - file: contracts/lp_wallet.fc
+        line: 146
+        text: 'storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);'
+      - file: contracts/lp_wallet.fc
+        line: 150
+        text: 'if (in_msg_body.slice_empty?()) {'
+      - file: contracts/lp_wallet.fc
+        line: 156
+        text: 'if (flags & 1) {'
+      - file: contracts/lp_wallet/storage.fc
+        line: 1
+        text: '(int, slice, slice, cell) storage::load() inline {'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 20
+        text: 'throw_unless(error::invalid_caller, equal_slices(lp_wallet~address(params::workchain), ctx.at(SENDER)));'
+      - file: contracts/pool.fc
+        line: 11
+        text: 'if ctx.at(IS_BOUNCED) {'
+      - file: contracts/lp_wallet/op.fc
+        line: 3
+        text: 'const op::internal_transfer = 0x178d4519;'
+      - file: contracts/lp_wallet.fc
+        line: 116
+        text: '.store_uint(op::burn_notification_ext, 32)'
+      - file: tests/System.spec.ts
+        line: 251
+        text: "it('should handle invalid transfers', async () => {"
+      - file: tests/ConstProduct.spec.ts
+        line: 1904
+        text: "it('should burn liquidity', async () => {"
+  source_scope_restricted: true
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  required_evidence_complete: true
+  no_fabrication: true
+  scope_assets_only: true
+  methodology_audit_exit: NOT_AVAILABLE
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_DEADEND
+  shippable: false
+  rejection_reason: 'A protocol-marked bounce with a body shorter than the skip/op/query/Coins prefix throws before balance restoration or storage::save. A complete body restores only its fully encoded Coins amount, and an unknown opcode fails the typed gate. This parser-boundary hypothesis is already covered by the LPWallet typed-bounce audit family; no persistent balance inflation, cross-wallet credit, or attacker-positive asset delta was demonstrated.'
+  duplicate_family: 'iter_96 lp_wallet_bounce_restore_authority, iter_124 lp_wallet_payload_balance_boundary, iter_136 lp_wallet_bounce_query_id_alias, iter_178/AP1 lp_wallet_burn_bounce_accounting, iter_194/AR4 lp_burn_dual_output_bounce_correlation, and iter_248/BA5 lp_wallet_bounce_query_id_noncorrelation'
+  caller_match_count: 173
+  caller_unique_files: 27
+  cascade_verbatim_hit_count: 16
+  cross_file_anchor_count: 16
+  caller_paths:
+    - contracts/common/contracts.fc
+    - contracts/common/op.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_wallet/op.fc
+    - contracts/lp_wallet/storage.fc
+    - contracts/pool/msgs/lp_account.fc
+    - contracts/pool/msgs/lp_wallet.fc
+    - contracts/pool/msgs/protocolfee.fc
+    - contracts/pool/msgs/router.fc
+    - contracts/pool/pools/README.md
+    - contracts/pool/pools/constant_product/storage.fc
+    - contracts/pool/pools/constant_sum/storage.fc
+    - contracts/pool/pools/stableswap/ext_router.fc
+    - contracts/pool/pools/stableswap/storage.fc
+    - contracts/pool/pools/weighted_const_product/ext_router.fc
+    - contracts/pool/pools/weighted_const_product/storage.fc
+    - contracts/pool/pools/weighted_stableswap/ext_router.fc
+    - contracts/pool/pools/weighted_stableswap/setter.fc
+    - contracts/pool/pools/weighted_stableswap/storage.fc
+    - contracts/router/msgs/admin.fc
+    - contracts/router/msgs/jetton.fc
+    - contracts/router/msgs/pool.fc
+    - contracts/router/msgs/vault.fc
+    - contracts/router/storage.fc
+    - contracts/vault.fc
+    - tests/ConstProduct.spec.ts
+    - tests/System.spec.ts
+  callers_grep_artifact: iter_250/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_250/poc_lp_wallet_bounce_truncated_body_parse.test.js
+    poc_run_log: iter_250/poc_lp_wallet_bounce_truncated_body_parse.run.log
+    live_regression_log: iter_250/live-lp-wallet-bounce-truncated-regression.run.log
+    prior_audit: iter_250/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_250/poc_lp_wallet_bounce_truncated_body_parse.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_250/poc_lp_wallet_bounce_truncated_body_parse.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.2s static; 9.42s integration'
+    result: 'PASS (16 cross-file anchors; four parser cases; one truncated case; two complete-body cases; one typed-op case; System/ConstProduct regressions)'
+  prior_art_check:
+    queries:
+      - 'on_bounce/truncated/query_id/internal_transfer/burn_notification_ext/load_coins/replay scan across CHAIN_HYPOTHESIS_TABLE.md and iter_*/STATUS.yaml'
+    results:
+      - 'iter_96 lp_wallet_bounce_restore_authority: DEADEND_WITH_PROOF'
+      - 'iter_124 lp_wallet_payload_balance_boundary: DEADEND_WITH_PROOF'
+      - 'iter_136 lp_wallet_bounce_query_id_alias: DEADEND_WITH_PROOF'
+      - 'iter_178/AP1 lp_wallet_burn_bounce_accounting: DEADEND_WITH_PROOF'
+      - 'iter_194/AR4 lp_burn_dual_output_bounce_correlation: DEADEND_WITH_PROOF'
+      - 'iter_248/BA5 lp_wallet_bounce_query_id_noncorrelation: PRE_KILLED_DUPLICATE'
+    r15_disclosure_check:
+      gh_search_terms_used:
+        - 'repo:ston-fi/dex-core-v2 "on_bounce" "load_coins" "throw_unless(709" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "on_bounce" "load_coins" "throw_unless(709" is:pr'
+        - 'repo:ston-fi/dex-core-v2 "skip_bits(32)" "balance += jetton_amount" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "skip_bits(32)" "balance += jetton_amount" is:pr'
+      gh_search_hits: 0
+      evidence_files:
+        - iter_250/r15-lp-wallet-bounce-issue.json
+        - iter_250/r15-lp-wallet-bounce-pr.json
+        - iter_250/r15-lp-wallet-truncated-issue.json
+        - iter_250/r15-lp-wallet-truncated-pr.json
+    attacker_privilege:
+      privilege_required: external_unauth
+    fund_loss_demonstrated: false
+    concrete_impact_demonstrated: false
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "on_bounce" "load_coins" "throw_unless(709" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "on_bounce" "load_coins" "throw_unless(709" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "skip_bits(32)" "balance += jetton_amount" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "skip_bits(32)" "balance += jetton_amount" is:pr'
+    gh_search_hits: 0
+    evidence_files:
+      - iter_250/r15-lp-wallet-bounce-issue.json
+      - iter_250/r15-lp-wallet-bounce-pr.json
+      - iter_250/r15-lp-wallet-truncated-issue.json
+      - iter_250/r15-lp-wallet-truncated-pr.json
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: PRE_KILLED_DUPLICATE
+  shadow_mode: true
+  caller_path: iter_250/callers-grep.txt
+  caller_match_count: 173
+  caller_unique_files: 27
+  prior_audit_path: iter_250/prior-audit-git.log
+  prior_family_matches: [iter96, iter124, iter136, iter178, iter194, iter248]
+  r15_evidence_files:
+    - iter_250/r15-lp-wallet-bounce-issue.json
+    - iter_250/r15-lp-wallet-bounce-pr.json
+    - iter_250/r15-lp-wallet-truncated-issue.json
+    - iter_250/r15-lp-wallet-truncated-pr.json
+  source_conclusion: 'BB2 is a parser-boundary duplicate of the established LPWallet typed-bounce family. Truncation throws during required prefix parsing before restore/save; complete bodies restore the exact encoded amount, while protocol bounce entry and opcode gating remain fixed. No attacker-positive token, LP, or TON delta was demonstrated.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_250/poc_lp_wallet_bounce_truncated_body_parse.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_250/poc_lp_wallet_bounce_truncated_body_parse.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_250/live-lp-wallet-bounce-truncated-regression.run.log
+    result: PASS

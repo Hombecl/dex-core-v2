@@ -1,0 +1,29 @@
+MATCH_COUNT: 173
+UNIQUE_FILE_COUNT: 27
+contracts/common/contracts.fc
+contracts/common/op.fc
+contracts/lp_wallet.fc
+contracts/lp_wallet/op.fc
+contracts/lp_wallet/storage.fc
+contracts/pool/msgs/lp_account.fc
+contracts/pool/msgs/lp_wallet.fc
+contracts/pool/msgs/protocolfee.fc
+contracts/pool/msgs/router.fc
+contracts/pool/pools/README.md
+contracts/pool/pools/constant_product/storage.fc
+contracts/pool/pools/constant_sum/storage.fc
+contracts/pool/pools/stableswap/ext_router.fc
+contracts/pool/pools/stableswap/storage.fc
+contracts/pool/pools/weighted_const_product/ext_router.fc
+contracts/pool/pools/weighted_const_product/storage.fc
+contracts/pool/pools/weighted_stableswap/ext_router.fc
+contracts/pool/pools/weighted_stableswap/setter.fc
+contracts/pool/pools/weighted_stableswap/storage.fc
+contracts/router/msgs/admin.fc
+contracts/router/msgs/jetton.fc
+contracts/router/msgs/pool.fc
+contracts/router/msgs/vault.fc
+contracts/router/storage.fc
+contracts/vault.fc
+tests/ConstProduct.spec.ts
+tests/System.spec.ts

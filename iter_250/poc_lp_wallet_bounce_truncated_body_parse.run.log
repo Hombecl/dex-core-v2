@@ -1,0 +1,11 @@
+{
+  "result": "PASS",
+  "classification": "PRE_KILLED_DUPLICATE",
+  "cell": "BB2",
+  "cross_file_anchors": 16,
+  "parser_cases": 4,
+  "truncated_cases": 1,
+  "exact_complete_cases": 2,
+  "typed_gate_cases": 1,
+  "reason": "truncated skip/op/query/Coins parsing throws before balance restoration or save; a complete body restores only its fully encoded Coins amount, and unknown opcodes fail the typed gate. Protocol bounce entry and prior LPWallet bounce audits keep this branch local"
+}
