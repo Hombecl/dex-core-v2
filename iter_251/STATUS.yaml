@@ -1,0 +1,154 @@
+schema_version: shadow-v1
+iteration: 251
+phase: completed
+cell_id: BB3
+cell_label: router_pay_to_custom_payload_32bit_cutoff
+final_verdict: PRE_KILLED_DUPLICATE
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: BB3
+  final_verdict: PRE_KILLED_DUPLICATE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/router/msgs/pool.fc
+        line: 33
+        text: 'if (tmp_custom_payload_ds.slice_bits() > 32) { ;; cross_swap = 32 + address'
+      - file: contracts/router/msgs/pool.fc
+        line: 34
+        text: 'fwd_opcode = tmp_custom_payload_ds.preload_uint(32);'
+      - file: contracts/router/msgs/pool.fc
+        line: 46
+        text: 'if (fwd_opcode == op::cross_swap) '
+      - file: contracts/router/dex.fc
+        line: 33
+        text: 'jetton_wallet::transfer(0, _sent_amount, _caller, _caller)'
+      - file: contracts/common/contracts.fc
+        line: 163
+        text: '.store_maybe_ref(_maybe_custom_payload)'
+      - file: contracts/pool/msgs/router.fc
+        line: 58
+        text: 'router::pay_to('
+      - file: contracts/common/op.fc
+        line: 4
+        text: 'const op::cross_swap'
+      - file: wrappers/Router.ts
+        line: 174
+        text: '.storeUint(routerOpcodes.crossSwap, 32)'
+  source_scope_restricted: true
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  required_evidence_complete: true
+  no_fabrication: true
+  scope_assets_only: true
+  methodology_audit_exit: NOT_AVAILABLE
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_DEADEND
+  shippable: false
+  rejection_reason: 'Router pay_to applies a strict custom-payload slice_bits() > 32 gate before reading the first 32-bit opcode. A 32-bit payload stays on the ordinary fixed-amount transfer path; a 33-bit payload carrying cross_swap enters route_dex_messages but cannot supply a complete MsgAddress and is caught into an equal-amount refund to original_caller. The boundary changes route handling only and produces no owner substitution, amount change, token alias, persistent state change, or attacker-positive asset delta.'
+  duplicate_family: 'iter_80 pay_to_dual_leg_cross_route, iter_86 router_cross_swap_gas_threshold_residual, iter_89 router_route_error_refund_encoding, iter_90 pool_pay_to_custom_payload_dispatch, iter_118 cross_swap_nested_refund_binding, and iter_128 nested cross_swap payload boundary'
+  caller_match_count: 67
+  caller_unique_files: 8
+  cascade_verbatim_hit_count: 8
+  cross_file_anchor_count: 17
+  caller_paths:
+    - contracts/common/contracts.fc
+    - contracts/common/op.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool/msgs/router.fc
+    - contracts/router/dex.fc
+    - contracts/router/msgs/pool.fc
+    - tests/ConstProduct.spec.ts
+    - tests/System.spec.ts
+  callers_grep_artifact: iter_251/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_251/poc_router_pay_to_custom_payload_32bit_cutoff.test.js
+    poc_run_log: iter_251/poc_router_pay_to_custom_payload_32bit_cutoff.run.log
+    live_regression_log: iter_251/live-router-pay-to-cutoff-regression.run.log
+    prior_audit: iter_251/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_251/poc_router_pay_to_custom_payload_32bit_cutoff.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_251/poc_router_pay_to_custom_payload_32bit_cutoff.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.1s static; 11.976s integration'
+    result: 'PASS (17 PoC anchors; five cutoff cases; exact 32-bit ordinary transfer; 33-bit cross-op parser refund; zero asset delta in all cases; three cross-swap regressions)'
+  prior_art_check:
+    queries:
+      - 'slice_bits > 32/32-bit/cross_swap/pay_to/nested route/route_dex_messages/custom_payload scan across CHAIN_HYPOTHESIS_TABLE.md and iter_*/STATUS.yaml'
+    results:
+      - 'iter_80 pay_to_dual_leg_cross_route: DEADEND_WITH_PROOF'
+      - 'iter_86 router_cross_swap_gas_threshold_residual: DEADEND_WITH_PROOF'
+      - 'iter_89 router_route_error_refund_encoding: DEADEND_WITH_PROOF'
+      - 'iter_90 pool_pay_to_custom_payload_dispatch: DEADEND_WITH_PROOF'
+      - 'iter_118 cross_swap_nested_refund_binding: DEADEND_WITH_PROOF'
+      - 'iter_128 nested cross_swap payload boundary: DEADEND_WITH_PROOF'
+    r15_disclosure_check:
+      gh_search_terms_used:
+        - 'repo:ston-fi/dex-core-v2 "slice_bits() > 32" "fwd_opcode" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "slice_bits() > 32" "fwd_opcode" is:pr'
+        - 'repo:ston-fi/dex-core-v2 "preload_uint(32)" "route_dex_messages" "pay_to" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "preload_uint(32)" "route_dex_messages" "pay_to" is:pr'
+      gh_search_hits: 0
+      evidence_files:
+        - iter_251/r15-router-pay-to-cutoff-issue.json
+        - iter_251/r15-router-pay-to-cutoff-pr.json
+        - iter_251/r15-router-preload-route-issue.json
+        - iter_251/r15-router-preload-route-pr.json
+    attacker_privilege:
+      privilege_required: external_unauth
+    fund_loss_demonstrated: false
+    concrete_impact_demonstrated: false
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "slice_bits() > 32" "fwd_opcode" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "slice_bits() > 32" "fwd_opcode" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "preload_uint(32)" "route_dex_messages" "pay_to" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "preload_uint(32)" "route_dex_messages" "pay_to" is:pr'
+    gh_search_hits: 0
+    evidence_files:
+      - iter_251/r15-router-pay-to-cutoff-issue.json
+      - iter_251/r15-router-pay-to-cutoff-pr.json
+      - iter_251/r15-router-preload-route-issue.json
+      - iter_251/r15-router-preload-route-pr.json
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: PRE_KILLED_DUPLICATE
+  shadow_mode: true
+  caller_path: iter_251/callers-grep.txt
+  caller_match_count: 67
+  caller_unique_files: 8
+  prior_audit_path: iter_251/prior-audit-git.log
+  prior_family_matches: [iter80, iter86, iter89, iter90, iter118, iter128]
+  r15_evidence_files:
+    - iter_251/r15-router-pay-to-cutoff-issue.json
+    - iter_251/r15-router-pay-to-cutoff-pr.json
+    - iter_251/r15-router-preload-route-issue.json
+    - iter_251/r15-router-preload-route-pr.json
+  source_conclusion: 'BB3 is the exact-boundary duplicate of the Router pay_to custom-payload dispatch family. The strict >32-bit gate makes a 32-bit payload ordinary metadata, while a malformed 33-bit cross opcode fails nested address parsing and refunds the same amount to original_caller. Existing deterministic pool authentication, route validation, and cross-swap regressions leave no attacker-positive token, LP, or TON delta.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_251/poc_router_pay_to_custom_payload_32bit_cutoff.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_251/poc_router_pay_to_custom_payload_32bit_cutoff.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_251/live-router-pay-to-cutoff-regression.run.log
+    result: PASS

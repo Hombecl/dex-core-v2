@@ -1,0 +1,11 @@
+{
+  "result": "PASS",
+  "classification": "PRE_KILLED_DUPLICATE",
+  "cell": "BB3",
+  "cross_file_anchors": 17,
+  "boundary_cases": 5,
+  "strict_32_case": "ordinary_transfer",
+  "strict_33_cross_case": "route_parser_catch_refund",
+  "asset_delta_cases": [0, 0, 0, 0, 0],
+  "reason": "pay_to uses a strict payload slice_bits() > 32 gate before preloading the cross_swap opcode. Exactly 32 bits stays on the ordinary fixed-amount transfer path; 33 bits with a cross opcode enters route_dex_messages but lacks a complete MsgAddress and is caught into an equal-amount refund to original_caller. The boundary changes route handling only and does not alter owner, amount, or asset deltas"
+}

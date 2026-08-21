@@ -1,0 +1,11 @@
+COMMAND: rg -n --no-heading -i 'slice_bits() > 32|32.?bit|cross_swap|pay_to|nested route|route_dex_messages|custom_payload' CHAIN_HYPOTHESIS_TABLE.md iter_*/STATUS.yaml
+
+Prior matching audit records:
+iter_80/STATUS.yaml:5:cell_label: pay_to_dual_leg_cross_route; all in-scope producers supply one positive and one zero leg and deterministic pool sender checks block forged pay_to input.
+iter_86/STATUS.yaml:5:cell_label: router_cross_swap_gas_threshold_residual; equality/below threshold uses normal payout and above threshold reuses route validation.
+iter_89/STATUS.yaml:5:cell_label: router_route_error_refund_encoding; parser catches refund the original amount to the caller or validated refund address.
+iter_90/STATUS.yaml:5:cell_label: pool_pay_to_custom_payload_dispatch; only payloads wider than 32 bits with cross_swap enter nested routing, while the 32-bit boundary uses ordinary transfer.
+iter_118/STATUS.yaml:5:cell_label: cross_swap_nested_refund_binding; original_caller is preserved through pay_to and route_dex_messages.
+iter_128/STATUS.yaml:5:cell_label: nested cross_swap payload boundary; exact-boundary tails remain normal payloads and malformed nested routes refund the preserved amount/caller.
+
+Conclusion: BB3 exactly rechecks the existing iter_90/iter_128 payload-dispatch family. The 32/33-bit boundary changes branch selection for malformed metadata but does not produce a new amount, owner, token, or persistent state transition.
