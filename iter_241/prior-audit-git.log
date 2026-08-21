@@ -1,0 +1,9 @@
+Command: rg -n -i --no-heading 'from_user|transfer_notification|sender.*jetton|jetton.*sender|user_workchain|wrong_workchain|lp_account.*user|workchain.*lp_account' iter_*/STATUS.yaml
+Relevant prior records:
+iter_51 notification_identity_owner_binding: DEADEND_WITH_PROOF; arbitrary notification/from_address creates a new sender-derived pool and does not debit a victim account.
+iter_146 lp_account_storage_coin_arity: DEADEND_WITH_PROOF; user/pool/amount storage tuple is preserved across producers and consumers.
+iter_180 pool_provide_callback_to_user_deferred_wallet: DEADEND_WITH_PROOF / duplicate; Pool derives LPAccount from (Pool, from_user), authenticates the callback, and separately validates the selected recipient.
+iter_189 router_owned_wallet_residual_debit: DEADEND_WITH_PROOF; forged notification pair cannot debit pre-existing Router wallet residuals.
+iter_192 router_notification_existing_wallet_collision: DEADEND_WITH_PROOF; from_address/from_user keys a distinct deterministic pair and no victim-to-attacker delta was reproduced.
+
+Conclusion: AX18 isolates the missing local workchain check on from_user, but the resulting nonlocal LPAccount user cannot pass the LPAccount root gate; successful liquidity provision clears LPAccount token amounts through the authenticated callback, and prior notification/identity audits rule out an existing-victim debit.

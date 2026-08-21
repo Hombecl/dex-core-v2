@@ -1,0 +1,11 @@
+$ node iter_241/poc_lp_account_reset_gas_user_workchain_binding.test.js
+{
+  "result": "PASS",
+  "classification": "DEADEND_WITH_PROOF",
+  "cell": "AX18",
+  "cross_file_anchors": 22,
+  "workchain_cases": 4,
+  "exact_boundary_checks": 8,
+  "reason": "from_user is stored in the deterministic LPAccount identity and Pool checks the separate to_user destination; a nonlocal stored user cannot pass the LPAccount root workchain gate, but the reset branch only carries TON, does not mutate LP token amounts, and prior notification/identity proofs show the malformed identity path cannot debit an existing victim account"
+}
+exit=0

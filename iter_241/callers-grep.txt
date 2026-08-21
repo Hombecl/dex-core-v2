@@ -1,0 +1,43 @@
+Command: rg -n --no-heading 'reset_gas|from_user|lp_account_idata|storage::user_address|sendResetGas' contracts/lp_account.fc contracts/lp_account contracts/pool contracts/router contracts/common/op.fc contracts/common/contracts.fc wrappers/LPAccount.ts wrappers/Pool.ts tests/System.spec.ts tests/LPAccount.spec.ts
+Root: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon
+contracts/common/op.fc:5:const op::swap                            = "swap query_id:uint64 from_user:MsgAddress left_amount:Coins right_amount:Coins dex_payload:^[transferred_op:uint32 token_wallet1:MsgAddress refund_address:MsgAddress excesses_address:MsgAddress tx_deadline:uint64 swap_body:^[min_out:Coins receiver:MsgAddress fwd_gas:Coins custom_payload:(Maybe ^Cell) refund_fwd_gas:Coins refund_payload:(Maybe ^Cell) ref_fee:uint16 ref_address:MsgAddress]] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:6:const op::provide_lp                      = "provide_lp query_id:uint64 from_user:MsgAddress left_amount:Coins right_amount:Coins dex_payload:^[transferred_op:uint32 token_wallet1:MsgAddress refund_address:MsgAddress excesses_address:MsgAddress tx_deadline:uint64 provide_lp_body:^[min_lp_out:Coins to_address:MsgAddress both_positive:uint1 fwd_amount:Coins custom_payload:(Maybe ^Cell)]] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:14:const op::reset_gas                       = "reset_gas query_id:uint64 = InternalMsgBody"c & 0x7fffffff;
+contracts/lp_account.fc:26:    if equal_slices(ctx.at(SENDER), storage::user_address) {
+contracts/pool/get.fc:13:        lp_account_idata(my_address(), owner_address),
+wrappers/LPAccount.ts:44:    async sendResetGas(provider: ContractProvider, via: Sender, value?: bigint) {
+contracts/lp_account/storage.fc:1:global slice storage::user_address;
+contracts/lp_account/storage.fc:8:    storage::user_address = ds~load_msg_addr();
+contracts/lp_account/storage.fc:17:        .store_slice(storage::user_address)
+contracts/common/contracts.fc:10:(cell) lp_account_idata(slice _pool_address, slice _user_address) inline {
+contracts/common/contracts.fc:224:    slice _from_user, 
+contracts/common/contracts.fc:231:        .store_slice(_from_user);
+contracts/common/contracts.fc:268:(cell) pool::reset_gas(slice _excesses_recipient) inline {
+contracts/common/contracts.fc:269:    return begin_message(op::reset_gas)
+wrappers/Pool.ts:78:    async sendResetGas(provider: ContractProvider, via: Sender, value?: bigint) {
+contracts/lp_account/get.fc:3:    return (storage::user_address, storage::pool_address, storage::amount0, storage::amount1);
+contracts/lp_account/msgs/getter.fc:12:                storage::user_address, 
+contracts/lp_account/msgs/pool.fc:35:                    storage::user_address, 
+contracts/pool/msgs/lp_account.fc:19:            lp_account_idata(
+contracts/pool/msgs/lp_account.fc:77:                lp_account_idata(
+contracts/pool/msgs/lp_account.fc:147:            lp_account_idata(my_address(), user_address),
+contracts/router/msgs/admin.fc:59:            + storage_fee::pool + gas::pool::reset_gas);
+contracts/router/msgs/admin.fc:80:            pool::reset_gas(excesses_recipient), 
+contracts/router/msgs/admin.fc:263:    if ctx.at(OPCODE) == op::reset_gas {
+contracts/pool/msgs/getter.fc:33:            lp_account_idata(my_address(), user_address),
+contracts/pool/msgs/router.fc:7:        slice from_user_address = in_msg_body~load_msg_addr();
+contracts/pool/msgs/router.fc:42:            to_address = to_address.address::is_none() ? from_user_address : to_address;
+contracts/pool/msgs/router.fc:59:                    from_user_address,
+contracts/pool/msgs/router.fc:139:                    from_user_address,
+contracts/pool/msgs/router.fc:161:                    from_user_address,
+contracts/pool/msgs/router.fc:180:        slice from_user = in_msg_body~load_msg_addr();
+contracts/pool/msgs/router.fc:220:                    from_user,
+contracts/pool/msgs/router.fc:241:                lp_account_idata(my_address(), from_user),
+contracts/pool/msgs/router.fc:271:                    from_user,
+contracts/pool/msgs/router.fc:288:    if ctx.at(OPCODE) == op::reset_gas {
+tests/System.spec.ts:386:            const sendResetGasResult = await router.sendResetGas(admin.getSender());
+tests/System.spec.ts:387:            expect(sendResetGasResult.transactions).toHaveTransaction({
+contracts/lp_account/msgs/user.fc:104:    if ctx.at(OPCODE) == op::reset_gas {
+contracts/lp_account/msgs/user.fc:106:        msgs::send_empty(0, storage::user_address, CARRY_ALL_BALANCE);
+
+Summary: caller_match_count=39; caller_unique_files=16; callers_grep_done=true.
