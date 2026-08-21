@@ -1,0 +1,25 @@
+
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/System.spec.ts -t should reset pool gas
+
+PASS tests/System.spec.ts (19.117 s)
+  System
+    Dex
+      ○ skipped should handle mint & burn liquidity
+      ○ skipped should handle refund partial liquidity
+      ○ skipped should handle swaps
+      ○ skipped should handle invalid transfers
+      ○ skipped should handle cross swap
+    Governance
+      ✓ should reset pool gas (508 ms)
+      ✓ should reset pool gas (different address) (227 ms)
+      ○ skipped should reset router gas
+      ○ skipped should lock & unlock pool
+      ○ skipped should set fees
+      ○ skipped should collect fees
+
+Test Suites: 1 passed, 1 total
+Tests:       9 skipped, 2 passed, 11 total
+Snapshots:   0 total
+Time:        19.65 s
+Ran all test suites matching /tests\/System.spec.ts/i with tests matching "should reset pool gas".

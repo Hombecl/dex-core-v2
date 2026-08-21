@@ -1,0 +1,75 @@
+schema_version: shadow-v1
+iteration: 139
+phase: completed
+cell_id: AF4
+cell_label: pool_reset_gas_body_tail_parse
+final_verdict: KILLED_TRUSTED_ON_TRUSTED
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AF4
+  final_verdict: KILLED_TRUSTED_ON_TRUSTED
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - 'contracts/router/msgs/admin.fc:55: if ctx.at(OPCODE) == op::reset_pool_gas {'
+      - 'contracts/router/msgs/admin.fc:61: slice jetton_wallet0 = in_msg_body~load_msg_addr();'
+      - 'contracts/router/msgs/admin.fc:62: slice jetton_wallet1 = in_msg_body~load_msg_addr();'
+      - 'contracts/router/msgs/admin.fc:63: slice excesses_recipient = get_excesses_address(in_msg_body~load_msg_addr());'
+      - 'contracts/router/msgs/admin.fc:64: in_msg_body.end_parse();'
+      - 'contracts/router/msgs/admin.fc:70: var pool = contracts::from_sources('
+      - 'contracts/router/msgs/admin.fc:80: pool::reset_gas(excesses_recipient),'
+      - 'contracts/router.fc:28: if equal_slices(ctx.at(SENDER), storage::admin_address) {'
+      - 'contracts/pool.fc:28: if equal_slices(ctx.at(SENDER), storage::router_address) {'
+      - 'contracts/pool/msgs/router.fc:288: if ctx.at(OPCODE) == op::reset_gas {'
+      - 'contracts/pool/msgs/router.fc:289: reserves::exact(storage_fee::pool);'
+      - 'contracts/pool/msgs/router.fc:290: utils::send_excesses(0, in_msg_body~load_msg_addr(), QCARRY_ALL_BALANCE);'
+      - 'contracts/common/utils.fc:2: _addr = _addr.address::is_none() ? ctx.at(SENDER) : _addr;'
+      - 'contracts/common/contracts.fc:268: (cell) pool::reset_gas(slice _excesses_recipient) inline {'
+  poc_execution:
+    test_file_path: iter_139/poc_pool_reset_gas_body_tail_parse.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_139/poc_pool_reset_gas_body_tail_parse.run.log,iter_139/integration.run.log
+    run_log_exists_on_disk: true
+    test_runtime: '19.65s integration; model passed'
+    result: 'PASSED (integration: 2 passed, 9 skipped, 11 total; model: passed)'
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 reset_gas body excess is:issue'
+      - 'repo:ston-fi/dex-core-v2 reset_gas body excess is:pr'
+      - 'repo:ston-fi/dex-core-v2 pool reset_gas router sender is:issue'
+      - 'repo:ston-fi/dex-core-v2 pool reset_gas router sender is:pr'
+    results: all four returned total_count 0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'reset gas body excess repository issue search'
+      - 'reset gas body excess repository pull-request search'
+      - 'pool reset gas router sender repository issue search'
+      - 'pool reset gas router sender repository pull-request search'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: killed_trusted_on_trusted
+  caller_grep_path: iter_139/callers-grep.txt
+  caller_grep_match_count: 229
+  caller_grep_unique_files: 7
+  prior_audit_path: iter_139/prior-audit-git.log
+  prior_audit_bytes: 29
+  r15_search_files:
+    - iter_139/R15-GH-pool-reset-gas-body-excess-issue.json
+    - iter_139/R15-GH-pool-reset-gas-body-excess-pr.json
+    - iter_139/R15-GH-pool-reset-gas-router-sender-issue.json
+    - iter_139/R15-GH-pool-reset-gas-router-sender-pr.json
+  source_conclusion: 'Router accepts reset_pool_gas only through the admin-gated handler, parses and workchain-checks the two token wallets and excess recipient, derives the deterministic Pool, and sends reset_gas. Pool accepts reset_gas only from its stored Router, reserves exact storage, and sends carried TON excess to the parsed body recipient without touching token balances, reserves, LP supply, or fee counters. Trailing body data does not alter the token state. The effect is trusted admin/Router TON-only control and is killed by the trusted-on-trusted filter.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_139-AF4.md

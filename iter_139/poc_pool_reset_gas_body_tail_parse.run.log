@@ -1,0 +1,1 @@
+AF4 reset-gas parser edge check passed: Pool accepts only the stored Router, the recipient is the already-parsed Router/admin tuple, trailing body data cannot affect token state, and the handler moves carried TON only
