@@ -1,0 +1,166 @@
+schema_version: shadow-v1
+iteration: 259
+phase: completed
+cell_id: DD1
+cell_label: pool_swap_referral_payout_normal_before_main_carry
+final_verdict: PRE_KILLED_DUPLICATE
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: DD1
+  final_verdict: PRE_KILLED_DUPLICATE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/pool/msgs/router.fc
+        line: 121
+        text: 'if (ref_address.preload_uint(2) != 0) & (ref_fee_out0 + ref_fee_out1 > 0) { ;; 2 messages, pay referral, check ref_fee_out'
+      - file: contracts/pool/msgs/router.fc
+        line: 122
+        text: 'msgs::send_simple(ctx.at(FWD_FEE) * 3 + storage_fee::vault + gas::router::pay_vault + gas::vault::deposit_ref_fee,'
+      - file: contracts/pool/msgs/router.fc
+        line: 124
+        text: 'router::pay_vault('
+      - file: contracts/pool/msgs/router.fc
+        line: 138
+        text: 'router::pay_to('
+      - file: contracts/pool/msgs/router.fc
+        line: 150
+        text: 'CARRY_ALL_BALANCE'
+      - file: contracts/pool/msgs/router.fc
+        line: 152
+        text: 'storage::save();'
+      - file: contracts/pool/msgs/router.fc
+        line: 166
+        text: 'refund_payload_cs, ;; clear custom_payload_cs, use refund_payload_cs'
+      - file: contracts/pool.fc
+        line: 11
+        text: 'if ctx.at(IS_BOUNCED) {'
+      - file: contracts/pool.fc
+        line: 28
+        text: 'if equal_slices(ctx.at(SENDER), storage::router_address) {'
+      - file: contracts/router/msgs/pool.fc
+        line: 28
+        text: 'throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER)));'
+      - file: contracts/router/msgs/pool.fc
+        line: 130
+        text: 'vault~state_init(),'
+      - file: contracts/router/msgs/pool.fc
+        line: 131
+        text: 'vault::deposit_ref_fee('
+      - file: contracts/vault.fc
+        line: 40
+        text: 'if (ctx.at(OPCODE) == op::deposit_ref_fee) & equal_slices(ctx.at(SENDER), storage::router_address) {'
+      - file: contracts/vault.fc
+        line: 43
+        text: 'storage::deposited_amount += in_msg_body~load_coins();'
+      - file: contracts/vault.fc
+        line: 44
+        text: 'storage::save();'
+      - file: contracts/common/contracts.fc
+        line: 186
+        text: '(cell) router::pay_vault('
+      - file: tests/ConstProduct.spec.ts
+        line: 1390
+        text: "it('should collect ref fee from vault', async () => {"
+      - file: tests/System.spec.ts
+        line: 263
+        text: "it('should handle cross swap', async () => {"
+  source_scope_restricted: true
+  scope_assets_only: true
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  methodology_audit_exit: NOT_AVAILABLE
+  required_evidence_complete: true
+  no_fabrication: true
+  shippable: false
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_DEADEND
+  rejection_reason: 'Pool computes referral/protocol fee working-state changes before postconditions, emits the bounded referral pay_vault with NORMAL, emits the fixed main pay_to with CARRY_ALL_BALANCE, and saves only on success. The catch refunds fixed input legs without saving tentative reserves. Router authenticates the deterministic Pool/Vault and Vault authenticates Router-only deposits. The five-case PoC and three live regressions reproduce conservation; referral delivery failure is liveness/ledger behavior already covered by prior audits, not attacker-positive selected-asset loss.'
+  duplicate_family: 'iter_6 referral fee bounds, iter_37 referral amount conservation, iter_39/40 referral bounce/order, iter_53 pay_to/pay_vault caller binding, iter_66 swap catch rollback, iter_69/91 fee arithmetic/rounding, iter_76 cross-route refund binding, iter_78/88 Vault delivery/carry lifecycle, iter_90/99 pay_to payload/carry, iter_213 pay_vault StateInit bounce, and iter_258 Vault schema/withdrawal'
+  caller_match_count: 74
+  caller_unique_files: 7
+  cascade_verbatim_hit_count: 18
+  cross_file_anchor_count: 18
+  caller_paths:
+    - contracts/common/contracts.fc
+    - contracts/pool.fc
+    - contracts/pool/msgs/router.fc
+    - contracts/router/msgs/pool.fc
+    - contracts/vault.fc
+    - tests/ConstProduct.spec.ts
+    - tests/System.spec.ts
+  callers_grep_artifact: iter_259/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_259/poc_pool_swap_referral_payout_normal_before_main_carry.test.js
+    poc_run_log: iter_259/poc_pool_swap_referral_payout_normal_before_main_carry.run.log
+    live_regression_log: iter_259/live-pool-swap-referral-order-regression.run.log
+    prior_audit: iter_259/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_259/poc_pool_swap_referral_payout_normal_before_main_carry.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_259/poc_pool_swap_referral_payout_normal_before_main_carry.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.1s static; 11.828s integration'
+    result: 'PASS (16 cross-file anchors; five referral/order/refund cases; zero persistent deltas; three live swap/referral regressions)'
+  prior_art_check:
+    queries:
+      - 'swap_refund/referral/pay_vault/pay_to/CARRY_ALL_BALANCE/NORMAL/storage::save/reserve-catch/pool-referral/Vault StateInit scan across CHAIN_HYPOTHESIS_TABLE.md and iter_*/STATUS.yaml'
+    results:
+      - 'iter_6 referral fee bounds: DEADEND_WITH_PROOF'
+      - 'iter_37 referral amount conservation: DEADEND_WITH_PROOF'
+      - 'iter_39/40 referral bounce/order: DEADEND_WITH_PROOF'
+      - 'iter_53 pay_to/pay_vault caller binding: DEADEND_WITH_PROOF'
+      - 'iter_66 swap catch rollback: DEADEND_WITH_PROOF'
+      - 'iter_69/91 fee arithmetic/rounding: DEADEND_WITH_PROOF'
+      - 'iter_76 cross-route refund binding: DEADEND_WITH_PROOF'
+      - 'iter_78/88 Vault delivery/carry lifecycle: PRE_KILLED_DUPLICATE'
+      - 'iter_90/99 pay_to payload/carry: DEADEND_WITH_PROOF'
+      - 'iter_213 pay_vault StateInit bounce: DEADEND_WITH_PROOF'
+      - 'iter_258 Vault schema/withdrawal: PRE_KILLED_DUPLICATE'
+    r15_disclosure_check:
+      gh_search_terms_used:
+        - 'repo:ston-fi/dex-core-v2 "pay_vault" "CARRY_ALL_BALANCE" "ref_fee" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "pay_vault" "CARRY_ALL_BALANCE" "ref_fee" is:pr'
+        - 'repo:ston-fi/dex-core-v2 "NORMAL" "pay_vault" "storage::save" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "NORMAL" "pay_vault" "storage::save" is:pr'
+      gh_search_hits: 0
+      evidence_files:
+        - iter_259/r15-pool-referral-normal-carry-issue.json
+        - iter_259/r15-pool-referral-normal-carry-pr.json
+        - iter_259/r15-pool-referral-payvault-issue.json
+        - iter_259/r15-pool-referral-payvault-pr.json
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "pay_vault" "CARRY_ALL_BALANCE" "ref_fee" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "pay_vault" "CARRY_ALL_BALANCE" "ref_fee" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "NORMAL" "pay_vault" "storage::save" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "NORMAL" "pay_vault" "storage::save" is:pr'
+    gh_search_hits: 0
+    evidence_files:
+      - iter_259/r15-pool-referral-normal-carry-issue.json
+      - iter_259/r15-pool-referral-normal-carry-pr.json
+      - iter_259/r15-pool-referral-payvault-issue.json
+      - iter_259/r15-pool-referral-payvault-pr.json
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  source_scope_restricted: true
+  scope_assets_only: true
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  methodology_audit_exit: NOT_AVAILABLE
+  required_evidence_complete: true
+  no_fabrication: true
+  shippable: false
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false

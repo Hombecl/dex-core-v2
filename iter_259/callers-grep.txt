@@ -1,0 +1,15 @@
+74
+7
+contracts/common/contracts.fc
+contracts/pool.fc
+contracts/pool/msgs/router.fc
+contracts/router/msgs/pool.fc
+contracts/vault.fc
+tests/ConstProduct.spec.ts
+tests/System.spec.ts
+
+Command:
+matches=$(rg -n --no-heading 'ref_fee_out0|ref_fee_out1|pay_vault|pay_to|CARRY_ALL_BALANCE|storage::save|storage::reserve0|storage::reserve1|collected_token|router_address|vault~state_init|deposit_ref_fee|should handle cross swap|should collect ref fee from vault|should handle more complex scenarios' contracts/pool/msgs/router.fc contracts/pool.fc contracts/common/contracts.fc contracts/router/msgs/pool.fc contracts/vault.fc tests/System.spec.ts tests/ConstProduct.spec.ts)
+printf '%s\\n' "$matches" | wc -l
+printf '%s\\n' "$matches" | cut -d: -f1 | sort -u | wc -l
+printf '%s\\n' "$matches" | cut -d: -f1 | sort -u

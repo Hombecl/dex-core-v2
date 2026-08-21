@@ -1,0 +1,16 @@
+iter_6: fee arithmetic and referral deposit are bounded; referral deposit is Router-only.
+iter_37: referral amount is added once and vault collection forwards once.
+iter_39/40: referral bounce/refund and message-ordering paths have explicit checks.
+iter_53: Router pay_to/pay_vault validates deterministic Pool/Vault senders.
+iter_66: Pool swap reserve/protocol-fee working-state mutations persist only on success; catch refunds without save.
+iter_69/91: referral fee arithmetic and rounding boundaries preserve output/refund invariants.
+iter_76: cross-swap success/refund preserves caller, refund, excess, and route fields.
+iter_78/88: pay_vault/Vault StateInit, Router-only deposit, stored amount, carry/destroy, and replay behavior.
+iter_90/99: pay_to custom-payload dispatch and carry modes preserve fixed amounts/destinations.
+iter_213: pay_vault StateInit bounce/fee-stranding boundary has no external forced path.
+iter_258: Vault schema, exact deposit/withdraw, and carry/destroy lifecycle duplicate.
+
+Command:
+rg -n --no-heading -i 'swap_refund|referral|pay_vault|pay_to|CARRY_ALL_BALANCE|NORMAL|storage::save|reserve.*catch|pool.*referral|vault.*state_init' CHAIN_HYPOTHESIS_TABLE.md iter_*/STATUS.yaml
+
+Conclusion: DD1 is a narrowed duplicate of Pool swap catch rollback plus referral pay_vault/Vault delivery and Router pay_to carry audits; referral delivery failure is liveness/ledger handling, not an external selected-asset theft path.
