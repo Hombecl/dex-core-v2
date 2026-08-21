@@ -1,0 +1,15 @@
+cross_file_anchors 20
+refund_user_sender_gate true
+refund_clears_both_stored_legs true
+second_refund_rejected_after_clear true
+partial_refund_carry_mode_exact true
+fallback_redeploy_preserves_exact_legs true
+attacker_positive_delta false
+result PASS
+
+live_regression_command:
+npm test -- --runInBand tests/ConstProduct.spec.ts -t 'should refund partial liquidity'
+
+live_regression_output:
+PASS tests/ConstProduct.spec.ts (6.136 s)
+Tests: 35 skipped, 1 passed, 36 total

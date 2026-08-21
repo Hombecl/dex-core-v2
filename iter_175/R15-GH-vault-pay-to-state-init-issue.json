@@ -1,0 +1,5 @@
+{
+  "command": "gh search issues 'vault_pay_to state_init recipient' --repo ston-fi/dex-core-v2 --limit 10",
+  "total_count": 0,
+  "items": []
+}

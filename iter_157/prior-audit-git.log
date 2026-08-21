@@ -1,0 +1,2 @@
+COMMAND: git log --all --oneline --decorate --regexp-ignore-case --grep='cross.*variant\|signature.*pool\|argument.*order\|get_swap_out' -- contracts/pool/pools contracts/pool/msgs contracts/pool/pool.fc
+RESULT: no matching prior audit commits in the checked history

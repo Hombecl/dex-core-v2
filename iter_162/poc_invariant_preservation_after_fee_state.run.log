@@ -1,0 +1,23 @@
+COMMAND: node iter_162/poc_invariant_preservation_after_fee_state.test.js
+{
+  "variants_checked": 5,
+  "structural_guard_sets": 5,
+  "invariant_models_checked": 2,
+  "model_cases": 108,
+  "successful_invariant_preserving_cases": 105,
+  "zero_result_cases": 3,
+  "invariant_violations": 0,
+  "retained_lp_fee_cases": 45,
+  "protocol_fee_cases": 58,
+  "zero_result_protocol_fee_release": false,
+  "result": "PASS"
+}
+RUNTIME: 0.1s static/model
+
+COMMAND: npm test -- --runInBand tests/ConstProduct.spec.ts tests/ConstSum.spec.ts tests/Stableswap.spec.ts tests/WeightedCPI.spec.ts tests/WeightedStableswap.spec.ts -t 'should provide lp|should burn liquidity'
+RESULT: PASS
+TEST_SUITES: 5 passed, 5 total
+TESTS: 120 skipped, 18 passed, 138 total
+SNAPSHOTS: 0 total
+RUNTIME: 39.552s
+

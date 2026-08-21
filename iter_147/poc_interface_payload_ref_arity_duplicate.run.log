@@ -1,0 +1,8 @@
+COMMAND: node iter_147/poc_interface_payload_ref_arity_duplicate.test.js
+{
+  "prior_cells_covering_same_vector": 4,
+  "selected_interface_files_checked": 4,
+  "overlap_classes_confirmed": 4,
+  "novel_surface_delta": 0,
+  "result": "PRE_KILLED_DUPLICATE"
+}

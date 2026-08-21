@@ -1,0 +1,23 @@
+contracts/lp_wallet.fc:107:    slice response_address = in_msg_body~load_msg_addr();
+contracts/lp_wallet.fc:116:        .store_uint(op::burn_notification_ext, 32)
+contracts/lp_wallet.fc:120:        .store_slice(response_address)
+contracts/lp_wallet.fc:133:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:141:    throw_unless(709, (op == op::internal_transfer) | (op == op::burn_notification_ext));
+contracts/pool.fc:33:    if handle_lp_wallet_messages() {
+contracts/pool/msgs/lp_wallet.fc:1:(int) handle_lp_wallet_messages() impure inline {
+contracts/pool/msgs/lp_wallet.fc:4:    if ctx.at(OPCODE) == op::burn_notification_ext {
+contracts/pool/msgs/lp_wallet.fc:8:        slice response_address = in_msg_body~load_msg_addr();
+contracts/pool/msgs/lp_wallet.fc:23:        throw_unless(error::wrong_address, response_address.preload_uint(2) == 0);
+contracts/pool/msgs/lp_wallet.fc:30:        storage::reserve0 -= amount0_out;
+contracts/pool/msgs/lp_wallet.fc:31:        storage::reserve1 -= amount1_out;
+contracts/pool/msgs/lp_wallet.fc:32:        storage::total_supply_lp -= jetton_amount;
+contracts/pool/msgs/lp_wallet.fc:62:            router::pay_to(
+contracts/pool/msgs/lp_wallet.fc:80:            router::pay_to(
+contracts/pool/msgs/lp_wallet.fc:95:        storage::save();
+contracts/router/msgs/pool.fc:28:        throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER)));
+contracts/router/msgs/pool.fc:113:        throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER)));
+contracts/common/contracts.fc:146:(cell) router::pay_to(
+contracts/lp_wallet/jetton-utils.fc:26:slice calculate_user_jetton_lp_wallet_address(slice owner_address, slice jetton_master_address, cell jetton_wallet_code) inline {
+caller_match_count: 40
+caller_unique_files: 6
+callers_grep_done: true

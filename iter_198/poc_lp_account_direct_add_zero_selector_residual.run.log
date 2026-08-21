@@ -1,0 +1,16 @@
+cross_file_anchors 20
+user_sender_gate true
+zero_amount_means_use_all_stored_leg true
+mixed_selector_residual_exact true
+zero_selected_leg_rejected true
+overdraw_rejected true
+pool_callback_uses_selected_amounts true
+attacker_positive_delta false
+result PASS
+
+live_regression_command:
+npm test -- --runInBand tests/ConstProduct.spec.ts -t 'should direct add liquidity'
+
+live_regression_output:
+PASS tests/ConstProduct.spec.ts (7.119 s)
+Tests: 34 skipped, 2 passed, 36 total

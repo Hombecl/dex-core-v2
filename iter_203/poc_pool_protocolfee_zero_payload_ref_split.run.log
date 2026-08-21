@@ -1,0 +1,16 @@
+cross_file_anchors 18
+collect_sender_is_stored_protocol_fee_address true
+both_counters_positive_gate true
+optional_payload_refs_do_not_change_amounts true
+both_one_sided_pay_to_legs_same_owner true
+both_counters_clear_once true
+second_collection_rejected_after_clear true
+classification KILLED_TRUSTED_ON_TRUSTED
+result PASS
+
+live_regression_command:
+npm test -- --runInBand tests/ConstProduct.spec.ts -t 'should collect fees'
+
+live_regression_output:
+PASS tests/ConstProduct.spec.ts (5.956 s)
+Tests: 35 skipped, 1 passed, 36 total

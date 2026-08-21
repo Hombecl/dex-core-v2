@@ -1,0 +1,12 @@
+AX1 prior-art / audit lookup
+============================
+Command:
+git log --all --oneline -- iter_59/STATUS.yaml iter_105/STATUS.yaml iter_144/STATUS.yaml iter_196/STATUS.yaml
+
+Prior selected statuses:
+iter_59/STATUS.yaml => iteration=59 cell=R4 code_upgrade_rollback verdict=DEADEND_WITH_PROOF
+iter_105/STATUS.yaml => iteration=105 cell=Y5 router_upgrade_parallel_finalize_cancel verdict=DEADEND_WITH_PROOF
+iter_144/STATUS.yaml => iteration=144 cell=AH4 router_storage_upgrade_ref_arity verdict=DEADEND_WITH_PROOF
+iter_196/STATUS.yaml => iteration=196 cell=AS4 pool_upgrade_ref_partial_state verdict=KILLED_TRUSTED_ON_TRUSTED
+
+Prior conclusion: the upgrade lifecycle and six-field temporary cell are a known audit family. AX1 rechecks field-by-field partial init/cancel/finalize transitions with a fresh 30-anchor model and live six-test upgrade coverage; no external path exists because the main Router gates all upgrade messages to the configured admin.

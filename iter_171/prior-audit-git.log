@@ -1,0 +1,2 @@
+COMMAND: git log --all --oneline --decorate --regexp-ignore-case --grep='LP wallet.*response address\|response.*workchain\|excess.*response address' -- contracts/lp_wallet.fc contracts/pool/msgs/lp_account.fc contracts/pool/msgs/lp_wallet.fc contracts/pool/msgs/router.fc
+RESULT: no matching prior audit commits in the checked history

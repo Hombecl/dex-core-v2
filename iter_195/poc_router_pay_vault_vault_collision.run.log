@@ -1,0 +1,17 @@
+cross_file_anchors 21
+pay_vault_pool_sender_authenticated true
+vault_identity_includes_owner_token_router true
+positive_fee_leg_selects_matching_token true
+alternate_owner_tuple_distinct true
+alternate_token_tuple_distinct true
+withdrawal_clears_stored_amount true
+deposited_amount 42
+unauthorized_gain 0
+result PASS
+
+live_regression_command:
+npm test -- --runInBand tests/ConstProduct.spec.ts -t 'should collect ref fee from vault'
+
+live_regression_output:
+PASS tests/ConstProduct.spec.ts (6.488 s)
+Tests: 35 skipped, 1 passed, 36 total

@@ -1,0 +1,77 @@
+schema_version: shadow-v1
+iteration: 147
+phase: completed
+cell_id: AH5
+cell_label: interface_payload_ref_arity
+final_verdict: PRE_KILLED_DUPLICATE
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AH5
+  final_verdict: PRE_KILLED_DUPLICATE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - "contracts/pool/msgs/router.fc:12: slice dex_payload = in_msg_body~load_slice_ref();"
+      - "contracts/pool/msgs/router.fc:36: custom_payload_cs = call_payload~load_maybe_ref();"
+      - "contracts/pool/msgs/router.fc:38: refund_payload_cs = call_payload~load_maybe_ref();"
+      - "contracts/pool/msgs/lp_account.fc:12: cell custom_payload_cs = in_msg_body~load_maybe_ref();"
+      - "contracts/pool/msgs/lp_account.fc:13: slice additional_data = in_msg_body~load_slice_ref();"
+      - "contracts/router/msgs/pool.fc:10: cell custom_payload = in_msg_body~load_maybe_ref();"
+      - "contracts/router/msgs/pool.fc:11: slice additional_info = in_msg_body~load_slice_ref();"
+      - "contracts/router/msgs/pool.fc:34: fwd_opcode = tmp_custom_payload_ds.preload_uint(32);"
+      - "contracts/router/msgs/pool.fc:55: route_dex_messages(sent_jetton_address, gas, swap_amount, original_caller, custom_payload);"
+      - "contracts/lp_account/msgs/user.fc:54: slice additional_fields = in_msg_body~load_slice_ref();"
+      - "contracts/lp_wallet.fc:108: cell custom_payload = in_msg_body~load_maybe_ref();"
+      - "contracts/pool/msgs/getter.fc:65: msgs::send_simple(0, ctx.at(SENDER), msg.store_maybe_ref(included_address).end_cell(), CARRY_ALL_BALANCE | IGNORE_ERRORS);"
+  poc_execution:
+    test_file_path: iter_147/poc_interface_payload_ref_arity_duplicate.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_147/poc_interface_payload_ref_arity_duplicate.run.log
+    run_log_exists_on_disk: true
+    test_runtime: "0.1s static duplicate audit"
+    result: "PASSED (4 prior overlap cells; 0 novel surface delta)"
+  prior_art_check:
+    queries:
+      - "prior cell Q3/iter_53 callback_payload_aliasing"
+      - "prior cell V5/iter_90 pool_pay_to_custom_payload_dispatch"
+      - "prior cell X5/iter_100 getter_payload_ref_shape_boundary"
+      - "prior cell AC4/iter_124 lp_wallet_forward_payload_reference_depth"
+    results: "All four prior cells are closed DEADEND_WITH_PROOF and cover the same payload/ref vector"
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "payload ref arity"
+      - "custom_payload load_maybe_ref"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: PRE_KILLED_DUPLICATE
+  selected_cluster_source: POST_MATRIX_CLUSTER_PROPOSALS_20.md
+  duplicate_prior_cells:
+    - Q3/iter_53
+    - V5/iter_90
+    - X5/iter_100
+    - AC4/iter_124
+  caller_path: "Router/Pool/LP-account/LP-wallet optional-ref interfaces -> nested payload dispatch/getter response paths"
+  caller_match_count: 99
+  caller_unique_files: 14
+  prior_audit_path: iter_147/prior-audit-git.log
+  r15_evidence_files:
+    - iter_147/R15-GH-interface-payload-issue.json
+    - iter_147/R15-GH-interface-payload-pr.json
+    - iter_147/R15-GH-custom-payload-issue.json
+    - iter_147/R15-GH-custom-payload-pr.json
+  source_conclusion: "AH5 is a broad restatement of four already closed payload/reference cells. The duplicate-audit PoC confirmed all four prior statuses and four overlapping interface classes; no novel production path remains for this cell."
+  candidate_path: null
+  shadow_mode: true

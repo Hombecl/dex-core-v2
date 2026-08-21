@@ -1,0 +1,21 @@
+AX1 caller/dataflow grep
+========================
+Command:
+rg -n 'temp_upgrade|upgrade_pool_code|pack_temp_upgrade|unpack_temp_upgrade|init_code_upgrade|init_admin_upgrade|init_pool_code_upgrade|cancel_code_upgrade|cancel_admin_upgrade|cancel_pool_code_upgrade|finalize_upgrades|set_code|admin_address|handle_admin_messages|storage::save|load_time|load_ref|store_time|store_ref|Pool code upgrade|finalize new pool code' contracts/router.fc contracts/router/storage.fc contracts/router/msgs/admin.fc contracts/router/utils.fc contracts/common/op.fc wrappers/Router.ts tests/ConstProduct.spec.ts
+
+match_count=88
+caller_unique_files=6
+contracts/common/op.fc
+contracts/router.fc
+contracts/router/msgs/admin.fc
+contracts/router/storage.fc
+contracts/router/utils.fc
+tests/ConstProduct.spec.ts
+
+Representative dataflow anchors:
+contracts/router.fc:28-30 admin sender partition
+contracts/router/storage.fc:12-28 load tuple and :31-38 save tuple
+contracts/router/utils.fc:1-33 pack/unpack field order
+contracts/router/msgs/admin.fc:156-231 staged init/cancel branches
+contracts/router/msgs/admin.fc:235-260 partial finalize branch
+tests/ConstProduct.spec.ts:1095-1331 upgrade integration coverage

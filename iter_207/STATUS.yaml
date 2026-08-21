@@ -1,0 +1,138 @@
+schema_version: shadow-v1
+iteration: 207
+phase: completed
+cell_id: AU1
+cell_label: pool_getter_provide_wallet_include_address_alias
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AU1
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/pool.fc
+        line: 48
+        text: 'if handle_getter_messages() {'
+      - file: contracts/pool/msgs/getter.fc
+        line: 42
+        text: 'if ctx.at(OPCODE) == op::ft::provide_wallet_address {'
+      - file: contracts/pool/msgs/getter.fc
+        line: 48
+        text: 'slice owner_address = in_msg_body~load_msg_addr();'
+      - file: contracts/pool/msgs/getter.fc
+        line: 49
+        text: 'int include_address? = in_msg_body~load_uint(1);'
+      - file: contracts/pool/msgs/getter.fc
+        line: 50
+        text: 'in_msg_body.end_parse();'
+      - file: contracts/pool/msgs/getter.fc
+        line: 52
+        text: 'cell included_address = include_address? ? begin_cell().store_slice(owner_address).end_cell() : null();'
+      - file: contracts/pool/msgs/getter.fc
+        line: 54
+        text: 'var msg = begin_message(op::ft::take_wallet_address);'
+      - file: contracts/pool/msgs/getter.fc
+        line: 56
+        text: 'if owner_address.address::get_workchain() == params::workchain {'
+      - file: contracts/pool/msgs/getter.fc
+        line: 58
+        text: 'lp_wallet_idata(owner_address, my_address(), storage::jetton_lp_wallet_code),'
+      - file: contracts/pool/msgs/getter.fc
+        line: 61
+        text: 'msg = msg.store_slice(lp_wallet~address(params::workchain));'
+      - file: contracts/pool/msgs/getter.fc
+        line: 65
+        text: 'msgs::send_simple(0, ctx.at(SENDER), msg.store_maybe_ref(included_address).end_cell(), CARRY_ALL_BALANCE | IGNORE_ERRORS);'
+      - file: contracts/pool/get.fc
+        line: 39
+        text: 'slice get_wallet_address(slice owner_address) method_id {'
+      - file: contracts/pool/get.fc
+        line: 42
+        text: 'throw_unless(error::wrong_workchain, owner_address.address::check_workchain(params::workchain));'
+      - file: contracts/pool/get.fc
+        line: 45
+        text: 'lp_wallet_idata(owner_address, my_address(), storage::jetton_lp_wallet_code),'
+      - file: contracts/common/contracts.fc
+        line: 19
+        text: '(cell) lp_wallet_idata(slice _owner_address, slice _jetton_master_address, cell _jetton_wallet_code) inline {'
+      - file: contracts/common/contracts.fc
+        line: 22
+        text: '.store_slice(_owner_address)'
+      - file: contracts/common/contracts.fc
+        line: 23
+        text: '.store_slice(_jetton_master_address)'
+      - file: contracts/common/contracts.fc
+        line: 24
+        text: '.store_ref(_jetton_wallet_code)'
+      - file: contracts/lp_wallet.fc
+        line: 20
+        text: 'throw_unless(705, equal_slices(owner_address, sender_address));'
+      - file: contracts/lp_wallet.fc
+        line: 23
+        text: 'cell state_init = calculate_jetton_lp_wallet_state_init(to_owner_address, jetton_master_address, jetton_wallet_code);'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 20
+        text: 'throw_unless(error::invalid_caller, equal_slices(lp_wallet~address(params::workchain), ctx.at(SENDER)));'
+      - file: wrappers/Pool.ts
+        line: 242
+        text: '.storeAddress(opts.ownerAddress)'
+      - file: wrappers/Pool.ts
+        line: 243
+        text: '.storeUint(opts.includeAddress ? 1 : 0, 1)'
+  poc_execution:
+    test_file_path: iter_207/poc_pool_getter_provide_wallet_include_address_alias.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_207/poc_pool_getter_provide_wallet_include_address_alias.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.1s static; 5.103s integration'
+    result: 'PASS (23 cross-file anchors; optional-ref/LP-wallet identity model; live mint-and-burn regression)'
+  prior_art_check:
+    queries:
+      - iter82 U2 async_getter_response_address_confusion
+      - iter84 U4 lp_wallet_codecell_sender_collision
+      - iter100 X5 getter_payload_ref_shape_boundary
+      - iter197 AS5 getter_wallet_address_code_identity
+    results:
+      - iter82: DEADEND_WITH_PROOF
+      - iter84: DEADEND_WITH_PROOF
+      - iter100: DEADEND_WITH_PROOF
+      - iter197: DEADEND_WITH_PROOF
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "take_wallet_address" "include_address" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "take_wallet_address" "include_address" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "lp_wallet_idata" "included_address" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "lp_wallet_idata" "included_address" is:pr'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  shadow_mode: true
+  caller_path: iter_207/callers-grep.txt
+  caller_match_count: 98
+  caller_unique_files: 7
+  prior_audit_path: iter_207/prior-audit-git.log
+  prior_family_matches: [iter82, iter84, iter100, iter197]
+  r15_evidence_files:
+    - iter_207/R15-GH-take-wallet-include-address-issue.json
+    - iter_207/R15-GH-take-wallet-include-address-pr.json
+    - iter_207/R15-GH-lp-wallet-included-address-issue.json
+    - iter_207/R15-GH-lp-wallet-included-address-pr.json
+  source_conclusion: 'provide_wallet_address parses owner_address followed by one include bit, derives the wallet solely from owner/master/code, and appends the optional included_address ref after the wallet address. Both include values therefore produce the same LP-wallet address; wrong-workchain owners produce addr_none. The direct getter and LP-wallet sender checks use the same tuple, so no optional-ref alias or cross-owner balance path was demonstrated.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false

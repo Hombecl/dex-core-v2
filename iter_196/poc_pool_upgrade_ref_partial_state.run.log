@@ -1,0 +1,16 @@
+cross_file_anchors 15
+external_sender_rejected_before_admin_handler true
+pool_code_upgrade_delay_two_days true
+upgrade_pool_code_persisted_after_finalize true
+pool_update_uses_router_sender_and_deterministic_pool true
+pool_set_code_reached_only_after_admin_governance true
+attacker_positive_external_delta false
+classification KILLED_TRUSTED_ON_TRUSTED
+result PASS
+
+live_regression_command:
+npm test -- --runInBand tests/ConstProduct.spec.ts -t 'should set new pool code on pool'
+
+live_regression_output:
+PASS tests/ConstProduct.spec.ts (6.144 s)
+Tests: 35 skipped, 1 passed, 36 total

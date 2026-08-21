@@ -1,0 +1,37 @@
+contracts/pool/msgs/router.fc:78:        try {
+contracts/pool/msgs/router.fc:94:                (out1, protocol_fee_out, ref_fee_out1) = pool::get_swap_out(true, ref_value, amount0, storage::reserve0, storage::reserve1);
+contracts/pool/msgs/router.fc:95:                storage::reserve0 += amount0;
+contracts/pool/msgs/router.fc:96:                storage::reserve1 -= (out1 + protocol_fee_out + ref_fee_out1);
+contracts/pool/msgs/router.fc:97:                storage::collected_token1_protocol_fee += protocol_fee_out;
+contracts/pool/msgs/router.fc:101:                (out0, protocol_fee_out, ref_fee_out0) = pool::get_swap_out(false, ref_value, amount1, storage::reserve1, storage::reserve0);
+contracts/pool/msgs/router.fc:102:                storage::reserve0 -= (out0 + protocol_fee_out + ref_fee_out0);
+contracts/pool/msgs/router.fc:103:                storage::reserve1 += amount1;
+contracts/pool/msgs/router.fc:104:                storage::collected_token0_protocol_fee += protocol_fee_out;
+contracts/pool/msgs/router.fc:111:            throw_arg_unless(op::swap_refund_tx_expired, 1, tx_deadline > now());
+contracts/pool/msgs/router.fc:112:            throw_arg_if(op::swap_refund_no_liq, 1, storage::total_supply_lp <= 0);
+contracts/pool/msgs/router.fc:113:            throw_arg_if(op::swap_refund_0_out, 1, out < 1);
+contracts/pool/msgs/router.fc:114:            throw_arg_if(op::swap_refund_slippage, 1, min_out > out);
+contracts/pool/msgs/router.fc:115:            throw_arg_if(op::swap_refund_reserve_err, 1, (storage::reserve0 > math::MAX_COINS)
+contracts/pool/msgs/router.fc:135:            msgs::send_simple(
+contracts/pool/msgs/router.fc:138:                router::pay_to(
+contracts/pool/msgs/router.fc:152:            storage::save();
+contracts/pool/msgs/router.fc:154:        } catch(err_arg, err_code) {
+contracts/pool/msgs/router.fc:157:            ;; send back jettons
+contracts/pool/msgs/router.fc:160:                router::pay_to(
+contracts/pool/msgs/router.fc:167:                    amount0,
+contracts/pool/msgs/router.fc:169:                    amount1,
+contracts/pool/msgs/router.fc:181:    if ctx.at(OPCODE) == op::provide_lp {
+contracts/pool/pools/constant_product/pool.fc:1:(int, int, int) pool::get_swap_out(int _side, int _ref_value, int _amount_in, int _reserve_in, int _reserve_out) inline {
+contracts/pool/pools/constant_sum/pool.fc:1:(int, int, int) pool::get_swap_out(int _side, int _ref_value, int _amount_in, int _reserve_in, int _reserve_out) inline {
+contracts/pool/pools/stableswap/pool.fc:1:(int, int, int) pool::get_swap_out(int _side, int _ref_value, int _amount_in, int _reserve_in, int _reserve_out) inline {
+contracts/pool/pools/weighted_const_product/pool.fc:1:(int, int, int) pool::get_swap_out(int _side, int _ref_value, int _amount_in, int _reserve_in, int _reserve_out) inline {
+contracts/pool/pools/weighted_stableswap/pool.fc:1:(int, int, int) pool::get_swap_out(int _side, int _ref_value, int _amount_in, int _reserve_in, int _reserve_out) inline {
+contracts/router/msgs/pool.fc:5:    if ctx.at(OPCODE) == op::pay_to {
+contracts/router/msgs/pool.fc:22:        throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER)));
+contracts/router/msgs/pool.fc:70:                msgs::send_simple(
+contracts/router/msgs/pool.fc:74:                    jetton_wallet::transfer(fwd_ton_amount, amount0_out, owner, excesses_address)
+contracts/router/msgs/pool.fc:80:                msgs::send_simple(
+contracts/router/msgs/pool.fc:83:                    jetton_wallet::transfer(fwd_ton_amount, amount1_out, owner, excesses_address)
+contracts/pool/msgs/protocolfee.fc:60:        storage::save();
+contracts/router/dex.fc:42:    try {
+contracts/router/dex.fc:98:        msgs::send_simple(0, _jetton_address, out_msg_body.end_cell(), QCARRY_ALL_BALANCE);

@@ -1,0 +1,16 @@
+COMMAND: node iter_150/poc_variant_state_init_asm_literal.test.js
+{
+  "pool_families_checked": 5,
+  "base_literal_fields_checked": 9,
+  "variant_literal_layouts_checked": [
+    "none",
+    "amp:uint32",
+    "w0:uint64",
+    "amp/rate/w0:uint128 + setter:addr"
+  ],
+  "serializer_runtime_field_mismatches": 0,
+  "state_init_ref_arity_mismatches": 0,
+  "result": "PASS"
+}
+
+SUPPORTING INTEGRATION CROSS-CHECK: iter_148 five-family suites passed 83 tests against the same source revision; AI3 static serializer proof introduced no source changes.

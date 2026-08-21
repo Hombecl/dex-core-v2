@@ -1,0 +1,18 @@
+COMMAND: node iter_188/poc_router_notification_pair_mixing.test.js
+EXIT: 0
+cross_file_anchors 13
+sorted_pair_identity_symmetric true
+forged_sender_plus_real_wallet_one_leg_only true
+different_forged_sender_new_pair true
+initial_pool_requires_two_positive_legs true
+lp_burn_unreachable_without_second_endpoint_notification true
+attacker_positive_delta false
+prior_notification_audits_rechecked true
+result PASS
+
+COMMAND: npm test -- --runInBand tests/System.spec.ts -t 'should handle mint & burn liquidity'
+EXIT: 0
+PASS tests/System.spec.ts (6.151 s)
+Tests: 10 skipped, 1 passed, 11 total
+Passed: should handle mint & burn liquidity
+Ran all test suites matching tests/System.spec.ts with tests matching "should handle mint & burn liquidity".

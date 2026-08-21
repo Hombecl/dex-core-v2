@@ -1,0 +1,8 @@
+COMMAND: rg --files iter_* | rg 'prior-audit|audit|R15' and inspect matching STATUS.yaml source conclusions
+RESULT: AO5 family is already covered by completed shadow audits:
+iter_57 R1 protocol_fee_callback — DEADEND_WITH_PROOF
+iter_74 S4 protocol_fee_dual_leg_clearance — DEADEND_WITH_PROOF
+iter_97 X2 protocol_fee_counter_delivery — DEADEND_WITH_PROOF
+iter_115 AA4 pool_set_fees_protocol_recipient_boundary — KILLED_TRUSTED_ON_TRUSTED
+iter_132 AE2 pool_protocol_fee_dual_payload_delivery — KILLED_TRUSTED_ON_TRUSTED
+The caller is the stored protocol-fee role; single-side stranding is liveness/griefing, and the requested trusted-on-trusted kill filter applies.

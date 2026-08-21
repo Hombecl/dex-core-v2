@@ -1,0 +1,74 @@
+schema_version: shadow-v1
+iteration: 160
+phase: completed
+cell_id: AK3
+cell_label: lp_supply_coin_serialization_boundary
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AK3
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - "contracts/pool/msgs/lp_account.fc:36: liquidity = pool::get_lp_provide_init_out(tot_am0, tot_am1);"
+      - "contracts/pool/msgs/lp_account.fc:55: storage::total_supply_lp += liquidity;"
+      - "contracts/pool/msgs/lp_account.fc:70: | (storage::total_supply_lp > math::MAX_COINS)"
+      - "contracts/pool/msgs/lp_account.fc:132: storage::save();"
+      - "contracts/pool/msgs/lp_wallet.fc:25: (int amount0_out, int amount1_out) = pool::get_lp_burn_out(jetton_amount);"
+      - "contracts/pool/msgs/lp_wallet.fc:32: storage::total_supply_lp -= jetton_amount;"
+      - "contracts/pool/msgs/lp_wallet.fc:35: throw_unless(error::invalid_amount, (storage::total_supply_lp > 0));"
+      - "contracts/pool/msgs/lp_wallet.fc:95: storage::save();"
+      - "contracts/pool/pools/stableswap/pool.fc:68: (int, int) pool::get_lp_burn_out(int _lp_amount) inline {"
+      - "contracts/pool/pools/weighted_stableswap/pool.fc:80: muldiv(_lp_amount, storage::reserve1, storage::total_supply_lp)"
+  poc_execution:
+    test_file_path: iter_160/poc_lp_supply_coin_serialization_boundary.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_160/poc_lp_supply_coin_serialization_boundary.run.log
+    run_log_exists_on_disk: true
+    test_runtime: "0.4s static/model; 36.105s integration"
+    result: "PASS (42 supply cases; 256 burn cases; 18 live LP tests)"
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 LP supply coin width is:issue"
+      - "repo:ston-fi/dex-core-v2 LP supply coin width is:pr"
+      - "repo:ston-fi/dex-core-v2 burn underflow liquidity is:issue"
+      - "repo:ston-fi/dex-core-v2 burn underflow liquidity is:pr"
+    results: "4 queries returned total_count=0"
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "LP supply coin width"
+      - "burn underflow liquidity"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  selected_cluster_source: POST_MATRIX_CLUSTER_PROPOSALS_23.md
+  caller_path: "LP-account provide/mint -> total supply/reserve max checks -> success-only pool save; LP-wallet burn -> reserve/supply positivity checks -> success-only save"
+  caller_match_count: 43
+  caller_unique_files: 7
+  prior_audit_path: iter_160/prior-audit-git.log
+  r15_evidence_files:
+    - iter_160/R15-GH-lp-supply-width-issue.json
+    - iter_160/R15-GH-lp-supply-width-pr.json
+    - iter_160/R15-GH-burn-underflow-issue.json
+    - iter_160/R15-GH-burn-underflow-pr.json
+  boundary_result: "All five variants use coin serialization for the five LP/reserve fields; max supply, locked minimum, zero-after-burn, and reserve-underflow cases were rejected before persistence."
+  source_conclusion: "LP supply and reserve width checks occur after provisional arithmetic but before the only success save. Burn rejects zero output, non-positive reserves, and non-positive post-burn supply before saving. No max-width mint, burn underflow, or attacker-controlled LP/token release was demonstrated."
+  candidate_path: null
+  attacker_privilege: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  shadow_mode: true

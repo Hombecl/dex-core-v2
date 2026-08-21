@@ -1,0 +1,19 @@
+COMMAND: node iter_170/poc_lp_callback_refund_excess_identity_split.test.js
+{
+  "variants_checked": 5,
+  "rejection_identity_cases": 12,
+  "pool_state_saved_on_rejection": false,
+  "pending_lp_account_owner_matches_refund": true,
+  "excess_address_token_receipts": 0,
+  "excess_address_ton_only_cases": 12,
+  "original_user_can_claim_when_refund_differs": false,
+  "result": "PASS"
+}
+RUNTIME: 0.1s static/model
+
+COMMAND: npm test -- --runInBand tests/ConstProduct.spec.ts tests/ConstSum.spec.ts tests/Stableswap.spec.ts tests/WeightedCPI.spec.ts tests/WeightedStableswap.spec.ts -t 'should provide lp|should burn liquidity|should refund'
+RESULT: PASS
+TEST_SUITES: 5 passed, 54 passed, 84 skipped, 138 total
+SNAPSHOTS: 0 total
+RUNTIME: 103.982s
+

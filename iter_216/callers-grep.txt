@@ -1,0 +1,29 @@
+AW4 caller/dataflow grep
+========================
+Command:
+rg -n 'handle_lp_wallet_messages|handle_lp_account_messages|handle_router_messages|handle_protocolfee_messages|handle_getter_messages|OPCODE|op::burn_notification_ext|op::cb_add_liquidity|op::cb_refund_me|op::internal_transfer|op::swap|op::provide_lp|op::collect_fees|op::getter_pool_data|return \\(true\\)|return \\(false\\)|wrong_op|invalid_caller|equal_slices|storage::reserve|storage::total_supply_lp|storage::save|from_sources|state_init|sender' contracts/pool.fc contracts/pool/msgs/*.fc contracts/common/op.fc contracts/lp_wallet/op.fc contracts/lp_account/msgs/*.fc contracts/lp_wallet.fc contracts/router.fc tests/System.spec.ts tests/ConstProduct.spec.ts
+
+match_count=223
+caller_unique_files=14
+contracts/common/op.fc
+contracts/lp_account/msgs/getter.fc
+contracts/lp_account/msgs/pool.fc
+contracts/lp_account/msgs/user.fc
+contracts/lp_wallet.fc
+contracts/lp_wallet/op.fc
+contracts/pool.fc
+contracts/pool/msgs/getter.fc
+contracts/pool/msgs/lp_account.fc
+contracts/pool/msgs/lp_wallet.fc
+contracts/pool/msgs/protocolfee.fc
+contracts/pool/msgs/router.fc
+contracts/router.fc
+tests/ConstProduct.spec.ts
+
+Representative dataflow anchors:
+contracts/pool.fc:21-39 sender partitions and LP-wallet-before-LP-account handler order
+contracts/pool.fc:47-52 getter fallback and wrong_op
+contracts/pool/msgs/lp_wallet.fc:4 burn_notification_ext; :20 deterministic LP-wallet sender gate; :30-35 reserve/supply mutation
+contracts/pool/msgs/lp_account.fc:4 cb_add_liquidity; :26 derived LP-account sender gate; :138 cb_refund_me
+contracts/common/op.fc:1,6,7,16-17 opcode definitions
+contracts/router.fc:18-24 jetton/pool handler ordering

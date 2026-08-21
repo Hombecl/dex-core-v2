@@ -1,0 +1,144 @@
+schema_version: shadow-v1
+iteration: 211
+phase: completed
+cell_id: AV4
+cell_label: pool_pay_vault_both_positive_side_selector
+final_verdict: KILLED_TRUSTED_ON_TRUSTED
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AV4
+  final_verdict: KILLED_TRUSTED_ON_TRUSTED
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/router/msgs/pool.fc
+        line: 94
+        text: 'if ctx.at(OPCODE) == op::pay_vault {'
+      - file: contracts/router/msgs/pool.fc
+        line: 98
+        text: 'int amount0_out = additional_info~load_coins();'
+      - file: contracts/router/msgs/pool.fc
+        line: 100
+        text: 'int amount1_out = additional_info~load_coins();'
+      - file: contracts/router/msgs/pool.fc
+        line: 103
+        text: 'var pool = contracts::from_sources('
+      - file: contracts/router/msgs/pool.fc
+        line: 113
+        text: 'throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER))); ;; check if its a valid pool'
+      - file: contracts/router/msgs/pool.fc
+        line: 121
+        text: 'amount0_out > 0 ? token0_address : token1_address,'
+      - file: contracts/router/msgs/pool.fc
+        line: 127
+        text: 'msgs::send_with_stateinit('
+      - file: contracts/router/msgs/pool.fc
+        line: 131
+        text: 'vault::deposit_ref_fee('
+      - file: contracts/router/msgs/pool.fc
+        line: 132
+        text: 'amount0_out + amount1_out,'
+      - file: contracts/common/contracts.fc
+        line: 186
+        text: '(cell) router::pay_vault('
+      - file: contracts/common/contracts.fc
+        line: 198
+        text: '.store_coins(_amount0_out)'
+      - file: contracts/common/contracts.fc
+        line: 200
+        text: '.store_coins(_amount1_out)'
+      - file: contracts/pool/msgs/router.fc
+        line: 92
+        text: 'if amount0 {'
+      - file: contracts/pool/msgs/router.fc
+        line: 94
+        text: '(out1, protocol_fee_out, ref_fee_out1) = pool::get_swap_out(true, ref_value, amount0, storage::reserve0, storage::reserve1);'
+      - file: contracts/pool/msgs/router.fc
+        line: 101
+        text: '(out0, protocol_fee_out, ref_fee_out0) = pool::get_swap_out(false, ref_value, amount1, storage::reserve1, storage::reserve0);'
+      - file: contracts/pool/msgs/router.fc
+        line: 121
+        text: 'if (ref_address.preload_uint(2) != 0) & (ref_fee_out0 + ref_fee_out1 > 0) { ;; 2 messages, pay referral, check ref_fee_out'
+      - file: contracts/pool/msgs/router.fc
+        line: 124
+        text: 'router::pay_vault('
+      - file: contracts/vault.fc
+        line: 40
+        text: 'if (ctx.at(OPCODE) == op::deposit_ref_fee) & equal_slices(ctx.at(SENDER), storage::router_address) {'
+      - file: contracts/vault.fc
+        line: 43
+        text: 'storage::deposited_amount += in_msg_body~load_coins();'
+      - file: contracts/router.fc
+        line: 23
+        text: 'if handle_pool_messages() {'
+      - file: contracts/common/op.fc
+        line: 25
+        text: 'const op::pay_vault'
+      - file: tests/ConstProduct.spec.ts
+        line: 1437
+        text: 'msgResult = await vault.sendWithdrawFee(alice.getSender());'
+  poc_execution:
+    test_file_path: iter_211/poc_pool_pay_vault_both_positive_side_selector.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_211/poc_pool_pay_vault_both_positive_side_selector.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.2s static; 6.301s integration'
+    result: 'PASS (22 cross-file anchors; dual-positive selector model; live referral-vault regression)'
+  prior_art_check:
+    queries:
+      - iter101 Y1 router_pay_vault_single_side_stateinit
+      - iter120 AB5 vault_deposit_extra_payload_state_boundary
+      - iter131 AE1 pool_swap_referral_output_send_order
+      - iter174 AO2 router_pay_vault_token_side_binding
+      - iter182 AP5 router_vault_pay_to_amount_tuple
+      - iter195 AS3 router_pay_vault_vault_collision
+      - iter203 AU2 pool_protocolfee_zero_payload_ref_split
+      - iter204 AU3 pool_protocolfee_recipient_tuple_binding
+    results:
+      - iter101: DEADEND_WITH_PROOF
+      - iter120: DEADEND_WITH_PROOF
+      - iter131: DEADEND_WITH_PROOF
+      - iter174: DEADEND_WITH_PROOF
+      - iter182: DEADEND_WITH_PROOF
+      - iter195: DEADEND_WITH_PROOF
+      - iter203: KILLED_TRUSTED_ON_TRUSTED
+      - iter204: KILLED_TRUSTED_ON_TRUSTED
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "pay_vault" "amount0_out" "amount1_out" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "pay_vault" "amount0_out" "amount1_out" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "ref_fee_out0" "ref_fee_out1" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "ref_fee_out0" "ref_fee_out1" is:pr'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: KILLED_TRUSTED_ON_TRUSTED
+  shadow_mode: true
+  kill_reason: trusted-on-trusted-griefing / trusted Pool sender required for malformed dual-positive pay_vault tuple
+  caller_path: iter_211/callers-grep.txt
+  caller_match_count: 92
+  caller_unique_files: 9
+  prior_audit_path: iter_211/prior-audit-git.log
+  prior_family_matches: [iter101, iter120, iter131, iter174, iter182, iter195, iter203, iter204]
+  r15_evidence_files:
+    - iter_211/r15-issues-pay-vault-dual-leg.json
+    - iter_211/r15-prs-pay-vault-dual-leg.json
+    - iter_211/r15-issues-ref-fee-dual-leg.json
+    - iter_211/r15-prs-ref-fee-dual-leg.json
+  source_conclusion: 'Router pay_vault selects token0 when amount0_out is positive and otherwise token1, while depositing the sum of both fields. A malformed dual-positive tuple would therefore misclassify token1 referral value as token0, but the Router authenticates the deterministic Pool sender before this branch. The only in-scope producer is the Pool swap path, whose mutually exclusive amount0/amount1 branches assign only ref_fee_out1 or ref_fee_out0. No external attacker-controlled producer can reach the dual-positive tuple; the remaining effect is trusted-on-trusted and is killed.'
+  attacker_privilege:
+    privilege_required: trusted_role
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false

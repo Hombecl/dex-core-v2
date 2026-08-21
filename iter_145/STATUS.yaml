@@ -1,0 +1,75 @@
+schema_version: shadow-v1
+iteration: 145
+phase: completed
+cell_id: AH3
+cell_label: pool_dispatch_sender_precedence
+final_verdict: KILLED_TRUSTED_ON_TRUSTED
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AH3
+  final_verdict: KILLED_TRUSTED_ON_TRUSTED
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - "contracts/pool.fc:22: if equal_slices(ctx.at(SENDER), storage::protocol_fee_address) {"
+      - "contracts/pool.fc:28: if equal_slices(ctx.at(SENDER), storage::router_address) {"
+      - "contracts/pool.fc:33: if handle_lp_wallet_messages() {"
+      - "contracts/pool.fc:37: if handle_lp_account_messages() {"
+      - "contracts/pool.fc:48: if handle_getter_messages() {"
+      - "contracts/pool/msgs/protocolfee.fc:4: if ctx.at(OPCODE) == op::collect_fees {"
+      - "contracts/pool/msgs/router.fc:4: if ctx.at(OPCODE) == op::swap {"
+      - "contracts/pool/msgs/router.fc:308: if ctx.at(OPCODE) == op::internal_set_fees {"
+      - "contracts/pool/msgs/router.fc:315: storage::protocol_fee_address = new_protocol_fee_address;"
+      - "contracts/pool/msgs/lp_wallet.fc:4: if ctx.at(OPCODE) == op::burn_notification_ext {"
+      - "contracts/pool/msgs/lp_account.fc:4: if ctx.at(OPCODE) == op::cb_add_liquidity {"
+      - "contracts/pool/msgs/getter.fc:3: (int) handle_getter_messages() impure inline {"
+      - "contracts/pool/pools/constant_product/storage.fc:15: storage::router_address = static_data~load_msg_addr();"
+      - "contracts/pool/pools/weighted_stableswap/storage.fc:14: storage::protocol_fee_address = ds~load_msg_addr();"
+  kill_reason: "An overlap such as protocol_fee_address == router_address is configured only through the Router-authorized internal_set_fees path; precedence creates trusted-on-trusted griefing, so this lane is killed."
+  poc_execution:
+    test_file_path: iter_145/poc_pool_dispatch_sender_precedence.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_145/poc_pool_dispatch_sender_precedence.run.log
+    run_log_exists_on_disk: true
+    test_runtime: "0.2s static; 8.559s integration"
+    result: "PASSED (5 dispatch layers; 15 integration tests; 9 selected passed)"
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 pool dispatch sender protocol_fee_address is:issue"
+      - "repo:ston-fi/dex-core-v2 pool dispatch sender protocol_fee_address is:pr"
+      - "repo:ston-fi/dex-core-v2 internal_set_fees protocol_fee_address is:issue"
+      - "repo:ston-fi/dex-core-v2 internal_set_fees protocol_fee_address is:pr"
+    results: "4 queries returned total_count=0"
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "pool dispatch sender protocol_fee_address"
+      - "internal_set_fees protocol_fee_address"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: KILLED_TRUSTED_ON_TRUSTED
+  selected_cluster_source: POST_MATRIX_CLUSTER_PROPOSALS_20.md
+  caller_path: "Pool recv_internal -> protocol-fee/router/LP-wallet/LP-account/getter dispatch -> protocol fee mutation from Router-authorized internal_set_fees"
+  caller_match_count: 56
+  caller_unique_files: 11
+  prior_audit_path: iter_145/prior-audit-git.log
+  r15_evidence_files:
+    - iter_145/R15-GH-pool-dispatch-issue.json
+    - iter_145/R15-GH-pool-dispatch-pr.json
+    - iter_145/R15-GH-set-fees-issue.json
+    - iter_145/R15-GH-set-fees-pr.json
+  source_conclusion: "Dispatch precedence is deterministic and all role branches have explicit handlers. A role collision can cause trusted-role griefing, but the only selected mutation of protocol_fee_address is in the Router-authorized set-fees branch; no external sender bypass or attacker/victim asset delta was demonstrated."
+  candidate_path: null
+  shadow_mode: true

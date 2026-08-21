@@ -1,0 +1,10 @@
+AW1 prior-family audit (read from prior iteration STATUS.yaml records):
+- iter_39 / P8xC4 referral_fee_deposit x bounce_reversal: DEADEND_WITH_PROOF; Vault ignored protocol bounces, but deterministic pay_vault and swap refund paths did not create a fee-credit reversal or external delta.
+- iter_60 / R5 unknown_op_bounce_typing: DEADEND_WITH_PROOF; Router/Pool/Vault bounce gates returned before unknown state mutation.
+- iter_101 / Y1 router_pay_vault_single_side_stateinit: DEADEND_WITH_PROOF; deterministic StateInit and single-sided referral fee delivery passed.
+- iter_131 / AE1 pool_swap_referral_output_send_order: DEADEND_WITH_PROOF; fee arithmetic and send ordering preserved the exact referral amount before Pool save.
+- iter_163 / AM1 lp_mint_bounce_pool_commit: DEADEND_WITH_PROOF; downstream bounce paths did not create an attacker-positive committed state.
+- iter_182 / AP5 router_vault_pay_to_amount_tuple: DEADEND_WITH_PROOF; Vault payout tuple remained amount/token/owner bound.
+- iter_195 / AS3 router_pay_vault_vault_collision: DEADEND_WITH_PROOF; alternate Vault tuples were distinct deterministic identities.
+
+Conclusion: AW1 re-drills the Pool save -> Router StateInit -> Vault bounce chain. A forced downstream bounce would be liveness-only, but standard referral addresses, StateInit identity, sender gates, and gas checks leave no external trigger for the bounce.

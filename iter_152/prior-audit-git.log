@@ -1,0 +1,8 @@
+COMMAND: git log --all --oneline --decorate -- contracts/router/pools/weighted_stableswap contracts/pool/pools/weighted_stableswap contracts/pool.fc
+603cacd bump v2.2
+
+AUDIT/SECURITY HISTORY SEARCH:
+Only commit touching the selected weighted-stableswap setter/ref paths is 603cacd bump v2.2; no audit, security review, finding, or prior-report artifact was present in reachable Git history.
+
+DUPLICATE PRIOR-CELL AUDIT:
+P10xC2/iter_47, Q4/iter_54, and U5/iter_85 already cover the Router parameter path, stored rate_setter_address, setter dispatcher, validation, and non-setter rejection. U5 killed the remaining lane as trusted-on-trusted economic configuration.

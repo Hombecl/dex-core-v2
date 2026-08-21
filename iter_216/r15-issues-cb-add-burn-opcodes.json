@@ -1,0 +1,6 @@
+{
+  "query": "repo:ston-fi/dex-core-v2 \"cb_add_liquidity\" \"burn_notification_ext\" is:issue",
+  "total_count": 0,
+  "incomplete_results": false,
+  "items": []
+}

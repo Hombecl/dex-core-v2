@@ -1,0 +1,21 @@
+$ rg -n 'get_lp_burn_out|reserve0 -=|reserve1 -=|total_supply_lp -=|router::pay_to|invalid_caller|balance -=|storage::save|pool::\$route|pool_idata|slice_hash|amount0_out|amount1_out' \
+  contracts/pool/msgs/lp_wallet.fc contracts/pool/pools/constant_product/pool.fc \
+  contracts/router/msgs/pool.fc contracts/lp_wallet.fc contracts/pool/msgs/lp_account.fc \
+  contracts/common/contracts.fc contracts/pool/pools/constant_product/state_init.fc
+
+59 matches across 7 files.
+
+Key burn/release matches:
+contracts/pool/msgs/lp_wallet.fc:23: (int amount0_out, int amount1_out) = pool::get_lp_burn_out(jetton_amount);
+contracts/pool/msgs/lp_wallet.fc:30: storage::reserve0 -= amount0_out;
+contracts/pool/msgs/lp_wallet.fc:31: storage::reserve1 -= amount1_out;
+contracts/pool/msgs/lp_wallet.fc:32: storage::total_supply_lp -= jetton_amount;
+contracts/pool/msgs/lp_wallet.fc:62: router::pay_to(
+contracts/pool/msgs/lp_wallet.fc:80: router::pay_to(
+contracts/pool/msgs/lp_wallet.fc:95: storage::save();
+contracts/router/msgs/pool.fc:28: throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER)));
+contracts/lp_wallet.fc:109: balance -= jetton_amount;
+contracts/common/contracts.fc:222: (cell) pool::$route(
+contracts/pool/pools/constant_product/state_init.fc:21: if _first_jetton_address.slice_hash() > _second_jetton_address.slice_hash() {
+
+callers_grep_done=true; cross_file_unique_files=7; cross_file_match_count=59.

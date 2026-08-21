@@ -1,0 +1,26 @@
+COMMAND: rg -n "solve_(dx|dy)|_invariant|_d[xy]_invariant|__EPSILON|__MAX_ITERATIONS|not_converge|df_zero|storage::reserve[01]|get_swap_out|storage::save|swap_refund|weighted_stableswap" [selected weighted-stableswap math/pool/Router paths and tests]
+MATCH_COUNT: 68
+UNIQUE_FILES: 6
+
+contracts/pool/pools/weighted_stableswap/math.fc:1:const int __EPSILON = 1000000000000000000000000; ;; 0.001
+contracts/pool/pools/weighted_stableswap/math.fc:2:const int __MAX_ITERATIONS = 255;
+contracts/pool/pools/weighted_stableswap/math.fc:6:const error::not_converge = 5103;
+contracts/pool/pools/weighted_stableswap/math.fc:7:const error::df_zero = 5104;
+contracts/pool/pools/weighted_stableswap/math.fc:40:(int) solve_dx(int x, int y, int dy) impure inline {
+contracts/pool/pools/weighted_stableswap/math.fc:53:        throw_if(error::df_zero, df_d == 0);
+contracts/pool/pools/weighted_stableswap/math.fc:57:        throw_if(error::not_converge, i > __MAX_ITERATIONS);
+contracts/pool/pools/weighted_stableswap/math.fc:58:    } until(abs(delta_f) <= __EPSILON);
+contracts/pool/pools/weighted_stableswap/math.fc:63:(int) solve_dy(int x, int y, int dx) impure inline {
+contracts/pool/pools/weighted_stableswap/math.fc:76:        throw_if(error::df_zero, df_d == 0);
+contracts/pool/pools/weighted_stableswap/math.fc:80:        throw_if(error::not_converge, i > __MAX_ITERATIONS);
+contracts/pool/pools/weighted_stableswap/math.fc:81:    } until(abs(delta_f) <= __EPSILON);
+contracts/pool/pools/weighted_stableswap/pool.fc:9:        base_out = solve_dy(_reserve_in, _reserve_out, base_in_without_fee);
+contracts/pool/pools/weighted_stableswap/pool.fc:11:        base_out = solve_dx(_reserve_out, _reserve_in, base_in_without_fee);
+contracts/pool/msgs/router.fc:94:                (out1, protocol_fee_out, ref_fee_out1) = pool::get_swap_out(true, ref_value, amount0, storage::reserve0, storage::reserve1);
+contracts/pool/msgs/router.fc:95:                storage::reserve0 += amount0;
+contracts/pool/msgs/router.fc:111:            throw_arg_unless(op::swap_refund_tx_expired, 1, tx_deadline > now());
+contracts/pool/msgs/router.fc:113:            throw_arg_if(op::swap_refund_0_out, 1, out < 1);
+contracts/pool/msgs/router.fc:114:            throw_arg_if(op::swap_refund_slippage, 1, min_out > out);
+contracts/pool/msgs/router.fc:115:            throw_arg_if(op::swap_refund_reserve_err, 1, (storage::reserve0 > math::MAX_COINS)
+contracts/pool/msgs/router.fc:152:            storage::save();
+tests/WeightedStableswap.spec.ts:251:        dexType: "weighted_stableswap",

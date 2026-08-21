@@ -1,0 +1,16 @@
+cross_file_anchors 16
+pay_to_pool_sender_authenticated true
+cross_swap_reenters_route_as_swap true
+same_token_hop_rejected true
+first_hop_output 997000
+second_hop_output 994009
+attacker_net_delta -5991
+unbacked_recursive_output false
+result PASS
+
+live_regression_command:
+npm test -- --runInBand tests/System.spec.ts -t 'should handle cross swap'
+
+live_regression_output:
+PASS tests/System.spec.ts (5.117 s)
+Tests: 10 skipped, 1 passed, 11 total

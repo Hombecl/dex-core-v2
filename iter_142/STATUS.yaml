@@ -1,0 +1,71 @@
+schema_version: shadow-v1
+iteration: 142
+phase: completed
+cell_id: AG3
+cell_label: callback_operation_typing_alias
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AG3
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - 'contracts/common/contracts.fc:50: return begin_message(op::cb_add_liquidity)'
+      - 'contracts/pool/msgs/lp_account.fc:4: if ctx.at(OPCODE) == op::cb_add_liquidity {'
+      - 'contracts/common/contracts.fc:158: return begin_message(op::pay_to)'
+      - 'contracts/router/msgs/pool.fc:5: if ctx.at(OPCODE) == op::pay_to {'
+      - 'contracts/common/contracts.fc:293: return begin_message(op::deposit_ref_fee)'
+      - 'contracts/vault.fc:40: if (ctx.at(OPCODE) == op::deposit_ref_fee) & equal_slices(ctx.at(SENDER), storage::router_address) {'
+      - 'contracts/lp_wallet.fc:74: .store_uint(op::transfer_notification, 32)'
+      - 'contracts/router/msgs/jetton.fc:5: if ctx.at(OPCODE) == op::ft::transfer_notification {'
+  poc_execution:
+    test_file_path: iter_142/poc_callback_operation_typing_alias.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_142/poc_callback_operation_typing_alias.run.log
+    run_log_exists_on_disk: true
+    test_runtime: '0.2s static model; 53.7s integration'
+    result: 'PASSED (10 callback edges; 43 integration tests)'
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 callback operation typing is:issue'
+      - 'repo:ston-fi/dex-core-v2 callback operation typing is:pr'
+      - 'repo:ston-fi/dex-core-v2 cb_add_liquidity pay_to is:issue'
+      - 'repo:ston-fi/dex-core-v2 cb_add_liquidity pay_to is:pr'
+    results: all four returned total_count 0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'callback operation typing repository issue search'
+      - 'callback operation typing repository pull-request search'
+      - 'callback pair repository issue search'
+      - 'callback pair repository pull-request search'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  selected_cluster_source: POST_MATRIX_CLUSTER_PROPOSALS_19.md
+  caller_grep_path: iter_142/callers-grep.txt
+  caller_grep_match_count: 20
+  caller_grep_unique_files: 10
+  prior_audit_path: iter_142/prior-audit-git.log
+  prior_audit_bytes: 29
+  r15_search_files:
+    - iter_142/R15-GH-callback-typing-issue.json
+    - iter_142/R15-GH-callback-typing-pr.json
+    - iter_142/R15-GH-callback-pair-issue.json
+    - iter_142/R15-GH-callback-pair-pr.json
+  source_conclusion: 'Ten selected producer-to-consumer edges preserve their operation identity, including the explicit ft namespace for transfer_notification. The callback integration routes passed and no operation-shaped body entered a wrong selected handler or produced an attacker-positive asset delta.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_142-AG3.md
+  pre_killed_duplicate_cluster: AG2 overlaps U4/R8/AB4 prior evidence

@@ -1,0 +1,30 @@
+command:
+rg -n 'cb_add_liquidity|invalid_caller|total_supply_lp|reserve0|reserve1|min_lp_out|amount0|amount1|both_positive|lp_account::add_liquidity|utils::send_excesses|storage::save|handle_lp_account_messages|is_locked' contracts/pool/msgs/lp_account.fc contracts/lp_account/msgs/pool.fc contracts/lp_account/msgs/user.fc contracts/common/contracts.fc contracts/pool.fc
+
+summary:
+match_count: 81
+unique_files: 5
+callers_grep_done: true
+
+key_matches:
+contracts/pool/msgs/lp_account.fc:4: if ctx.at(OPCODE) == op::cb_add_liquidity
+contracts/pool/msgs/lp_account.fc:26: deterministic LP-account sender gate
+contracts/pool/msgs/lp_account.fc:68: if (storage::is_locked)
+contracts/pool/msgs/lp_account.fc:69: liquidity < min_lp_out
+contracts/pool/msgs/lp_account.fc:74: state_init needed since lp_account might be already destroyed
+contracts/pool/msgs/lp_account.fc:88: lp_account::add_liquidity(
+contracts/pool/msgs/lp_account.fc:90: 0,
+contracts/pool/msgs/lp_account.fc:93: true, ;; both_positive? to true
+contracts/lp_account/msgs/pool.fc:6: if ctx.at(OPCODE) == op::add_liquidity
+contracts/lp_account/msgs/pool.fc:18: storage::amount0 += new_amount0
+contracts/lp_account/msgs/pool.fc:19: storage::amount1 += new_amount1
+contracts/lp_account/msgs/pool.fc:25: both_positive branch
+contracts/lp_account/msgs/pool.fc:27: min_lp_out > 0 gate
+contracts/lp_account/msgs/pool.fc:52: utils::send_excesses(0, excess_address, QCARRY_ALL_BALANCE)
+contracts/lp_account/msgs/pool.fc:55: storage::save()
+contracts/lp_account/msgs/user.fc:70: positive min_lp_out and selected amount gate
+contracts/common/contracts.fc:39: pool::cb_add_liquidity(
+contracts/pool.fc:37: if handle_lp_account_messages()
+
+conclusion:
+Pool callback failures caused by minimum, lock, or reserve conditions redeploy a fresh deterministic LP account with min_lp_out zero. That account accumulates the exact callback amounts, fails its positive-minimum mint gate, returns exact excesses, and saves/destroys without LP issuance; no attacker-controlled reserve or LP delta is created.

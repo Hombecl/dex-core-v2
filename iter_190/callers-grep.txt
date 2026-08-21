@@ -1,0 +1,24 @@
+$ rg -n 'slice_hash|pool_idata|pool::\$route|amount0 =|amount1 =|token0_address|token1_address|storage::reserve[01]|router::pay_to' \
+  contracts/common/contracts.fc contracts/router/dex.fc contracts/router/msgs/pool.fc \
+  contracts/pool/msgs/router.fc contracts/pool/pools/*/state_init.fc contracts/pool/pools/*/storage.fc
+
+142 matches across 14 files (the five Pool StateInit variants plus Router, Pool, common builders, and storage consumers).
+
+Key matches:
+contracts/common/contracts.fc:222: (cell) pool::$route(
+contracts/common/contracts.fc:231: if _sender_jetton_address.slice_hash() > _other_jetton_address.slice_hash() {
+contracts/router/dex.fc:79: pool_idata(my_address(), _jetton_address, token_wallet1, storage::jetton_lp_wallet_code,  storage::lp_account_code),
+contracts/router/dex.fc:88: pool::$route(transferred_op, _caller, _sent_amount, _jetton_address, token_wallet1, _dex_payload),
+contracts/router/msgs/pool.fc:19: pool_idata(
+contracts/router/msgs/pool.fc:50: slice sent_jetton_address = amount0_out > 0 ? token0_address : token1_address;
+contracts/pool/msgs/router.fc:9: int amount0 = in_msg_body~load_coins();
+contracts/pool/msgs/router.fc:10: int amount1 = in_msg_body~load_coins();
+contracts/pool/msgs/router.fc:181: int amount0 = in_msg_body~load_coins();
+contracts/pool/msgs/router.fc:182: int amount1 = in_msg_body~load_coins();
+contracts/pool/pools/constant_product/state_init.fc:21: if _first_jetton_address.slice_hash() > _second_jetton_address.slice_hash() {
+contracts/pool/pools/constant_sum/state_init.fc:21: if _first_jetton_address.slice_hash() > _second_jetton_address.slice_hash() {
+contracts/pool/pools/stableswap/state_init.fc:22: if _first_jetton_address.slice_hash() > _second_jetton_address.slice_hash() {
+contracts/pool/pools/weighted_const_product/state_init.fc:22: if _first_jetton_address.slice_hash() > _second_jet_address.slice_hash() {
+contracts/pool/pools/weighted_stableswap/state_init.fc:32: if _first_jetton_address.slice_hash() > _second_jet_address.slice_hash() {
+
+callers_grep_done=true; cross_file_unique_files=14; cross_file_match_count=142.

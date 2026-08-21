@@ -1,0 +1,7 @@
+{
+  "query": "repo:ston-fi/dex-core-v2 both_positive is:issue",
+  "endpoint": "https://api.github.com/search/issues",
+  "total_count": 0,
+  "incomplete_results": false,
+  "items": []
+}

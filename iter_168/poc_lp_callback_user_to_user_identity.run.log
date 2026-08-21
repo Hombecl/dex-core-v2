@@ -1,0 +1,21 @@
+COMMAND: node iter_168/poc_lp_callback_user_to_user_identity.test.js
+{
+  "variants_checked": 5,
+  "user_to_user_sender_tuple_cases": 27,
+  "accepted_authenticated_cases": 9,
+  "forged_sender_cases_rejected": 18,
+  "explicit_third_party_recipient_cases": 6,
+  "from_address_tracks_authenticated_user": true,
+  "recipient_substitution_without_sender_authority": false,
+  "attacker_value_extraction": false,
+  "result": "PASS"
+}
+RUNTIME: 0.4s static/model
+
+COMMAND: npm test -- --runInBand tests/ConstProduct.spec.ts tests/ConstSum.spec.ts tests/Stableswap.spec.ts tests/WeightedCPI.spec.ts tests/WeightedStableswap.spec.ts -t 'should provide lp|should burn liquidity'
+RESULT: PASS
+TEST_SUITES: 5 passed, 5 total
+TESTS: 120 skipped, 18 passed, 138 total
+SNAPSHOTS: 0 total
+RUNTIME: 42.312s
+

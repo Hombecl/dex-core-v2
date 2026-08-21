@@ -1,0 +1,16 @@
+query: rg -n -i 'cell_label:.*(pay_vault|vault|zero_side|zero.*selector|referral|token_side|asset_binding)' iter_*/STATUS.yaml
+exact_prior_matches:
+  - iter_174 AO2 router_pay_vault_token_side_binding DEADEND_WITH_PROOF
+  - iter_211 AV4 pool_pay_vault_both_positive_side_selector KILLED_TRUSTED_ON_TRUSTED
+  - iter_213 AW1 router_pay_vault_stateinit_bounce_fee_stranding DEADEND_WITH_PROOF
+  - iter_214 AW2 vault_deposit_ref_fee_tail_response_isolation DEADEND_WITH_PROOF
+  - iter_217 AW5 router_vault_code_upgrade_identity_drift KILLED_TRUSTED_ON_TRUSTED
+prior_evidence:
+  - iter_211/STATUS.yaml
+  - iter_211/poc_pool_pay_vault_both_positive_side_selector.test.js
+  - iter_211/poc_pool_pay_vault_both_positive_side_selector.run.log
+  - iter_211/live-pay-vault-selector-regression.run.log
+  - iter_211/callers-grep.txt
+prior_audit_conclusion: 'AX9 is the same zero/dual-side pay_vault selector family already completed as iter_211/AV4; the selector is reached only from the deterministic Pool and the Vault deposit is Router-gated.'
+git_log:
+388c94e checkpoint: v4flash shadow iter100

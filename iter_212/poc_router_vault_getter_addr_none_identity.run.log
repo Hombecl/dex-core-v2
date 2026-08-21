@@ -1,0 +1,14 @@
+command: node iter_212/poc_router_vault_getter_addr_none_identity.test.js
+cross_file_anchors 22
+addr_none_and_wrong_workchain_rejected_by_getter true
+standard_owner_token_router_tuple_derives_unique_vault true
+value_bearing_vault_pay_to_reuses_same_tuple true
+optional_none_normalization_is_not_used_for_vault_identity true
+classification DEADEND_WITH_PROOF
+result PASS
+
+command: npm test -- --runInBand tests/ConstProduct.spec.ts -t 'should collect ref fee from vault'
+result: PASS
+test_file: tests/ConstProduct.spec.ts
+tests: 35 skipped, 1 passed, 36 total
+duration: 6.495s

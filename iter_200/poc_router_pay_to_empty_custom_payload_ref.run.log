@@ -1,0 +1,16 @@
+cross_file_anchors 18
+pool_sender_authenticated_before_payload_branch true
+empty_payload_uses_exact_normal_transfer true
+32_bit_boundary_uses_normal_transfer true
+low_gas_cross_swap_falls_back_to_transfer true
+nested_route_sums_exact_nonzero_leg true
+malformed_nested_route_refunds_exact_amount true
+attacker_positive_delta false
+result PASS
+
+live_regression_command:
+npm test -- --runInBand tests/System.spec.ts -t 'should handle cross swap'
+
+live_regression_output:
+PASS tests/System.spec.ts (6.736 s)
+Tests: 10 skipped, 1 passed, 11 total

@@ -1,0 +1,55 @@
+COMMAND: rg -n "fwd_amount|custom_payload_cs|jetton_wallet::mint|balance \\+= jetton_amount|either_forward_payload|transfer_notification|send_raw_message\\(msg.end_cell\\(\\), 1\\)|storage::save|internal_transfer|handle_jetton_messages|route_dex_messages" contracts/pool/msgs/lp_account.fc contracts/lp_wallet.fc contracts/lp_wallet/op.fc contracts/common/contracts.fc contracts/router/msgs/jetton.fc contracts/router/msgs/pool.fc
+MATCH_COUNT: 51
+UNIQUE_FILES: 6
+
+contracts/router/msgs/jetton.fc:1:(int) handle_jetton_messages() impure inline {
+contracts/router/msgs/jetton.fc:5:    if ctx.at(OPCODE) == op::ft::transfer_notification {
+contracts/router/msgs/jetton.fc:24:        route_dex_messages(
+contracts/lp_wallet/op.fc:2:const op::transfer_notification = 0x7362d09c;
+contracts/lp_wallet/op.fc:3:const op::internal_transfer = 0x178d4519;
+contracts/lp_wallet.fc:28:    slice either_forward_payload = in_msg_body;
+contracts/lp_wallet.fc:37:        .store_uint(op::internal_transfer, 32)
+contracts/lp_wallet.fc:43:        .store_slice(either_forward_payload)
+contracts/lp_wallet.fc:51:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:58:    balance += jetton_amount;
+contracts/lp_wallet.fc:72:        slice either_forward_payload = in_msg_body;
+contracts/lp_wallet.fc:74:            .store_uint(op::transfer_notification, 32)
+contracts/lp_wallet.fc:78:            .store_slice(either_forward_payload)
+contracts/lp_wallet.fc:86:        send_raw_message(msg.end_cell(), 1);
+contracts/lp_wallet.fc:100:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:133:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:141:    throw_unless(709, (op == op::internal_transfer) | (op == op::burn_notification_ext));
+contracts/lp_wallet.fc:145:    balance += jetton_amount;
+contracts/lp_wallet.fc:146:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:174:    if (op == op::internal_transfer) { 
+contracts/router/msgs/pool.fc:55:            route_dex_messages(sent_jetton_address, gas, swap_amount, original_caller, custom_payload);
+contracts/router/msgs/pool.fc:64:                ;; do not send transfer_notification, if gas is too low
+contracts/pool/msgs/lp_account.fc:11:        int fwd_amount = in_msg_body~load_coins();
+contracts/pool/msgs/lp_account.fc:12:        cell custom_payload_cs = in_msg_body~load_maybe_ref(); 
+contracts/pool/msgs/lp_account.fc:75:            ;; no need to forward again custom_payload_cs
+contracts/pool/msgs/lp_account.fc:110:            ;; check if fwd_amount is enough
+contracts/pool/msgs/lp_account.fc:113:            if (fwd_amount > 0) & (
+contracts/pool/msgs/lp_account.fc:114:                (gas_available - (gas::jetton_wallet::est_transfer + (ctx.at(FWD_FEE) * 2))) - fwd_amount <= 0
+contracts/pool/msgs/lp_account.fc:115:            ) { ;; do not send transfer_notification, if gas is too low, mint may revert
+contracts/pool/msgs/lp_account.fc:116:                fwd_amount = 0; 
+contracts/pool/msgs/lp_account.fc:123:                jetton_wallet::mint(
+contracts/pool/msgs/lp_account.fc:127:                    fwd_amount,
+contracts/pool/msgs/lp_account.fc:128:                    custom_payload_cs
+contracts/pool/msgs/lp_account.fc:132:            storage::save();
+contracts/common/contracts.fc:45:    int _fwd_amount,
+contracts/common/contracts.fc:46:    cell _custom_payload_cs,
+contracts/common/contracts.fc:55:        .store_coins(_fwd_amount)
+contracts/common/contracts.fc:56:        .store_maybe_ref(_custom_payload_cs)
+contracts/common/contracts.fc:124:    int _fwd_amount,
+contracts/common/contracts.fc:127:    cell _custom_payload_cs,
+contracts/common/contracts.fc:135:        .store_coins(_fwd_amount)
+contracts/common/contracts.fc:138:        .store_maybe_ref(_custom_payload_cs)
+contracts/common/contracts.fc:151:    int _ton_fwd_amount, 
+contracts/common/contracts.fc:165:            .store_coins(_ton_fwd_amount)
+contracts/common/contracts.fc:206:(cell) jetton_wallet::mint(
+contracts/common/contracts.fc:210:    int _fwd_amount,
+contracts/common/contracts.fc:213:    return begin_message(op::internal_transfer)
+contracts/common/contracts.fc:217:        .store_coins(_fwd_amount) ;; forward_ton_amount
+contracts/common/contracts.fc:218:        .store_maybe_ref(_either_ref) ;; either_forward_payload
+contracts/common/contracts.fc:280:(builder) jetton_wallet::transfer(int _fwd_amount, int _jetton_amount, slice _to, slice _response_address) inline {
+contracts/common/contracts.fc:286:        .store_coins(_fwd_amount); ;; forward_ton_amount

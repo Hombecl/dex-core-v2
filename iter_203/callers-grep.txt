@@ -1,0 +1,33 @@
+command:
+rg -n 'collect_fees|protocol_fee_address|collected_token0_protocol_fee|collected_token1_protocol_fee|maybe_payload|router::pay_to|CARRY_ALL_BALANCE|storage::save|invalid_caller|handle_protocolfee_messages|handle_pool_messages|jetton_wallet::transfer' contracts/pool/msgs/protocolfee.fc contracts/pool.fc contracts/common/contracts.fc contracts/router/msgs/pool.fc contracts/router.fc
+
+summary:
+match_count: 47
+unique_files: 5
+callers_grep_done: true
+
+key_matches:
+contracts/pool.fc:21: if equal_slices(ctx.at(SENDER), storage::protocol_fee_address)
+contracts/pool.fc:22: handle_protocolfee_messages()
+contracts/pool/msgs/protocolfee.fc:4: if ctx.at(OPCODE) == op::collect_fees
+contracts/pool/msgs/protocolfee.fc:6: both collected protocol fee counters positive gate
+contracts/pool/msgs/protocolfee.fc:16: cell maybe_payload0 = in_msg_body~load_maybe_ref()
+contracts/pool/msgs/protocolfee.fc:17: cell maybe_payload1 = in_msg_body~load_maybe_ref()
+contracts/pool/msgs/protocolfee.fc:27: router::pay_to(
+contracts/pool/msgs/protocolfee.fc:28: storage::protocol_fee_address
+contracts/pool/msgs/protocolfee.fc:34: storage::collected_token0_protocol_fee
+contracts/pool/msgs/protocolfee.fc:42: router::pay_to(
+contracts/pool/msgs/protocolfee.fc:43: storage::protocol_fee_address
+contracts/pool/msgs/protocolfee.fc:49: storage::collected_token1_protocol_fee
+contracts/pool/msgs/protocolfee.fc:52: CARRY_ALL_BALANCE
+contracts/pool/msgs/protocolfee.fc:55: storage::collected_token0_protocol_fee = 0
+contracts/pool/msgs/protocolfee.fc:56: storage::collected_token1_protocol_fee = 0
+contracts/pool/msgs/protocolfee.fc:58: storage::save()
+contracts/router/msgs/pool.fc:28: deterministic Pool sender gate
+contracts/router/msgs/pool.fc:74: jetton_wallet::transfer(... amount0_out, owner, excesses_address)
+contracts/router/msgs/pool.fc:83: jetton_wallet::transfer(... amount1_out, owner, excesses_address)
+contracts/common/contracts.fc:146: router::pay_to
+contracts/router.fc:23: if handle_pool_messages()
+
+conclusion:
+Optional payload refs do not alter the exact one-sided amounts or recipient tuple. Both counters are required, both pay_to messages are built, then both counters clear and save. Any payload-induced liveness or one-sided counter behavior is controlled by the stored protocol-fee role and is killed as trusted-on-trusted.

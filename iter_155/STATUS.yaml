@@ -1,0 +1,74 @@
+schema_version: shadow-v1
+iteration: 155
+phase: completed
+cell_id: AJ3
+cell_label: weighted_const_product_ratio_guard
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AJ3
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - "contracts/pool/pools/weighted_const_product/math.fc:1: const _MAX_IN_RATIO = 300000000000000000; ;; 0.3e18"
+      - "contracts/pool/pools/weighted_const_product/math.fc:21: throw_unless(error::max_in_ratio, _amount_in <= _balance_in.math::fp::mul(_MAX_IN_RATIO));"
+      - "contracts/pool/pools/weighted_const_product/math.fc:24: int weight_out = _weight_in.math::fp::complement();"
+      - "contracts/pool/pools/weighted_const_product/pool.fc:9: base_out = calc_out_given_in(_reserve_in, storage::w0, base_in_without_fee, _reserve_out);"
+      - "contracts/pool/pools/weighted_const_product/pool.fc:11: base_out = calc_out_given_in(_reserve_in, storage::w0.math::fp::complement(), base_in_without_fee, _reserve_out);"
+      - "contracts/pool/msgs/router.fc:94: (out1, protocol_fee_out, ref_fee_out1) = pool::get_swap_out(true, ref_value, amount0, storage::reserve0, storage::reserve1);"
+      - "contracts/pool/msgs/router.fc:101: (out0, protocol_fee_out, ref_fee_out0) = pool::get_swap_out(false, ref_value, amount1, storage::reserve1, storage::reserve0);"
+      - "contracts/pool/msgs/router.fc:152: storage::save();"
+      - "contracts/router/pools/weighted_const_product/ext_admin.fc:13: throw_unless(error::invalid_amount, (0 < new_w) & (new_w < math::ONE_DEC));"
+      - "contracts/pool/pools/weighted_const_product/ext_router.fc:12: if storage::w0 == 0 {"
+  poc_execution:
+    test_file_path: iter_155/poc_weighted_const_product_ratio_guard.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_155/poc_weighted_const_product_ratio_guard.run.log
+    run_log_exists_on_disk: true
+    test_runtime: "0.1s static/model; 14.629s integration"
+    result: "PASS (12 exact boundary/rejection cases; 36 fee-adjusted cases; 10 live tests)"
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 weighted const product max in ratio is:issue"
+      - "repo:ston-fi/dex-core-v2 weighted const product max in ratio is:pr"
+      - "repo:ston-fi/dex-core-v2 WeightedMath ratio is:issue"
+      - "repo:ston-fi/dex-core-v2 WeightedMath ratio is:pr"
+    results: "4 queries returned total_count=0"
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "weighted const product max in ratio"
+      - "WeightedMath ratio"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  selected_cluster_source: POST_MATRIX_CLUSTER_PROPOSALS_22.md
+  caller_path: "Weighted CPI ratio guard -> directional Pool get_swap_out -> Router token-side dispatch -> reserve mutation/refund checks -> storage save"
+  caller_match_count: 27
+  caller_unique_files: 7
+  prior_audit_path: iter_155/prior-audit-git.log
+  r15_evidence_files:
+    - iter_155/R15-GH-weighted-ratio-issue.json
+    - iter_155/R15-GH-weighted-ratio-pr.json
+    - iter_155/R15-GH-weightedmath-ratio-issue.json
+    - iter_155/R15-GH-weightedmath-ratio-pr.json
+  boundary_result: "The shared 0.3e18 guard accepted exact integer limits and rejected the next integer across nine reserves; fee-adjusted limits were exact for four LP-fee values."
+  source_conclusion: "Both swap directions use the same reserve-in operand and the same net-input max-ratio check; only the complementary weight changes. Router weight updates require 0 < new_w < 1 and the pool persists after the normal success path. No direction-specific bypass, reserve/invariant mismatch, or attacker-controlled excess output was demonstrated."
+  candidate_path: null
+  attacker_privilege: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  shadow_mode: true

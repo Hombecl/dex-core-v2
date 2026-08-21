@@ -1,0 +1,73 @@
+schema_version: shadow-v1
+iteration: 153
+phase: completed
+cell_id: AJ1
+cell_label: weighted_stableswap_solver_convergence_guard
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AJ1
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - "contracts/pool/pools/weighted_stableswap/math.fc:1: const int __EPSILON = 1000000000000000000000000;"
+      - "contracts/pool/pools/weighted_stableswap/math.fc:2: const int __MAX_ITERATIONS = 255;"
+      - "contracts/pool/pools/weighted_stableswap/math.fc:40: (int) solve_dx(int x, int y, int dy) impure inline {"
+      - "contracts/pool/pools/weighted_stableswap/math.fc:53: throw_if(error::df_zero, df_d == 0);"
+      - "contracts/pool/pools/weighted_stableswap/math.fc:57: throw_if(error::not_converge, i > __MAX_ITERATIONS);"
+      - "contracts/pool/pools/weighted_stableswap/math.fc:63: (int) solve_dy(int x, int y, int dx) impure inline {"
+      - "contracts/pool/pools/weighted_stableswap/math.fc:76: throw_if(error::df_zero, df_d == 0);"
+      - "contracts/pool/pools/weighted_stableswap/math.fc:80: throw_if(error::not_converge, i > __MAX_ITERATIONS);"
+      - "contracts/pool/pools/weighted_stableswap/pool.fc:9: base_out = solve_dy(_reserve_in, _reserve_out, base_in_without_fee);"
+      - "contracts/pool/pools/weighted_stableswap/pool.fc:11: base_out = solve_dx(_reserve_out, _reserve_in, base_in_without_fee);"
+      - "contracts/pool/msgs/router.fc:95: storage::reserve0 += amount0;"
+      - "contracts/pool/msgs/router.fc:113: throw_arg_if(op::swap_refund_0_out, 1, out < 1);"
+      - "contracts/pool/msgs/router.fc:152: storage::save();"
+  poc_execution:
+    test_file_path: iter_153/poc_weighted_stableswap_solver_convergence.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_153/poc_weighted_stableswap_solver_convergence.run.log
+    run_log_exists_on_disk: true
+    test_runtime: "0.3s static/model; 23.11s integration"
+    result: "PASSED (2 solvers; 4 positive samples; 16 integration tests)"
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 weighted stableswap solver convergence is:issue"
+      - "repo:ston-fi/dex-core-v2 weighted stableswap solver convergence is:pr"
+      - "repo:ston-fi/dex-core-v2 df_zero not_converge is:issue"
+      - "repo:ston-fi/dex-core-v2 df_zero not_converge is:pr"
+    results: "4 queries returned total_count=0"
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "weighted stableswap solver convergence"
+      - "df_zero not_converge"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  selected_cluster_source: POST_MATRIX_CLUSTER_PROPOSALS_22.md
+  caller_path: "weighted-stableswap solve_dx/solve_dy -> Pool get_swap_out -> Router reserve mutation -> refund checks -> storage save"
+  caller_match_count: 68
+  caller_unique_files: 6
+  prior_audit_path: iter_153/prior-audit-git.log
+  r15_evidence_files:
+    - iter_153/R15-GH-solver-issue.json
+    - iter_153/R15-GH-solver-pr.json
+    - iter_153/R15-GH-derivative-issue.json
+    - iter_153/R15-GH-derivative-pr.json
+  source_conclusion: "Both solver directions have derivative-zero and bounded-iteration guards; approximate positive samples converge within three iterations. Pool calls the solver before reserve mutation, and Router checks output/slippage/reserve conditions before save; integration paths passed. No under-converged positive output, persistent state delta, or shippable H/C was demonstrated."
+  candidate_path: null
+  shadow_mode: true

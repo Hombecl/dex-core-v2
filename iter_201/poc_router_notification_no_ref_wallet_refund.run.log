@@ -1,0 +1,14 @@
+cross_file_anchors 15
+no_ref_branch_refunds_exact_amount true
+refund_destination_is_not_router_balance_source true
+fake_sender_cannot_debit_router_wallet true
+referenced_notifications_take_route_path true
+attacker_positive_delta false
+result PASS
+
+live_regression_command:
+npm test -- --runInBand tests/System.spec.ts -t 'should handle invalid transfers'
+
+live_regression_output:
+PASS tests/System.spec.ts (4.893 s)
+Tests: 10 skipped, 1 passed, 11 total

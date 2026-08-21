@@ -1,0 +1,17 @@
+COMMAND: node iter_176/poc_router_transfer_bounce_refund_payload.test.js
+EXIT: 0
+OUTPUT:
+{
+  "cross_file_anchors": 12,
+  "outer_parser_refund_cases": 4,
+  "inner_validation_refund_cases": 4,
+  "error_metadata_changes_token_amount": false,
+  "refund_excess_field_shift": false,
+  "forged_same_token_pair_rejected": true,
+  "attacker_value_extraction": false,
+  "result": "PASS"
+}
+
+COMMAND: ./node_modules/.bin/jest --runInBand tests/System.spec.ts tests/ConstProduct.spec.ts tests/ConstSum.spec.ts tests/Stableswap.spec.ts tests/WeightedStableswap.spec.ts -t 'should handle invalid transfers|should refund swap if wrong payload|should refund swap if tx is expired'
+EXIT: 0
+OUTPUT: 3 passed, 121 skipped; 15.758 s.

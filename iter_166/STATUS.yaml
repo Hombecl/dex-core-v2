@@ -1,0 +1,76 @@
+schema_version: shadow-v1
+iteration: 166
+phase: completed
+cell_id: AM4
+cell_label: lp_wallet_invalid_owner_state_init
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AM4
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - "contracts/lp_account/msgs/user.fc:52:        slice to_user = in_msg_body~load_msg_addr();"
+      - "contracts/lp_account/msgs/user.fc:62:            to_user.address::check_workchain(params::workchain)"
+      - "contracts/pool/msgs/router.fc:203:            to_user = call_payload~load_msg_addr();"
+      - "contracts/pool/msgs/router.fc:211:            throw_arg_unless(op::provide_refund_wrong_workchain, 1, to_user.address::check_workchain(params::workchain));"
+      - "contracts/pool/msgs/lp_account.fc:103:                lp_wallet_idata("
+      - "contracts/pool/msgs/lp_account.fc:104:                    to_user_address,"
+      - "contracts/pool/get.fc:42:    throw_unless(error::wrong_workchain, owner_address.address::check_workchain(params::workchain));"
+      - "contracts/pool/get.fc:45:        lp_wallet_idata(owner_address, my_address(), storage::jetton_lp_wallet_code),"
+      - "contracts/common/contracts.fc:19:(cell) lp_wallet_idata(slice _owner_address, slice _jetton_master_address, cell _jetton_wallet_code) inline {"
+      - "contracts/lp_wallet/jetton-utils.fc:14:    .store_dict(pack_jetton_lp_wallet_data(0, owner_address, jetton_master_address, jetton_wallet_code))"
+      - "contracts/lp_wallet/jetton-utils.fc:26:slice calculate_user_jetton_lp_wallet_address(slice owner_address, slice jetton_master_address, cell jetton_wallet_code) inline {"
+  poc_execution:
+    test_file_path: iter_166/poc_lp_wallet_invalid_owner_state_init.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_166/poc_lp_wallet_invalid_owner_state_init.run.log
+    run_log_exists_on_disk: true
+    test_runtime: "0.2s static/model; 38.443s integration"
+    result: "PASS (4 owner forms; 18 live LP provide/burn tests)"
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 LP wallet owner StateInit alias is:issue"
+      - "repo:ston-fi/dex-core-v2 LP wallet owner StateInit alias is:pr"
+      - "repo:ston-fi/dex-core-v2 to_user wrong workchain LP is:issue"
+      - "repo:ston-fi/dex-core-v2 to_user wrong workchain LP is:pr"
+    results: "4 queries returned total_count=0"
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "LP wallet owner StateInit alias"
+      - "to_user wrong workchain LP"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  selected_cluster_source: POST_MATRIX_CLUSTER_PROPOSALS_24.md
+  caller_path: "Router/LP-account to_user parse and workchain checks -> Pool callback owner tuple -> LP-wallet StateInit/data hash -> getter-derived wallet address"
+  caller_match_count: 59
+  caller_unique_files: 7
+  prior_audit_path: iter_166/prior-audit-git.log
+  r15_evidence_files:
+    - iter_166/R15-GH-lp-wallet-owner-state-init-alias-issue.json
+    - iter_166/R15-GH-lp-wallet-owner-state-init-alias-pr.json
+    - iter_166/R15-GH-to-user-wrong-workchain-lp-issue.json
+    - iter_166/R15-GH-to-user-wrong-workchain-lp-pr.json
+  boundary_result: "Direct LP-account calls validate to_user, refund, and excess addresses for the configured workchain; the Pool provide path validates to_user before constructing the LP-account call. LP-wallet StateInit/data and the getter both bind owner, Pool master, and code, while the wallet address is the hash of that exact tuple."
+  source_conclusion: "Noncanonical owner forms are rejected before the value-bearing callback, and distinct valid owners produce distinct wallet tuples/addresses. No unreachable committed LP balance, cross-owner alias, or attacker-controlled recipient substitution was demonstrated."
+  candidate_path: null
+  attacker_privilege: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  shadow_mode: true
+

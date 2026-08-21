@@ -1,0 +1,21 @@
+COMMAND: node iter_160/poc_lp_supply_coin_serialization_boundary.test.js
+{
+  "variants_checked": 5,
+  "coin_serialization_fields_per_variant": 5,
+  "supply_cases": 42,
+  "mint_accepted_cases": 9,
+  "mint_refund_cases": 33,
+  "burn_cases": 256,
+  "burn_accepted_cases": 36,
+  "burn_rejected_cases": 220,
+  "max_coin_value": "1329227995784915872903807060280344575",
+  "state_save_before_width_checks": false,
+  "state_save_before_burn_checks": false,
+  "result": "PASS"
+}
+
+COMMAND: npm test -- --runInBand tests/ConstProduct.spec.ts tests/ConstSum.spec.ts tests/Stableswap.spec.ts tests/WeightedCPI.spec.ts tests/WeightedStableswap.spec.ts -t 'should provide lp|should burn liquidity'
+RESULT: PASS, 5 suites
+TEST_SUITES: 5 passed, 5 total
+TESTS: 120 skipped, 18 passed, 138 total
+RUNTIME: 36.105s

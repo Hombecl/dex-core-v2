@@ -1,0 +1,7 @@
+Prior-audit family matches from shadow STATUS files:
+iter_91: variant LP fee/referral fee output conservation and zero-output rejection.
+iter_97: protocol fee counters and reserve conservation across provide/swap paths.
+iter_159: protocol/referral fee arithmetic conservation across all five variants.
+iter_162: LP-provide invariant and fee deltas; zero-result cases release no protocol fee.
+iter_165: zero-LP donation leaves protocol counters unchanged and is donor-funded.
+iter_177: protocol fee dual-leg release is trusted-role-only and no external extraction.

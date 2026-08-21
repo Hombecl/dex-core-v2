@@ -1,0 +1,20 @@
+$ rg -n 'from_address|from_user|to_user|lp_account_idata|lp_wallet_idata|mint\(|calculate_user_jetton_lp_wallet_address|transfer_notification|route_dex_messages|pool_idata|router::pay_to|invalid_caller' \
+  contracts/router/msgs/jetton.fc contracts/router/dex.fc contracts/router/msgs/pool.fc \
+  contracts/pool/msgs/router.fc contracts/pool/msgs/lp_account.fc contracts/lp_account/msgs/pool.fc \
+  contracts/lp_wallet.fc contracts/common/contracts.fc
+
+62 matches across 8 files.
+
+Key identity-chain matches:
+contracts/router/msgs/jetton.fc:7: slice from_address = in_msg_body~load_msg_addr();
+contracts/router/msgs/jetton.fc:24: route_dex_messages(
+contracts/router/dex.fc:1: () route_dex_messages(slice _jetton_address, int _available_gas, int _sent_amount, slice _caller, cell _dex_payload)
+contracts/router/dex.fc:88: pool::$route(transferred_op, _caller, _sent_amount, _jetton_address, token_wallet1, _dex_payload),
+contracts/pool/msgs/router.fc:180: slice from_user = in_msg_body~load_msg_addr();
+contracts/pool/msgs/router.fc:241: lp_account_idata(my_address(), from_user),
+contracts/pool/msgs/lp_account.fc:103: lp_wallet_idata(
+contracts/pool/msgs/lp_account.fc:123: jetton_wallet::mint(user_address, excess_address, liquidity, fwd_amount, custom_payload_cs),
+contracts/lp_wallet.fc:63: | equal_slices(calculate_user_jetton_lp_wallet_address(from_address, jetton_master_address, jetton_wallet_code), sender_address));
+contracts/router/msgs/pool.fc:28: throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER)));
+
+callers_grep_done=true; cross_file_unique_files=8; cross_file_match_count=62.

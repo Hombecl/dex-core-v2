@@ -1,0 +1,63 @@
+COMMAND: rg -n "protocol_fee_out|ref_fee_out|base_out -=|pool::get_swap_out|swap_refund_0_out|storage::save|ref_value = ref_address" contracts/pool/pools/*/pool.fc contracts/pool/msgs/router.fc contracts/router/msgs/admin.fc contracts/common/params.fc
+contracts/pool/pools/weighted_const_product/pool.fc:1:(int, int, int) pool::get_swap_out(int _side, int _ref_value, int _amount_in, int _reserve_in, int _reserve_out) inline {
+contracts/pool/pools/weighted_const_product/pool.fc:2:    int protocol_fee_out = 0;
+contracts/pool/pools/weighted_const_product/pool.fc:3:    int ref_fee_out = 0;
+contracts/pool/pools/weighted_const_product/pool.fc:16:        protocol_fee_out = divc(base_out * storage::protocol_fee, params::fee_divider);
+contracts/pool/pools/weighted_const_product/pool.fc:20:        ref_fee_out = divc(base_out * _ref_value, params::fee_divider);
+contracts/pool/pools/weighted_const_product/pool.fc:23:    base_out -= protocol_fee_out + ref_fee_out;
+contracts/pool/pools/weighted_const_product/pool.fc:24:    return (base_out, protocol_fee_out, ref_fee_out);
+contracts/router/msgs/admin.fc:150:        storage::save();
+contracts/router/msgs/admin.fc:164:        storage::save();
+contracts/router/msgs/admin.fc:179:        storage::save();
+contracts/router/msgs/admin.fc:194:        storage::save();
+contracts/router/msgs/admin.fc:205:        storage::save();
+contracts/router/msgs/admin.fc:216:        storage::save();
+contracts/router/msgs/admin.fc:227:        storage::save();
+contracts/router/msgs/admin.fc:258:        storage::save();
+contracts/pool/pools/constant_product/pool.fc:1:(int, int, int) pool::get_swap_out(int _side, int _ref_value, int _amount_in, int _reserve_in, int _reserve_out) inline {
+contracts/pool/pools/constant_product/pool.fc:5:    int protocol_fee_out = 0;
+contracts/pool/pools/constant_product/pool.fc:6:    int ref_fee_out = 0;
+contracts/pool/pools/constant_product/pool.fc:9:        protocol_fee_out = divc(base_out * storage::protocol_fee, params::fee_divider);
+contracts/pool/pools/constant_product/pool.fc:13:        ref_fee_out = divc(base_out * _ref_value, params::fee_divider);
+contracts/pool/pools/constant_product/pool.fc:16:    base_out -= protocol_fee_out + ref_fee_out;
+contracts/pool/pools/constant_product/pool.fc:17:    return (base_out, protocol_fee_out, ref_fee_out);
+contracts/pool/pools/stableswap/pool.fc:1:(int, int, int) pool::get_swap_out(int _side, int _ref_value, int _amount_in, int _reserve_in, int _reserve_out) inline {
+contracts/pool/pools/stableswap/pool.fc:2:    int protocol_fee_out = 0;
+contracts/pool/pools/stableswap/pool.fc:3:    int ref_fee_out = 0;
+contracts/pool/pools/stableswap/pool.fc:22:        protocol_fee_out = divc(base_out * storage::protocol_fee, params::fee_divider);
+contracts/pool/pools/stableswap/pool.fc:26:        ref_fee_out = divc(base_out * _ref_value, params::fee_divider);
+contracts/pool/pools/stableswap/pool.fc:29:    base_out -= protocol_fee_out + ref_fee_out;
+contracts/pool/pools/stableswap/pool.fc:30:    return (base_out, protocol_fee_out, ref_fee_out);
+contracts/pool/pools/weighted_stableswap/pool.fc:1:(int, int, int) pool::get_swap_out(int _side, int _ref_value, int _amount_in, int _reserve_in, int _reserve_out) inline {
+contracts/pool/pools/weighted_stableswap/pool.fc:2:    int protocol_fee_out = 0;
+contracts/pool/pools/weighted_stableswap/pool.fc:3:    int ref_fee_out = 0;
+contracts/pool/pools/weighted_stableswap/pool.fc:16:        protocol_fee_out = divc(base_out * storage::protocol_fee, params::fee_divider);
+contracts/pool/pools/weighted_stableswap/pool.fc:20:        ref_fee_out = divc(base_out * _ref_value, params::fee_divider);
+contracts/pool/pools/weighted_stableswap/pool.fc:23:    base_out -= protocol_fee_out + ref_fee_out;
+contracts/pool/pools/weighted_stableswap/pool.fc:24:    return (base_out, protocol_fee_out, ref_fee_out);
+contracts/pool/msgs/router.fc:86:            int protocol_fee_out = 0; 
+contracts/pool/msgs/router.fc:87:            int ref_fee_out0 = 0; 
+contracts/pool/msgs/router.fc:88:            int ref_fee_out1 = 0;
+contracts/pool/msgs/router.fc:90:            ref_value = ref_address.preload_uint(2) == 0 ? 0 : ref_value;
+contracts/pool/msgs/router.fc:94:                (out1, protocol_fee_out, ref_fee_out1) = pool::get_swap_out(true, ref_value, amount0, storage::reserve0, storage::reserve1);
+contracts/pool/msgs/router.fc:96:                storage::reserve1 -= (out1 + protocol_fee_out + ref_fee_out1);
+contracts/pool/msgs/router.fc:97:                storage::collected_token1_protocol_fee += protocol_fee_out;
+contracts/pool/msgs/router.fc:101:                (out0, protocol_fee_out, ref_fee_out0) = pool::get_swap_out(false, ref_value, amount1, storage::reserve1, storage::reserve0);
+contracts/pool/msgs/router.fc:102:                storage::reserve0 -= (out0 + protocol_fee_out + ref_fee_out0);
+contracts/pool/msgs/router.fc:104:                storage::collected_token0_protocol_fee += protocol_fee_out;
+contracts/pool/msgs/router.fc:113:            throw_arg_if(op::swap_refund_0_out, 1, out < 1);
+contracts/pool/msgs/router.fc:121:            if (ref_address.preload_uint(2) != 0) & (ref_fee_out0 + ref_fee_out1 > 0) { ;; 2 messages, pay referral, check ref_fee_out
+contracts/pool/msgs/router.fc:127:                        ref_fee_out0, 
+contracts/pool/msgs/router.fc:129:                        ref_fee_out1, 
+contracts/pool/msgs/router.fc:152:            storage::save();
+contracts/pool/msgs/router.fc:296:        storage::save();
+contracts/pool/msgs/router.fc:317:        storage::save();
+contracts/pool/pools/constant_sum/pool.fc:1:(int, int, int) pool::get_swap_out(int _side, int _ref_value, int _amount_in, int _reserve_in, int _reserve_out) inline {
+contracts/pool/pools/constant_sum/pool.fc:4:    int protocol_fee_out = 0;
+contracts/pool/pools/constant_sum/pool.fc:5:    int ref_fee_out = 0;
+contracts/pool/pools/constant_sum/pool.fc:8:        protocol_fee_out = divc(base_out * storage::protocol_fee, params::fee_divider);
+contracts/pool/pools/constant_sum/pool.fc:12:        ref_fee_out = divc(base_out * _ref_value, params::fee_divider);
+contracts/pool/pools/constant_sum/pool.fc:15:    base_out -= protocol_fee_out + ref_fee_out;
+contracts/pool/pools/constant_sum/pool.fc:16:    return (base_out, protocol_fee_out, ref_fee_out);
+MATCH_COUNT: 60
+UNIQUE_FILES: 7

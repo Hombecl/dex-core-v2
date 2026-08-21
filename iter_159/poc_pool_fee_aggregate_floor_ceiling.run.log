@@ -1,0 +1,17 @@
+COMMAND: node iter_159/poc_pool_fee_aggregate_floor_ceiling.test.js
+{
+  "variants_checked": 5,
+  "fee_cases_checked": 250025,
+  "accepted_positive_output_cases": 249960,
+  "tiny_output_refund_cases": 65,
+  "max_combined_ceil_fee_units": "200",
+  "fee_reconstruction_mismatches": 0,
+  "successful_overdeductions": 0,
+  "result": "PASS"
+}
+
+COMMAND: npm test -- --runInBand tests/ConstProduct.spec.ts tests/ConstSum.spec.ts tests/Stableswap.spec.ts tests/WeightedCPI.spec.ts tests/WeightedStableswap.spec.ts -t 'should swap with 0 ref fee|should swap with max ref fee'
+RESULT: PASS, 5 suites
+TEST_SUITES: 5 passed, 5 total
+TESTS: 128 skipped, 10 passed, 138 total
+RUNTIME: 25.384s

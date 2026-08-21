@@ -1,0 +1,7 @@
+AT4 prior-family audit:
+- Iter 126 / AD1 lp_account_both_positive_flag_mint_gate — DEADEND_WITH_PROOF; both-positive selection still required positive minimum and positive accumulated balance.
+- Iter 186 / AQ4 router_provide_both_positive_exception_flag — DEADEND_WITH_PROOF; zero-minimum cases did not mint LP or create a reserve mismatch.
+- Iter 127 / AD2 pool_provide_lp_parser_error_refund_typing — DEADEND_WITH_PROOF; failure branches returned exact original legs through deterministic refund typing.
+- Iter 163 / AM1 lp_mint_bounce_pool_commit — DEADEND_WITH_PROOF; invalid sender and canonical StateInit paths prevented a Pool-save/LP-credit mismatch.
+
+Conclusion: AT4 was compared with four prior minimum, fallback, parser, and mint-commit audits before classification.

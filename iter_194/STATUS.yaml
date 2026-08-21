@@ -1,0 +1,123 @@
+schema_version: shadow-v1
+iteration: 194
+phase: completed
+cell_id: AS2
+cell_label: lp_burn_dual_output_bounce_correlation
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AS2
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 4
+        text: 'if ctx.at(OPCODE) == op::burn_notification_ext'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 20
+        text: 'throw_unless(error::invalid_caller, equal_slices(lp_wallet~address(params::workchain), ctx.at(SENDER)));'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 23
+        text: 'throw_unless(error::wrong_address, response_address.preload_uint(2) == 0);'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 30
+        text: 'storage::reserve0 -= amount0_out;'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 31
+        text: 'storage::reserve1 -= amount1_out;'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 32
+        text: 'storage::total_supply_lp -= jetton_amount;'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 62
+        text: 'router::pay_to('
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 80
+        text: 'router::pay_to('
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 92
+        text: 'CARRY_ALL_BALANCE'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 95
+        text: 'storage::save();'
+      - file: contracts/lp_wallet.fc
+        line: 116
+        text: '.store_uint(op::burn_notification_ext, 32)'
+      - file: contracts/lp_wallet.fc
+        line: 141
+        text: 'op == op::burn_notification_ext'
+      - file: contracts/lp_wallet.fc
+        line: 145
+        text: 'balance += jetton_amount;'
+      - file: contracts/lp_wallet.fc
+        line: 157
+        text: 'on_bounce(in_msg_body);'
+      - file: contracts/router/msgs/pool.fc
+        line: 28
+        text: 'throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER)));'
+      - file: contracts/router/msgs/pool.fc
+        line: 74
+        text: 'jetton_wallet::transfer(fwd_ton_amount, amount0_out, owner, excesses_address)'
+      - file: contracts/router/msgs/pool.fc
+        line: 83
+        text: 'jetton_wallet::transfer(fwd_ton_amount, amount1_out, owner, excesses_address)'
+      - file: contracts/common/contracts.fc
+        line: 158
+        text: 'return begin_message(op::pay_to)'
+  poc_execution:
+    test_file_path: iter_194/poc_lp_burn_dual_output_bounce_correlation.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_194/poc_lp_burn_dual_output_bounce_correlation.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.1s static; 6.374s integration'
+    result: 'PASS (18 cross-file anchors; dual-output bounce model; live burn-liquidity regression)'
+  prior_art_check:
+    queries:
+      - iter77 T2 burn_dual_output_bounce_accounting
+      - iter106 Z1 lp_account_burn_state_clear_before_payout
+      - iter137 AF2 pool_burn_payload_wrapper_leg_split
+      - iter178 AP1 pool_burn_response_addr_none_gate
+    results:
+      - iter77: DEADEND_WITH_PROOF
+      - iter106: DEADEND_WITH_PROOF
+      - iter137: DEADEND_WITH_PROOF
+      - iter178: DEADEND_WITH_PROOF
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "burn_notification_ext" bounce is:issue'
+      - 'repo:ston-fi/dex-core-v2 "burn_notification_ext" bounce is:pr'
+      - 'repo:ston-fi/dex-core-v2 "CARRY_ALL_BALANCE" burn is:issue'
+      - 'repo:ston-fi/dex-core-v2 "CARRY_ALL_BALANCE" burn is:pr'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  shadow_mode: true
+  caller_path: iter_194/callers-grep.txt
+  caller_match_count: 53
+  caller_unique_files: 4
+  prior_audit_path: iter_194/prior-audit-git.log
+  prior_family_matches: [iter77, iter106, iter137, iter178]
+  r15_evidence_files:
+    - iter_194/R15-GH-burn-notification-bounce-issue.json
+    - iter_194/R15-GH-burn-notification-bounce-pr.json
+    - iter_194/R15-GH-carry-all-balance-burn-issue.json
+    - iter_194/R15-GH-carry-all-balance-burn-pr.json
+  source_conclusion: 'The burn sender is a deterministic LP wallet, response_address is gated to addr_none, both output legs use the same from_address owner, and Router authenticates the Pool before each fixed token transfer. A downstream one-leg bounce can affect delivery for the initiating owner but creates no cross-user payout or unauthorized gain; the LP-wallet bounce restoration is limited to its own burn notification.'
+  attacker_privilege:
+    privilege_required: external_auth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false

@@ -1,0 +1,13 @@
+AW4 prior-art / audit lookup
+============================
+Command:
+git log --all --oneline -- iter_141/STATUS.yaml iter_60/STATUS.yaml iter_189/STATUS.yaml
+
+388c94e checkpoint: v4flash shadow iter100
+
+Selected prior statuses:
+iter_141/STATUS.yaml => iteration=141 cell=AG1 opcode_collision_dispatch verdict=DEADEND_WITH_PROOF
+iter_60/STATUS.yaml => iteration=60 cell=R5 unknown_op_bounce_typing verdict=DEADEND_WITH_PROOF
+iter_189/STATUS.yaml => iteration=189 cell=AR2 router_owned_wallet_residual_debit verdict=DEADEND_WITH_PROOF
+
+Prior conclusion: opcode dispatch and unknown-op/bounce typing were already drilled. AW4 rechecks the Pool root order specifically across LP-wallet and LP-account handlers, with explicit symbolic opcode partitioning, sender gates, and a fresh 29-anchor PoC; no handler overlap or unauthorized state transition appears.

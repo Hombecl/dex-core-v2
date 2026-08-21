@@ -1,0 +1,7 @@
+AS5 prior-family audit:
+- Iter 75 / S5 getter_static_code_identity — DEADEND_WITH_PROOF; getter and runtime StateInit derivations used the same stable router/token/user data without an address alias.
+- Iter 109 / Z4 router_getter_upgrade_code_visibility — DEADEND_WITH_PROOF; getter code visibility did not create a value-bearing address or authorization path.
+- Iter 121 / AC1 router_pool_pair_orientation_stateinit — DEADEND_WITH_PROOF; canonical StateInit ordering resolved to one stable Pool and token-wallet mapping.
+- Iter 185 / AQ3 pool_lp_mint_zero_forward_payload_commit — DEADEND_WITH_PROOF; LP mint constructed deterministic wallet StateInit and live mint/burn coverage found no supply or reserve mismatch.
+
+Conclusion: AS5 was compared with four prior getter, StateInit, and LP-wallet identity audits before classification.

@@ -1,0 +1,7 @@
+AT2 prior-family audit:
+- Iter 72 / S2 direct_refund_me_bounce_replay — DEADEND_WITH_PROOF; refund clears both LP-account balances and has no bounce re-credit path.
+- Iter 107 / Z2 lp_account_refund_excess_carry_destination — DEADEND_WITH_PROOF; refund/direct-add are user-gated and carried TON does not authorize cross-user token transfer.
+- Iter 123 / AC3 lp_account_refund_then_direct_add_lifecycle — DEADEND_WITH_PROOF; full/partial lifecycle cases showed no stale amount replay or cross-user reuse.
+- Iter 179 / AP2 lp_account_cb_refund_dual_leg_mode_split — DEADEND_WITH_PROOF; exact dual-leg refund modes preserved amounts without duplicate or stranded claims.
+
+Conclusion: AT2 was compared with four prior refund, destroy, redeploy, and carry-mode audits before classification.

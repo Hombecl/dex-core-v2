@@ -1,0 +1,32 @@
+COMMAND: rg -n "_pool_idata\(|_pool_idata2\(|equivalent to|store_uint32|store_uint(0, 64)|store_uint(1000000000000000000, 128)|storage::(amp|rate|w0|rate_setter_address)|ds~load_uint(32|64|128)|load_ref()" [selected five pool state-init/storage/caller paths and family tests]
+MATCH_COUNT: 115
+UNIQUE_FILES: 14
+
+contracts/pool/pools/constant_product/state_init.fc:14:    equivalent to <b <%= defaultIsLocked %> 1 u, 0 Gram, 0 Gram, 0 Gram, 0 Gram, 0 Gram, b{00} s, <%= defaultLPFee %> 16 u, <%= defaultProtocolFee %> 16 u, b> <s PUSHSLICE
+contracts/pool/pools/constant_product/state_init.fc:16:(slice) _pool_idata() inline asm "<b <%= defaultIsLocked %> 1 u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, 0 -1 { 1+ 2dup 8 * ufits } until rot over 4 u, -rot 8 * u, b{00} s, <%= defaultLPFee %> 16 u, <%= defaultProtocolFee %> 16 u, b> <s PUSHSLICE";
+contracts/pool/pools/constant_sum/state_init.fc:14:    equivalent to <b <%= defaultIsLocked %> 1 u, 0 Gram, 0 Gram, 0 Gram, 0 Gram, 0 Gram, b{00} s, <%= defaultLPFee %> 16 u, <%= defaultProtocolFee %> 16 u, b> <s PUSHSLICE
+contracts/pool/pools/stableswap/state_init.fc:14:        .store_uint(1, 32)  ;; storage::amp
+contracts/pool/pools/stableswap/state_init.fc:15:    equivalent to <b <%= defaultIsLocked %> 1 u, 0 Gram, 0 Gram, 0 Gram, 0 Gram, 0 Gram, b{00} s, <%= defaultLPFee %> 16 u, <%= defaultProtocolFee %> 16 u, 1 32 u, b> <s PUSHSLICE
+contracts/pool/pools/stableswap/state_init.fc:36:        .store_slice(_pool_idata())
+contracts/pool/pools/stableswap/storage.fc:14:    storage::amp = ds~load_uint32();
+contracts/pool/pools/stableswap/storage.fc:39:        .store_uint32(storage::amp)
+contracts/pool/pools/weighted_const_product/state_init.fc:14:        .store_uint(0, 64) ;; storage::w0  (0)
+contracts/pool/pools/weighted_const_product/state_init.fc:15:    equivalent to <b <%= defaultIsLocked %> 1 u, 0 Gram, 0 Gram, 0 Gram, 0 Gram, 0 Gram, b{00} s, <%= defaultLPFee %> 16 u, <%= defaultProtocolFee %> 16 u, 0 64 u, b> <s PUSHSLICE
+contracts/pool/pools/weighted_const_product/storage.fc:14:    storage::w0 = ds~load_uint(64);
+contracts/pool/pools/weighted_const_product/storage.fc:39:        .store_uint(storage::w0, 64)
+contracts/pool/pools/weighted_stableswap/state_init.fc:21:            .store_uint(1000000000000000000, 128) ;; storage::amp  (1)
+contracts/pool/pools/weighted_stableswap/state_init.fc:22:            .store_uint(0, 128)                   ;; storage::rate (0.0)
+contracts/pool/pools/weighted_stableswap/state_init.fc:23:            .store_uint(0, 128)                   ;; storage::w0   (0)
+contracts/pool/pools/weighted_stableswap/state_init.fc:27:(cell) _pool_idata2() inline asm "<b 1000000000000000000 128 u, 0 128 u, 0 128 u, b{00} s, b> PUSHREF";
+contracts/pool/pools/weighted_stableswap/state_init.fc:47:        .store_ref(_pool_idata2())
+contracts/pool/pools/weighted_stableswap/storage.fc:18:    cell w_params = ds~load_ref();
+contracts/pool/pools/weighted_stableswap/storage.fc:20:    storage::amp = w_params_data~load_uint(128);
+contracts/pool/pools/weighted_stableswap/storage.fc:21:    storage::rate = w_params_data~load_uint(128);
+contracts/pool/pools/weighted_stableswap/storage.fc:22:    storage::w0 = w_params_data~load_uint(128);
+contracts/pool/pools/weighted_stableswap/storage.fc:23:    storage::rate_setter_address = w_params_data~load_msg_addr();
+contracts/pool/pools/weighted_stableswap/storage.fc:50:        .store_uint(storage::amp, 128)
+contracts/pool/pools/weighted_stableswap/storage.fc:51:        .store_uint(storage::rate, 128)
+contracts/pool/pools/weighted_stableswap/storage.fc:52:        .store_uint(storage::w0, 128)
+contracts/pool/pools/weighted_stableswap/storage.fc:53:        .store_slice(storage::rate_setter_address)
+contracts/pool/msgs/router.fc:303:        cell new_code = in_msg_body~load_ref();
+contracts/router/msgs/pool.fc:11:        slice additional_info = in_msg_body~load_slice_ref();

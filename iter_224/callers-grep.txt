@@ -1,0 +1,27 @@
+command: rg -n -i 'getter_pool_data|anyone::getter_pool_data|store_bool|store_coins|store_slice|protocol_fee|collected_token|handle_getter_messages|collect_fees|storage::save|IGNORE_ERRORS|get_pool_data|sendGetterPoolData' contracts/common/contracts.fc contracts/pool.fc contracts/pool/msgs/getter.fc contracts/pool/msgs/protocolfee.fc contracts/common/op.fc contracts/pool/get.fc wrappers/Pool.ts tests/Pool.spec.ts tests/System.spec.ts tests/ConstProduct.spec.ts
+caller_match_count: 143
+caller_unique_files: 9
+caller_files:
+  - contracts/common/contracts.fc
+  - contracts/common/op.fc
+  - contracts/pool.fc
+  - contracts/pool/get.fc
+  - contracts/pool/msgs/getter.fc
+  - contracts/pool/msgs/protocolfee.fc
+  - tests/ConstProduct.spec.ts
+  - tests/Pool.spec.ts
+  - wrappers/Pool.ts
+representative_hits:
+  - contracts/common/contracts.fc:75 anyone::getter_pool_data(
+  - contracts/common/contracts.fc:90 .store_bool(_is_locked)
+  - contracts/common/contracts.fc:91 .store_coins(_left_reserve)
+  - contracts/common/contracts.fc:92 .store_coins(_right_reserve)
+  - contracts/common/contracts.fc:99 .store_slice(_protocol_fee_address)
+  - contracts/common/contracts.fc:101 .store_coins(_collected_left_token_protocol_fees)
+  - contracts/common/contracts.fc:102 .store_coins(_collected_right_token_protocol_fees)
+  - contracts/pool/msgs/getter.fc:6 op::getter_pool_data
+  - contracts/pool/msgs/getter.fc:23 IGNORE_ERRORS
+  - contracts/pool/msgs/protocolfee.fc:4 op::collect_fees
+  - contracts/pool/msgs/protocolfee.fc:60 storage::save()
+  - tests/Pool.spec.ts:178 sendGetterPoolData
+callers_grep_done: true

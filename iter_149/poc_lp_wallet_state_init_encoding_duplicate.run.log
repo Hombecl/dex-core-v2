@@ -1,0 +1,12 @@
+COMMAND: node iter_149/poc_lp_wallet_state_init_encoding_duplicate.test.js
+{
+  "prior_duplicate_cells": [
+    "U4/iter_84",
+    "AG2/iter_141-142 planning"
+  ],
+  "state_init_encoding_functions_checked": 3,
+  "store_dict_slots_checked": 2,
+  "deterministic_derivation_call_sites_checked": 2,
+  "novel_surface_delta": 0,
+  "result": "PRE_KILLED_DUPLICATE"
+}

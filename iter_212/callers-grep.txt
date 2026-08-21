@@ -1,0 +1,18 @@
+AV5 callers_grep_done=true
+command: rg -n 'get_vault_address|vault_idata|vault_pay_to|addr_none|is_none|check_workchain|check_workchain_nofail|from_sources|vault_code|handle_vault_messages|invalid_caller|token_address|to_address|owner_address|getVaultAddress|vaultStorageParser|deposit_ref_fee|send_with_stateinit' contracts/router/get.fc contracts/router/msgs/vault.fc contracts/common/contracts.fc contracts/common/utils.fc contracts/router.fc contracts/router/storage.fc contracts/vault.fc contracts/router/dex.fc wrappers/Router.ts wrappers/Vault.ts tests/ConstProduct.spec.ts tests/ConstSum.spec.ts tests/WeightedCPI.spec.ts
+match_count: 154
+unique_files: 13
+key_matches:
+  - contracts/router/get.fc:18-29 validates standard user/token workchains and derives vault_idata(user, token, my_address()).
+  - contracts/router/msgs/vault.fc:3-13 parses the value-bearing tuple and authenticates the deterministic Vault sender.
+  - contracts/router/msgs/vault.fc:16-19 sends the fixed amount to the parsed standard token/to address.
+  - contracts/common/contracts.fc:1-7 vault_idata stores user, token, router, and zero amount in fixed order.
+  - contracts/common/contracts.fc:174-183 vault_pay_to serializes token and owner in the same order consumed by Router.
+  - contracts/common/utils.fc:1-4 normalizes addr_none only for optional excess recipients before a workchain check.
+  - contracts/router.fc:40-42 dispatches the value-bearing Vault handler.
+  - contracts/router/storage.fc:8,24 stores and loads the configured vault code.
+  - contracts/vault.fc:12-15 and 77-84 preserve the owner/token/router tuple in storage/getter output.
+  - contracts/router/dex.fc:61 includes Vault gas in swap validation and 84-89 routes via StateInit.
+  - wrappers/Router.ts:526-534 serializes standard Address values for get_vault_address.
+  - wrappers/Vault.ts:21-28 parses the same four-field Vault storage tuple.
+  - tests/ConstProduct.spec.ts:1409-1413 obtains a live Vault address before referral withdrawal.

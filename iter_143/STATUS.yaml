@@ -1,0 +1,71 @@
+schema_version: shadow-v1
+iteration: 143
+phase: completed
+cell_id: AH1
+cell_label: pool_storage_variant_ref_arity
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AH1
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - "contracts/pool/pools/constant_product/storage.fc:4: storage::reserve0 = ds~load_coins();"
+      - "contracts/pool/pools/constant_product/storage.fc:13: storage::_static = ds~load_ref();"
+      - "contracts/pool/pools/stableswap/storage.fc:14: storage::amp = ds~load_uint32();"
+      - "contracts/pool/pools/weighted_const_product/storage.fc:14: storage::w0 = ds~load_uint(64);"
+      - "contracts/pool/pools/weighted_stableswap/storage.fc:18: cell w_params = ds~load_ref();"
+      - "contracts/pool/pools/weighted_stableswap/storage.fc:20: storage::amp = w_params_data~load_uint(128);"
+      - "contracts/pool/pools/weighted_stableswap/storage.fc:55: .store_ref(storage::_static)"
+      - "contracts/pool/pools/constant_product/state_init.fc:21: if _first_jetton_address.slice_hash() > _second_jetton_address.slice_hash() {"
+      - "contracts/pool/msgs/lp_account.fc:45: storage::reserve0 += tot_am0;"
+      - "contracts/pool/msgs/router.fc:95: storage::reserve0 += amount0;"
+      - "contracts/router/msgs/pool.fc:19: pool_idata("
+  poc_execution:
+    test_file_path: iter_143/poc_pool_storage_variant_ref_arity.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_143/poc_pool_storage_variant_ref_arity.run.log
+    run_log_exists_on_disk: true
+    test_runtime: "0.5s static; 106.789s integration"
+    result: "PASSED (5 pool families; 83 integration tests)"
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 pool storage layout reserve0 reserve1 is:issue"
+      - "repo:ston-fi/dex-core-v2 pool storage layout reserve0 reserve1 is:pr"
+      - "repo:ston-fi/dex-core-v2 weighted stableswap storage load_ref is:issue"
+      - "repo:ston-fi/dex-core-v2 weighted stableswap storage load_ref is:pr"
+    results: "4 queries returned total_count=0"
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "pool storage layout reserve0 reserve1"
+      - "weighted stableswap storage load_ref"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  selected_cluster_source: POST_MATRIX_CLUSTER_PROPOSALS_20.md
+  caller_path: "pool storage/state_init -> Pool router/LP-account/LP-wallet/protocol-fee handlers -> Router pool_idata callers"
+  caller_match_count: 168
+  caller_unique_files: 16
+  prior_audit_path: iter_143/prior-audit-git.log
+  r15_evidence_files:
+    - iter_143/R15-GH-pool-storage-issue.json
+    - iter_143/R15-GH-pool-storage-pr.json
+    - iter_143/R15-GH-weighted-storage-issue.json
+    - iter_143/R15-GH-weighted-storage-pr.json
+  source_conclusion: "All five selected pool families preserve the nine common base fields within separate load and save regions, preserve static/ref and variant parameter layouts, and share canonical pair/state-init construction. Selected integration suites passed. No parser ambiguity, wrong-field alias, attacker-controlled storage reinterpretation, or direct asset delta was demonstrated."
+  candidate_path: null
+  shadow_mode: true

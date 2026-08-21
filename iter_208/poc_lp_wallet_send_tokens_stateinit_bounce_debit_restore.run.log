@@ -1,0 +1,16 @@
+command: node iter_208/poc_lp_wallet_send_tokens_stateinit_bounce_debit_restore.test.js
+cross_file_anchors 22
+debit_precedes_stateinit_send_and_save true
+stateinit_binds_destination_owner_master_code true
+successful_transfer_conserves_balance true
+system_bounce_restores_exact_debit true
+pool_accepts_only_deterministic_lp_wallet_sender true
+forged_bounce_not_production_reachable true
+classification DEADEND_WITH_PROOF
+result PASS
+
+command: npm test -- --runInBand tests/System.spec.ts -t 'should handle mint & burn liquidity'
+result: PASS
+test_file: tests/System.spec.ts
+tests: 10 skipped, 1 passed, 11 total
+duration: 5.083s

@@ -1,0 +1,8 @@
+COMMAND: git log --all --oneline --decorate -- contracts/router/msgs/pool.fc contracts/pool/msgs/router.fc contracts/pool/msgs/lp_account.fc contracts/lp_account/msgs/user.fc contracts/lp_wallet.fc
+603cacd bump v2.2
+
+AUDIT/SECURITY HISTORY SEARCH:
+Only commit touching the selected interface payload paths is 603cacd bump v2.2; no audit, security review, finding, or prior-report artifact was present in reachable Git history for these paths.
+
+DUPLICATE PRIOR-CELL AUDIT:
+Q3/iter_53, V5/iter_90, X5/iter_100, and AC4/iter_124 already cover callback payload aliasing, pay_to custom-payload dispatch, getter response ref shapes, and LP-wallet payload-reference depth respectively.

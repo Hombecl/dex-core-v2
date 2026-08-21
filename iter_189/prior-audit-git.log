@@ -1,0 +1,29 @@
+$ for n in 51 68 92 99 102 121 133 169; do rg -n 'cell_id:|cell_label:|final_verdict:|source_conclusion:' iter_${n}/STATUS.yaml; done
+
+Relevant prior audit conclusions rechecked:
+
+iter_51 / Q1 notification_identity_owner_binding / DEADEND_WITH_PROOF:
+notification sender and owner identity were traced through the Router path; no unauthorized existing-pair debit.
+
+iter_68 / R13 route_token_wallet_binding / DEADEND_WITH_PROOF:
+the Router derives the Pool from the real notification sender plus the body-selected other wallet; forged senders select a different deterministic Pool, and pay_to independently checks the Pool sender.
+
+iter_92 / W2 router_pay_to_zero_amount_side_selection / DEADEND_WITH_PROOF:
+pay_to side selection cannot create a residual claim because producers enforce positive output and the Router authenticates the deterministic Pool.
+
+iter_99 / X4 callback_carry_remaining_gas_reentry / DEADEND_WITH_PROOF:
+carry sequencing does not create an unauthorized residual-value or reentry effect.
+
+iter_102 / Y2 router_route_untrusted_notification_binding / DEADEND_WITH_PROOF:
+untrusted notification senders form forged-asset Pools; body-controlled from_address changes refund identity but does not authorize a debit.
+
+iter_121 / AC1 router_pool_pair_orientation_stateinit / DEADEND_WITH_PROOF:
+all five Pool StateInit variants hash-sort wallet addresses and keep amount/token orientation stable.
+
+iter_133 / AE3 router_notification_without_ref_refund_source / DEADEND_WITH_PROOF:
+no-reference notifications refund the exact incoming amount; a foreign destination cannot debit Router-owned tokens, while a deterministic wallet only refunds value previously received.
+
+iter_169 / AN2 lp_wallet_mint_from_address_notification / DEADEND_WITH_PROOF:
+from_address forwarding is backed by an LP-wallet debit and does not release an attacker-controlled token amount.
+
+The new live integration extends these checks with an actual standard Jetton wallet B and a preloaded Router B residual. A forged A leg plus a legitimate B notification minted LP, but the B burn payout equaled only the newly deposited B leg and left the residual baseline intact.

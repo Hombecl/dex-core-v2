@@ -1,0 +1,120 @@
+schema_version: shadow-v1
+iteration: 199
+phase: completed
+cell_id: AT4
+cell_label: pool_callback_minimum_zero_selector
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AT4
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 4
+        text: 'if ctx.at(OPCODE) == op::cb_add_liquidity {'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 26
+        text: 'throw_unless(error::invalid_caller, equal_slices(lp_account~address(params::workchain), ctx.at(SENDER)));'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 68
+        text: 'if (storage::is_locked)'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 69
+        text: '| (liquidity < min_lp_out)'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 74
+        text: ';; state_init needed since lp_account might be already destroyed'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 88
+        text: 'lp_account::add_liquidity('
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 90
+        text: '0,'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 93
+        text: 'true, ;; both_positive? to true'
+      - file: contracts/lp_account/msgs/pool.fc
+        line: 6
+        text: 'if ctx.at(OPCODE) == op::add_liquidity {'
+      - file: contracts/lp_account/msgs/pool.fc
+        line: 18
+        text: 'storage::amount0 += new_amount0;'
+      - file: contracts/lp_account/msgs/pool.fc
+        line: 19
+        text: 'storage::amount1 += new_amount1;'
+      - file: contracts/lp_account/msgs/pool.fc
+        line: 25
+        text: 'mint? = (min_lp_out > 0) & ((storage::amount0 > 0) & (storage::amount1 > 0));'
+      - file: contracts/lp_account/msgs/pool.fc
+        line: 52
+        text: 'utils::send_excesses(0, excess_address, QCARRY_ALL_BALANCE);'
+      - file: contracts/lp_account/msgs/pool.fc
+        line: 55
+        text: 'storage::save();'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 70
+        text: 'throw_unless(error::zero_output, (min_lp_out > 0) & ((am0 > 0) & (am1 > 0)));'
+      - file: contracts/common/contracts.fc
+        line: 39
+        text: '(cell) pool::cb_add_liquidity('
+      - file: contracts/pool.fc
+        line: 37
+        text: 'if handle_lp_account_messages() {'
+  poc_execution:
+    test_file_path: iter_199/poc_pool_callback_minimum_zero_selector.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_199/poc_pool_callback_minimum_zero_selector.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.1s static; 10.436s integration'
+    result: 'PASS (18 cross-file anchors; zero-minimum fallback model; live provide-LP regression across five cases)'
+  prior_art_check:
+    queries:
+      - iter126 AD1 lp_account_both_positive_flag_mint_gate
+      - iter186 AQ4 router_provide_both_positive_exception_flag
+      - iter127 AD2 pool_provide_lp_parser_error_refund_typing
+      - iter163 AM1 lp_mint_bounce_pool_commit
+    results:
+      - iter126: DEADEND_WITH_PROOF
+      - iter186: DEADEND_WITH_PROOF
+      - iter127: DEADEND_WITH_PROOF
+      - iter163: DEADEND_WITH_PROOF
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "cb_add_liquidity" "min_lp_out" refund is:issue'
+      - 'repo:ston-fi/dex-core-v2 "cb_add_liquidity" "min_lp_out" refund is:pr'
+      - 'repo:ston-fi/dex-core-v2 "required_min_liquidity" "min_lp_out" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "required_min_liquidity" "min_lp_out" is:pr'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  shadow_mode: true
+  caller_path: iter_199/callers-grep.txt
+  caller_match_count: 81
+  caller_unique_files: 5
+  prior_audit_path: iter_199/prior-audit-git.log
+  prior_family_matches: [iter126, iter186, iter127, iter163]
+  r15_evidence_files:
+    - iter_199/R15-GH-cb-add-min-refund-issue.json
+    - iter_199/R15-GH-cb-add-min-refund-pr.json
+    - iter_199/R15-GH-required-min-liquidity-issue.json
+    - iter_199/R15-GH-required-min-liquidity-pr.json
+  source_conclusion: 'Pool callback failures from minimum, lock, or reserve checks redeploy a deterministic LP account with zero minimum output. That fallback accumulates exact token legs, fails its positive-minimum mint gate, returns exact excesses, and saves/destroys without LP issuance; no attacker-controlled reserve or LP delta was demonstrated.'
+  attacker_privilege:
+    privilege_required: external_auth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false

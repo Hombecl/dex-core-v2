@@ -1,0 +1,77 @@
+schema_version: shadow-v1
+iteration: 146
+phase: completed
+cell_id: AH4
+cell_label: lp_account_storage_coin_arity
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AH4
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - "contracts/lp_account/storage.fc:8: storage::user_address = ds~load_msg_addr();"
+      - "contracts/lp_account/storage.fc:9: storage::pool_address = ds~load_msg_addr();"
+      - "contracts/lp_account/storage.fc:10: storage::amount0 = ds~load_coins();"
+      - "contracts/lp_account/storage.fc:11: storage::amount1 = ds~load_coins();"
+      - "contracts/lp_account/storage.fc:19: .store_coins(storage::amount0)"
+      - "contracts/lp_account/storage.fc:20: .store_coins(storage::amount1)"
+      - "contracts/lp_account/msgs/pool.fc:18: storage::amount0 += new_amount0;"
+      - "contracts/lp_account/msgs/pool.fc:19: storage::amount1 += new_amount1;"
+      - "contracts/lp_account/msgs/pool.fc:35: storage::amount0,"
+      - "contracts/lp_account/msgs/pool.fc:36: storage::amount1,"
+      - "contracts/lp_account/msgs/user.fc:72: storage::amount0 -= am0;"
+      - "contracts/lp_account/msgs/user.fc:73: storage::amount1 -= am1;"
+      - "contracts/lp_account/msgs/getter.fc:14: storage::amount0,"
+      - "contracts/lp_account/msgs/getter.fc:15: storage::amount1"
+      - "contracts/pool/msgs/lp_account.fc:4: if ctx.at(OPCODE) == op::cb_add_liquidity {"
+      - "contracts/pool/msgs/router.fc:241: lp_account_idata(my_address(), from_user),"
+      - "contracts/router/msgs/pool.fc:4: ;; send tokens, called from pools (on swap, liquidity providing, refund etc)"
+  poc_execution:
+    test_file_path: iter_146/poc_lp_account_storage_coin_arity.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_146/poc_lp_account_storage_coin_arity.run.log
+    run_log_exists_on_disk: true
+    test_runtime: "0.1s static; 5.701s integration"
+    result: "PASSED (2 coin fields; 5 LP-account/Pool tests)"
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 lp_account storage amount0 amount1 is:issue"
+      - "repo:ston-fi/dex-core-v2 lp_account storage amount0 amount1 is:pr"
+      - "repo:ston-fi/dex-core-v2 direct_add_liquidity amount0 amount1 is:issue"
+      - "repo:ston-fi/dex-core-v2 direct_add_liquidity amount0 amount1 is:pr"
+    results: "4 queries returned total_count=0"
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "lp_account storage amount0 amount1"
+      - "direct_add_liquidity amount0 amount1"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  selected_cluster_source: POST_MATRIX_CLUSTER_PROPOSALS_20.md
+  caller_path: "LP-account load/save -> Pool add_liquidity callback -> user refund/direct-add -> Pool callback -> getters and Router construction"
+  caller_match_count: 88
+  caller_unique_files: 9
+  prior_audit_path: iter_146/prior-audit-git.log
+  r15_evidence_files:
+    - iter_146/R15-GH-lp-account-storage-issue.json
+    - iter_146/R15-GH-lp-account-storage-pr.json
+    - iter_146/R15-GH-lp-account-direct-issue.json
+    - iter_146/R15-GH-lp-account-direct-pr.json
+  source_conclusion: "LP-account load/save preserves user, pool, amount0, and amount1 order; producer and consumer paths update the matching leg; tested transitions preserve two-leg identity and selected LP-account/Pool tests passed. No cross-leg alias, attacker-controlled storage reinterpretation, or direct asset delta was demonstrated."
+  candidate_path: null
+  shadow_mode: true

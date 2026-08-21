@@ -1,0 +1,4 @@
+command: npm test -- --runInBand tests/System.spec.ts -t 'should handle invalid transfers'
+result: PASS
+test: System > Dex > should handle invalid transfers
+summary: 1 passed, 10 skipped

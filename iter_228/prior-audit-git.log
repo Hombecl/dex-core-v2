@@ -1,0 +1,14 @@
+query: rg -n -i 'cell_label:.*(lp_account.*getter|getter.*lp_account|getter.*user|lp_account_data|getter_response)' CHAIN_HYPOTHESIS_TABLE.md iter_*/STATUS.yaml
+exact_prior_matches:
+  - iter_140 AF5 getter_response_state_alias DEADEND_WITH_PROOF
+  - iter_100 X5 getter_payload_ref_shape_boundary DEADEND_WITH_PROOF
+  - iter_82 U2 async_getter_response_address_confusion DEADEND_WITH_PROOF
+  - iter_146 AH4 lp_account_storage_coin_arity DEADEND_WITH_PROOF
+prior_evidence:
+  - iter_140/STATUS.yaml
+  - iter_140/poc_getter_response_state_alias.test.js
+  - iter_140/poc_getter_response_state_alias.run.log
+  - iter_140/callers-grep.txt
+prior_audit_conclusion: 'AX11 is covered by iter_140/AF5: LPAccount getter data is read from stored identity/balances, encoded by anyone::getter_lp_account_data, sent to ctx.at(SENDER), and not consumed as authorization by value paths.'
+git_log:
+388c94e checkpoint: v4flash shadow iter100

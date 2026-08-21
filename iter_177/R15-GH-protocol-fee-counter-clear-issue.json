@@ -1,0 +1,5 @@
+{
+  "command": "gh search issues 'protocol_fee_address pay_to counter clear' --repo ston-fi/dex-core-v2 --limit 10",
+  "total_count": 0,
+  "items": []
+}

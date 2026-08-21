@@ -1,0 +1,7 @@
+COMMAND: rg --files iter_* | rg 'prior-audit|audit|R15' and inspect matching STATUS.yaml source conclusions
+RESULT: AO3 family is already covered by completed shadow audits:
+iter_104 Y4 vault_withdraw_permissionless_state_transition — DEADEND_WITH_PROOF
+iter_125 AC5 vault_concurrent_deposit_withdraw_transition — DEADEND_WITH_PROOF
+iter_134 AE4 router_vault_pay_to_recipient_stateinit — DEADEND_WITH_PROOF
+iter_78 T3 referral_vault_deposit_replay_identity — DEADEND_WITH_PROOF
+The exact owner/token/router withdrawal chain is a duplicate family; no novel candidate survives.

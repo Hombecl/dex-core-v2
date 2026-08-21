@@ -1,0 +1,7 @@
+{
+  "query": "repo:ston-fi/dex-core-v2 \"send_empty\" \"CARRY_ALL_BALANCE\" \"reset_gas\" is:pr",
+  "total_count": 0,
+  "incomplete_results": false,
+  "items": [],
+  "search_type": "lexical"
+}

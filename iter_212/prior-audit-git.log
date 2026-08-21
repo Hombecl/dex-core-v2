@@ -1,0 +1,7 @@
+AV5 prior-family audit (read from prior iteration STATUS.yaml records):
+- iter_62 / R7 vault_state_init_owner_token_collision: DEADEND_WITH_PROOF; owner/token/router tuple and Vault code yielded distinct identities.
+- iter_95 / W5 address_none_standard_normalization: DEADEND_WITH_PROOF; addr_none was normalized only in explicitly optional fields, while standard deterministic identities required standard workchain-checked addresses.
+- iter_174 / AO2 router_pay_vault_token_side_binding: DEADEND_WITH_PROOF; value-bearing pay_vault and Vault identity reused the selected standard token side.
+- iter_207 / AU1 pool_getter_provide_wallet_include_address_alias: DEADEND_WITH_PROOF; getter optional-ref shape did not alter deterministic wallet identity.
+
+Conclusion: AV5 re-drills the Getter -> StateInit -> value-bearing pay_vault identity edge. The getter rejects addr_none/wrong-workchain user or token values, while optional addr_none normalization is isolated to excess-recipient plumbing; no alias or attacker-positive asset delta was demonstrated.

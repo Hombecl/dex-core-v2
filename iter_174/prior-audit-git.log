@@ -1,0 +1,9 @@
+COMMAND: git log --all --oneline -- contracts/router/msgs/pool.fc contracts/pool/msgs/router.fc contracts/vault.fc
+RESULT: 603cacd bump v2.2
+
+LOCAL PRIOR-AUDIT EVIDENCE:
+iter_78 T3 referral_vault_deposit_replay_identity — DEADEND_WITH_PROOF
+iter_101 Y1 router_pay_vault_single_side_stateinit — DEADEND_WITH_PROOF
+iter_120 AB5 vault_deposit_extra_payload_state_boundary — DEADEND_WITH_PROOF
+iter_131 AE1 pool_swap_referral_output_send_order — DEADEND_WITH_PROOF
+These prior shadow audits cover the same Pool -> Router pay_vault -> Vault token/owner/router binding family; AO2 is a duplicate-family re-drill, not a novel candidate.

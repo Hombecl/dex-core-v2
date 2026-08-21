@@ -1,0 +1,4 @@
+command: npm test -- --runInBand tests/LPAccount.spec.ts -t 'should return valid data'
+result: PASS
+test: LPAccount > Getters > should return valid data
+summary: 1 passed

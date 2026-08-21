@@ -1,0 +1,2 @@
+COMMAND: git log --all --oneline --decorate --regexp-ignore-case --grep='CARRY_ALL_BALANCE.*LP\|LP mint.*TON\|residual TON.*token\|token.*TON.*mismatch' -- contracts/pool/msgs/lp_account.fc contracts/lp_wallet.fc contracts/common/contracts.fc
+RESULT: no matching prior audit commits in the checked history

@@ -1,0 +1,2 @@
+COMMAND: git log --all --oneline --decorate --regexp-ignore-case --grep='setter.*width\|deserializ.*width\|truncat.*weight\|amp.*width\|rate.*width' -- contracts/router/pools contracts/pool/pools
+RESULT: no matching prior audit commits in the checked history

@@ -1,0 +1,19 @@
+COMMAND: node iter_186/poc_router_provide_both_positive_exception_flag.test.js
+EXIT: 0
+cross_file_anchors 19
+gate_cases 7
+caller_flag_forwarded true
+single_leg_requires_real_accumulated_balance true
+zero_minimum_no_mint true
+pool_callback_sender_derived true
+callback_legs_equal_lp_account_totals true
+attacker_positive_delta false
+prior_iter_126_duplicate true
+result PASS
+
+COMMAND: npm test -- --runInBand tests/ConstProduct.spec.ts -t 'should provide lp'
+EXIT: 0
+PASS tests/ConstProduct.spec.ts (16.319 s)
+Tests: 31 skipped, 5 passed, 36 total
+Passed: should provide lp; should provide lp with payload; should provide lp with payload to a different address; should provide lp (single side); should provide lp (single side) with protocol fees
+Ran all test suites matching tests/ConstProduct.spec.ts with tests matching "should provide lp".

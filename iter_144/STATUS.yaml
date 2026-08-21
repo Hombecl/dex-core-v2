@@ -1,0 +1,72 @@
+schema_version: shadow-v1
+iteration: 144
+phase: completed
+cell_id: AH2
+cell_label: router_storage_upgrade_ref_arity
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AH2
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - "contracts/router/storage.fc:7: global cell storage::temp_upgrade;"
+      - "contracts/router/storage.fc:16: storage::temp_upgrade = ds~load_ref();"
+      - "contracts/router/storage.fc:27: storage::upgrade_pool_code = ds~load_ref();"
+      - "contracts/router/storage.fc:35: .store_ref(storage::temp_upgrade)"
+      - "contracts/router/storage.fc:37: .store_ref(storage::upgrade_pool_code)"
+      - "contracts/router/utils.fc:1: (cell) pack_temp_upgrade(int end_code, cell code, int end_admin, slice admin, int end_pool_code, cell pool_code) inline {"
+      - "contracts/router/utils.fc:13: (int, cell, int, slice, int, cell) unpack_temp_upgrade(cell c_data) impure inline {"
+      - "contracts/router/msgs/admin.fc:156: if ctx.at(OPCODE) == op::init_code_upgrade {"
+      - "contracts/router/msgs/admin.fc:235: if ctx.at(OPCODE) == op::finalize_upgrades {"
+      - "contracts/router/msgs/admin.fc:252: storage::upgrade_pool_code = pool_code;"
+      - "contracts/router/get.fc:40: storage::temp_upgrade,"
+      - "contracts/router/get.fc:51: return (storage::upgrade_pool_code);"
+  poc_execution:
+    test_file_path: iter_144/poc_router_storage_upgrade_ref_arity.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_144/poc_router_storage_upgrade_ref_arity.run.log
+    run_log_exists_on_disk: true
+    test_runtime: "0.1s static; 9.354s integration"
+    result: "PASSED (7 upgrade branches; 15 integration tests)"
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 router temp_upgrade is:issue"
+      - "repo:ston-fi/dex-core-v2 router temp_upgrade is:pr"
+      - "repo:ston-fi/dex-core-v2 finalize_upgrades pool_code is:issue"
+      - "repo:ston-fi/dex-core-v2 finalize_upgrades pool_code is:pr"
+    results: "4 queries returned total_count=0"
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "router temp_upgrade"
+      - "finalize_upgrades pool_code"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  selected_cluster_source: POST_MATRIX_CLUSTER_PROPOSALS_20.md
+  caller_path: "Router storage load/save -> temp-upgrade pack/unpack -> admin init/cancel/finalize branches -> pool-code update and getters"
+  caller_match_count: 41
+  caller_unique_files: 4
+  prior_audit_path: iter_144/prior-audit-git.log
+  r15_evidence_files:
+    - iter_144/R15-GH-router-upgrade-issue.json
+    - iter_144/R15-GH-router-upgrade-pr.json
+    - iter_144/R15-GH-router-finalize-issue.json
+    - iter_144/R15-GH-router-finalize-pr.json
+  source_conclusion: "The Router outer storage order, static reference tuple, six-field temporary-upgrade tuple, all seven admin branches, pool-code promotion, and getters are consistent. Static and integration tests passed; no ref-arity alias, attacker-reachable upgrade path, or direct selected-asset delta was demonstrated."
+  candidate_path: null
+  shadow_mode: true

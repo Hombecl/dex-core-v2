@@ -1,0 +1,45 @@
+$ (source repo) npm test -- --runInBand tests/System.spec.ts -t 'should handle swaps'
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/System.spec.ts -t should handle swaps
+
+PASS tests/System.spec.ts
+  System
+    Dex
+      ✓ should handle swaps (381 ms)
+      ○ skipped should handle mint & burn liquidity
+      ○ skipped should handle refund partial liquidity
+      ○ skipped should handle invalid transfers
+      ○ skipped should handle cross swap
+    Governance
+      ○ skipped should reset pool gas
+      ○ skipped should reset pool gas (different address)
+      ○ skipped should reset router gas
+      ○ skipped should set fees
+      ○ skipped should collect fees
+
+Test Suites: 1 passed, 1 total
+Tests:       10 skipped, 1 passed, 11 total
+Time:        5.037 s
+
+$ (source repo) npm test -- --runInBand tests/System.spec.ts -t 'should handle cross swap'
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/System.spec.ts -t should handle cross swap
+
+PASS tests/System.spec.ts
+  System
+    Dex
+      ✓ should handle cross swap (419 ms)
+      ○ skipped should handle mint & burn liquidity
+      ○ skipped should handle swaps
+      ○ skipped should handle invalid transfers
+    Governance
+      ○ skipped should reset pool gas
+      ○ skipped should reset pool gas (different address)
+      ○ skipped should reset router gas
+      ○ skipped should lock & unlock pool
+      ○ skipped should set fees
+      ○ skipped should collect fees
+
+Test Suites: 1 passed, 1 total
+Tests:       10 skipped, 1 passed, 11 total
+Time:        4.559 s

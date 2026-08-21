@@ -1,0 +1,97 @@
+schema_version: shadow-v1
+iteration: 178
+phase: completed
+cell_id: AP1
+cell_label: pool_burn_response_addr_none_gate
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AP1
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - "contracts/lp_wallet.fc:116: .store_uint(op::burn_notification_ext, 32)"
+      - "contracts/lp_wallet.fc:120: .store_slice(response_address)"
+      - "contracts/lp_wallet.fc:141: throw_unless(709, (op == op::internal_transfer) | (op == op::burn_notification_ext));"
+      - "contracts/pool.fc:33: if handle_lp_wallet_messages() {"
+      - "contracts/pool/msgs/lp_wallet.fc:4: if ctx.at(OPCODE) == op::burn_notification_ext {"
+      - "contracts/pool/msgs/lp_wallet.fc:8: slice response_address = in_msg_body~load_msg_addr();"
+      - "contracts/pool/msgs/lp_wallet.fc:23: throw_unless(error::wrong_address, response_address.preload_uint(2) == 0);"
+      - "contracts/pool/msgs/lp_wallet.fc:30: storage::reserve0 -= amount0_out;"
+      - "contracts/pool/msgs/lp_wallet.fc:31: storage::reserve1 -= amount1_out;"
+      - "contracts/pool/msgs/lp_wallet.fc:32: storage::total_supply_lp -= jetton_amount;"
+      - "contracts/pool/msgs/lp_wallet.fc:62: router::pay_to("
+      - "contracts/pool/msgs/lp_wallet.fc:80: router::pay_to("
+      - "contracts/pool/msgs/lp_wallet.fc:95: storage::save();"
+      - "contracts/router/msgs/pool.fc:28: throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER)));"
+      - "contracts/common/contracts.fc:146: (cell) router::pay_to("
+  poc_execution:
+    test_file_path: iter_178/poc_pool_burn_response_addr_none_gate.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_178/poc_pool_burn_response_addr_none_gate.run.log
+    run_log_exists_on_disk: true
+    test_runtime: "0.2s static/model; 4.777s integration"
+    result: "PASS (14 source anchors; 4 response tags; 1 live mint/burn regression)"
+  prior_art_check:
+    queries:
+      - "burn response_address addr_none (issues)"
+      - "burn response_address addr_none (issues + pull requests)"
+      - "burn_notification_ext wrong_address (issues)"
+      - "burn_notification_ext wrong_address (issues + pull requests)"
+      - "LP burn response address (issues)"
+      - "LP burn response address (issues + pull requests)"
+      - "burn payout addr_none (issues)"
+      - "burn payout addr_none (issues + pull requests)"
+    results: "8 valid GitHub searches returned zero results"
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "burn response_address addr_none"
+      - "burn_notification_ext wrong_address"
+      - "LP burn response address"
+      - "burn payout addr_none"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  selected_cluster_source: POST_MATRIX_CLUSTER_PROPOSALS_27.md
+  caller_grep_path: iter_178/callers-grep.txt
+  caller_match_count: 40
+  caller_unique_files: 6
+  prior_audit_path: iter_178/prior-audit-git.log
+  prior_audit_family_matches:
+    - iter_26
+    - iter_58
+    - iter_77
+    - iter_95
+    - iter_106
+    - iter_110
+    - iter_135
+    - iter_171
+  r15_evidence_files:
+    - iter_178/R15-GH-burn-response-addr-none-issue.json
+    - iter_178/R15-GH-burn-response-addr-none-pr.json
+    - iter_178/R15-GH-burn-notification-wrong-address-issue.json
+    - iter_178/R15-GH-burn-notification-wrong-address-pr.json
+    - iter_178/R15-GH-lp-burn-response-address-issue.json
+    - iter_178/R15-GH-lp-burn-response-address-pr.json
+    - iter_178/R15-GH-burn-payout-addr-none-issue.json
+    - iter_178/R15-GH-burn-payout-addr-none-pr.json
+  source_conclusion: "The LP wallet debits before emitting burn_notification_ext and restores the exact amount if the Pool rejects the message. Pool accepts only addr_none response tags, authenticates the deterministic LP wallet, requires positive dual outputs and positive post-burn reserves/supply, emits two fixed owner-directed Router pay_to legs, and saves after message construction. The response field is not used as a token payout destination. Static/model cases and the live mint/burn regression found no attacker-positive delta. Prior shadow audits include the exact gate and burn family, so AP1 is a duplicate dead end."
+  candidate_path: null
+  attacker_privilege: external_auth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  shadow_mode: true

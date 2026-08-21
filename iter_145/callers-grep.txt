@@ -1,0 +1,34 @@
+COMMAND: rg -n "equal_slices(ctx.at(SENDER)|handle_(protocolfee|router|lp_wallet|lp_account|getters?)_messages|storage::(protocol_fee_address|router_address|rate_setter_address)|ctx.at(OPCODE) == op::(collect_fees|swap|provide_lp|burn_notification_ext|cb_add_liquidity|cb_refund_me)|internal_set_fees|wrong_op" [selected Pool dispatch/handler paths and tests]
+MATCH_COUNT: 56
+UNIQUE_FILES: 11
+
+contracts/pool.fc:22:    if equal_slices(ctx.at(SENDER), storage::protocol_fee_address) {
+contracts/pool.fc:23:        handle_protocolfee_messages();
+contracts/pool.fc:28:    if equal_slices(ctx.at(SENDER), storage::router_address) {
+contracts/pool.fc:29:        handle_router_messages();
+contracts/pool.fc:33:    if handle_lp_wallet_messages() {
+contracts/pool.fc:37:    if handle_lp_account_messages() {
+contracts/pool.fc:43:        print(`if equal_slices(ctx.at(SENDER), storage::rate_setter_address) { if handle_setter_messages() { return (); } }`);
+contracts/pool.fc:48:    if handle_getter_messages() {
+contracts/pool/msgs/protocolfee.fc:4:    if ctx.at(OPCODE) == op::collect_fees {
+contracts/pool/msgs/router.fc:4:    if ctx.at(OPCODE) == op::swap {
+contracts/pool/msgs/router.fc:178:    if ctx.at(OPCODE) == op::provide_lp {
+contracts/pool/msgs/router.fc:308:    if ctx.at(OPCODE) == op::internal_set_fees {
+contracts/pool/msgs/router.fc:315:        storage::protocol_fee_address = new_protocol_fee_address;
+contracts/pool/msgs/lp_wallet.fc:4:    if ctx.at(OPCODE) == op::burn_notification_ext {
+contracts/pool/msgs/lp_account.fc:4:    if ctx.at(OPCODE) == op::cb_add_liquidity {
+contracts/pool/msgs/lp_account.fc:138:    if ctx.at(OPCODE) == op::cb_refund_me {
+contracts/pool/msgs/getter.fc:3:(int) handle_getter_messages() impure inline {
+contracts/pool/pools/constant_product/storage.fc:9:    storage::protocol_fee_address = ds~load_msg_addr();
+contracts/pool/pools/constant_product/storage.fc:15:    storage::router_address = static_data~load_msg_addr();
+contracts/pool/pools/constant_sum/storage.fc:9:    storage::protocol_fee_address = ds~load_msg_addr();
+contracts/pool/pools/constant_sum/storage.fc:15:    storage::router_address = static_data~load_msg_addr();
+contracts/pool/pools/stableswap/storage.fc:11:    storage::protocol_fee_address = ds~load_msg_addr();
+contracts/pool/pools/stableswap/storage.fc:18:    storage::router_address = static_data~load_msg_addr();
+contracts/pool/pools/weighted_const_product/storage.fc:11:    storage::protocol_fee_address = ds~load_msg_addr();
+contracts/pool/pools/weighted_const_product/storage.fc:18:    storage::router_address = static_data~load_msg_addr();
+contracts/pool/pools/weighted_stableswap/storage.fc:14:    storage::protocol_fee_address = ds~load_msg_addr();
+contracts/pool/pools/weighted_stableswap/storage.fc:27:    storage::router_address = static_data~load_msg_addr();
+tests/System.spec.ts:113:  it('should set fees', async () => {
+tests/System.spec.ts:123:  it('should collect fees', async () => {
+tests/Router.spec.ts:91:  it('should handle upgrades', async () => {

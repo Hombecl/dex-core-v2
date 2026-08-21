@@ -1,0 +1,15 @@
+command: node iter_210/poc_router_notification_ref_forward_payload_boundary.test.js
+cross_file_anchors 24
+no_ref_and_malformed_ref_refund_exact_input true
+valid_ref_payload_parses_fixed_op_addresses_deadline true
+cross_swap_normalizes_to_swap true
+invalid_operation_and_same_wallet_are_rejected true
+route_or_refund_preserves_caller_and_amount true
+classification DEADEND_WITH_PROOF
+result PASS
+
+command: npm test -- --runInBand tests/System.spec.ts -t 'should handle (invalid transfers|swaps)'
+result: PASS
+test_file: tests/System.spec.ts
+tests: 9 skipped, 2 passed, 11 total
+duration: 5.295s

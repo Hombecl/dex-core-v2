@@ -1,0 +1,25 @@
+$ rg -n 'transfer_notification|route_dex_messages|pool_idata|pool::\$route|pay_to|invalid_caller|reserve0|storage::save|balance \+=|balance -=' \
+  contracts/router/msgs/jetton.fc contracts/router/dex.fc contracts/router/msgs/pool.fc \
+  contracts/common/contracts.fc contracts/pool/pools/constant_product/state_init.fc \
+  contracts/pool/msgs/lp_account.fc contracts/pool/msgs/lp_wallet.fc contracts/lp_wallet.fc
+
+49 matches across 8 files.
+
+Key call-chain matches:
+contracts/router/msgs/jetton.fc:5: if ctx.at(OPCODE) == op::ft::transfer_notification
+contracts/router/msgs/jetton.fc:24: route_dex_messages(
+contracts/router/dex.fc:79: pool_idata(my_address(), _jetton_address, token_wallet1, storage::jetton_lp_wallet_code,  storage::lp_account_code),
+contracts/router/dex.fc:88: pool::$route(transferred_op, _caller, _sent_amount, _jetton_address, token_wallet1, _dex_payload),
+contracts/router/msgs/pool.fc:28: throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER)));
+contracts/pool/pools/constant_product/state_init.fc:18: (cell) pool_idata(slice _router_address, slice _first_jetton_address, slice _second_jetton_address, cell _jetton_lp_wallet_code, cell _lp_account_code)
+contracts/pool/msgs/lp_account.fc:45: storage::reserve0 += tot_am0;
+contracts/pool/msgs/lp_account.fc:132: storage::save();
+contracts/pool/msgs/lp_wallet.fc:20: throw_unless(error::invalid_caller, equal_slices(lp_wallet~address(params::workchain), ctx.at(SENDER)));
+contracts/pool/msgs/lp_wallet.fc:62: router::pay_to(
+contracts/pool/msgs/lp_wallet.fc:95: storage::save();
+contracts/lp_wallet.fc:18: balance -= jetton_amount;
+contracts/lp_wallet.fc:58: balance += jetton_amount;
+contracts/lp_wallet.fc:74: .store_uint(op::transfer_notification, 32)
+contracts/lp_wallet.fc:100: storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+
+callers_grep_done=true; cross_file_unique_files=8; cross_file_match_count=49.

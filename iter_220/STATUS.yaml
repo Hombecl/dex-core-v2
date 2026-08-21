@@ -1,0 +1,192 @@
+schema_version: shadow-v1
+iteration: 220
+phase: completed
+cell_id: AX3
+cell_label: router_route_dex_available_gas_exact_boundary
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AX3
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/router/dex.fc
+        line: 1
+        text: '() route_dex_messages(slice _jetton_address, int _available_gas, int _sent_amount, slice _caller, cell _dex_payload) impure inline {'
+      - file: contracts/router/dex.fc
+        line: 56
+        text: 'throw_arg_if(op::transfer_bounce_low_gas, 1, (transferred_op == op::swap)'
+      - file: contracts/router/dex.fc
+        line: 57
+        text: '_available_gas < (ctx.at(FWD_FEE) * 7'
+      - file: contracts/router/dex.fc
+        line: 58
+        text: '+ storage_fee::router + gas::router::route'
+      - file: contracts/router/dex.fc
+        line: 59
+        text: '+ storage_fee::pool + gas::pool::swap'
+      - file: contracts/router/dex.fc
+        line: 77
+        text: ';; route call to the correct pool'
+      - file: contracts/router/dex.fc
+        line: 79
+        text: 'pool_idata(my_address(), _jetton_address, token_wallet1, storage::jetton_lp_wallet_code, storage::lp_account_code)'
+      - file: contracts/router/dex.fc
+        line: 88
+        text: 'pool::$route(transferred_op, _caller, _sent_amount, _jetton_address, token_wallet1, _dex_payload)'
+      - file: contracts/router/dex.fc
+        line: 95
+        text: 'var out_msg_body = jetton_wallet::transfer(0, _sent_amount, refund_address, excesses_address)'
+      - file: contracts/router/dex.fc
+        line: 98
+        text: 'msgs::send_simple(0, _jetton_address, out_msg_body.end_cell(), QCARRY_ALL_BALANCE);'
+      - file: contracts/router/msgs/jetton.fc
+        line: 5
+        text: 'if ctx.at(OPCODE) == op::ft::transfer_notification {'
+      - file: contracts/router/msgs/jetton.fc
+        line: 24
+        text: 'route_dex_messages('
+      - file: contracts/router/msgs/pool.fc
+        line: 28
+        text: 'throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER)));'
+      - file: contracts/router/msgs/pool.fc
+        line: 55
+        text: 'route_dex_messages(sent_jetton_address, gas, swap_amount, original_caller, custom_payload);'
+      - file: contracts/pool.fc
+        line: 28
+        text: 'if equal_slices(ctx.at(SENDER), storage::router_address) {'
+      - file: contracts/pool/msgs/router.fc
+        line: 4
+        text: 'if ctx.at(OPCODE) == op::swap {'
+      - file: contracts/common/gas.fc
+        line: 2
+        text: 'const gas::router::route = 21000000;'
+      - file: contracts/pool/pools/constant_product/gas.fc
+        line: 2
+        text: 'const gas::pool::swap = 21000000;'
+      - file: contracts/common/contracts.fc
+        line: 222
+        text: '(cell) pool::$route('
+      - file: contracts/lp_wallet/op.fc
+        line: 2
+        text: 'const op::transfer_notification = 0x7362d09c;'
+      - file: tests/System.spec.ts
+        line: 237
+        text: "it('should handle swaps', async () => {"
+      - file: tests/System.spec.ts
+        line: 263
+        text: "it('should handle cross swap', async () => {"
+    cross_file_count: 9
+    cross_file_match_count: 63
+    source_scope_restricted: true
+    conclusion: 'Equality passes the strict-less-than gate and forwards the exact amount to the deterministic Pool; one unit below enters the explicit Jetton refund branch. Cross-swap re-entry applies the same gate, and downstream Pool handling is Router-sender-gated. No victim-pool redirection or asset loss was reproduced.'
+    redrill_count: 0
+    audit_result: NOT_AVAILABLE_SHADOW_MODE
+    required_evidence_complete: true
+    no_fabrication: true
+    scope_assets_only: true
+    methodology_audit_exit: NOT_AVAILABLE
+    status_schema_validated: true
+    evidence_gate: PASS_FOR_DEADEND
+    shippable: false
+    rejection_reason: 'The exact boundary yields deterministic forward/refund conservation; no unauthorized asset release or victim-pool redirection was reproduced.'
+    attacker_privilege:
+      privilege_required: external_auth
+    fund_loss_demonstrated: false
+    concrete_impact_demonstrated: false
+    callers_grep_artifact: iter_220/callers-grep.txt
+    caller_match_count: 63
+    caller_unique_files: 9
+    cascade_verbatim_hit_count: 30
+    cross_file_anchor_count: 30
+    caller_paths:
+      - contracts/common/contracts.fc
+      - contracts/common/gas.fc
+      - contracts/pool.fc
+      - contracts/pool/msgs/router.fc
+      - contracts/router.fc
+      - contracts/router/dex.fc
+      - contracts/router/msgs/jetton.fc
+      - contracts/router/msgs/pool.fc
+      - tests/System.spec.ts
+    evidence_paths:
+      poc_test: iter_220/poc_router_route_dex_available_gas_exact_boundary.test.js
+      poc_run_log: iter_220/poc_router_route_dex_available_gas_exact_boundary.run.log
+      live_regression_log: iter_220/live-route-gas-regression.run.log
+      prior_audit: iter_220/prior-audit-git.log
+    poc_execution:
+      test_file_path: iter_220/poc_router_route_dex_available_gas_exact_boundary.test.js
+      test_file_exists_on_disk: true
+      run_log_path: iter_220/poc_router_route_dex_available_gas_exact_boundary.run.log
+      run_log_exists_on_disk: true
+      runtime: '0.6s static; 10.0s integration'
+      result: 'PASS (30 cross-file anchors; equality-forward and below-threshold refund model; swap and cross-swap regressions)'
+    prior_art_check:
+      queries:
+        - 'iter1 swap amount_conservation'
+        - 'iter102 router_route_untrusted_notification_binding'
+        - 'iter114 router_transfer_bounce_error_recipient'
+        - 'iter133 router_notification_without_ref_refund_source'
+        - 'iter139 pool_reset_gas_body_tail_parse'
+        - 'iter193 router_pay_to_cross_swap_recursion'
+        - 'iter210 router_notification_ref_forward_payload_boundary'
+      results:
+        - iter1: DEADEND_WITH_PROOF
+        - iter102: DEADEND_WITH_PROOF
+        - iter114: DEADEND_WITH_PROOF
+        - iter133: DEADEND_WITH_PROOF
+        - iter139: KILLED_TRUSTED_ON_TRUSTED
+        - iter193: DEADEND_WITH_PROOF
+        - iter210: DEADEND_WITH_PROOF
+    r15_disclosure_check:
+      gh_search_terms_used:
+        - 'repo:ston-fi/dex-core-v2 "route_dex_messages" "available_gas" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "route_dex_messages" "available_gas" is:pr'
+        - 'repo:ston-fi/dex-core-v2 "transfer_bounce_low_gas" "gas::router::route" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "transfer_bounce_low_gas" "gas::router::route" is:pr'
+      gh_search_hits: 0
+      evidence_files:
+        - iter_220/r15-issues-route-dex-available-gas.json
+        - iter_220/r15-prs-route-dex-available-gas.json
+        - iter_220/r15-issues-transfer-bounce-low-gas.json
+        - iter_220/r15-prs-transfer-bounce-low-gas.json
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  shadow_mode: true
+  caller_path: iter_220/callers-grep.txt
+  caller_match_count: 63
+  caller_unique_files: 9
+  prior_audit_path: iter_220/prior-audit-git.log
+  prior_family_matches: [iter1, iter102, iter114, iter133, iter139, iter193, iter210]
+  r15_evidence_files:
+    - iter_220/r15-issues-route-dex-available-gas.json
+    - iter_220/r15-prs-route-dex-available-gas.json
+    - iter_220/r15-issues-transfer-bounce-low-gas.json
+    - iter_220/r15-prs-transfer-bounce-low-gas.json
+  source_conclusion: 'At available_gas equal to the threshold, the route forwards; below threshold, the Router returns the original amount to the parsed caller. Forwarded child calls target only the deterministic Pool and re-entry repeats the same check.'
+  attacker_privilege:
+    privilege_required: external_auth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_220/poc_router_route_dex_available_gas_exact_boundary.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_220/poc_router_route_dex_available_gas_exact_boundary.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_220/live-route-gas-regression.run.log
+    result: PASS
+

@@ -1,0 +1,7 @@
+AU1 prior-family audit:
+- Iter 82 / U2 async_getter_response_address_confusion — DEADEND_WITH_PROOF; getter responses are sent to the requester and do not alias value-bearing state.
+- Iter 84 / U4 lp_wallet_codecell_sender_collision — DEADEND_WITH_PROOF; LP-wallet StateInit binds owner, master, and code and the sender gate rejects another wallet.
+- Iter 100 / X5 getter_payload_ref_shape_boundary — DEADEND_WITH_PROOF; optional included-address response data is read-only and requester-bound.
+- Iter 197 / AS5 getter_wallet_address_code_identity — DEADEND_WITH_PROOF; Pool getter and LP mint/burn use the same owner/master/code tuple.
+
+Conclusion: AU1 was compared with four prior getter response, optional-ref, and LP-wallet identity audits before classification.

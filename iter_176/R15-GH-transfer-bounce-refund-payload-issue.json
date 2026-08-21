@@ -1,0 +1,5 @@
+{
+  "command": "gh search issues 'transfer_bounce refund payload identity' --repo ston-fi/dex-core-v2 --limit 10",
+  "total_count": 0,
+  "items": []
+}

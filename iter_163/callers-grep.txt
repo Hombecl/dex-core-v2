@@ -1,0 +1,34 @@
+COMMAND: rg -n "IS_BOUNCED|jetton_wallet::mint|lp_wallet_idata|storage::save|balance \\+= jetton_amount|equal_slices\\(jetton_master_address|on_bounce|internal_transfer|send_with_stateinit|from_sources" contracts/pool.fc contracts/pool/msgs/lp_account.fc contracts/lp_wallet.fc contracts/lp_wallet/jetton-utils.fc contracts/lp_wallet/storage.fc contracts/common/contracts.fc contracts/pool/get.fc
+MATCH_COUNT: 29
+UNIQUE_FILES: 6
+
+contracts/pool/get.fc:12:    var lp_account = contracts::from_sources(
+contracts/pool/get.fc:44:    var lp_wallet = contracts::from_sources(
+contracts/pool/get.fc:45:        lp_wallet_idata(owner_address, my_address(), storage::jetton_lp_wallet_code),
+contracts/lp_wallet/storage.fc:8:() storage::save(int balance, slice owner_address, slice jetton_master_address, cell jetton_wallet_code) impure inline {
+contracts/lp_wallet.fc:37:        .store_uint(op::internal_transfer, 32)
+contracts/lp_wallet.fc:51:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:58:    balance += jetton_amount;
+contracts/lp_wallet.fc:62:    throw_unless(707, equal_slices(jetton_master_address, sender_address)
+contracts/lp_wallet.fc:100:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:133:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:136:() on_bounce (slice in_msg_body) impure {
+contracts/lp_wallet.fc:141:    throw_unless(709, (op == op::internal_transfer) | (op == op::burn_notification_ext));
+contracts/lp_wallet.fc:145:    balance += jetton_amount;
+contracts/lp_wallet.fc:146:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:157:        on_bounce(in_msg_body);
+contracts/lp_wallet.fc:174:    if (op == op::internal_transfer) { 
+contracts/pool/msgs/lp_account.fc:18:        var lp_account = contracts::from_sources(
+contracts/pool/msgs/lp_account.fc:76:            var lp_account_new = contracts::from_sources(
+contracts/pool/msgs/lp_account.fc:84:            msgs::send_with_stateinit(
+contracts/pool/msgs/lp_account.fc:102:            var lp_wallet = contracts::from_sources(
+contracts/pool/msgs/lp_account.fc:103:                lp_wallet_idata(
+contracts/pool/msgs/lp_account.fc:119:            msgs::send_with_stateinit(
+contracts/pool/msgs/lp_account.fc:123:                jetton_wallet::mint(
+contracts/pool/msgs/lp_account.fc:132:            storage::save();
+contracts/pool/msgs/lp_account.fc:146:        var lp_account = contracts::from_sources(
+contracts/common/contracts.fc:19:(cell) lp_wallet_idata(slice _owner_address, slice _jetton_master_address, cell _jetton_wallet_code) inline {
+contracts/common/contracts.fc:206:(cell) jetton_wallet::mint(
+contracts/common/contracts.fc:213:    return begin_message(op::internal_transfer)
+contracts/pool.fc:11:    if ctx.at(IS_BOUNCED) { 
+

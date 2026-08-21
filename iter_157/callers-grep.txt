@@ -1,0 +1,28 @@
+COMMAND: rg -n -g '*.fc' "pool::get_swap_out|pool::get_lp_provide_init_out|pool::get_lp_provide_out|pool::get_lp_burn_out" contracts/pool/pools/*/pool.fc contracts/pool/msgs
+contracts/pool/msgs/router.fc:94:                (out1, protocol_fee_out, ref_fee_out1) = pool::get_swap_out(true, ref_value, amount0, storage::reserve0, storage::reserve1);
+contracts/pool/msgs/router.fc:101:                (out0, protocol_fee_out, ref_fee_out0) = pool::get_swap_out(false, ref_value, amount1, storage::reserve1, storage::reserve0);
+contracts/pool/pools/constant_product/pool.fc:1:(int, int, int) pool::get_swap_out(int _side, int _ref_value, int _amount_in, int _reserve_in, int _reserve_out) inline {
+contracts/pool/pools/constant_product/pool.fc:20:(int) pool::get_lp_provide_init_out(int _left_amount, int _right_amount) inline {
+contracts/pool/pools/constant_product/pool.fc:25:(int, int, int) pool::get_lp_provide_out(int _left_amount, int _right_amount) inline {
+contracts/pool/pools/constant_product/pool.fc:54:(int, int) pool::get_lp_burn_out(int _lp_amount) inline {
+contracts/pool/pools/stableswap/pool.fc:1:(int, int, int) pool::get_swap_out(int _side, int _ref_value, int _amount_in, int _reserve_in, int _reserve_out) inline {
+contracts/pool/pools/stableswap/pool.fc:33:(int) pool::get_lp_provide_init_out(int _left_amount, int _right_amount) impure inline {
+contracts/pool/pools/stableswap/pool.fc:39:(int, int, int) pool::get_lp_provide_out(int _left_amount, int _right_amount) inline {
+contracts/pool/pools/stableswap/pool.fc:68:(int, int) pool::get_lp_burn_out(int _lp_amount) inline {
+contracts/pool/msgs/lp_wallet.fc:25:        (int amount0_out, int amount1_out) = pool::get_lp_burn_out(jetton_amount);
+contracts/pool/pools/weighted_stableswap/pool.fc:1:(int, int, int) pool::get_swap_out(int _side, int _ref_value, int _amount_in, int _reserve_in, int _reserve_out) inline {
+contracts/pool/pools/weighted_stableswap/pool.fc:27:(int) pool::get_lp_provide_init_out(int _left_amount, int _right_amount) impure inline {
+contracts/pool/pools/weighted_stableswap/pool.fc:44:(int, int, int) pool::get_lp_provide_out(int _left_amount, int _right_amount) inline {
+contracts/pool/pools/weighted_stableswap/pool.fc:76:(int, int) pool::get_lp_burn_out(int _lp_amount) inline {
+contracts/pool/pools/constant_sum/pool.fc:1:(int, int, int) pool::get_swap_out(int _side, int _ref_value, int _amount_in, int _reserve_in, int _reserve_out) inline {
+contracts/pool/pools/constant_sum/pool.fc:19:(int) pool::get_lp_provide_init_out(int _left_amount, int _right_amount) inline {
+contracts/pool/pools/constant_sum/pool.fc:24:(int, int, int) pool::get_lp_provide_out(int _left_amount, int _right_amount) inline {
+contracts/pool/pools/constant_sum/pool.fc:53:(int, int) pool::get_lp_burn_out(int _lp_amount) inline {
+contracts/pool/msgs/lp_account.fc:36:                liquidity = pool::get_lp_provide_init_out(tot_am0, tot_am1);
+contracts/pool/msgs/lp_account.fc:52:                (liquidity, new_collected_protocol_fees0, new_collected_protocol_fees1) = pool::get_lp_provide_out(tot_am0, tot_am1);
+contracts/pool/pools/weighted_const_product/pool.fc:1:(int, int, int) pool::get_swap_out(int _side, int _ref_value, int _amount_in, int _reserve_in, int _reserve_out) inline {
+contracts/pool/pools/weighted_const_product/pool.fc:27:(int) pool::get_lp_provide_init_out(int _left_amount, int _right_amount) impure inline {
+contracts/pool/pools/weighted_const_product/pool.fc:38:(int, int, int) pool::get_lp_provide_out(int _left_amount, int _right_amount) inline {
+contracts/pool/pools/weighted_const_product/pool.fc:70:(int, int) pool::get_lp_burn_out(int _lp_amount) inline {
+MATCH_COUNT: 24
+UNIQUE_FILES: 8

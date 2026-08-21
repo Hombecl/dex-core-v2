@@ -1,0 +1,28 @@
+cross_file_anchors 16
+refund_cases 4
+one_sided_carry_cases 2
+two_sided_modes NORMAL_then_CARRY_REMAINING_GAS
+callback_amounts_preserved true
+post_callback_lp_account_zeroed true
+attacker_value_extraction false
+result PASS
+
+PASS tests/System.spec.ts
+  System
+    Dex
+      ✓ should handle refund partial liquidity (399 ms)
+      ○ skipped should handle mint & burn liquidity
+      ○ skipped should handle swaps
+      ○ skipped should handle invalid transfers
+      ○ skipped should handle cross swap
+    Governance
+      ○ skipped should reset pool gas
+      ○ skipped should reset pool gas (different address)
+      ○ skipped should reset router gas
+      ○ skipped should lock & unlock pool
+      ○ skipped should set fees
+      ○ skipped should collect fees
+
+Test Suites: 1 passed, 1 total
+Tests:       10 skipped, 1 passed, 11 total
+Time:        4.965 s

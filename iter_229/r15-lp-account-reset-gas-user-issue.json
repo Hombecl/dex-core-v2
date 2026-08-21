@@ -1,0 +1,7 @@
+{
+  "query": "repo:ston-fi/dex-core-v2 \"reset_gas\" \"storage::user_address\" is:issue",
+  "total_count": 0,
+  "incomplete_results": false,
+  "items": [],
+  "search_type": "lexical"
+}

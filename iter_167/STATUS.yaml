@@ -1,0 +1,79 @@
+schema_version: shadow-v1
+iteration: 167
+phase: completed
+cell_id: AM5
+cell_label: lp_mint_carry_value_commit
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AM5
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - "contracts/pool/msgs/lp_account.fc:119:            msgs::send_with_stateinit("
+      - "contracts/pool/msgs/lp_account.fc:123:                jetton_wallet::mint("
+      - "contracts/pool/msgs/lp_account.fc:125:                    excess_address,"
+      - "contracts/pool/msgs/lp_account.fc:130:                CARRY_ALL_BALANCE"
+      - "contracts/pool/msgs/lp_account.fc:132:            storage::save();"
+      - "contracts/lp_wallet.fc:58:    balance += jetton_amount;"
+      - "contracts/lp_wallet.fc:66:    int ton_balance_before_msg = my_ton_balance - msg_value;"
+      - "contracts/lp_wallet.fc:71:        msg_value -= (forward_ton_amount + fwd_fee);"
+      - "contracts/lp_wallet.fc:89:    if ((response_address.preload_uint(2) != 0) & (msg_value > 0)) {"
+      - "contracts/lp_wallet.fc:93:        .store_coins(msg_value)"
+      - "contracts/lp_wallet.fc:100:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);"
+      - "contracts/lp_account/msgs/user.fc:64:            & excesses_address.address::check_workchain(params::workchain));"
+      - "contracts/common/contracts.fc:214:        .store_coins(_amount) ;; jetton_amount"
+      - "contracts/common/contracts.fc:216:        .store_slice(_response_address) ;; response_address"
+  poc_execution:
+    test_file_path: iter_167/poc_lp_mint_carry_value_commit.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_167/poc_lp_mint_carry_value_commit.run.log
+    run_log_exists_on_disk: true
+    test_runtime: "0.2s static/model; 42.957s integration"
+    result: "PASS (48 bounded TON/forward cases; 18 live LP provide/burn tests)"
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 CARRY_ALL_BALANCE LP mint excess TON is:issue"
+      - "repo:ston-fi/dex-core-v2 CARRY_ALL_BALANCE LP mint excess TON is:pr"
+      - "repo:ston-fi/dex-core-v2 LP wallet residual TON token mismatch is:issue"
+      - "repo:ston-fi/dex-core-v2 LP wallet residual TON token mismatch is:pr"
+    results: "4 queries returned total_count=0"
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "CARRY_ALL_BALANCE LP mint excess TON"
+      - "LP wallet residual TON token mismatch"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  selected_cluster_source: POST_MATRIX_CLUSTER_PROPOSALS_24.md
+  caller_path: "LP-account CARRY_ALL_BALANCE mint -> LP-wallet token credit and TON accounting -> excess-address residual TON send -> independent wallet save"
+  caller_match_count: 128
+  caller_unique_files: 6
+  prior_audit_path: iter_167/prior-audit-git.log
+  r15_evidence_files:
+    - iter_167/R15-GH-carry-all-balance-lp-mint-ton-issue.json
+    - iter_167/R15-GH-carry-all-balance-lp-mint-ton-pr.json
+    - iter_167/R15-GH-lp-wallet-residual-ton-token-mismatch-issue.json
+    - iter_167/R15-GH-lp-wallet-residual-ton-token-mismatch-pr.json
+  boundary_result: "CARRY_ALL_BALANCE carries remaining TON to the LP wallet; the mint body carries the LP token amount separately. LP-wallet balance is incremented by jetton_amount and saved independently, while residual TON after gas/forward deductions is sent only to the validated response/excess address. The LP-account gas guard zeroes an overlarge forward amount."
+  source_conclusion: "Carried TON and LP token balance are separate accounting domains. Residual TON routing is caller-selected through a workchain-validated excess address, and no token amount can be diverted or changed through CARRY_ALL_BALANCE. Live LP provide/burn flows passed."
+  candidate_path: null
+  attacker_privilege: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  shadow_mode: true
+

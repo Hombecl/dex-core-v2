@@ -1,0 +1,8 @@
+COMMAND: node iter_151/poc_deploy_config_scope_exclusion.test.js
+{
+  "scope_snapshot": "/tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json",
+  "selected_asset_markers_checked": 5,
+  "deployment_script_markers_in_scope": 0,
+  "oos_reason": "AI4 targets scripts/deployRouter.ts, which is absent from authoritative selected assets",
+  "result": "PRE_KILLED_OOS"
+}

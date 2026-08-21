@@ -1,0 +1,36 @@
+command:
+rg -n 'pay_vault|vault_pay_to|deposit_ref_fee|withdraw_fee|vault_idata|storage::(owner_address|token_address|router_address|deposited_amount)|send_with_stateinit|invalid_caller|jetton_wallet::transfer|get_vault_address|state_init' contracts/router/msgs/pool.fc contracts/router/msgs/vault.fc contracts/vault.fc contracts/common/contracts.fc contracts/router.fc contracts/router/get.fc
+
+summary:
+match_count: 50
+unique_files: 5
+callers_grep_done: true
+
+key_matches:
+contracts/router/msgs/pool.fc:94: if ctx.at(OPCODE) == op::pay_vault
+contracts/router/msgs/pool.fc:113: throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER)))
+contracts/router/msgs/pool.fc:118: var vault = contracts::from_sources(
+contracts/router/msgs/pool.fc:119: vault_idata(
+contracts/router/msgs/pool.fc:121: amount0_out > 0 ? token0_address : token1_address
+contracts/router/msgs/pool.fc:127: msgs::send_with_stateinit(
+contracts/router/msgs/pool.fc:130: vault~state_init()
+contracts/router/msgs/pool.fc:131: vault::deposit_ref_fee(
+contracts/router/msgs/pool.fc:132: amount0_out + amount1_out
+contracts/router/msgs/vault.fc:10: vault_idata(to_address, token_address, my_address())
+contracts/router/msgs/vault.fc:13: deterministic vault sender gate
+contracts/router/msgs/vault.fc:16: jetton_wallet::transfer(0, amount_out, to_address, to_address)
+contracts/vault.fc:40: deposit_ref_fee accepted only from storage::router_address
+contracts/vault.fc:43: storage::deposited_amount += in_msg_body~load_coins()
+contracts/vault.fc:62: router::vault_pay_to(
+contracts/vault.fc:64: storage::token_address
+contracts/vault.fc:65: storage::owner_address
+contracts/vault.fc:68: storage::deposited_amount = 0
+contracts/common/contracts.fc:1: vault_idata(slice _user_address, slice _token_address, slice _router_address)
+contracts/common/contracts.fc:186: router::pay_vault(
+contracts/common/contracts.fc:289: vault::deposit_ref_fee(
+contracts/router/get.fc:18: get_vault_address(slice user, slice token)
+contracts/router/get.fc:25: vault_idata(user, token, my_address())
+contracts/router.fc:39: if handle_vault_messages()
+
+conclusion:
+The pay_vault path derives a Vault from owner, the positive fee token, and Router, then sends deposit_ref_fee with the sum of the two legs. Vault storage persists the same owner/token/router tuple and only the stored Router can deposit. Alternate owner or token tuples produce distinct StateInit identities; withdrawal re-derives the same tuple and transfers the stored amount to the stored owner.

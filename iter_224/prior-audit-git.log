@@ -1,0 +1,13 @@
+query: rg -n -i 'getter_pool_data|pool_getter_data|getter.*counter|getter.*schema|tuple_field' CHAIN_HYPOTHESIS_TABLE.md iter_*/STATUS.yaml
+exact_prior_match:
+  - iter_206 AU5 pool_getter_fee_counter_visibility DEADEND_WITH_PROOF
+prior_evidence:
+  - iter_206/STATUS.yaml
+  - iter_206/poc_pool_getter_fee_counter_visibility.test.js
+  - iter_206/poc_pool_getter_fee_counter_visibility.run.log
+  - iter_206/callers-grep.txt
+  - iter_206/R15-GH-getter-pool-data-counter-issue.json
+  - iter_206/R15-GH-getter-pool-data-counter-pr.json
+prior_audit_conclusion: 'AX7 is the same getter_pool_data tuple/counter family already completed as iter_206/AU5; the current source still has the same read-only builder, sender-scoped response, and separate collect_fees clear/save path.'
+git_log:
+388c94e checkpoint: v4flash shadow iter100

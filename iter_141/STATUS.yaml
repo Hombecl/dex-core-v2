@@ -1,0 +1,69 @@
+schema_version: shadow-v1
+iteration: 141
+phase: completed
+cell_id: AG1
+cell_label: opcode_collision_dispatch
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AG1
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - 'contracts/router/msgs/jetton.fc:5: if ctx.at(OPCODE) == op::ft::transfer_notification {'
+      - 'contracts/router/msgs/pool.fc:5: if ctx.at(OPCODE) == op::pay_to {'
+      - 'contracts/pool/msgs/lp_account.fc:4: if ctx.at(OPCODE) == op::cb_add_liquidity {'
+      - 'contracts/pool/msgs/lp_wallet.fc:4: if ctx.at(OPCODE) == op::burn_notification_ext {'
+      - 'contracts/lp_account/msgs/user.fc:40: if ctx.at(OPCODE) == op::direct_add_liquidity {'
+      - 'contracts/lp_wallet.fc:141: throw_unless(709, (op == op::internal_transfer) | (op == op::burn_notification_ext));'
+  poc_execution:
+    test_file_path: iter_141/poc_opcode_collision_dispatch.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_141/poc_opcode_collision_dispatch.run.log
+    run_log_exists_on_disk: true
+    test_runtime: '0.5s static model; 12.401s integration'
+    result: 'PASSED (62 opcode inventory; 13 integration tests)'
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 opcode collision dispatch is:issue'
+      - 'repo:ston-fi/dex-core-v2 opcode collision dispatch is:pr'
+      - 'repo:ston-fi/dex-core-v2 CRC32 opcode handler is:issue'
+      - 'repo:ston-fi/dex-core-v2 CRC32 opcode handler is:pr'
+    results: all four returned total_count 0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'opcode collision dispatch repository issue search'
+      - 'opcode collision dispatch repository pull-request search'
+      - 'CRC32 opcode handler repository issue search'
+      - 'CRC32 opcode handler repository pull-request search'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  selected_cluster_source: POST_MATRIX_CLUSTER_PROPOSALS_19.md
+  methodology_cache: missing_at_requested_recon_path
+  caller_grep_path: iter_141/callers-grep.txt
+  caller_grep_match_count: 48
+  caller_grep_unique_files: 11
+  prior_audit_path: iter_141/prior-audit-git.log
+  prior_audit_bytes: 29
+  r15_search_files:
+    - iter_141/R15-GH-opcode-collision-issue.json
+    - iter_141/R15-GH-opcode-collision-pr.json
+    - iter_141/R15-GH-crc32-opcode-issue.json
+    - iter_141/R15-GH-crc32-opcode-pr.json
+  source_conclusion: 'The selected opcode inventory contains 62 declarations and 61 distinct masked values. The only duplicate is the deliberate shared internal_transfer opcode used by the common jetton interface and LP-wallet implementation. Selected Router, Pool, LP-account, and LP-wallet dispatchers retain their operation-specific guards, and the integration routes passed without a cross-handler asset delta.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_141-AG1.md

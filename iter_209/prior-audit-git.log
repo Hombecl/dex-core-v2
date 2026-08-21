@@ -1,0 +1,8 @@
+AV1 prior-family audit (read from prior iteration STATUS.yaml records):
+- iter_61 / R6 vault_withdraw_bounce_replay: DEADEND_WITH_PROOF; repeated withdrawal was rejected after the stored amount was cleared, and a later router deposit paid only the new amount.
+- iter_62 / R7 vault_state_init_owner_token_collision: DEADEND_WITH_PROOF; owner/token/router tuple and vault code separated identities.
+- iter_78 / T3 referral_vault_deposit_replay_identity: DEADEND_WITH_PROOF; deposits were router-authenticated and repeated collection did not duplicate or cross-credit.
+- iter_83 / U3 vault_destroy_recreate_deposit_order: DEADEND_WITH_PROOF; destroy/recreate kept the deterministic address and reset amount before a later router deposit.
+- iter_88 / V3 vault_withdraw_carry_destroy_balance: DEADEND_WITH_PROOF; CARRY_ALL_BALANCE and DESTROY_IF_ZERO did not redirect the fixed token payout or enable replay.
+
+Conclusion: AV1 directly re-drills the prior destroy/redeposit family with the current Vault, Router, pool fee-deposit, getter, and wrapper callers; no attacker-positive asset delta remains.

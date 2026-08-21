@@ -1,0 +1,5 @@
+{
+  "query": "repo:ston-fi/dex-core-v2 \\\"internal_transfer\\\" \\\"calculate_jetton_lp_wallet_state_init\\\" is:issue",
+  "total_count": 0,
+  "items": []
+}

@@ -1,0 +1,4 @@
+command: npm test -- --runInBand tests/Pool.spec.ts -t 'should bounce if tokens are the same'
+result: PASS
+test: Pool > Router calls > should bounce if tokens are the same
+summary: 1 passed, 3 skipped

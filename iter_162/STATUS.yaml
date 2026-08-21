@@ -1,0 +1,77 @@
+schema_version: shadow-v1
+iteration: 162
+phase: completed
+cell_id: AK5
+cell_label: invariant_preservation_after_fee_state
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AK5
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - "contracts/pool/pools/constant_product/pool.fc:31:    int inv1 = norm_invariant(new_reserve0, new_reserve1);"
+      - "contracts/pool/pools/constant_product/pool.fc:39:    new_reserve0 -= (lp_fee0 + protocol_fee0);"
+      - "contracts/pool/pools/constant_product/pool.fc:48:    int inv2 = norm_invariant(new_reserve0, new_reserve1);"
+      - "contracts/pool/pools/constant_sum/pool.fc:48:    if inv2 <= inv0 { return (0, 0, 0); }"
+      - "contracts/pool/pools/stableswap/pool.fc:65:    return (muldiv((inv2 - inv0), storage::total_supply_lp, inv0), protocol_fee0, protocol_fee1);"
+      - "contracts/pool/pools/weighted_const_product/pool.fc:62:    new_reserve1 -= (lp_fee1 + protocol_fee1);"
+      - "contracts/pool/pools/weighted_stableswap/pool.fc:71:    if inv2 <= inv0 { return (0, 0, 0); }"
+      - "contracts/pool/msgs/lp_account.fc:52:                (liquidity, new_collected_protocol_fees0, new_collected_protocol_fees1) = pool::get_lp_provide_out(tot_am0, tot_am1);"
+      - "contracts/pool/msgs/lp_account.fc:55:            storage::total_supply_lp += liquidity;"
+      - "contracts/pool/msgs/lp_account.fc:57:            storage::collected_token0_protocol_fee += new_collected_protocol_fees0;"
+      - "contracts/pool/msgs/lp_account.fc:60:            storage::reserve0 += (tot_am0 - new_collected_protocol_fees0);"
+      - "contracts/pool/msgs/lp_account.fc:132:            storage::save();"
+  poc_execution:
+    test_file_path: iter_162/poc_invariant_preservation_after_fee_state.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_162/poc_invariant_preservation_after_fee_state.run.log
+    run_log_exists_on_disk: true
+    test_runtime: "0.1s static/model; 39.552s integration"
+    result: "PASS (108 bounded-fee model cases; 18 live LP provide/burn tests)"
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 LP provide invariant fee is:issue"
+      - "repo:ston-fi/dex-core-v2 LP provide invariant fee is:pr"
+      - "repo:ston-fi/dex-core-v2 invariant preservation liquidity is:issue"
+      - "repo:ston-fi/dex-core-v2 invariant preservation liquidity is:pr"
+    results: "4 queries returned total_count=0"
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "LP provide invariant fee"
+      - "invariant preservation liquidity"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  selected_cluster_source: POST_MATRIX_CLUSTER_PROPOSALS_23.md
+  caller_path: "LP-account callback -> variant invariant/fee calculation -> protocol counter and reserve update -> max/min checks -> success-only pool save"
+  caller_match_count: 161
+  caller_unique_files: 6
+  prior_audit_path: iter_162/prior-audit-git.log
+  r15_evidence_files:
+    - iter_162/R15-GH-lp-provide-invariant-fee-issue.json
+    - iter_162/R15-GH-lp-provide-invariant-fee-pr.json
+    - iter_162/R15-GH-invariant-preservation-liquidity-issue.json
+    - iter_162/R15-GH-invariant-preservation-liquidity-pr.json
+  boundary_result: "Across all five variants, LP provide computes inv0 and inv1, deducts LP/protocol fees, rejects inv2 <= inv0 with (0,0,0), and ties positive LP minting to inv2-inv0. The LP-account retains LP fees in saved reserves and removes only returned protocol fees; 108 bounded-fee model cases had no accepted invariant decrease, and the three zero-result cases released no protocol fee."
+  source_conclusion: "No attacker-controlled invariant decrease with LP minting or protocol-fee recording was demonstrated. A zero-result provide can leave a user donation in the pool when min_lp_out is zero, but it produces no LP or protocol-fee release and does not create value extraction."
+  candidate_path: null
+  attacker_privilege: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  shadow_mode: true
+

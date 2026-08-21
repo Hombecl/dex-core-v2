@@ -1,0 +1,33 @@
+COMMAND: rg -n "storage::(reserve0|reserve1|total_supply_lp|collected_token0_protocol_fee|collected_token1_protocol_fee|amp|rate|w0)|ds~load_ref|store_ref(storage::_static)|pool_idata(|slice_hash()" [selected pool storage/state_init and value-bearing callers]
+MATCH_COUNT: 168
+UNIQUE_FILES: 16
+
+contracts/pool/pools/constant_product/storage.fc:4:    storage::reserve0 = ds~load_coins();
+contracts/pool/pools/constant_product/storage.fc:5:    storage::reserve1 = ds~load_coins();
+contracts/pool/pools/constant_product/storage.fc:6:    storage::total_supply_lp = ds~load_coins();
+contracts/pool/pools/constant_product/storage.fc:13:    storage::_static = ds~load_ref();
+contracts/pool/pools/constant_product/storage.fc:28:        .store_coins(storage::reserve0)
+contracts/pool/pools/constant_product/storage.fc:36:        .store_ref(storage::_static)
+contracts/pool/pools/constant_sum/storage.fc:4:    storage::reserve0 = ds~load_coins();
+contracts/pool/pools/stableswap/storage.fc:14:    storage::amp = ds~load_uint32();
+contracts/pool/pools/weighted_const_product/storage.fc:14:    storage::w0 = ds~load_uint(64);
+contracts/pool/pools/weighted_stableswap/storage.fc:18:    cell w_params = ds~load_ref();
+contracts/pool/pools/weighted_stableswap/storage.fc:20:    storage::amp = w_params_data~load_uint(128);
+contracts/pool/pools/weighted_stableswap/storage.fc:21:    storage::rate = w_params_data~load_uint(128);
+contracts/pool/pools/weighted_stableswap/storage.fc:22:    storage::w0 = w_params_data~load_uint(128);
+contracts/pool/pools/weighted_stableswap/storage.fc:25:    storage::_static = ds~load_ref();
+contracts/pool/pools/weighted_stableswap/storage.fc:50:            .store_uint(storage::amp, 128)
+contracts/pool/pools/weighted_stableswap/storage.fc:55:        .store_ref(storage::_static)
+contracts/pool/pools/constant_product/state_init.fc:21:    if _first_jetton_address.slice_hash() > _second_jetton_address.slice_hash() {
+contracts/pool/pools/constant_sum/state_init.fc:21:    if _first_jetton_address.slice_hash() > _second_jetton_address.slice_hash() {
+contracts/pool/pools/stableswap/state_init.fc:22:    if _first_jetton_address.slice_hash() > _second_jetton_address.slice_hash() {
+contracts/pool/pools/weighted_const_product/state_init.fc:22:    if _first_jetton_address.slice_hash() > _second_jetton_address.slice_hash() {
+contracts/pool/pools/weighted_stableswap/state_init.fc:32:    if _first_jetton_address.slice_hash() > _second_jetton_address.slice_hash() {
+contracts/pool/msgs/lp_account.fc:45:            storage::reserve0 += tot_am0;
+contracts/pool/msgs/lp_account.fc:55:            storage::total_supply_lp += liquidity;
+contracts/pool/msgs/lp_wallet.fc:30:        storage::reserve0 -= amount0_out;
+contracts/pool/msgs/protocolfee.fc:57:        storage::collected_token0_protocol_fee = 0;
+contracts/pool/msgs/router.fc:95:                storage::reserve0 += amount0;
+contracts/pool/msgs/router.fc:102:                storage::reserve0 -= (out0 + protocol_fee_out + ref_fee_out0);
+contracts/router/msgs/pool.fc:19:            pool_idata(
+contracts/router/dex.fc:79:            pool_idata(my_address(), _jetton_address, token_wallet1, storage::jetton_lp_wallet_code, storage::lp_account_code),

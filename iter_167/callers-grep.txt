@@ -1,0 +1,133 @@
+COMMAND: rg -n "CARRY_ALL_BALANCE|excess_address|excesses_address|response_address|msg_value|jetton_wallet::mint|jetton_amount|balance|storage::save|check_workchain|send_with_stateinit" contracts/pool/msgs/lp_account.fc contracts/lp_wallet.fc contracts/lp_account/msgs/user.fc contracts/common/contracts.fc contracts/pool/msgs/lp_wallet.fc contracts/pool/msgs/router.fc
+MATCH_COUNT: 128
+UNIQUE_FILES: 6
+
+contracts/pool/msgs/lp_wallet.fc:6:        int jetton_amount = in_msg_body~load_coins();
+contracts/pool/msgs/lp_wallet.fc:8:        slice response_address = in_msg_body~load_msg_addr();
+contracts/pool/msgs/lp_wallet.fc:22:        throw_unless(error::zero_output, jetton_amount > 0); 
+contracts/pool/msgs/lp_wallet.fc:23:        throw_unless(error::wrong_address, response_address.preload_uint(2) == 0); 
+contracts/pool/msgs/lp_wallet.fc:25:        (int amount0_out, int amount1_out) = pool::get_lp_burn_out(jetton_amount);
+contracts/pool/msgs/lp_wallet.fc:32:        storage::total_supply_lp -= jetton_amount;
+contracts/pool/msgs/lp_wallet.fc:56:        reserves::max_balance(storage_fee::pool);
+contracts/pool/msgs/lp_wallet.fc:92:            CARRY_ALL_BALANCE ;; the above transfer fixed amount, in this transaction we can carry left gas
+contracts/pool/msgs/lp_wallet.fc:95:        storage::save();
+contracts/pool/msgs/router.fc:18:        slice excesses_address = dex_payload~load_msg_addr();
+contracts/pool/msgs/router.fc:45:                to_address.address::check_workchain(params::workchain)
+contracts/pool/msgs/router.fc:46:                & ref_address.address::check_workchain_nofail(params::workchain)
+contracts/pool/msgs/router.fc:54:            reserves::max_balance(storage_fee::pool);
+contracts/pool/msgs/router.fc:61:                    excesses_address,
+contracts/pool/msgs/router.fc:70:                CARRY_ALL_BALANCE
+contracts/pool/msgs/router.fc:120:            reserves::max_balance(storage_fee::pool);
+contracts/pool/msgs/router.fc:126:                        excesses_address,
+contracts/pool/msgs/router.fc:141:                    excesses_address,
+contracts/pool/msgs/router.fc:150:                CARRY_ALL_BALANCE
+contracts/pool/msgs/router.fc:152:            storage::save();
+contracts/pool/msgs/router.fc:156:            reserves::max_balance(storage_fee::pool);
+contracts/pool/msgs/router.fc:163:                    excesses_address,
+contracts/pool/msgs/router.fc:172:                CARRY_ALL_BALANCE
+contracts/pool/msgs/router.fc:190:        slice excesses_address = dex_payload~load_msg_addr();
+contracts/pool/msgs/router.fc:211:            throw_arg_unless(op::provide_refund_wrong_workchain, 1, to_user.address::check_workchain(params::workchain));
+contracts/pool/msgs/router.fc:215:            reserves::max_balance(storage_fee::pool);
+contracts/pool/msgs/router.fc:222:                    excesses_address,
+contracts/pool/msgs/router.fc:231:                CARRY_ALL_BALANCE
+contracts/pool/msgs/router.fc:245:            reserves::max_balance(storage_fee::pool);
+contracts/pool/msgs/router.fc:246:            msgs::send_with_stateinit(
+contracts/pool/msgs/router.fc:259:                    excesses_address
+contracts/pool/msgs/router.fc:261:                CARRY_ALL_BALANCE
+contracts/pool/msgs/router.fc:266:            reserves::max_balance(storage_fee::pool);
+contracts/pool/msgs/router.fc:273:                    excesses_address,
+contracts/pool/msgs/router.fc:282:                CARRY_ALL_BALANCE
+contracts/pool/msgs/router.fc:290:        utils::send_excesses(0, in_msg_body~load_msg_addr(), QCARRY_ALL_BALANCE);
+contracts/pool/msgs/router.fc:296:        storage::save();
+contracts/pool/msgs/router.fc:297:        reserves::max_balance(storage_fee::pool);
+contracts/pool/msgs/router.fc:298:        utils::send_excesses(0, in_msg_body~load_msg_addr(), QCARRY_ALL_BALANCE);
+contracts/pool/msgs/router.fc:317:        storage::save();
+contracts/pool/msgs/router.fc:319:        reserves::max_balance(storage_fee::pool);
+contracts/pool/msgs/router.fc:320:        utils::send_excesses(0, in_msg_body~load_msg_addr(), QCARRY_ALL_BALANCE);
+contracts/pool/msgs/lp_account.fc:16:        slice excess_address = additional_data~load_msg_addr();
+contracts/pool/msgs/lp_account.fc:29:        reserves::max_balance(storage_fee::pool);
+contracts/pool/msgs/lp_account.fc:84:            msgs::send_with_stateinit(
+contracts/pool/msgs/lp_account.fc:97:                    excess_address
+contracts/pool/msgs/lp_account.fc:99:                CARRY_ALL_BALANCE
+contracts/pool/msgs/lp_account.fc:119:            msgs::send_with_stateinit(
+contracts/pool/msgs/lp_account.fc:123:                jetton_wallet::mint(
+contracts/pool/msgs/lp_account.fc:125:                    excess_address, 
+contracts/pool/msgs/lp_account.fc:130:                CARRY_ALL_BALANCE
+contracts/pool/msgs/lp_account.fc:132:            storage::save();
+contracts/lp_wallet.fc:10:() send_tokens (slice in_msg_body, slice sender_address, int msg_value, int fwd_fee) impure {
+contracts/lp_wallet.fc:12:    int jetton_amount = in_msg_body~load_coins();
+contracts/lp_wallet.fc:17:    (int balance, slice owner_address, slice jetton_master_address, cell jetton_wallet_code) = storage::load();
+contracts/lp_wallet.fc:18:    balance -= jetton_amount;
+contracts/lp_wallet.fc:21:    throw_unless(706, balance >= 0);
+contracts/lp_wallet.fc:25:    slice response_address = in_msg_body~load_msg_addr();
+contracts/lp_wallet.fc:39:        .store_coins(jetton_amount)
+contracts/lp_wallet.fc:41:        .store_slice(response_address)
+contracts/lp_wallet.fc:48:    throw_unless(709, msg_value > forward_ton_amount + fwd_count * fwd_fee + (2 * REQUIRED_GAS + REQUIRED_TON_STORAGE));
+contracts/lp_wallet.fc:51:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:54:() receive_tokens (slice in_msg_body, slice sender_address, int my_ton_balance, int fwd_fee, int msg_value) impure {
+contracts/lp_wallet.fc:55:    (int balance, slice owner_address, slice jetton_master_address, cell jetton_wallet_code) = storage::load();
+contracts/lp_wallet.fc:57:    int jetton_amount = in_msg_body~load_coins();
+contracts/lp_wallet.fc:58:    balance += jetton_amount;
+contracts/lp_wallet.fc:60:    slice response_address = in_msg_body~load_msg_addr();
+contracts/lp_wallet.fc:66:    int ton_balance_before_msg = my_ton_balance - msg_value;
+contracts/lp_wallet.fc:67:    int storage_fee = REQUIRED_TON_STORAGE - min(ton_balance_before_msg, REQUIRED_TON_STORAGE);
+contracts/lp_wallet.fc:68:    msg_value -= (storage_fee + REQUIRED_GAS);
+contracts/lp_wallet.fc:71:        msg_value -= (forward_ton_amount + fwd_fee);
+contracts/lp_wallet.fc:76:            .store_coins(jetton_amount)
+contracts/lp_wallet.fc:89:    if ((response_address.preload_uint(2) != 0) & (msg_value > 0)) {
+contracts/lp_wallet.fc:92:        .store_slice(response_address)
+contracts/lp_wallet.fc:93:        .store_coins(msg_value)
+contracts/lp_wallet.fc:100:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:103:() burn_tokens (slice in_msg_body, slice sender_address, int msg_value, int fwd_fee) impure {
+contracts/lp_wallet.fc:104:    (int balance, slice owner_address, slice jetton_master_address, cell jetton_wallet_code) = storage::load();
+contracts/lp_wallet.fc:106:    int jetton_amount = in_msg_body~load_coins();
+contracts/lp_wallet.fc:107:    slice response_address = in_msg_body~load_msg_addr();
+contracts/lp_wallet.fc:109:    balance -= jetton_amount;
+contracts/lp_wallet.fc:112:    throw_unless(706, balance >= 0);
+contracts/lp_wallet.fc:113:    throw_unless(707, msg_value >  2 * (fwd_fee + REQUIRED_GAS));
+contracts/lp_wallet.fc:118:        .store_coins(jetton_amount)
+contracts/lp_wallet.fc:120:        .store_slice(response_address)
+contracts/lp_wallet.fc:133:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:138:    (int balance, slice owner_address, slice jetton_master_address, cell jetton_wallet_code) = storage::load();
+contracts/lp_wallet.fc:144:    int jetton_amount = in_msg_body~load_coins();
+contracts/lp_wallet.fc:145:    balance += jetton_amount;
+contracts/lp_wallet.fc:146:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:149:() recv_internal(int my_balance, int msg_value, cell in_msg_full, slice in_msg_body) impure {
+contracts/lp_wallet.fc:170:        send_tokens(in_msg_body, sender_address, msg_value, fwd_fee);
+contracts/lp_wallet.fc:175:        receive_tokens(in_msg_body, sender_address, my_balance, fwd_fee, msg_value);
+contracts/lp_wallet.fc:180:        burn_tokens(in_msg_body, sender_address, msg_value, fwd_fee);
+contracts/common/contracts.fc:14:        .store_coins(0) ;; left_balance
+contracts/common/contracts.fc:15:        .store_coins(0) ;; right_balance
+contracts/common/contracts.fc:21:        .store_coins(0) ;; balance
+contracts/common/contracts.fc:48:    slice _excess_address
+contracts/common/contracts.fc:60:            .store_slice(_excess_address)
+contracts/common/contracts.fc:129:    slice _excess_address
+contracts/common/contracts.fc:141:            .store_slice(_excess_address)
+contracts/common/contracts.fc:149:    slice _excesses_address,
+contracts/common/contracts.fc:160:        .store_slice(_excesses_address)
+contracts/common/contracts.fc:188:    slice _excesses_address,
+contracts/common/contracts.fc:196:        .store_slice(_excesses_address)
+contracts/common/contracts.fc:206:(cell) jetton_wallet::mint(
+contracts/common/contracts.fc:208:    slice _response_address, 
+contracts/common/contracts.fc:214:        .store_coins(_amount) ;; jetton_amount
+contracts/common/contracts.fc:216:        .store_slice(_response_address) ;; response_address
+contracts/common/contracts.fc:225:    int _jetton_amount, 
+contracts/common/contracts.fc:235:            .store_coins(_jetton_amount)
+contracts/common/contracts.fc:240:            .store_coins(_jetton_amount);
+contracts/common/contracts.fc:280:(builder) jetton_wallet::transfer(int _fwd_amount, int _jetton_amount, slice _to, slice _response_address) inline {
+contracts/common/contracts.fc:282:        .store_coins(_jetton_amount)
+contracts/common/contracts.fc:284:        .store_slice(_response_address) ;; responseAddress
+contracts/common/contracts.fc:291:    slice _response_address
+contracts/common/contracts.fc:295:        .store_slice(_response_address)
+contracts/lp_account/msgs/user.fc:30:            CARRY_ALL_BALANCE | DESTROY_IF_ZERO
+contracts/lp_account/msgs/user.fc:36:        storage::save();
+contracts/lp_account/msgs/user.fc:56:        slice excesses_address = additional_fields~load_msg_addr();
+contracts/lp_account/msgs/user.fc:62:            to_user.address::check_workchain(params::workchain)
+contracts/lp_account/msgs/user.fc:63:            & refund_address.address::check_workchain(params::workchain)
+contracts/lp_account/msgs/user.fc:64:            & excesses_address.address::check_workchain(params::workchain));
+contracts/lp_account/msgs/user.fc:81:            reserves::max_balance(storage_fee::lp_account);
+contracts/lp_account/msgs/user.fc:96:                excesses_address
+contracts/lp_account/msgs/user.fc:98:            CARRY_ALL_BALANCE | DESTROY_IF_ZERO
+contracts/lp_account/msgs/user.fc:100:        storage::save();
+contracts/lp_account/msgs/user.fc:106:        msgs::send_empty(0, storage::user_address, CARRY_ALL_BALANCE);
+

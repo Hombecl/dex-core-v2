@@ -1,0 +1,7 @@
+AS2 prior-family audit:
+- Iter 77 / T2 burn_dual_output_bounce_accounting — DEADEND_WITH_PROOF; deterministic sender and fixed dual pay_to legs showed no asymmetric balance restoration or attacker-controlled output leg.
+- Iter 106 / Z1 lp_account_burn_state_clear_before_payout — DEADEND_WITH_PROOF; owner-bound callbacks and fixed payout legs prevented replay or a second state transition.
+- Iter 137 / AF2 pool_burn_payload_wrapper_leg_split — DEADEND_WITH_PROOF; malformed wrappers yielded null payloads and downstream payout failure was liveness-only.
+- Iter 178 / AP1 pool_burn_response_addr_none_gate — DEADEND_WITH_PROOF; response_address was not a token payout destination and the live burn regression found no attacker-positive delta.
+
+Conclusion: AS2 was compared with four existing burn/bounce/accounting deadends before classification.

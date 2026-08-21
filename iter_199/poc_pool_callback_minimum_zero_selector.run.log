@@ -1,0 +1,15 @@
+cross_file_anchors 18
+pool_callback_sender_authenticated true
+minimum_output_failure_redeploys_zero_minimum_account true
+fallback_mints_zero_lp true
+fallback_returns_exact_accumulated_amounts true
+one_sided_zero_minimum_mints_zero_lp true
+attacker_positive_delta false
+result PASS
+
+live_regression_command:
+npm test -- --runInBand tests/ConstProduct.spec.ts -t 'should provide lp'
+
+live_regression_output:
+PASS tests/ConstProduct.spec.ts (10.436 s)
+Tests: 31 skipped, 5 passed, 36 total

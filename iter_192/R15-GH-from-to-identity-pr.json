@@ -1,0 +1,5 @@
+{
+  "query": "repo:ston-fi/dex-core-v2 \"from_address\" \"to_user\" is:pr",
+  "total_count": 0,
+  "items": []
+}

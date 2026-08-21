@@ -1,0 +1,28 @@
+command: rg -n -i 'getter_lp_account_address|lp_account_idata|get_lp_account_address|handle_getter_messages|invalid_caller|storage::user_address|storage::pool_address|check_workchain|sendGetterLPAccountAddress|getLPAccountAddress|lp_account~address|getter' contracts/common/contracts.fc contracts/pool.fc contracts/pool/get.fc contracts/pool/msgs/getter.fc contracts/pool/msgs/lp_account.fc contracts/lp_account.fc contracts/lp_account/get.fc contracts/router/dex.fc wrappers/Pool.ts tests/System.spec.ts tests/ConstProduct.spec.ts
+caller_match_count: 61
+caller_unique_files: 11
+caller_files:
+  - contracts/common/contracts.fc
+  - contracts/lp_account.fc
+  - contracts/lp_account/get.fc
+  - contracts/pool.fc
+  - contracts/pool/get.fc
+  - contracts/pool/msgs/getter.fc
+  - contracts/pool/msgs/lp_account.fc
+  - contracts/router/dex.fc
+  - tests/ConstProduct.spec.ts
+  - tests/System.spec.ts
+  - wrappers/Pool.ts
+representative_hits:
+  - contracts/pool/msgs/getter.fc:27 getter_lp_account_address
+  - contracts/pool/msgs/getter.fc:33 lp_account_idata(my_address(), user_address)
+  - contracts/pool/msgs/getter.fc:37 anyone::getter_lp_account_address(lp_account~address(params::workchain))
+  - contracts/pool/get.fc:10 owner_address.address::check_workchain(params::workchain)
+  - contracts/pool/get.fc:13 lp_account_idata(my_address(), owner_address)
+  - contracts/pool/msgs/lp_account.fc:26 deterministic invalid_caller gate
+  - contracts/lp_account.fc:19 ctx.at(SENDER) equals storage::pool_address
+  - contracts/lp_account.fc:26 ctx.at(SENDER) equals storage::user_address
+  - contracts/common/contracts.fc:10 lp_account_idata
+  - wrappers/Pool.ts:248 sendGetterLPAccountAddress
+  - tests/System.spec.ts:143 pool.getLPAccountAddress
+callers_grep_done: true

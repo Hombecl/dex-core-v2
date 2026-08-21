@@ -1,0 +1,4 @@
+command: npm test -- --runInBand tests/ConstProduct.spec.ts -t 'should collect ref fee from vault'
+result: PASS
+test: ConstProduct > Fees > should collect ref fee from vault
+summary: 1 passed, 35 skipped

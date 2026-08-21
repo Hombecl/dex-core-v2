@@ -1,0 +1,20 @@
+contracts/vault.fc:40:    if (ctx.at(OPCODE) == op::deposit_ref_fee) & equal_slices(ctx.at(SENDER), storage::router_address) {
+contracts/lp_wallet.fc:37:        .store_uint(op::internal_transfer, 32)
+contracts/lp_wallet.fc:74:        .store_uint(op::transfer_notification, 32)
+contracts/lp_wallet.fc:116:        .store_uint(op::burn_notification_ext, 32)
+contracts/common/contracts.fc:30:    return begin_message(op::cb_refund_me)
+contracts/common/contracts.fc:50:    return begin_message(op::cb_add_liquidity)
+contracts/common/contracts.fc:131:    return begin_message(op::add_liquidity)
+contracts/common/contracts.fc:158:    return begin_message(op::pay_to)
+contracts/common/contracts.fc:179:    return begin_message(op::vault_pay_to)
+contracts/common/contracts.fc:194:    return begin_message(op::pay_vault)
+contracts/common/contracts.fc:213:    return begin_message(op::internal_transfer)
+contracts/common/contracts.fc:293:    return begin_message(op::deposit_ref_fee)
+contracts/lp_account/msgs/pool.fc:6:    if ctx.at(OPCODE) == op::add_liquidity { 
+contracts/pool/msgs/lp_wallet.fc:4:    if ctx.at(OPCODE) == op::burn_notification_ext { 
+contracts/pool/msgs/lp_account.fc:4:    if ctx.at(OPCODE) == op::cb_add_liquidity {
+contracts/pool/msgs/lp_account.fc:138:    if ctx.at(OPCODE) == op::cb_refund_me {
+contracts/router/msgs/vault.fc:3:    if ctx.at(OPCODE) == op::vault_pay_to {
+contracts/router/msgs/pool.fc:5:    if ctx.at(OPCODE) == op::pay_to { 
+contracts/router/msgs/pool.fc:94:    if ctx.at(OPCODE) == op::pay_vault {
+contracts/router/msgs/jetton.fc:5:    if ctx.at(OPCODE) == op::ft::transfer_notification {

@@ -1,0 +1,11 @@
+COMMAND: rg -n 'withdraw_fee|vault_pay_to|deposited_amount|owner_address|token_address|router_address|vault_idata|equal_slices\\(vault~address|sendWithdrawFee' selected source files
+RESULT: 56 matches across 8 files; callers_grep_done=true.
+
+contracts/vault.fc:51-69 — permissionless withdrawal sends stored amount/token/owner to stored Router, then zeroes and saves
+contracts/router/msgs/vault.fc:3-19 — Router derives the Vault from body owner/token/router and authenticates the sender before token transfer
+contracts/common/contracts.fc:1-5 — Vault state-init tuple is owner/token/router
+contracts/common/contracts.fc:174-183 — vault_pay_to preserves amount/token/recipient field order
+contracts/common/op.fc:26-28 — vault_pay_to and withdraw_fee op schemas
+contracts/router/get.fc:18-29 — getter derives the same Vault tuple
+wrappers/Vault.ts:43-50 — test wrapper exposes permissionless withdraw_fee
+tests/WeightedCPI.spec.ts:1265-1317 — referral deposit and withdrawal integration assertions

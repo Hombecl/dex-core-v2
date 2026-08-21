@@ -1,0 +1,136 @@
+# AX2 callers grep command
+# rg -n -i 'internal_set_fees|set_fees|setfees|admin_address|router_address|send_excesses|new_protocol_fee_address|excesses_recipient|excesses_address|protocol_fee_address|get_excesses_address|store_uint\(_new_lp_fee|store_uint\(_new_protocol_fee|store_slice\(_excesses_recipient|load_msg_addr\(\)|storage::save\(\)|should (set|bounce set) fees' '/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/pool.fc' '/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/pool/msgs/router.fc' '/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router.fc' '/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc' '/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/utils.fc' '/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/op.fc' '/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/contracts.fc' '/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/wrappers/Router.ts' '/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts' | head -140
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router.fc:28:    if equal_slices(ctx.at(SENDER), storage::admin_address) {
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/pool.fc:22:    if equal_slices(ctx.at(SENDER), storage::protocol_fee_address) {
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/pool.fc:28:    if equal_slices(ctx.at(SENDER), storage::router_address) {
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/pool/msgs/router.fc:7:        slice from_user_address = in_msg_body~load_msg_addr();
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/pool/msgs/router.fc:14:        dex_payload~load_msg_addr(); ;; skip token_wallet1
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/pool/msgs/router.fc:17:        slice refund_address = dex_payload~load_msg_addr();
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/pool/msgs/router.fc:18:        slice excesses_address = dex_payload~load_msg_addr();
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/pool/msgs/router.fc:34:            to_address = call_payload~load_msg_addr(); 
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/pool/msgs/router.fc:40:            ref_address = call_payload~load_msg_addr(); 
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/pool/msgs/router.fc:61:                    excesses_address,
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/pool/msgs/router.fc:126:                        excesses_address,
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/pool/msgs/router.fc:141:                    excesses_address,
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/pool/msgs/router.fc:152:            storage::save();
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/pool/msgs/router.fc:163:                    excesses_address,
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/pool/msgs/router.fc:180:        slice from_user = in_msg_body~load_msg_addr();
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/pool/msgs/router.fc:186:        dex_payload~load_msg_addr(); ;; skip token_wallet1 
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/pool/msgs/router.fc:189:        slice refund_address = dex_payload~load_msg_addr();
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/pool/msgs/router.fc:190:        slice excesses_address = dex_payload~load_msg_addr();
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/pool/msgs/router.fc:203:            to_user = call_payload~load_msg_addr();
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/pool/msgs/router.fc:222:                    excesses_address,
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/pool/msgs/router.fc:259:                    excesses_address
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/pool/msgs/router.fc:273:                    excesses_address,
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/pool/msgs/router.fc:290:        utils::send_excesses(0, in_msg_body~load_msg_addr(), QCARRY_ALL_BALANCE);
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/pool/msgs/router.fc:296:        storage::save();
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/pool/msgs/router.fc:298:        utils::send_excesses(0, in_msg_body~load_msg_addr(), QCARRY_ALL_BALANCE);
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/pool/msgs/router.fc:308:    if ctx.at(OPCODE) == op::internal_set_fees { 
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/pool/msgs/router.fc:311:        slice new_protocol_fee_address = in_msg_body~load_msg_addr();
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/pool/msgs/router.fc:315:        storage::protocol_fee_address = new_protocol_fee_address;
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/pool/msgs/router.fc:317:        storage::save();
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/pool/msgs/router.fc:320:        utils::send_excesses(0, in_msg_body~load_msg_addr(), QCARRY_ALL_BALANCE);
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/utils.fc:1:slice get_excesses_address(slice _addr) impure inline {
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/op.fc:4:const op::cross_swap                      = "cross_swap token_wallet1:MsgAddress refund_address:MsgAddress excesses_address:MsgAddress tx_deadline:uint64 cross_swap_body:^[min_out:Coins receiver:MsgAddress fwd_gas:Coins custom_payload:(Maybe ^Cell) refund_fwd_gas:Coins refund_payload:(Maybe ^Cell) ref_fee:uint16 ref_address:MsgAddress] = DexPayload"c  & 0x7fffffff;
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/op.fc:5:const op::swap                            = "swap query_id:uint64 from_user:MsgAddress left_amount:Coins right_amount:Coins dex_payload:^[transferred_op:uint32 token_wallet1:MsgAddress refund_address:MsgAddress excesses_address:MsgAddress tx_deadline:uint64 swap_body:^[min_out:Coins receiver:MsgAddress fwd_gas:Coins custom_payload:(Maybe ^Cell) refund_fwd_gas:Coins refund_payload:(Maybe ^Cell) ref_fee:uint16 ref_address:MsgAddress]] = InternalMsgBody"c & 0x7fffffff;
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/op.fc:6:const op::provide_lp                      = "provide_lp query_id:uint64 from_user:MsgAddress left_amount:Coins right_amount:Coins dex_payload:^[transferred_op:uint32 token_wallet1:MsgAddress refund_address:MsgAddress excesses_address:MsgAddress tx_deadline:uint64 provide_lp_body:^[min_lp_out:Coins to_address:MsgAddress both_positive:uint1 fwd_amount:Coins custom_payload:(Maybe ^Cell)]] = InternalMsgBody"c & 0x7fffffff;
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/op.fc:10:const op::pay_to                          = "pay_to query_id:uint64 to_address:MsgAddress excesses_address:MsgAddress original_caller:MsgAddress exit_code:uint32 custom_payload:(Maybe ^Cell) additional_info:^[fwd_ton_amount:Coins amount0_out:Coins token0_address:MsgAddress amount1_out:Coins token1_address:MsgAddress] = InternalMsgBody"c & 0x7fffffff;
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/op.fc:12:const op::set_fees                        = "set_fees query_id:uint64 new_lp_fee:uint16 new_protocol_fee:uint16 new_protocol_fee_address:MsgAddress jetton_info:^[jetton_wallet0:MsgAddress jetton_wallet1:MsgAddress excesses_recipient:MsgAddress] = InternalMsgBody"c & 0x7fffffff;
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/op.fc:13:const op::internal_set_fees               = "internal_set_fees query_id:uint64 new_lp_fee:uint16 new_protocol_fee:uint16 new_protocol_fee_address:MsgAddress excesses_address:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/op.fc:18:const op::reset_pool_gas                  = "reset_pool_gas query_id:uint64 jetton_wallet0:MsgAddress jetton_wallet1:MsgAddress excesses_recipient:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/op.fc:20:const op::init_admin_upgrade              = "init_admin_upgrade query_id:uint64 new_admin_address:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/op.fc:24:const op::update_pool_status              = "update_pool_status query_id:uint64 jetton_wallet0:MsgAddress jetton_wallet1:MsgAddress excesses_recipient:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/op.fc:25:const op::pay_vault                       = "pay_vault query_id:uint64 owner:MsgAddress excesses_address:MsgAddress additional_info:^[amount0_out:Coins token0_address:MsgAddress amount1_out:Coins token1_address:MsgAddress] = InternalMsgBody"c & 0x7fffffff;
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/op.fc:27:const op::deposit_ref_fee                 = "deposit_ref_fee query_id:uint64 jetton_amount:Coins excesses_address:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/op.fc:30:const op::internal_update_status          = "internal_update_status query_id:uint64 excesses_recipient:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/contracts.fc:1:(cell) vault_idata(slice _user_address, slice _token_address, slice _router_address) inline {
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/contracts.fc:5:        .store_slice(_router_address)
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/contracts.fc:77:    slice _router_address,
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/contracts.fc:85:    slice _protocol_fee_address,
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/contracts.fc:98:            .store_slice(_router_address)
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/contracts.fc:99:            .store_slice(_protocol_fee_address)
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/contracts.fc:149:    slice _excesses_address,
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/contracts.fc:160:        .store_slice(_excesses_address)
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/contracts.fc:188:    slice _excesses_address,
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/contracts.fc:196:        .store_slice(_excesses_address)
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/contracts.fc:248:(cell) pool::internal_set_fees(
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/contracts.fc:251:    slice _new_protocol_fee_address,
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/contracts.fc:252:    slice _excesses_recipient
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/contracts.fc:254:    return begin_message(op::internal_set_fees)
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/contracts.fc:255:        .store_uint(_new_lp_fee, 16)
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/contracts.fc:256:        .store_uint(_new_protocol_fee, 16)
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/contracts.fc:257:        .store_slice(_new_protocol_fee_address)
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/contracts.fc:258:        .store_slice(_excesses_recipient)
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/contracts.fc:268:(cell) pool::reset_gas(slice _excesses_recipient) inline {
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/contracts.fc:270:        .store_slice(_excesses_recipient)
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/contracts.fc:274:(cell) pool::internal_update_status(slice _excesses_recipient) inline {
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/common/contracts.fc:276:        .store_slice(_excesses_recipient)
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:6:    if ctx.at(OPCODE) == op::set_fees { 
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:9:            + storage_fee::router + gas::router::set_fees 
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:10:            + storage_fee::pool + gas::pool::set_fees);
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:14:        slice new_protocol_fee_address = in_msg_body~load_msg_addr();
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:16:        slice jetton_wallet0 = jetton_info~load_msg_addr();
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:17:        slice jetton_wallet1 = jetton_info~load_msg_addr();
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:18:        slice excesses_recipient = get_excesses_address(jetton_info~load_msg_addr());
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:24:            & new_protocol_fee_address.address::check_workchain(params::workchain)
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:25:            & excesses_recipient.address::check_workchain(params::workchain));
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:44:            pool::internal_set_fees(
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:47:                new_protocol_fee_address,
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:48:                excesses_recipient
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:61:        slice jetton_wallet0 = in_msg_body~load_msg_addr();
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:62:        slice jetton_wallet1 = in_msg_body~load_msg_addr();
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:63:        slice excesses_recipient = get_excesses_address(in_msg_body~load_msg_addr());
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:68:            & excesses_recipient.address::check_workchain(params::workchain));
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:80:            pool::reset_gas(excesses_recipient), 
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:92:        slice jetton_wallet0 = in_msg_body~load_msg_addr();
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:93:        slice jetton_wallet1 = in_msg_body~load_msg_addr();
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:94:        slice excesses_recipient = get_excesses_address(in_msg_body~load_msg_addr());
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:99:            & excesses_recipient.address::check_workchain(params::workchain));
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:111:            pool::internal_update_status(excesses_recipient), 
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:123:        slice jetton_wallet0 = in_msg_body~load_msg_addr();
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:124:        slice jetton_wallet1 = in_msg_body~load_msg_addr();
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:150:        storage::save();
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:152:        utils::send_excesses(0, storage::admin_address, QCARRY_ALL_BALANCE);
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:164:        storage::save();
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:167:        utils::send_excesses(0, storage::admin_address, QCARRY_ALL_BALANCE);
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:173:        slice new_admin_address = in_msg_body~load_msg_addr();
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:177:        throw_unless(error::wrong_workchain, new_admin_address.address::check_workchain(params::workchain)); 
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:178:        storage::temp_upgrade = pack_temp_upgrade(end_code, new_code, now() + params::twodays, new_admin_address, end_pool_code, pool_code);
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:179:        storage::save();
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:182:        utils::send_excesses(0, storage::admin_address, QCARRY_ALL_BALANCE);
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:194:        storage::save();
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:197:        utils::send_excesses(0, storage::admin_address, QCARRY_ALL_BALANCE);
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:205:        storage::save();
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:208:        utils::send_excesses(0, storage::admin_address, QCARRY_ALL_BALANCE);
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:216:        storage::save();
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:219:        utils::send_excesses(0, storage::admin_address, QCARRY_ALL_BALANCE);
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:227:        storage::save();
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:230:        utils::send_excesses(0, storage::admin_address, QCARRY_ALL_BALANCE);
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:246:            storage::admin_address = new_admin;
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:258:        storage::save();
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/contracts/router/msgs/admin.fc:265:        utils::send_excesses(0, storage::admin_address, QCARRY_ALL_BALANCE);
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/wrappers/Router.ts:78:    setFees: 0x58274069,
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/wrappers/Router.ts:234:    async sendSetFees(provider: ContractProvider, via: Sender, opts: {
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/wrappers/Router.ts:245:            body: beginMessage(routerOpcodes.setFees)
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts:150:type SetFeesParams = {
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts:189:        setFees: (params: SetFeesParams) => Promise<void>,
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts:1023:        setFees = async (params: SetFeesParams) => {
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts:1037:            let msgResult = await router.sendSetFees(sender.getSender(), {
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts:1335:        it('should set fees', async () => {
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts:1344:            await setFees({
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts:1376:            await setFees({
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts:2357:        it('should bounce set fees if not admin', async () => {
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts:2379:            await setFees({
+/Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts:2398:            await setFees({
+
+# caller_match_count 122
+# caller_unique_files 9
+# caller_file contracts/common/contracts.fc
+# caller_file contracts/common/op.fc
+# caller_file contracts/common/utils.fc
+# caller_file contracts/pool.fc
+# caller_file contracts/pool/msgs/router.fc
+# caller_file contracts/router.fc
+# caller_file contracts/router/msgs/admin.fc
+# caller_file tests/ConstProduct.spec.ts
+# caller_file wrappers/Router.ts

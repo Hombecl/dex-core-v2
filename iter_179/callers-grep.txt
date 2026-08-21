@@ -1,0 +1,19 @@
+contracts/common/contracts.fc:29:(cell) pool::cb_refund_me(int _left_amount, int _right_amount, cell _left_maybe_payload, cell _right_maybe_payload) inline {
+contracts/common/contracts.fc:146:(cell) router::pay_to(
+contracts/pool.fc:37:    if handle_lp_account_messages() {
+contracts/pool/msgs/lp_account.fc:1:(int) handle_lp_account_messages() impure inline {
+contracts/pool/msgs/lp_account.fc:138:    if ctx.at(OPCODE) == op::cb_refund_me {
+contracts/pool/msgs/lp_account.fc:153:    (int gas, int mode) = (0, CARRY_REMAINING_GAS);
+contracts/pool/msgs/lp_account.fc:155:    (gas, mode) = ((ctx.at(MSG_VALUE) - (ctx.at(FWD_FEE) + storage_fee::pool + gas::pool::cb_refund)) / 2, NORMAL);
+contracts/pool/msgs/lp_account.fc:162:    router::pay_to(
+contracts/pool/msgs/lp_account.fc:182:    router::pay_to(
+contracts/lp_account.fc:24:            pool::cb_refund_me(
+contracts/lp_account.fc:30:            CARRY_ALL_BALANCE | DESTROY_IF_ZERO
+contracts/lp_account/msgs/user.fc:10:    throw_unless(error::no_liquidity, (storage::amount0 > 0) | (storage::amount1 > 0));
+contracts/lp_account/msgs/user.fc:33:    storage::amount0 = 0;
+contracts/lp_account/msgs/user.fc:34:    storage::amount1 = 0;
+contracts/lp_account/msgs/user.fc:36:    storage::save();
+contracts/router/msgs/pool.fc:28:    throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER)));
+caller_match_count: 36
+caller_unique_files: 6
+callers_grep_done: true

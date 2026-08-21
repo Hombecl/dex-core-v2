@@ -1,0 +1,19 @@
+query: rg -n -i 'cell_label:.*(getter|lp_account|state_init|address)' iter_*/STATUS.yaml
+relevant_prior_cells:
+  - iter42-45 P9xC1..P9xC5 getter_quote family DEADEND_WITH_PROOF
+  - iter52 state_init_identity_collision DEADEND_WITH_PROOF
+  - iter75 S5 getter_static_code_identity DEADEND_WITH_PROOF
+  - iter82 U2 async_getter_response_address_confusion DEADEND_WITH_PROOF
+  - iter100 X5 getter_payload_ref_shape_boundary DEADEND_WITH_PROOF
+  - iter108 Z3 pool_lp_account_callback_leg_identity DEADEND_WITH_PROOF
+  - iter140 AF5 getter_response_state_alias DEADEND_WITH_PROOF
+  - iter146 AH4 lp_account_storage_coin_arity DEADEND_WITH_PROOF
+  - iter197 AS5 getter_wallet_address_code_identity DEADEND_WITH_PROOF
+  - iter205 AU4 router_getter_pair_workchain_addr_none DEADEND_WITH_PROOF
+  - iter206 AU5 pool_getter_fee_counter_visibility DEADEND_WITH_PROOF
+  - iter207 AU1 pool_getter_provide_wallet_include_address_alias DEADEND_WITH_PROOF
+  - iter216 pool_root_lp_wallet_lp_account_opcode_collision DEADEND_WITH_PROOF
+  - iter212 AV5 router_vault_getter_addr_none_identity DEADEND_WITH_PROOF
+git_log:
+388c94e checkpoint: v4flash shadow iter100
+prior_audit_conclusion: getter, StateInit, address-form, and LP-account callback families were already drilled; AX6 isolates the Pool getter's missing internal user-workchain validation and tests whether its returned alias can cross into a value-bearing path.

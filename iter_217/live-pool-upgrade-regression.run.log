@@ -1,0 +1,17 @@
+$ npm test -- --runInBand tests/ConstProduct.spec.ts -t 'Pool code upgrade'
+
+PASS tests/ConstProduct.spec.ts (9.823 s)
+  Const Product
+    Pool code upgrade
+      ✓ should init new pool code (1090 ms)
+      ✓ should cancel new pool code (759 ms)
+      ✓ should finalize new pool code (877 ms)
+      ✓ should not finalize new pool code if time not passed (820 ms)
+      ✓ should set new pool code on pool (782 ms)
+      ✓ should not set new pool code if empty (867 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       30 skipped, 6 passed, 36 total
+Snapshots:   0 total
+Time:        10.042 s
+Ran all test suites matching /tests\\/ConstProduct.spec.ts/i with tests matching "Pool code upgrade".

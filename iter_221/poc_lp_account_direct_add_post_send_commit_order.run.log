@@ -1,0 +1,33 @@
+$ node iter_221/poc_lp_account_direct_add_post_send_commit_order.test.js
+cross_file_anchors 28
+direct_add_debits_before_queue_and_commits_zero_state true
+queued_callback_cannot_reenter_before_lp_account_commit true
+second_direct_add_cannot_reuse_cleared_amounts true
+lp_account_user_and_pool_sender_gates_reject_external_sender true
+pool_callback_rebinds_only_deterministic_lp_account true
+bounced_or_failed_child_cannot_restore_precommit_state true
+canonical_direct_add_all_and_partial_regressions_are_present true
+classification DEADEND_WITH_PROOF
+result PASS
+
+$ (source repo) npm test -- --runInBand tests/ConstProduct.spec.ts -t 'should direct add liquidity (all)'
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/ConstProduct.spec.ts -t should direct add liquidity (all)
+
+PASS tests/ConstProduct.spec.ts
+  Dex
+    ✓ should direct add liquidity (all) (1248 ms)
+Test Suites: 1 passed, 1 total
+Tests: 35 skipped, 1 passed, 36 total
+Time: 6.31 s
+
+$ (source repo) npm test -- --runInBand tests/ConstProduct.spec.ts -t 'should direct add liquidity (partial)'
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/ConstProduct.spec.ts -t should direct add liquidity (partial)
+
+PASS tests/ConstProduct.spec.ts
+  Dex
+    ✓ should direct add liquidity (partial) (1252 ms)
+Test Suites: 1 passed, 1 total
+Tests: 35 skipped, 1 passed, 36 total
+Time: 8.583 s

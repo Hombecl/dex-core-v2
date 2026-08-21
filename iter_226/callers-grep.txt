@@ -1,0 +1,22 @@
+command: rg -n -i 'pay_vault|vault_pay_to|amount0_out|amount1_out|deposit_ref_fee|ref_fee|token0_address|token1_address|invalid_caller|from_sources|storage::deposited_amount|withdraw_fee|collect ref fee' contracts/router/msgs/pool.fc contracts/router/msgs/vault.fc contracts/pool/msgs/router.fc contracts/common/contracts.fc contracts/vault.fc contracts/router.fc wrappers/Router.ts wrappers/Vault.ts tests/ConstProduct.spec.ts tests/System.spec.ts
+caller_match_count: 91
+caller_unique_files: 6
+caller_files:
+  - contracts/common/contracts.fc
+  - contracts/pool/msgs/router.fc
+  - contracts/router/msgs/pool.fc
+  - contracts/router/msgs/vault.fc
+  - contracts/vault.fc
+  - tests/ConstProduct.spec.ts
+representative_hits:
+  - contracts/router/msgs/pool.fc:94 op::pay_vault
+  - contracts/router/msgs/pool.fc:98 amount0_out
+  - contracts/router/msgs/pool.fc:100 amount1_out
+  - contracts/router/msgs/pool.fc:113 invalid_caller
+  - contracts/router/msgs/pool.fc:121 amount0_out > 0 ? token0_address : token1_address
+  - contracts/router/msgs/pool.fc:131 vault::deposit_ref_fee
+  - contracts/pool/msgs/router.fc:124 router::pay_vault
+  - contracts/vault.fc:36 storage::deposited_amount += in_msg_body~load_coins();
+  - contracts/router/msgs/vault.fc:9 vault_idata(to_address, token_address, my_address())
+  - tests/ConstProduct.spec.ts:1390 should collect ref fee from vault
+callers_grep_done: true

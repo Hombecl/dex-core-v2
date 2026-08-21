@@ -1,0 +1,180 @@
+schema_version: shadow-v1
+iteration: 228
+phase: completed
+cell_id: AX11
+cell_label: lp_account_getter_data_tuple_identity
+final_verdict: PRE_KILLED_DUPLICATE
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AX11
+  final_verdict: PRE_KILLED_DUPLICATE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/lp_account/msgs/getter.fc
+        line: 6
+        text: 'if (ctx.at(OPCODE) == op::getter_lp_account_data) {'
+      - file: contracts/lp_account/msgs/getter.fc
+        line: 10
+        text: 'storage::user_address,'
+      - file: contracts/lp_account/msgs/getter.fc
+        line: 11
+        text: 'storage::pool_address,'
+      - file: contracts/lp_account/msgs/getter.fc
+        line: 12
+        text: 'storage::amount0,'
+      - file: contracts/lp_account/msgs/getter.fc
+        line: 13
+        text: 'storage::amount1'
+      - file: contracts/lp_account/msgs/getter.fc
+        line: 14
+        text: '),'
+      - file: contracts/lp_account/msgs/getter.fc
+        line: 16
+        text: 'CARRY_ALL_BALANCE | IGNORE_ERRORS'
+      - file: contracts/common/contracts.fc
+        line: 66
+        text: '(cell) anyone::getter_lp_account_data(slice _user_address, slice _pool_address, int _left_amount, int _right_amount) inline {'
+      - file: contracts/common/contracts.fc
+        line: 68
+        text: '.store_slice(_user_address)'
+      - file: contracts/common/contracts.fc
+        line: 69
+        text: '.store_slice(_pool_address)'
+      - file: contracts/common/contracts.fc
+        line: 70
+        text: '.store_coins(_left_amount)'
+      - file: contracts/common/contracts.fc
+        line: 71
+        text: '.store_coins(_right_amount)'
+      - file: contracts/lp_account.fc
+        line: 19
+        text: 'if equal_slices(ctx.at(SENDER), storage::pool_address) {'
+      - file: contracts/lp_account.fc
+        line: 26
+        text: 'if equal_slices(ctx.at(SENDER), storage::user_address) {'
+      - file: contracts/lp_account/get.fc
+        line: 3
+        text: 'return (storage::user_address, storage::pool_address, storage::amount0, storage::amount1);'
+      - file: wrappers/LPAccount.ts
+        line: 95
+        text: 'async sendGetterLPAccountData(provider: ContractProvider, via: Sender, value?: bigint) {'
+      - file: wrappers/LPAccount.ts
+        line: 109
+        text: 'userAddress: result.stack.readAddress(),'
+      - file: wrappers/LPAccount.ts
+        line: 110
+        text: 'poolAddress: result.stack.readAddress(),'
+      - file: wrappers/LPAccount.ts
+        line: 111
+        text: 'leftAmount: result.stack.readBigNumber(),'
+      - file: wrappers/LPAccount.ts
+        line: 112
+        text: 'rightAmount: result.stack.readBigNumber(),'
+      - file: contracts/common/op.fc
+        line: 37
+        text: 'const op::getter_lp_account_data          = "getter_lp_account_data query_id:uint64 = InternalMsgBody"c & 0x7fffffff;'
+      - file: tests/LPAccount.spec.ts
+        line: 52
+        text: "it('should return valid data', async () => {"
+    cross_file_count: 10
+    cross_file_match_count: 54
+    source_scope_restricted: true
+    conclusion: 'AX11 exactly reproduces the LPAccount getter response family covered by iter_140/AF5. The getter copies stored user, Pool, and balances into the canonical tuple, sends only to ctx.at(SENDER), and does not authorize or mutate the Pool/user value paths.'
+    redrill_count: 0
+    audit_result: NOT_AVAILABLE_SHADOW_MODE
+    required_evidence_complete: true
+    no_fabrication: true
+    scope_assets_only: true
+    methodology_audit_exit: NOT_AVAILABLE
+    status_schema_validated: true
+    evidence_gate: PASS_FOR_DUPLICATE
+    shippable: false
+    rejection_reason: 'Exact LPAccount getter tuple/response family was already closed as iter_140/AF5; no new asset or state path exists.'
+    attacker_privilege:
+      privilege_required: external_unauth
+    fund_loss_demonstrated: false
+    concrete_impact_demonstrated: false
+    callers_grep_artifact: iter_228/callers-grep.txt
+    caller_match_count: 54
+    caller_unique_files: 10
+    cascade_verbatim_hit_count: 23
+    cross_file_anchor_count: 23
+    caller_paths:
+      - contracts/common/contracts.fc
+      - contracts/common/op.fc
+      - contracts/lp_account.fc
+      - contracts/lp_account/get.fc
+      - contracts/lp_account/msgs/getter.fc
+      - contracts/lp_account/msgs/pool.fc
+      - contracts/lp_account/msgs/user.fc
+      - tests/ConstProduct.spec.ts
+      - tests/LPAccount.spec.ts
+      - wrappers/LPAccount.ts
+    evidence_paths:
+      poc_test: iter_228/poc_lp_account_getter_data_tuple_identity.test.js
+      poc_run_log: iter_228/poc_lp_account_getter_data_tuple_identity.run.log
+      live_regression_log: iter_228/live-lp-account-getter-regression.run.log
+      prior_audit: iter_228/prior-audit-git.log
+    poc_execution:
+      test_file_path: iter_228/poc_lp_account_getter_data_tuple_identity.test.js
+      test_file_exists_on_disk: true
+      run_log_path: iter_228/poc_lp_account_getter_data_tuple_identity.run.log
+      run_log_exists_on_disk: true
+      runtime: '0.1s static; 4.0s integration'
+      result: 'PASS (23 anchors; exact iter_140 duplicate and LPAccount getter regression)'
+    prior_art_check:
+      queries:
+        - 'cell_label LPAccount getter/getter response/tuple scan across iter_*/STATUS.yaml'
+      results:
+        - 'iter_140 AF5 exact getter_response_state_alias family DEADEND_WITH_PROOF; iter_100 and iter_82 related getter families also closed'
+    r15_disclosure_check:
+      gh_search_terms_used:
+        - 'repo:ston-fi/dex-core-v2 "getter_lp_account_data" "storage::user_address" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "getter_lp_account_data" "storage::user_address" is:pr'
+        - 'repo:ston-fi/dex-core-v2 "get_lp_account_data" "amount0" "amount1" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "get_lp_account_data" "amount0" "amount1" is:pr'
+      gh_search_hits: 0
+      evidence_files:
+        - iter_228/r15-lp-account-getter-user-issue.json
+        - iter_228/r15-lp-account-getter-user-pr.json
+        - iter_228/r15-lp-account-getter-amounts-issue.json
+        - iter_228/r15-lp-account-getter-amounts-pr.json
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: PRE_KILLED_DUPLICATE
+  shadow_mode: true
+  caller_path: iter_228/callers-grep.txt
+  caller_match_count: 54
+  caller_unique_files: 10
+  prior_audit_path: iter_228/prior-audit-git.log
+  prior_family_matches: [iter82, iter100, iter140, iter146]
+  r15_evidence_files:
+    - iter_228/r15-lp-account-getter-user-issue.json
+    - iter_228/r15-lp-account-getter-user-pr.json
+    - iter_228/r15-lp-account-getter-amounts-issue.json
+    - iter_228/r15-lp-account-getter-amounts-pr.json
+  source_conclusion: 'LPAccount getter data is a read-only copy of stored identity and balances, sent to the requester and not consumed as authorization; iter_140 already proved the family.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_228/poc_lp_account_getter_data_tuple_identity.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_228/poc_lp_account_getter_data_tuple_identity.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_228/live-lp-account-getter-regression.run.log
+    result: PASS

@@ -1,0 +1,79 @@
+schema_version: shadow-v1
+iteration: 171
+phase: completed
+cell_id: AN4
+cell_label: lp_wallet_response_address_workchain
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AN4
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - "contracts/lp_wallet.fc:58:    balance += jetton_amount;"
+      - "contracts/lp_wallet.fc:60:    slice response_address = in_msg_body~load_msg_addr();"
+      - "contracts/lp_wallet.fc:74:            .store_uint(op::transfer_notification, 32)"
+      - "contracts/lp_wallet.fc:89:    if ((response_address.preload_uint(2) != 0) & (msg_value > 0)) {"
+      - "contracts/lp_wallet.fc:92:        .store_slice(response_address)"
+      - "contracts/lp_wallet.fc:100:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);"
+      - "contracts/lp_account/msgs/user.fc:56:        slice excesses_address = additional_fields~load_msg_addr();"
+      - "contracts/lp_account/msgs/user.fc:64:            & excesses_address.address::check_workchain(params::workchain));"
+      - "contracts/pool/msgs/lp_wallet.fc:8:        slice response_address = in_msg_body~load_msg_addr();"
+      - "contracts/pool/msgs/lp_wallet.fc:23:        throw_unless(error::wrong_address, response_address.preload_uint(2) == 0);"
+      - "contracts/pool/msgs/lp_account.fc:84:            msgs::send_with_stateinit("
+      - "contracts/pool/msgs/lp_account.fc:99:                CARRY_ALL_BALANCE"
+      - "contracts/pool/msgs/lp_account.fc:132:            storage::save();"
+      - "contracts/router/dex.fc:24:            & excesses_address.address::check_workchain(params::workchain)"
+      - "contracts/pool/msgs/router.fc:211:            throw_arg_unless(op::provide_refund_wrong_workchain, 1, to_user.address::check_workchain(params::workchain));"
+  poc_execution:
+    test_file_path: iter_171/poc_lp_wallet_response_address_workchain.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_171/poc_lp_wallet_response_address_workchain.run.log
+    run_log_exists_on_disk: true
+    test_runtime: "0.1s static/model; 61.8s integration"
+    result: "PASS (5 variants; 18 selected tests; 120 skipped)"
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 LP wallet response address workchain is:issue"
+      - "repo:ston-fi/dex-core-v2 LP wallet response address workchain is:pr"
+      - "repo:ston-fi/dex-core-v2 LP wallet excess response address is:issue"
+      - "repo:ston-fi/dex-core-v2 LP wallet excess response address is:pr"
+    results: "4 queries returned total_count=0"
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "LP wallet response address workchain"
+      - "LP wallet excess response address"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  selected_cluster_source: POST_MATRIX_CLUSTER_PROPOSALS_25.md
+  caller_path: "LP-wallet mint credits its balance before response routing; canonical pool burn requires response_address workchain 0; LP-account/router excess paths validate workchain and carry residual TON only"
+  caller_match_count: 85
+  caller_unique_files: 6
+  prior_audit_path: iter_171/prior-audit-git.log
+  r15_evidence_files:
+    - iter_171/R15-GH-lp-wallet-response-workchain-issue.json
+    - iter_171/R15-GH-lp-wallet-response-workchain-pr.json
+    - iter_171/R15-GH-lp-wallet-excess-response-issue.json
+    - iter_171/R15-GH-lp-wallet-excess-response-pr.json
+  boundary_result: "The LP-wallet mint path credits jetton balance independently of response_address, while response_address only controls residual TON routing. The pool burn handler requires response_address.preload_uint(2) == 0; LP-account and Router excess paths validate the configured workchain, and noncanonical forms are rejected or suppress the send. No response form redirected LP tokens or produced attacker extraction."
+  source_conclusion: "Response/excess destinations are bounded routing fields, not LP-token ownership fields. Static/model checks covered five pool variants and four response forms; live provide/burn regressions passed across all five suites."
+  candidate_path: null
+  attacker_privilege: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  shadow_mode: true

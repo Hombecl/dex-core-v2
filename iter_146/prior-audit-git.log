@@ -1,0 +1,5 @@
+COMMAND: git log --all --oneline --decorate -- contracts/lp_account contracts/pool/msgs/lp_account.fc contracts/pool/msgs/router.fc contracts/router/msgs/pool.fc
+603cacd bump v2.2
+
+AUDIT/SECURITY HISTORY SEARCH:
+Only commit touching the selected LP-account storage/caller paths is 603cacd bump v2.2; no audit, security review, finding, or prior-report artifact was present in reachable Git history for these paths.

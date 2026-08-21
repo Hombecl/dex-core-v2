@@ -1,0 +1,21 @@
+command: rg -n -i 'transfer_notification|slice_refs_empty|invalid_request|jetton_wallet::transfer|route_dex_messages|handle_jetton_messages|ctx.at\(SENDER\)|from_address|_sent_amount|refund_address|excesses_address|store_uint32|store_coins|store_slice|should handle invalid transfers' contracts/router/msgs/jetton.fc contracts/router/dex.fc contracts/router.fc contracts/common/contracts.fc contracts/common/op.fc wrappers/Router.ts tests/System.spec.ts tests/ConstProduct.spec.ts tests/Router.spec.ts
+caller_match_count: 123
+caller_unique_files: 6
+caller_files:
+  - contracts/common/contracts.fc
+  - contracts/common/op.fc
+  - contracts/router.fc
+  - contracts/router/dex.fc
+  - contracts/router/msgs/jetton.fc
+  - tests/System.spec.ts
+representative_hits:
+  - contracts/router/msgs/jetton.fc:5 transfer_notification
+  - contracts/router/msgs/jetton.fc:9 slice_refs_empty
+  - contracts/router/msgs/jetton.fc:15 jetton_wallet::transfer(0, jetton_amount, from_address, from_address)
+  - contracts/router/msgs/jetton.fc:20 route_dex_messages
+  - contracts/router/dex.fc:53 transfer_bounce_invalid_request
+  - contracts/router/dex.fc:99 jetton_wallet::transfer(0, _sent_amount, refund_address, excesses_address)
+  - contracts/router.fc:15 handle_jetton_messages
+  - contracts/common/contracts.fc:280 jetton_wallet::transfer
+  - tests/System.spec.ts:251 should handle invalid transfers
+callers_grep_done: true

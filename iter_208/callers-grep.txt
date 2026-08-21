@@ -1,0 +1,25 @@
+AV2 callers_grep_done=true
+command: rg -n 'send_tokens|internal_transfer|on_bounce|calculate_jetton_lp_wallet_state_init|calculate_jetton_lp_wallet_address|pack_jetton_lp_wallet_data|storage::save|balance -=|balance \\+=|flags|handle_lp_wallet_messages|invalid_caller|lp_wallet_idata|send_raw_message|op::transfer|op::burn|burn_notification_ext|receive_tokens|jetton_wallet' contracts/lp_wallet.fc contracts/lp_wallet/jetton-utils.fc contracts/lp_wallet/storage.fc contracts/lp_wallet/op.fc contracts/pool/msgs/lp_wallet.fc contracts/pool.fc contracts/common/contracts.fc contracts/router/msgs/pool.fc contracts/router/dex.fc
+match_count: 78
+unique_files: 9
+key_matches:
+  - contracts/lp_wallet.fc:18 balance -= jetton_amount;
+  - contracts/lp_wallet.fc:20 owner sender equality check;
+  - contracts/lp_wallet.fc:21 nonnegative balance check;
+  - contracts/lp_wallet.fc:23 state_init derives from destination owner, master, and wallet code;
+  - contracts/lp_wallet.fc:24 destination wallet address derives from state_init hash;
+  - contracts/lp_wallet.fc:37 internal_transfer opcode;
+  - contracts/lp_wallet.fc:50 send_raw_message(msg.end_cell(), 64);
+  - contracts/lp_wallet.fc:51 storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+  - contracts/lp_wallet.fc:141 bounce opcode allowlist;
+  - contracts/lp_wallet.fc:145 balance += jetton_amount;
+  - contracts/lp_wallet.fc:156-157 bounced flag routes to on_bounce;
+  - contracts/lp_wallet.fc:169-175 transfer/internal_transfer dispatch;
+  - contracts/lp_wallet/jetton-utils.fc:13-14 code and zero-balance data in StateInit;
+  - contracts/lp_wallet/jetton-utils.fc:22 cell_hash(state_init);
+  - contracts/lp_wallet/storage.fc:9 canonical data save;
+  - contracts/pool/msgs/lp_wallet.fc:20 deterministic LP-wallet sender check;
+  - contracts/pool.fc:33 LP-wallet message handler call;
+  - contracts/common/contracts.fc:213-218 internal_transfer body fields;
+  - contracts/router/msgs/pool.fc:28,113 deterministic pool sender checks;
+  - contracts/router/dex.fc:33,95 wallet transfer paths and 46-67 bounce filters.

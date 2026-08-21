@@ -1,0 +1,15 @@
+AW2 prior-art / audit lookup
+============================
+Command:
+git log --all --oneline -- iter_120/STATUS.yaml iter_131/STATUS.yaml iter_195/STATUS.yaml
+
+d8ec400 shadow: complete iter131 AE1 deadend
+91b08b8 shadow: complete iter120 AB5 deadend
+
+Selected prior statuses:
+iter_120/STATUS.yaml => iteration=120 cell=AB5 vault_deposit_extra_payload_state_boundary verdict=DEADEND_WITH_PROOF
+iter_131/STATUS.yaml => iteration=131 cell=AE1 pool_swap_referral_output_send_order verdict=DEADEND_WITH_PROOF
+iter_195/STATUS.yaml => iteration=195 cell=AS3 router_pay_vault_vault_collision verdict=DEADEND_WITH_PROOF
+iter_101/STATUS.yaml => iteration=101 cell=Y1 router_pay_vault_single_side_stateinit verdict=DEADEND_WITH_PROOF
+
+Prior conclusion: the same parser-tail/state-init family was previously drilled. AW2 rechecks the exact response-field and addr_none excess-routing path with a fresh 23-anchor PoC and live referral-vault regression; no attacker-positive delta appears.

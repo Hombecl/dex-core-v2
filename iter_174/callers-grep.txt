@@ -1,0 +1,10 @@
+COMMAND: rg -n 'pay_vault|vault_idata|deposit_ref_fee|token0_address|token1_address|equal_slices\\(pool~address' selected source files
+RESULT: 50 matches across 7 files; callers_grep_done=true.
+
+contracts/pool/msgs/router.fc:94-104 — only one ref_fee_out variable is assigned per swap side
+contracts/pool/msgs/router.fc:121-130 — pay_vault carries ref_fee_out0/token0 and ref_fee_out1/token1
+contracts/router/msgs/pool.fc:94-131 — pay_vault authenticates Pool, selects token0 iff amount0_out > 0, and calls deposit_ref_fee
+contracts/common/contracts.fc:1-10 — vault_idata is owner/token/router keyed
+contracts/common/contracts.fc:186-203 — pay_vault message preserves amount/token field order
+contracts/vault.fc:40-45 — only stored Router may deposit and amount is accumulated
+contracts/router/get.fc:18-29 — getter derives the same Vault tuple

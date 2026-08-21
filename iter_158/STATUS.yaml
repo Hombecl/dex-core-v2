@@ -1,0 +1,74 @@
+schema_version: shadow-v1
+iteration: 158
+phase: completed
+cell_id: AK1
+cell_label: cross_variant_math_intermediate_bitwidth
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AK1
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - "contracts/pool/pools/stableswap/math.fc:16: d_p = (d_p * invariant) / (left_balance * 2);"
+      - "contracts/pool/pools/stableswap/math.fc:17: d_p = (d_p * invariant) / (right_balance * 2);"
+      - "contracts/pool/pools/stableswap/math.fc:46: p_d = muldiv(p_d * right_balance, 2, invariant);"
+      - "contracts/pool/pools/stableswap/math.fc:50: int inv2 = invariant * invariant;"
+      - "contracts/pool/msgs/router.fc:78: try {"
+      - "contracts/pool/msgs/router.fc:94: (out1, protocol_fee_out, ref_fee_out1) = pool::get_swap_out(true, ref_value, amount0, storage::reserve0, storage::reserve1);"
+      - "contracts/pool/msgs/router.fc:152: storage::save();"
+      - "contracts/pool/msgs/lp_account.fc:51: try { ;; catch math errors"
+      - "contracts/pool/msgs/lp_account.fc:132: storage::save();"
+  poc_execution:
+    test_file_path: iter_158/poc_cross_variant_math_intermediate_bitwidth.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_158/poc_cross_variant_math_intermediate_bitwidth.run.log
+    run_log_exists_on_disk: true
+    test_runtime: "0.4s static/model; 15.584s integration"
+    result: "PASS (2 raw overflow sites characterized; 8 live solver tests)"
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 stableswap arithmetic overflow is:issue"
+      - "repo:ston-fi/dex-core-v2 stableswap arithmetic overflow is:pr"
+      - "repo:ston-fi/dex-core-v2 max coin math overflow is:issue"
+      - "repo:ston-fi/dex-core-v2 fixed point bitwidth is:pr"
+    results: "4 queries returned total_count=0"
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "stableswap arithmetic overflow"
+      - "max coin math overflow"
+      - "fixed point bitwidth"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  selected_cluster_source: POST_MATRIX_CLUSTER_PROPOSALS_23.md
+  caller_path: "Extreme Stableswap reserve ratio -> raw d_p/p_d multiplication -> caught Router swap or LP-account math path -> refund branch -> no success save"
+  caller_match_count: 17
+  caller_unique_files: 4
+  prior_audit_path: iter_158/prior-audit-git.log
+  r15_evidence_files:
+    - iter_158/R15-GH-stableswap-overflow-issue.json
+    - iter_158/R15-GH-stableswap-overflow-pr.json
+    - iter_158/R15-GH-max-coin-overflow-issue.json
+    - iter_158/R15-GH-fixed-point-bitwidth-pr.json
+  boundary_result: "A 1-to-MAX_COINS ratio produces 359–360-bit raw products at two explicit Stableswap multiplication sites; balanced products and other checked fixed-point results remain within the positive 257-bit result envelope."
+  source_conclusion: "The overflow edge is an availability/fail-closed path: initial skewed liquidity and subsequent solver calls execute inside caught math branches, and the success-only save occurs after the call. The extreme state cannot be initialized through the accepted LP path, and no persistent attacker-controlled output or reserve drift was demonstrated."
+  candidate_path: null
+  attacker_privilege: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  shadow_mode: true

@@ -1,0 +1,8 @@
+COMMAND: git log --all --oneline --decorate -- contracts/lp_wallet/jetton-utils.fc contracts/lp_wallet.fc contracts/lp_wallet/storage.fc contracts/common/contracts.fc contracts/pool/msgs/lp_wallet.fc contracts/pool/msgs/getter.fc contracts/pool/get.fc
+603cacd bump v2.2
+
+AUDIT/SECURITY HISTORY SEARCH:
+Only commit touching the selected LP-wallet StateInit/utility paths is 603cacd bump v2.2; no audit, security review, finding, or prior-report artifact was present in reachable Git history for these paths.
+
+DUPLICATE PRIOR-CELL AUDIT:
+U4/iter_84 already audited the exact StateInit derivation, owner/master/code identity, Pool callers, and deterministic source-wallet validation. AG2 was pre-killed from the same U4/R8/AB4 identity cluster.

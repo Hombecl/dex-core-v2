@@ -1,0 +1,33 @@
+COMMAND: rg -n "load_uint32|load_uint128|load_uint\\(64\\)|load_uint\\(128\\)|store_uint32|store_uint\\(64\\)|store_uint\\(128\\)|new_amp|new_rate|new_w|storage::amp|storage::rate|storage::w0|storage::save" contracts/router/pools/*/ext_admin.fc contracts/pool/pools/*/ext_router.fc contracts/pool/pools/*/storage.fc
+contracts/router/pools/stableswap/ext_admin.fc:10:        int new_amp = in_msg_body~load_uint32();
+contracts/router/pools/stableswap/ext_admin.fc:23:        throw_unless(error::invalid_amount, (_MIN_AMP <= new_amp) & (new_amp <= _MAX_AMP));
+contracts/router/pools/weighted_const_product/ext_admin.fc:7:        (int new_w, slice side_wallet) = (in_msg_body~load_uint128(), in_msg_body~load_msg_addr());
+contracts/router/pools/weighted_const_product/ext_admin.fc:22:        throw_unless(error::invalid_amount, (0 < new_w) & (new_w < math::ONE_DEC));
+contracts/router/pools/weighted_stableswap/ext_admin.fc:7:        (int new_amp, int new_rate, int new_w) = (in_msg_body~load_uint128(), in_msg_body~load_uint128(), in_msg_body~load_uint128());
+contracts/router/pools/weighted_stableswap/ext_admin.fc:23:        ;; 0 new_rate will leave pool param unchanged
+contracts/router/pools/weighted_stableswap/ext_admin.fc:25:        throw_unless(error::invalid_amount, (0 < new_w) & (new_w < math::ONE_DEC));
+contracts/router/pools/weighted_stableswap/ext_admin.fc:26:        throw_unless(error::math_error, (new_amp <= (2000 * math::ONE_DEC)));
+contracts/pool/pools/stableswap/ext_router.fc:8:        int new_amp = in_msg_body~load_uint32();
+contracts/pool/pools/stableswap/ext_router.fc:11:        storage::amp = new_amp;
+contracts/pool/pools/stableswap/ext_router.fc:13:        storage::save();
+contracts/pool/pools/weighted_const_product/ext_router.fc:9:        int new_w = in_msg_body~load_uint128();
+contracts/pool/pools/weighted_const_product/ext_router.fc:12:        if storage::w0 == 0 {
+contracts/pool/pools/weighted_const_product/ext_router.fc:16:                storage::w0 = new_w;
+contracts/pool/pools/weighted_const_product/ext_router.fc:21:        storage::save();
+contracts/pool/pools/weighted_stableswap/ext_router.fc:8:        (int new_amp, int new_rate, int new_w) = (in_msg_body~load_uint128(), in_msg_body~load_uint128(), in_msg_body~load_uint128());
+contracts/pool/pools/weighted_stableswap/ext_router.fc:13:        storage::amp = new_amp;
+contracts/pool/pools/weighted_stableswap/ext_router.fc:14:        storage::rate = new_rate ? new_rate : storage::rate;
+contracts/pool/pools/weighted_stableswap/ext_router.fc:21:                storage::w0 = new_w;
+contracts/pool/pools/weighted_stableswap/ext_router.fc:26:        storage::save();
+contracts/pool/pools/stableswap/storage.fc:14:    storage::amp = ds~load_uint32();
+contracts/pool/pools/stableswap/storage.fc:39:        .store_uint32(storage::amp)
+contracts/pool/pools/weighted_const_product/storage.fc:14:    storage::w0 = ds~load_uint(64);
+contracts/pool/pools/weighted_const_product/storage.fc:39:        .store_uint(storage::w0, 64)
+contracts/pool/pools/weighted_stableswap/storage.fc:20:    storage::amp = w_params_data~load_uint(128);
+contracts/pool/pools/weighted_stableswap/storage.fc:21:    storage::rate = w_params_data~load_uint(128);
+contracts/pool/pools/weighted_stableswap/storage.fc:22:    storage::w0 = w_params_data~load_uint(128);
+contracts/pool/pools/weighted_stableswap/storage.fc:50:            .store_uint(storage::amp, 128)
+contracts/pool/pools/weighted_stableswap/storage.fc:51:            .store_uint(storage::rate, 128)
+contracts/pool/pools/weighted_stableswap/storage.fc:52:            .store_uint(storage::w0, 128)
+MATCH_COUNT: 52
+UNIQUE_FILES: 11

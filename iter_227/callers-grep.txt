@@ -1,0 +1,21 @@
+command: rg -n -i 'deposit_ref_fee|response_address|storage::deposited_amount|addr_none|send_with_stateinit|router::pay_vault|vault::deposit_ref_fee|store_coins|store_slice|should collect ref fee' contracts/vault.fc contracts/common/utils.fc contracts/common/contracts.fc contracts/router/msgs/pool.fc contracts/pool/msgs/router.fc contracts/router.fc contracts/common/op.fc wrappers/Vault.ts tests/ConstProduct.spec.ts tests/System.spec.ts
+caller_match_count: 106
+caller_unique_files: 6
+caller_files:
+  - contracts/common/contracts.fc
+  - contracts/common/op.fc
+  - contracts/pool/msgs/router.fc
+  - contracts/router/msgs/pool.fc
+  - contracts/vault.fc
+  - tests/ConstProduct.spec.ts
+representative_hits:
+  - contracts/vault.fc:34 deposit_ref_fee with Router sender gate
+  - contracts/vault.fc:36 storage::deposited_amount += in_msg_body~load_coins();
+  - contracts/vault.fc:39 utils::send_excesses response
+  - contracts/router/msgs/pool.fc:127 send_with_stateinit
+  - contracts/router/msgs/pool.fc:131 vault::deposit_ref_fee
+  - contracts/pool/msgs/router.fc:124 router::pay_vault
+  - contracts/common/contracts.fc:289 vault::deposit_ref_fee builder
+  - contracts/common/op.fc:27 deposit_ref_fee schema
+  - tests/ConstProduct.spec.ts:1390 should collect ref fee from vault
+callers_grep_done: true

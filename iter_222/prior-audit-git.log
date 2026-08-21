@@ -1,0 +1,24 @@
+query: rg -l -i 'cell_label:.*(refund|pay_to|swap|amount|payload)' iter_*/STATUS.yaml | sort -V | xargs rg -n '^(iteration|cell_id|cell_label|final_verdict):'
+relevant_prior_cells:
+  - iter_1 P1xC2 swap x amount_conservation DEADEND_WITH_PROOF
+  - iter_66 R11 swap_catch_state_rollback DEADEND_WITH_PROOF
+  - iter_80 T5 pay_to_dual_leg_cross_route DEADEND_WITH_PROOF
+  - iter_86 V1 router_cross_swap_gas_threshold_residual DEADEND_WITH_PROOF
+  - iter_89 V4 router_route_error_refund_encoding DEADEND_WITH_PROOF
+  - iter_92 W2 router_pay_to_zero_amount_side_selection DEADEND_WITH_PROOF
+  - iter_102 Y2 router_route_untrusted_notification_binding DEADEND_WITH_PROOF
+  - iter_113 AA3 router_pay_to_excess_address_invalidation DEADEND_WITH_PROOF
+  - iter_131 AE1 pool_swap_referral_output_send_order DEADEND_WITH_PROOF
+  - iter_133 AE3 router_notification_without_ref_refund_source DEADEND_WITH_PROOF
+  - iter_173 AO1 pool_swap_trycatch_reserve_rollback DEADEND_WITH_PROOF
+  - iter_176 AO4 router_transfer_bounce_refund_payload DEADEND_WITH_PROOF
+  - iter_193 AS1 router_pay_to_cross_swap_recursion DEADEND_WITH_PROOF
+  - iter_200 AT5 router_pay_to_empty_custom_payload_ref DEADEND_WITH_PROOF
+  - iter_210 AV3 router_notification_ref_forward_payload_boundary DEADEND_WITH_PROOF
+git_log:
+991c982 shadow: complete iter133 AE3 deadend
+d8ec400 shadow: complete iter131 AE1 deadend
+179b227 shadow: complete iter113 AA3
+6cabd61 shadow: complete iter102 Y2
+388c94e checkpoint: v4flash shadow iter100
+prior_audit_conclusion: same refund, pay_to, rollback, and payload families were previously drilled; AX5 tests the distinct error-tuple amount binding across pool -> router -> jetton delivery.

@@ -1,0 +1,75 @@
+schema_version: shadow-v1
+iteration: 156
+phase: completed
+cell_id: AJ4
+cell_label: constant_product_invariant_iteration
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AJ4
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - "contracts/pool/pools/constant_product/math.fc:1: int oz_sqrt(int x) impure inline {"
+      - "contracts/pool/pools/constant_product/math.fc:47: (int) norm_invariant(int left_balance, int right_balance) impure inline {"
+      - "contracts/pool/pools/constant_product/math.fc:48: return oz_sqrt(left_balance * right_balance);"
+      - "contracts/pool/pools/constant_product/pool.fc:2: int amount_in_with_fee = _amount_in * (params::fee_divider - storage::lp_fee);"
+      - "contracts/pool/pools/constant_product/pool.fc:3: int base_out = muldiv(amount_in_with_fee, _reserve_out, (_reserve_in * params::fee_divider + amount_in_with_fee));"
+      - "contracts/pool/pools/constant_product/pool.fc:16: base_out -= protocol_fee_out + ref_fee_out;"
+      - "contracts/pool/msgs/router.fc:113: throw_arg_if(op::swap_refund_0_out, 1, out < 1);"
+      - "contracts/pool/msgs/router.fc:115: throw_arg_if(op::swap_refund_reserve_err, 1, (storage::reserve0 > math::MAX_COINS)"
+      - "contracts/pool/msgs/router.fc:152: storage::save();"
+      - "contracts/pool/msgs/lp_account.fc:71: | (storage::reserve0 > math::MAX_COINS)"
+      - "contracts/pool/msgs/lp_account.fc:72: | (storage::reserve1 > math::MAX_COINS) {"
+  poc_execution:
+    test_file_path: iter_156/poc_constant_product_invariant_iteration.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_156/poc_constant_product_invariant_iteration.run.log
+    run_log_exists_on_disk: true
+    test_runtime: "0.4s static/model; 15.698s integration"
+    result: "PASS (4381 sqrt cases; 75 swap cases; 12 live tests)"
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 constant product sqrt invariant is:issue"
+      - "repo:ston-fi/dex-core-v2 constant product sqrt invariant is:pr"
+      - "repo:ston-fi/dex-core-v2 oz_sqrt norm_invariant is:issue"
+      - "repo:ston-fi/dex-core-v2 oz_sqrt norm_invariant is:pr"
+    results: "4 queries returned total_count=0"
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "constant product sqrt invariant"
+      - "oz_sqrt norm_invariant"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  selected_cluster_source: POST_MATRIX_CLUSTER_PROPOSALS_22.md
+  caller_path: "Constant-product sqrt invariant and swap rounding -> Pool reserve/output computation -> Router reserve mutation -> output/reserve checks -> success-only save"
+  caller_match_count: 48
+  caller_unique_files: 7
+  prior_audit_path: iter_156/prior-audit-git.log
+  r15_evidence_files:
+    - iter_156/R15-GH-constant-sqrt-invariant-issue.json
+    - iter_156/R15-GH-constant-sqrt-invariant-pr.json
+    - iter_156/R15-GH-oz-sqrt-issue.json
+    - iter_156/R15-GH-oz-sqrt-pr.json
+  boundary_result: "The production seven-step square-root routine matched exact floor square root for 4381 values, including max-width 240-bit products; successful swap cases never lowered k, while 40 tiny-output fee cases hit refund checks."
+  source_conclusion: "`oz_sqrt` and `norm_invariant` showed no precision drift at the tested coin-width boundaries. Constant-product output rounding preserved or increased the reserve product for successful modeled swaps. Fee subtraction can make tiny outputs non-positive, but Router rejects those paths before the success-only save; no persistent attacker-controlled value release was demonstrated."
+  candidate_path: null
+  attacker_privilege: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  shadow_mode: true

@@ -1,0 +1,10 @@
+query: rg -n -i 'cell_label:.*(reset_gas|reset|gas|carry|destination|lp_account)' CHAIN_HYPOTHESIS_TABLE.md iter_*/STATUS.yaml
+related_prior_cells:
+  - iter_138 AF3 router_admin_reset_pool_gas_recipient KILLED_TRUSTED_ON_TRUSTED
+  - iter_139 AF4 pool_reset_gas_body_tail_parse KILLED_TRUSTED_ON_TRUSTED
+  - iter_99 X4 callback_carry_remaining_gas_reentry DEADEND_WITH_PROOF
+  - iter_107 Z2 lp_account_refund_excess_carry_destination DEADEND_WITH_PROOF
+exact_prior_match: none for LPAccount user reset_gas branch
+prior_audit_conclusion: 'AX16 is distinct from Router/Pool reset_gas: it is the LPAccount user branch and sends only the account balance above the LPAccount storage floor to the stored user. Related carry and destination families found no attacker-positive delta.'
+git_log:
+388c94e checkpoint: v4flash shadow iter100

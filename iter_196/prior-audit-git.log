@@ -1,0 +1,7 @@
+AS4 prior-family audit:
+- Iter 59 / R4 code_upgrade_rollback — DEADEND_WITH_PROOF; staged code upgrades were admin-gated, delay-bounded, and retained state on early finalization or empty-code paths.
+- Iter 70 / R15 upgraded_pool_address_binding — DEADEND_WITH_PROOF; pool upgrade messages used deterministic Pool addresses and Router-only Pool governance.
+- Iter 105 / Y5 router_upgrade_parallel_finalize_cancel — DEADEND_WITH_PROOF; independent upgrade slots were admin-gated and any harmful selection was trusted-on-trusted.
+- Iter 109 / Z4 router_getter_upgrade_code_visibility — DEADEND_WITH_PROOF; getters exposed state without creating a value-bearing authorization or address path.
+
+Conclusion: AS4 is a repeat of the existing governance/code-upgrade family; the only harmful actor is the trusted admin and the methodology kill rule applies.

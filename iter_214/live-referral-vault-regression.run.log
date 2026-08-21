@@ -1,0 +1,12 @@
+$ npm test -- --runInBand tests/ConstProduct.spec.ts -t 'should collect ref fee from vault'
+
+PASS tests/ConstProduct.spec.ts (5.997 s)
+  Const Product
+    Fees
+      ✓ should collect ref fee from vault (1269 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       35 skipped, 1 passed, 36 total
+Snapshots:   0 total
+Time:        6.232 s
+Ran all test suites matching /tests\\/ConstProduct.spec.ts/i with tests matching "should collect ref fee from vault".

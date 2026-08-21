@@ -1,0 +1,24 @@
+$ rg -n 'cell_id:|cell_label:|final_verdict:|source_conclusion:' iter_51/STATUS.yaml iter_68/STATUS.yaml iter_102/STATUS.yaml iter_121/STATUS.yaml iter_133/STATUS.yaml iter_189/STATUS.yaml iter_190/STATUS.yaml
+
+iter_51 / Q1 notification_identity_owner_binding / DEADEND_WITH_PROOF:
+notification sender and owner identity were traced through Router; no unauthorized existing-pair debit was found.
+
+iter_68 / R13 route_token_wallet_binding / DEADEND_WITH_PROOF:
+the real notification sender selects the first pair endpoint and forged senders select a different deterministic Pool.
+
+iter_102 / Y2 router_route_untrusted_notification_binding / DEADEND_WITH_PROOF:
+body-controlled from_address changes refund/LP user identity but does not authorize a debit from a real token wallet.
+
+iter_121 / AC1 router_pool_pair_orientation_stateinit / DEADEND_WITH_PROOF:
+the five Pool StateInit variants and pay_to route use the same canonical wallet pair.
+
+iter_133 / AE3 router_notification_without_ref_refund_source / DEADEND_WITH_PROOF:
+no-reference notification refunds the exact incoming amount and cannot debit a foreign Router wallet.
+
+iter_189 / AR2 router_owned_wallet_residual_debit / DEADEND_WITH_PROOF:
+a real B endpoint completing the fake pair required a B-token credit; the live burn preserved the preloaded residual.
+
+iter_190 / AR3 pool_pair_sort_notification_order / DEADEND_WITH_PROOF:
+reverse notification order preserves the Pool and token0/token1 assignment.
+
+AR5 identity result: sender selects pair, from_address keys LP-account state, and to_user selects the LP-wallet recipient. A victim-to-attacker recipient split only occurs when the victim's real notification funds that operation; forged sender changes do not merge into an existing real-wallet pair.

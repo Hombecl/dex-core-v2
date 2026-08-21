@@ -1,0 +1,26 @@
+AW2 caller/dataflow grep
+========================
+Command:
+rg -n 'deposit_ref_fee|send_excesses|load_msg_addr|load_coins|end_parse|IS_BOUNCED|send_with_stateinit|pay_vault|storage::save|from_sources|equal_slices|check_workchain|wrong_workchain|QCARRY_ALL_BALANCE|vault_idata|vault_code|send_simple|ref_address|ref_fee_out|gas::vault|storage_fee::vault|withdraw_fee' contracts/vault.fc contracts/common/utils.fc contracts/common/contracts.fc contracts/router/msgs/pool.fc contracts/router.fc contracts/pool/msgs/router.fc contracts/common/op.fc contracts/common/gas.fc wrappers/Vault.ts tests/ConstProduct.spec.ts
+
+match_count=122
+caller_unique_files=8
+contracts/common/contracts.fc
+contracts/common/gas.fc
+contracts/common/op.fc
+contracts/common/utils.fc
+contracts/pool/msgs/router.fc
+contracts/router.fc
+contracts/router/msgs/pool.fc
+contracts/vault.fc
+
+Representative dataflow anchors:
+contracts/vault.fc:40 router-only deposit_ref_fee gate
+contracts/vault.fc:43 amount load; contracts/vault.fc:44 storage::save
+contracts/vault.fc:46 response load followed by utils::send_excesses
+contracts/common/utils.fc:2 addr_none resolves to ctx.at(SENDER)
+contracts/router/msgs/pool.fc:94 pay_vault parser; :113 deterministic Pool sender gate
+contracts/router/msgs/pool.fc:127 StateInit send; :131 deposit_ref_fee builder
+contracts/pool/msgs/router.fc:121 referral condition; :124 router::pay_vault; :152 storage::save
+contracts/router.fc:11 protocol-bounce early return
+contracts/common/contracts.fc:289-297 canonical deposit_ref_fee body builder

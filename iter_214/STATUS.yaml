@@ -1,0 +1,189 @@
+schema_version: shadow-v1
+iteration: 214
+phase: completed
+cell_id: AW2
+cell_label: vault_deposit_ref_fee_tail_response_isolation
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AW2
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/vault.fc
+        line: 32
+        text: 'if ctx.at(IS_BOUNCED) {'
+      - file: contracts/vault.fc
+        line: 36
+        text: 'throw_unless(error::wrong_workchain, ctx.at(SENDER).address::check_workchain(params::workchain));'
+      - file: contracts/vault.fc
+        line: 40
+        text: 'if (ctx.at(OPCODE) == op::deposit_ref_fee) & equal_slices(ctx.at(SENDER), storage::router_address) {'
+      - file: contracts/vault.fc
+        line: 41
+        text: 'slice in_msg_body = ctx.at(BODY);'
+      - file: contracts/vault.fc
+        line: 43
+        text: 'storage::deposited_amount += in_msg_body~load_coins();'
+      - file: contracts/vault.fc
+        line: 44
+        text: 'storage::save();'
+      - file: contracts/vault.fc
+        line: 45
+        text: 'reserves::max_balance(storage_fee::vault);'
+      - file: contracts/vault.fc
+        line: 46
+        text: 'utils::send_excesses(0, in_msg_body~load_msg_addr(), QCARRY_ALL_BALANCE);'
+      - file: contracts/common/utils.fc
+        line: 2
+        text: '_addr = _addr.address::is_none() ? ctx.at(SENDER) : _addr;'
+      - file: contracts/common/utils.fc
+        line: 3
+        text: 'throw_unless(error::wrong_workchain, _addr.address::check_workchain(params::workchain));'
+      - file: contracts/common/contracts.fc
+        line: 289
+        text: '(cell) vault::deposit_ref_fee('
+      - file: contracts/common/contracts.fc
+        line: 293
+        text: 'return begin_message(op::deposit_ref_fee)'
+      - file: contracts/common/contracts.fc
+        line: 294
+        text: '.store_coins(_amount)'
+      - file: contracts/common/contracts.fc
+        line: 295
+        text: '.store_slice(_response_address)'
+      - file: contracts/common/contracts.fc
+        line: 296
+        text: '.end_cell();'
+      - file: contracts/router/msgs/pool.fc
+        line: 94
+        text: 'if ctx.at(OPCODE) == op::pay_vault {'
+      - file: contracts/router/msgs/pool.fc
+        line: 96
+        text: 'slice excesses_address = in_msg_body~load_msg_addr();'
+      - file: contracts/router/msgs/pool.fc
+        line: 113
+        text: 'throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER)));'
+      - file: contracts/router/msgs/pool.fc
+        line: 127
+        text: 'msgs::send_with_stateinit('
+      - file: contracts/router/msgs/pool.fc
+        line: 131
+        text: 'vault::deposit_ref_fee('
+      - file: contracts/router/msgs/pool.fc
+        line: 132
+        text: 'amount0_out + amount1_out,'
+      - file: contracts/pool/msgs/router.fc
+        line: 121
+        text: 'if (ref_address.preload_uint(2) != 0) & (ref_fee_out0 + ref_fee_out1 > 0) {'
+      - file: contracts/pool/msgs/router.fc
+        line: 124
+        text: 'router::pay_vault('
+      - file: contracts/pool/msgs/router.fc
+        line: 152
+        text: 'storage::save();'
+      - file: contracts/router.fc
+        line: 11
+        text: 'if ctx.at(IS_BOUNCED) {'
+      - file: contracts/common/op.fc
+        line: 27
+        text: 'const op::deposit_ref_fee                 = "deposit_ref_fee query_id:uint64 jetton_amount:Coins excesses_address:MsgAddress = InternalMsgBody"c & 0x7fffffff;'
+  cross_file_count: 8
+  cross_file_match_count: 122
+  source_scope_restricted: true
+  conclusion: 'Vault consumes exactly the amount and response address fields produced by vault::deposit_ref_fee; omitted end_parse leaves only inert trailing data. addr_none excess normalization resolves to the Router sender, while explicit response addresses are workchain-checked. The Router constructs the canonical two-field body only after the deterministic Pool sender check and sends it with StateInit. External callers cannot reach the deposit branch or shift prior fields, and the live referral-vault path passes.'
+  redrill_count: 0
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  required_evidence_complete: true
+  no_fabrication: true
+  scope_assets_only: true
+  methodology_audit_exit: NOT_AVAILABLE
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_DEADEND
+  shippable: false
+  rejection_reason: 'No attacker-positive impact; trailing body data cannot alter parsed fields and the sender chain is protocol-bound.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  callers_grep_artifact: iter_214/callers-grep.txt
+  caller_match_count: 122
+  caller_unique_files: 8
+  cascade_verbatim_hit_count: 26
+  cross_file_anchor_count: 23
+  caller_paths:
+    - contracts/vault.fc
+    - contracts/common/utils.fc
+    - contracts/common/contracts.fc
+    - contracts/router/msgs/pool.fc
+    - contracts/router.fc
+    - contracts/pool/msgs/router.fc
+    - contracts/common/op.fc
+    - contracts/common/gas.fc
+  evidence_paths:
+    poc_test: iter_214/poc_vault_deposit_ref_fee_tail_response_isolation.test.js
+    poc_run_log: iter_214/poc_vault_deposit_ref_fee_tail_response_isolation.run.log
+    live_regression_log: iter_214/live-referral-vault-regression.run.log
+    prior_audit: iter_214/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_214/poc_vault_deposit_ref_fee_tail_response_isolation.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_214/poc_vault_deposit_ref_fee_tail_response_isolation.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.1s static; 6.232s integration'
+    result: 'PASS (23 cross-file anchors; canonical body/tail model; live referral-vault regression)'
+  prior_art_check:
+    queries:
+      - 'iter120 AB5 vault_deposit_extra_payload_state_boundary'
+      - 'iter131 AE1 pool_swap_referral_output_send_order'
+      - 'iter195 AS3 router_pay_vault_vault_collision'
+      - 'iter101 Y1 router_pay_vault_single_side_stateinit'
+    results:
+      - iter120: DEADEND_WITH_PROOF
+      - iter131: DEADEND_WITH_PROOF
+      - iter195: DEADEND_WITH_PROOF
+      - iter101: DEADEND_WITH_PROOF
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 deposit_ref_fee response_address is:issue'
+      - 'repo:ston-fi/dex-core-v2 deposit_ref_fee response_address is:pr'
+      - 'repo:ston-fi/dex-core-v2 addr_none send_excesses vault is:issue'
+      - 'repo:ston-fi/dex-core-v2 addr_none send_excesses vault is:pr'
+    gh_search_hits: 0
+    evidence_files:
+      - iter_214/r15-issues-deposit-ref-fee-response.json
+      - iter_214/r15-prs-deposit-ref-fee-response.json
+      - iter_214/r15-issues-addr-none-send-excesses-vault.json
+      - iter_214/r15-prs-addr-none-send-excesses-vault.json
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  shadow_mode: true
+  caller_path: iter_214/callers-grep.txt
+  caller_match_count: 122
+  caller_unique_files: 8
+  prior_audit_path: iter_214/prior-audit-git.log
+  prior_family_matches: [iter120, iter131, iter195, iter101]
+  r15_evidence_files:
+    - iter_214/r15-issues-deposit-ref-fee-response.json
+    - iter_214/r15-prs-deposit-ref-fee-response.json
+    - iter_214/r15-issues-addr-none-send-excesses-vault.json
+    - iter_214/r15-prs-addr-none-send-excesses-vault.json
+  source_conclusion: 'A deposit_ref_fee message has a fixed amount followed by a response address. Vault loads those fields in order, saves the amount, and routes only residual TON through the parsed response; ignored suffix bits cannot rewrite either field. The Router-only sender gate and deterministic Pool validation prevent an external caller from injecting a tailed body. No attacker-controlled asset delta or concrete loss was demonstrated.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false

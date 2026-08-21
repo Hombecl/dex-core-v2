@@ -1,0 +1,14 @@
+query: rg -n -i 'cell_label:.*(mint_from|master_source|notification_identity|receive.*master|wallet.*from)' CHAIN_HYPOTHESIS_TABLE.md iter_*/STATUS.yaml
+exact_prior_matches:
+  - iter_169 AN2 lp_wallet_mint_from_address_notification DEADEND_WITH_PROOF
+  - iter_215 AM5 lp_wallet_master_source_auth_alias DEADEND_WITH_PROOF
+  - iter_63 R6 lp_wallet_receive_master_alias DEADEND_WITH_PROOF
+  - iter_51 Q1 notification_identity_owner_binding DEADEND_WITH_PROOF
+prior_evidence:
+  - iter_169/STATUS.yaml
+  - iter_215/STATUS.yaml
+  - iter_169/poc_lp_wallet_mint_from_address_notification.test.js
+  - iter_215/poc_lp_wallet_master_source_auth_alias.test.js
+prior_audit_conclusion: 'AX21 is the same LPWallet master-source/from_address notification family already drilled in iter_169 and iter_215; the master path is trusted mint authority and the alternate sender path is deterministic.'
+git_log:
+388c94e checkpoint: v4flash shadow iter100

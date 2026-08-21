@@ -1,0 +1,15 @@
+command: node iter_209/poc_vault_withdraw_destroy_redeposit_code_identity.test.js
+cross_file_anchors 24
+vault_storage_tuple_owner_token_router_preserved true
+withdraw_payload_amount_token_owner_matches_storage true
+router_recomputes_same_vault_identity true
+destroy_then_redeposit_keeps_address_and_clears_amount true
+permissionless_trigger_cannot_redirect_owner_or_token true
+classification DEADEND_WITH_PROOF
+result PASS
+
+command: npm test -- --runInBand tests/ConstSum.spec.ts -t 'should collect ref fee from vault'
+result: PASS
+test_file: tests/ConstSum.spec.ts
+tests: 22 skipped, 1 passed, 23 total
+duration: 5.733s

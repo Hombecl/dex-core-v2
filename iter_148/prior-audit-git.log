@@ -1,0 +1,5 @@
+COMMAND: git log --all --oneline --decorate -- helpers/helpers.ts contracts/router/router.fc contracts/router/msgs/admin.fc contracts/pool.fc contracts/pool/msgs/router.fc contracts/router/pools contracts/pool/pools
+603cacd bump v2.2
+
+AUDIT/SECURITY HISTORY SEARCH:
+Only commit touching the selected variant generator/template/extension paths is 603cacd bump v2.2; no audit, security review, finding, or prior-report artifact was present in reachable Git history for these paths.

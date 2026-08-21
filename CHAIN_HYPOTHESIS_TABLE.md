@@ -148,3 +148,154 @@ Scope is limited to the five selected entrypoint assets recorded in `R1-SURFACE-
 ## Cell execution contract
 
 Iter 1 executes only `P1xC2`. A surviving candidate needs a production-reachable call chain, selected-asset anchors, direct attacker/victim balance deltas, caller grep, cascade verbatim hits, prior-art queries, and an on-disk PoC plus run log. A source-only concern becomes `DEADEND_WITH_PROOF` or a named blocked lane in the iteration status.
+
+## Post-matrix expansion — Iter 141+
+
+| Cell | Production mechanism P | Failure class C | Initial hypothesis | Priority | Status |
+|---|---|---|---|---:|---|
+| AG1 | opcode_dispatch | opcode_collision | Masked CRC32 opcode values across selected dispatchers may collide and route a value-bearing body into the wrong handler. | 1 | deadend_with_proof |
+| AG2 | lp_wallet_identity | state_init_alias | Owner/master/code tuple interpretation may differ across selected LP-wallet producers and consumers. | 2 | pre_killed_duplicate (overlaps U4/R8/AB4) |
+| AG3 | callback_dispatch | operation_typing | A valid callback sender plus a semantically wrong body shape may cross a selected contract boundary. | 3 | deadend_with_proof |
+| AG4 | vault_lifecycle | stale_redeploy_state | Destroy/redeploy ordering may reuse referral amount or beneficiary state. | 4 | pre_killed_duplicate |
+| AG5 | carry_reserve_flow | value_split | Carry/reserve behavior may commit token state while a TON reserve failure changes rollback semantics. | 5 | pending |
+
+| AH1 | pool_storage | layout_alias | Pool-family state-init and storage field order may reinterpret reserves, LP supply, or fee counters. | 1 | deadend_with_proof |
+| AH2 | router_storage | upgrade_ref_arity | Router upgrade reference fields may be dropped or aliased across a save/load boundary. | 2 | deadend_with_proof |
+| AH3 | pool_dispatch | sender_precedence | Overlapping configured roles may route a message into the wrong Pool branch. | 3 | killed_trusted_on_trusted |
+| AH4 | lp_account_storage | coin_arity | LP-account two-coin storage may swap or alias accumulated liquidity fields. | 4 | deadend_with_proof |
+| AH5 | interface_payload | ref_arity | Optional payload/reference slots may be consumed under the wrong downstream field type. | 5 | pre_killed_duplicate (Q3/V5/X5/AC4) |
+
+| AI1 | variant_extension_wiring | interface_consistency | Compile-time `dexType` extension includes may omit, duplicate, or miswire a variant Pool/Router admin handler, causing a value-bearing message builder/consumer mismatch across the selected family. | 1 | deadend_with_proof |
+| AI2 | lp_wallet_state_init_encoding | state_init_alias | `store_dict` StateInit code/data encoding in LP-wallet jetton utilities may diverge from the `store_ref` runtime code/data tuple and create a deterministic wallet alias. | 2 | pre_killed_duplicate (U4/AG2) |
+| AI3 | variant_state_init_asm_literal | state_init_asset_binding | Variant-specific inline-ASM defaults may serialize a different lock/fee/weight literal from the typed state-init builder and produce a pool address whose runtime static tuple differs. | 3 | deadend_with_proof |
+| AI4 | deploy_config_variant_binding | deployment_identity | Router deployment configuration may select a dexType/code library combination different from the generated Router/Pool pair, causing callbacks or value messages to target an unintended selected-asset implementation. | 4 | pre_killed_oos |
+| AI5 | weighted_setter_ref_forwarding | privileged_state | Weighted-stableswap setter address packed through Router extension refs may be dropped, shifted, or replaced at the Pool consumer, changing future rate-authority identity. | 5 | pre_killed_duplicate_trusted_role (P10xC2/Q4/U5) |
+
+| AJ1 | weighted_stableswap_solver | convergence_guard | Weighted-stableswap `solve_dx`/`solve_dy` derivative-zero, epsilon, and 255-iteration guards may accept an under-converged output or leave a reserve delta on a catch path. | 1 | deadend_with_proof |
+| AJ2 | stableswap_invariant_solver | denominator_boundary | Stableswap invariant and output solvers may divide by a zero/near-zero denominator at extreme amplification/reserve ratios and release an unbacked output. | 2 | deadend_with_proof |
+| AJ3 | weighted_const_product_ratio_guard | max_ratio_boundary | The weighted-constant-product 0.3 input-ratio limit may be applied to one direction but not its complement, allowing a reserve/invariant mismatch. | 3 | deadend_with_proof |
+| AJ4 | constant_product_invariant_iteration | precision_rounding | Constant-product Newton iteration and normalized invariant rounding may mint or fee-credit a residual not backed by reserves. | 4 | deadend_with_proof |
+| AJ5 | cross_variant_math_signature | interface_consistency | Variant `get_swap_out`/LP-provide/burn signatures may receive a different side/fee/invariant argument order under generated family selection. | 5 | deadend_with_proof |
+
+| AK1 | cross_variant_math_intermediate_bitwidth | arithmetic_overflow | Fixed-point products, reserve products, exponent intermediates, and fee multiplications may exceed the TVM signed-integer width at max 120-bit coin inputs before output or reserve checks, creating a wrapped or malformed value-bearing result. | 1 | deadend_with_proof |
+| AK2 | pool_fee_aggregate_floor_ceiling | arithmetic_rounding | Sequential protocol/referral ceil fees combined with LP-fee floor rounding may subtract more than the computed output on a successful branch after a variant-specific base-output round. | 2 | deadend_with_proof |
+| AK3 | lp_supply_coin_serialization_boundary | coin_width | LP supply deltas and reserve-derived mint/burn amounts may cross the 120-bit coin serialization boundary in a successful LP callback before the max-supply guard. | 3 | deadend_with_proof |
+| AK4 | variant_setter_deserialization_width | serialization_alias | Amp, weight, and rate setter fields may deserialize at a width different from the corresponding pool storage field, truncating a value or activating a different math domain. | 4 | deadend_with_proof |
+| AK5 | invariant_preservation_after_fee_state | accounting_conservation | Variant-specific LP-provide fee deductions may reduce the post-fee invariant while still minting LP supply or recording protocol fees. | 5 | deadend_with_proof |
+| AM1 | lp_mint_bounce_pool_commit | bounce_accounting | Pool callback commits LP supply/reserves before the outbound LP-wallet mint is durably credited; a bounce or receiver-side failure could leave value-bearing pool state without the corresponding LP balance. | 1 | deadend_with_proof |
+| AM2 | lp_mint_notification_failure | async_message_ordering | A user-controlled forward amount/payload can make the LP-wallet transfer notification fail after LP balance credit, causing a mismatch between minted LP and notification-side state. | 2 | deadend_with_proof |
+| AM3 | lp_account_zero_lp_donation_price | accounting_conservation | A zero-minimum LP provide that returns zero liquidity can still add reserves, potentially shifting the pool price/invariant for existing LPs without a share issuance. | 3 | deadend_with_proof |
+| AM4 | lp_wallet_invalid_owner_state_init | destination_binding | An unvalidated LP recipient form could produce a wallet StateInit that is unreachable or aliases a different owner while the Pool has already committed LP supply. | 4 | deadend_with_proof |
+| AM5 | lp_mint_carry_value_commit | gas_accounting | CARRY_ALL_BALANCE on the LP mint path could alter bounce/value behavior so a successful Pool save is followed by an incomplete mint or residual-value diversion. | 5 | deadend_with_proof |
+| AN1 | lp_callback_user_to_user_identity | cross_contract_identity | Pool callback user_address authenticates the LP-account sender while to_user_address selects the LP-wallet owner; a mismatch or parser shift could mint LP against one user’s deposit to another identity with an unintended excess/notification route. | 1 | deadend_with_proof |
+| AN2 | lp_wallet_mint_from_address_notification | notification_identity | The mint body’s from_address is user-controlled through the callback and is forwarded to transfer_notification; a mismatch between from_address and wallet owner could cause downstream routing to treat minted LP as another source. | 2 | deadend_with_proof |
+| AN3 | lp_callback_refund_excess_identity_split | error_refund | On Pool rejection, refund_address and excess_address are carried separately from user_address; a tuple-shape or state-init mismatch could return token legs to a different account while preserving the original LP-account state. | 3 | deadend_with_proof |
+| AN4 | lp_wallet_response_address_workchain | destination_binding | LP-wallet excess routing checks only address form bits at receive time; a noncanonical response/excess address could redirect residual TON or alter bounce behavior after LP credit. | 4 | deadend_with_proof |
+| AN5 | lp_account_callback_replay_query_identity | replay_correlation | Replaying a valid callback body with a different query_id or user/to_user tuple could re-use an LP-account state transition or duplicate LP mint across asynchronous messages. | 5 | deadend_with_proof |
+| AO1 | pool_swap_trycatch_reserve_rollback | state_rollback | The Pool swap branch mutates reserves and protocol/referral fee counters before postcondition checks inside a try/catch; a caught failure could persist a partial state update or create a reserve/fee mismatch while the Router refunds the input. | 1 | deadend_with_proof |
+| AO2 | router_pay_vault_token_side_binding | asset_binding | Router pay_vault derives one Vault from owner, the selected token side, and Router, then deposits amount0_out + amount1_out; a mixed-side payload or selector mismatch could credit one token’s Vault with another side’s amount. | 2 | deadend_with_proof |
+| AO3 | vault_withdraw_owner_token_router_binding | withdrawal_identity | Anyone may trigger a Vault withdrawal, while the Vault sends the balance to its owner through Router; a StateInit tuple or token/router mismatch could redirect accrued referral fees. | 3 | deadend_with_proof |
+| AO4 | router_transfer_bounce_refund_payload | bounce_refund | Router transfer-bounce handling derives refund/excess destinations from user-controlled DexPayload fields and emits a jetton transfer on caught validation errors; a bounce-path field shift could send returned tokens to the wrong identity. | 4 | deadend_with_proof |
+| AO5 | pool_protocol_fee_dual_leg_release | fee_release | Pool collect_fees requires both protocol-fee legs to be positive, clears both counters after two Router pay_to messages, and relies on asynchronous delivery; a zero-leg or partial-send path could strand or duplicate one fee leg. | 5 | killed_trusted_on_trusted |
+
+| AP1 | pool_burn_response_addr_none_gate | destination_binding | The LP-wallet burn callback accepts only `addr_none()` as response_address; a parser/tag boundary could admit a noncanonical response identity or reject a valid burn after Pool state has been debited. | 1 | deadend_with_proof |
+| AP2 | lp_account_cb_refund_dual_leg_mode_split | gas_accounting | The Pool refund callback uses NORMAL for two positive legs and CARRY_REMAINING_GAS for a one-sided leg; a boundary could underfund or duplicate the second token refund after LP-account state is cleared. | 2 | deadend_with_proof |
+| AP3 | pool_provide_callback_to_user_deferred_wallet | destination_binding | The authenticated LP-account user and separately selected to_user LP-wallet owner could diverge at the callback, making a committed LP mint unreachable or crediting an unintended wallet. | 3 | deadend_with_proof |
+| AP4 | vault_withdraw_permissionless_replay | replay_correlation | Permissionless Vault withdrawal could replay a stored referral amount or race the zeroing save so one accrued fee is paid twice. | 4 | deadend_with_proof |
+| AP5 | router_vault_pay_to_amount_tuple | asset_binding | A vault_pay_to amount/token/owner tuple could be accepted from a deterministic Vault while selecting the wrong token wallet or amount for the stored referral fee. | 5 | deadend_with_proof |
+
+| AQ1 | pool_lp_provide_math_exception_zero_mint_commit | accounting_conservation | A caught LP-provide math exception combined with min_lp_out = 0 could commit input reserves and protocol counters while minting zero LP, allowing an attacker to distort the pool price or extract value from existing LPs. | 1 | deadend_with_proof |
+| AQ2 | pool_lp_provide_fee_counter_exception_split | fee_accounting | A variant-specific LP-provide exception could leave token fee counters and reserve additions out of sync when one fee leg is zero and the callback still saves. | 2 | deadend_with_proof |
+| AQ3 | pool_lp_mint_zero_forward_payload_commit | async_message_ordering | A zero-LP mint with forward payload or insufficient forward gas could save Pool state before the LP-wallet message completes, leaving a reserve/supply mismatch. | 3 | deadend_with_proof |
+| AQ4 | router_provide_both_positive_exception_flag | branch_selection | A caller-controlled both_positive flag combined with a zero minimum could route a single-sided or exception path into a two-sided LP-account state transition. | 4 | deadend_with_proof |
+| AQ5 | pool_lp_provide_max_input_exception | arithmetic_boundary | Max-width LP-provide inputs could throw after partial fee/reserve mutation and still reach a successful save branch under a zero minimum. | 5 | deadend_with_proof |
+
+## Post-matrix expansion — Iter 188+
+
+| Cell | Production mechanism P | Failure class C | Initial hypothesis | Priority | Status |
+|---|---|---|---|---:|---|
+| AR1 | router_notification_pair_mixing | sender_binding / asset_binding | An arbitrary transfer notification sender paired with an existing Router-owned wallet may create a sorted fake/real Pool pair whose LP burn debits the real wallet. | 1 | deadend_with_proof |
+| AR2 | router_owned_wallet_residual_debit | amount_conservation | A fake-pair pay_to output may consume Router token-wallet residuals left by another pool. | 2 | deadend_with_proof |
+| AR3 | pool_pair_sort_notification_order | state_init_asset_binding | Notification order may preserve Pool identity but invert amount-leg assignment. | 3 | deadend_with_proof |
+| AR4 | lp_burn_fake_pair_supply_release | token_conservation | Unbacked fake-pair LP supply may release a proportional output from a real Router wallet. | 4 | deadend_with_proof |
+| AR5 | router_notification_existing_wallet_collision | cross_contract_identity | Notification sender/from_address/wallet identity composition may route a forged pair into a selected real wallet. | 5 | deadend_with_proof |
+
+## Post-matrix expansion — Iter 193+
+
+| Cell | Production mechanism P | Failure class C | Initial hypothesis | Priority | Status |
+|---|---|---|---|---:|---|
+| AS1 | router_pay_to_cross_swap_recursion | async_reentry / amount_conservation | A Pool-controlled `pay_to` custom payload can select `cross_swap`, causing Router output handling to recurse into a second route while the first output balance/state transition is still in flight. | 1 | deadend_with_proof |
+| AS2 | lp_burn_dual_output_bounce_correlation | bounce_accounting | The two burn `pay_to` legs use separate messages and carry modes; a bounce or partial receiver failure could restore one wallet-side amount while Pool reserves/supply remain committed. | 2 | deadend_with_proof |
+| AS3 | router_pay_vault_vault_collision | state_init_alias | A `pay_vault` token/owner tuple may collide with a real Vault or LP wallet StateInit, redirecting a referral-fee deposit across selected assets. | 3 | deadend_with_proof |
+| AS4 | pool_upgrade_ref_partial_state | upgrade_state | Admin Pool code-update messages may change executable code without a synchronized static/storage reference, creating a value-bearing callback interpretation split. | 4 | killed_trusted_on_trusted |
+| AS5 | getter_wallet_address_code_identity | state_init_alias | Getter-derived LP wallet addresses may diverge from mint/burn StateInit code/data after variant selection, causing an output to reach a different wallet identity. | 5 | deadend_with_proof |
+
+## Post-matrix expansion — Iter 198+
+
+| Cell | Production mechanism P | Failure class C | Initial hypothesis | Priority | Status |
+|---|---|---|---|---:|---|
+| AT1 | router_notification_no_ref_wallet_refund | sender_binding / amount_conservation | A no-reference transfer notification may refund from_address through the notifying wallet without proving the notifying wallet is the Router-owned token wallet, producing a cross-wallet refund. | 3 | deadend_with_proof |
+| AT2 | lp_account_refund_destroy_redeploy_identity | lifecycle / replay_correlation | `CARRY_ALL_BALANCE | DESTROY_IF_ZERO` on refund may race the post-send zero/save transition so a redeployed LP account retains stale liquidity or can replay a refund. | 4 | deadend_with_proof |
+| AT3 | lp_account_direct_add_zero_selector_residual | amount_conservation / branch_selection | Direct-add treats a zero requested amount as “use all stored amount”; a mixed zero/nonzero selector could subtract one full stored leg while retaining or misrouting the other leg across the Pool callback. | 1 | deadend_with_proof |
+| AT4 | pool_callback_minimum_zero_selector | accounting_conservation / minimum_output | A zero minimum or one-sided callback tuple may allow a Pool callback to commit token reserves while minting no LP or route an unintended side through the LP-account fallback. | 2 | deadend_with_proof |
+| AT5 | router_pay_to_empty_custom_payload_ref | parser_boundary / async_message_ordering | An empty or malformed custom-payload reference at Router pay_to may switch between transfer and route handling while preserving a stale amount/token side. | 5 | deadend_with_proof |
+
+## Post-matrix expansion — Iter 203+
+
+| Cell | Production mechanism P | Failure class C | Initial hypothesis | Priority | Status |
+|---|---|---|---|---:|---|
+| AU1 | pool_getter_provide_wallet_include_address_alias | read_only_identity | The `include_address` bit in the Pool wallet-discovery getter may shift the returned wallet or embedded owner address and bind a later transfer to another LP wallet. | 4 | deadend_with_proof |
+| AU2 | pool_protocolfee_zero_payload_ref_split | fee_release / async_message_ordering | Dual protocol-fee pay_to messages with independently optional payload refs may clear both counters after only one usable leg, duplicating or stranding the second fee. | 1 | killed_trusted_on_trusted |
+| AU3 | pool_protocolfee_recipient_tuple_binding | sender_binding / fee_release | The protocol fee recipient is carried as owner/excess/original caller in both pay_to messages; a tuple mismatch could route one fee leg to a caller-controlled address. | 2 | killed_trusted_on_trusted |
+| AU4 | router_getter_pair_workchain_addr_none | read_only_boundary | A getter pair with valid workchains but unusual address forms may derive a Pool StateInit distinct from route-time token wallet addresses. | 3 | deadend_with_proof |
+| AU5 | pool_getter_fee_counter_visibility | read_only_state | Getter output may expose stale fee counters across a collect-fees clear/save boundary and induce an off-chain repeat collection. | 5 | deadend_with_proof |
+
+## Post-matrix expansion — Iter 208+
+
+| Cell | Production mechanism P | Failure class C | Initial hypothesis | Priority | Status |
+|---|---|---|---|---:|---|
+| AV1 | vault_withdraw_destroy_redeposit_code_identity | lifecycle / state_init_alias | Vault withdrawal uses `DESTROY_IF_ZERO` while clearing deposited state; a destroy/redeploy boundary could reuse a stale owner/token/router tuple or expose a prior deposited amount. | 4 | DEADEND_WITH_PROOF |
+| AV2 | lp_wallet_send_tokens_stateinit_bounce_debit_restore | bounce_accounting / async_message_ordering | LP-wallet transfer debits before emitting a StateInit-backed internal transfer; a deployment or bounce boundary could restore the wrong amount or leave a debit without the matching destination wallet credit. | 1 | DEADEND_WITH_PROOF |
+| AV3 | router_notification_ref_forward_payload_boundary | parser_boundary / branch_selection | A transfer notification with a ref whose payload is empty, truncated, or nested could cross the Router route/refund branch with a shifted caller or token-wallet identity. | 3 | DEADEND_WITH_PROOF |
+| AV4 | pool_pay_vault_both_positive_side_selector | asset_binding / amount_conservation | If both referral-fee legs are positive, Router selects the Vault token by `amount0_out > 0` while depositing their sum; a dual-leg case could aggregate two token assets into one Vault. | 2 | KILLED_TRUSTED_ON_TRUSTED |
+| AV5 | router_vault_getter_addr_none_identity | read_only_boundary / state_init_alias | Router’s Vault address getter may accept unusual owner/token address forms differently from the value-bearing `vault_pay_to` sender check and derive a misleading Vault identity. | 5 | DEADEND_WITH_PROOF |
+
+## Post-matrix expansion — Iter 213+
+
+| Cell | Production mechanism P | Failure class C | Initial hypothesis | Priority | Status |
+|---|---|---|---|---:|---|
+| AW1 | router_pay_vault_stateinit_bounce_fee_stranding | bounce_accounting / async_commit | Pool commits swap/referral accounting before Router sends a StateInit-backed Vault deposit; a deposit bounce or deployment boundary could strand the referral fee after reserve mutation. | 1 | DEADEND_WITH_PROOF |
+| AW2 | vault_deposit_ref_fee_tail_response_isolation | parser_boundary / excess_routing | Vault parses amount and response address without `end_parse`; trailing body data might shift excess routing or persist an amount with an unintended response field. | 3 | DEADEND_WITH_PROOF |
+| AW3 | lp_wallet_master_source_auth_alias | sender_auth / state_init_identity | LP-wallet `receive_tokens` accepts either the configured master or the deterministic source wallet; a source/master tuple edge could credit a wallet under an unintended owner. | 2 | DEADEND_WITH_PROOF |
+| AW4 | pool_root_lp_wallet_lp_account_opcode_collision | dispatcher_order / caller_gate | Pool dispatches LP-wallet messages before LP-account messages; an opcode overlap or short body could reach the wrong handler before sender validation. | 4 | DEADEND_WITH_PROOF |
+| AW5 | router_vault_code_upgrade_identity_drift | upgrade_lifecycle / address_replay | A Router vault-code upgrade could make existing Vault StateInit addresses diverge from future deposits/withdrawals, stranding or cross-binding referral balances. | 5 | KILLED_TRUSTED_ON_TRUSTED |
+
+## AX fresh post-matrix expansion
+
+| Cell | Production mechanism P | Failure class C | Initial hypothesis | Priority | Status |
+|---|---|---|---|---:|---|
+| AX1 | router_admin_temp_upgrade_tuple_rebinding | upgrade_state_machine / partial_finalize | `pack_temp_upgrade` and `unpack_temp_upgrade` carry Router-code, admin, and pool-code deadlines through one cell; a partial finalize/cancel sequence could rebind one pending field to another or leave a stale replacement code active. | 1 | KILLED_TRUSTED_ON_TRUSTED |
+| AX2 | pool_internal_set_fees_tail_excess_address | admin_payload / parser_boundary | The Router-to-Pool internal fee-update body loads fee fields and an excess address without a terminal parse; a tail or optional address form could persist a fee recipient or strand carry value. | 2 | KILLED_TRUSTED_ON_TRUSTED |
+| AX3 | router_route_dex_available_gas_exact_boundary | gas_budget / carry_mode | The Router route check uses a strict available-gas threshold before building a StateInit-backed Pool call; an exact-boundary payload may enter with insufficient downstream value and create a refund or accounting asymmetry. | 3 | DEADEND_WITH_PROOF |
+| AX4 | lp_account_direct_add_post_send_commit_order | async_commit / residual_liquidity | Direct-add sends a Pool callback before saving the LP-account remainder; a downstream callback bounce or partial leg could leave stale liquidity available for a second direct-add. | 4 | DEADEND_WITH_PROOF |
+| AX5 | pool_swap_refund_error_payload_amount_binding | error_encoding / refund_route | Swap failure branches encode error metadata beside fixed amount/token refund legs; a malformed error code or custom payload boundary could alter the refund amount or recipient selected downstream. | 5 | DEADEND_WITH_PROOF |
+| AX6 | pool_getter_lp_account_address_user_stateinit | read_only_identity / state_init_binding | Pool's LP-account getter derives a StateInit address from the caller-supplied user address; an address-form or parser boundary could return an LP account identity different from the value-bearing callback identity. | 1 | DEADEND_WITH_PROOF |
+| AX7 | pool_getter_data_tuple_field_alignment | read_only_schema / tuple_alignment | The Pool data getter emits a long reserve, fee, token, and counter tuple; a field-width or ordering mismatch could make downstream consumers bind a reported value to another asset or fee field. | 2 | PRE_KILLED_DUPLICATE |
+| AX8 | router_jetton_notification_empty_ref_bounce_payload_tail | notification_ref / bounce_encoding | Router refunds a no-reference jetton notification through the notifying wallet using a fixed bounce payload; a tail or opcode boundary could alter the amount, destination, or downstream interpretation. | 3 | PRE_KILLED_DUPLICATE |
+| AX9 | router_pay_vault_zero_side_token_selector | asset_binding / zero_side | Router `pay_vault` selects token1 whenever amount0 is zero while aggregating referral amounts; a zero-sided or dual-sided tuple boundary could route value to a wrong token wallet. | 4 | PRE_KILLED_DUPLICATE |
+| AX10 | vault_deposit_ref_fee_response_tail_replay | parser_boundary / excess_routing | Vault deposits parse a referral amount and excess response address before saving; a trailing-body or repeated response boundary could misroute carried value or duplicate accounting. | 5 | PRE_KILLED_DUPLICATE |
+| AX11 | lp_account_getter_data_tuple_identity | read_only_identity / tuple_binding | LP-account getter responses include user, Pool, and two stored balances; a response tuple ordering or source mismatch could make a caller associate one account's balances with another user or Pool. | 1 | PRE_KILLED_DUPLICATE |
+| AX12 | lp_account_getter_data_coin_width_boundary | read_only_schema / coin_width | LP-account getter balance fields use Coins while storage is updated through multi-leg callbacks; a width or zero-boundary mismatch could expose a value different from the account's committed balances. | 2 | pending |
+| AX13 | lp_account_getter_data_response_carry_destroy | read_only_carry / balance_flow | The LP-account getter returns with `CARRY_ALL_BALANCE | IGNORE_ERRORS`; an outbound response or failed recipient could alter account balance or destroy a value-bearing contract unexpectedly. | 3 | pending |
+| AX14 | lp_account_getter_data_post_refund_snapshot | read_only_state / lifecycle | A getter immediately after refund, direct-add, or callback transitions may observe stale storage and feed a later stateful operation with another user's LP-account snapshot. | 4 | pending |
+| AX15 | lp_account_root_getter_sender_gate_order | dispatch_order / sender_binding | LP-account root checks Pool/user senders before getter dispatch; an opcode collision or sender-form boundary could enter a getter branch with state-bearing context. | 5 | pending |
+| AX16 | lp_account_reset_gas_user_destination_carry | carry_value / destination_binding | LPAccount `reset_gas` sends all remaining TON to the stored user address after only the root sender gate; a sender/destination or carried-balance boundary could redirect value or expose another user's account balance. | 1 | DEADEND_WITH_PROOF |
+| AX17 | lp_account_reset_gas_empty_body_tail | parser_boundary / carry_value | LPAccount reset-gas accepts an opcode without terminal body parsing; a tail or malformed body could change the carried TON recipient or execution branch. | 2 | pending |
+| AX18 | lp_account_reset_gas_user_workchain_binding | sender_binding / workchain | A reset-gas call from the stored user may send to a stored address form with a different workchain or `addr_none`, creating an unreachable or misrouted TON payout. | 3 | pending |
+| AX19 | lp_account_reset_gas_storage_floor_boundary | reserve_floor / carry_value | `reserves::exact(storage_fee::lp_account)` precedes `CARRY_ALL_BALANCE`; a balance exactly at or below the reserve floor could strand or over-release LP-account TON. | 4 | pending |
+| AX20 | lp_account_reset_gas_reentry_lifecycle | replay / state_persistence | A permissionless-looking reset-gas message after refund/direct-add lifecycle transitions could replay a carried payout or interact with LPAccount destruction/state clearing. | 5 | pending |
+| AX21 | lp_wallet_receive_master_from_address_owner_binding | mint_authority / notification_identity | LPWallet accepts `internal_transfer` from its stored master and forwards a user-controlled `from_address` in `transfer_notification`; a master-mint tuple could bind minted LP to a wrong source or downstream Router route. | 1 | PRE_KILLED_DUPLICATE |
+| AX22 | lp_wallet_receive_master_forward_amount_accounting | mint_authority / forward_value | Master-authorized receives subtract storage and forward TON costs before saving; a forward amount or message-value boundary could create an excess or notification without the matching LP balance. | 2 | pending |
+| AX23 | lp_wallet_receive_user_wallet_stateinit_collision | sender_binding / state_init | The alternate receive path authenticates a deterministic wallet from `from_address`, master, and wallet code; a StateInit collision or address-form alias could credit the wrong LP wallet. | 3 | pending |
+| AX24 | lp_wallet_receive_response_excess_destination | destination_binding / carry_value | Receive-token excesses are sent to a body-provided response address after the balance update; an address-form or carry boundary could redirect TON or couple it to minted LP. | 4 | pending |
+| AX25 | lp_wallet_receive_forward_payload_notification_alias | payload_aliasing / notification_identity | The unconsumed receive body becomes a forward notification payload; a malformed tail could make Router parse a different operation or source while the wallet balance is already committed. | 5 | pending |

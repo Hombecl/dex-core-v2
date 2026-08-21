@@ -1,0 +1,5 @@
+Prior-audit family matches from shadow STATUS files:
+iter_8: LP-account add clears forwarded amounts and Pool save/mint ordering.
+iter_9: insufficient gas zeroes forward amount before mint; no Pool/LP mismatch.
+iter_164: notification failure affects only downstream notification; LP balance saves independently.
+iter_167: CARRY_ALL_BALANCE LP mint carries TON separately from LP amount and sender remains bound.

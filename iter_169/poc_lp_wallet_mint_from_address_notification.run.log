@@ -1,0 +1,21 @@
+COMMAND: node iter_169/poc_lp_wallet_mint_from_address_notification.test.js
+{
+  "variants_checked": 5,
+  "sender_and_amount_cases": 9,
+  "balance_backed_lp_wallet_notifications": 3,
+  "unbacked_notification_cases_rejected_by_sender_balance": 6,
+  "production_token_wallet_pair_matches": 3,
+  "noncanonical_sender_fresh_pair_cases": 6,
+  "free_notification_mint": false,
+  "attacker_value_extraction": false,
+  "result": "PASS"
+}
+RUNTIME: 0.1s static/model
+
+COMMAND: npm test -- --runInBand tests/ConstProduct.spec.ts tests/ConstSum.spec.ts tests/Stableswap.spec.ts tests/WeightedCPI.spec.ts tests/WeightedStableswap.spec.ts -t 'should provide lp|should burn liquidity'
+RESULT: PASS
+TEST_SUITES: 5 passed, 5 total
+TESTS: 120 skipped, 18 passed, 138 total
+SNAPSHOTS: 0 total
+RUNTIME: 38.599s
+

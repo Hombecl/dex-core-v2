@@ -1,0 +1,84 @@
+schema_version: shadow-v1
+iteration: 173
+phase: completed
+cell_id: AO1
+cell_label: pool_swap_trycatch_reserve_rollback
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AO1
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - "contracts/pool/msgs/router.fc:78:        try {"
+      - "contracts/pool/msgs/router.fc:94:                (out1, protocol_fee_out, ref_fee_out1) = pool::get_swap_out(true, ref_value, amount0, storage::reserve0, storage::reserve1);"
+      - "contracts/pool/msgs/router.fc:95:                storage::reserve0 += amount0;"
+      - "contracts/pool/msgs/router.fc:96:                storage::reserve1 -= (out1 + protocol_fee_out + ref_fee_out1);"
+      - "contracts/pool/msgs/router.fc:97:                storage::collected_token1_protocol_fee += protocol_fee_out;"
+      - "contracts/pool/msgs/router.fc:101:                (out0, protocol_fee_out, ref_fee_out0) = pool::get_swap_out(false, ref_value, amount1, storage::reserve1, storage::reserve0);"
+      - "contracts/pool/msgs/router.fc:102:                storage::reserve0 -= (out0 + protocol_fee_out + ref_fee_out0);"
+      - "contracts/pool/msgs/router.fc:103:                storage::reserve1 += amount1;"
+      - "contracts/pool/msgs/router.fc:111:            throw_arg_unless(op::swap_refund_tx_expired, 1, tx_deadline > now());"
+      - "contracts/pool/msgs/router.fc:114:            throw_arg_if(op::swap_refund_slippage, 1, min_out > out);"
+      - "contracts/pool/msgs/router.fc:135:            msgs::send_simple("
+      - "contracts/pool/msgs/router.fc:138:                router::pay_to("
+      - "contracts/pool/msgs/router.fc:152:            storage::save();"
+      - "contracts/pool/msgs/router.fc:154:        } catch(err_arg, err_code) {"
+      - "contracts/pool/msgs/router.fc:160:                router::pay_to("
+      - "contracts/pool/msgs/router.fc:167:                    amount0,"
+      - "contracts/pool/msgs/router.fc:169:                    amount1,"
+      - "contracts/router/msgs/pool.fc:22:        throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER)));"
+      - "contracts/pool/pools/constant_product/pool.fc:1:(int, int, int) pool::get_swap_out(int _side, int _ref_value, int _amount_in, int _reserve_in, int _reserve_out) inline {"
+      - "contracts/pool/pools/weighted_stableswap/pool.fc:1:(int, int, int) pool::get_swap_out(int _side, int _ref_value, int _amount_in, int _reserve_in, int _reserve_out) inline {"
+  poc_execution:
+    test_file_path: iter_173/poc_pool_swap_trycatch_reserve_rollback.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_173/poc_pool_swap_trycatch_reserve_rollback.run.log
+    run_log_exists_on_disk: true
+    test_runtime: "0.1s static/model; 83.152s integration"
+    result: "PASS (5 variants; 25 caught-failure cases; 54 selected live tests; 84 skipped)"
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 swap try catch reserve rollback state is:issue"
+      - "repo:ston-fi/dex-core-v2 swap try catch reserve rollback state is:pr"
+      - "repo:ston-fi/dex-core-v2 swap refund reserve mismatch is:issue"
+      - "repo:ston-fi/dex-core-v2 swap refund reserve mismatch is:pr"
+    results: "4 queries returned total_count=0"
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "swap try catch reserve rollback state"
+      - "swap refund reserve mismatch"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  selected_cluster_source: POST_MATRIX_CLUSTER_PROPOSALS_26.md
+  caller_path: "Pool swap get_swap_out -> reserve/protocol-fee working-state mutation -> expiry/slippage/reserve checks -> success-only storage::save or caught Router pay_to refund -> Router pool-authenticated jetton transfer"
+  caller_match_count: 210
+  caller_unique_files: 10
+  prior_audit_path: iter_173/prior-audit-git.log
+  r15_evidence_files:
+    - iter_173/R15-GH-swap-try-catch-reserve-rollback-issue.json
+    - iter_173/R15-GH-swap-try-catch-reserve-rollback-pr.json
+    - iter_173/R15-GH-swap-refund-reserve-mismatch-issue.json
+    - iter_173/R15-GH-swap-refund-reserve-mismatch-pr.json
+  boundary_result: "The swap branch does mutate global reserve and protocol-fee variables before postcondition checks, but the caught failure branch emits a refund using the original input amounts and contains no storage::save(). The persistent state model therefore remains unchanged for expired, no-liquidity, zero-output, slippage, and reserve-boundary failures. Router pay_to separately authenticates the originating Pool before forwarding jettons."
+  source_conclusion: "Five pool variants, 25 caught-failure models, and 5 success models showed zero persistent reserve/fee mismatches. Live swap/refund tests passed across all variants; no attacker-controlled extraction or state desynchronization was demonstrated."
+  candidate_path: null
+  attacker_privilege: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  shadow_mode: true

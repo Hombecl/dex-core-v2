@@ -1,0 +1,5 @@
+{
+  "query": "repo:ston-fi/dex-core-v2 \\\"DESTROY_IF_ZERO\\\" \\\"vault\\\" is:pr",
+  "total_count": 0,
+  "items": []
+}

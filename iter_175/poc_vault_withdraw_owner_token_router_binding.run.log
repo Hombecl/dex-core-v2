@@ -1,0 +1,18 @@
+COMMAND: node iter_175/poc_vault_withdraw_owner_token_router_binding.test.js
+EXIT: 0
+OUTPUT:
+{
+  "cross_file_anchors": 15,
+  "permissionless_trigger_checked": true,
+  "stored_owner_token_router_payout": true,
+  "post_withdraw_amount_zero": true,
+  "replay_without_redeposit_blocked": true,
+  "altered_owner_or_token_cases_blocked": 2,
+  "amount_mutation_not_production_reachable": true,
+  "attacker_value_extraction": false,
+  "result": "PASS"
+}
+
+COMMAND: ./node_modules/.bin/jest --runInBand tests/WeightedCPI.spec.ts -t 'should collect ref fee from vault'
+EXIT: 0
+OUTPUT: PASS tests/WeightedCPI.spec.ts; 1 passed, 24 skipped; 6.587 s.

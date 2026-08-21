@@ -1,0 +1,19 @@
+cross_file_anchors 15
+fee_models 3
+exception_fee_counters_zero true
+exception_reserve_delta_equals_input true
+fee_counter_reserve_conservation true
+attacker_value_extraction false
+result PASS
+
+PASS tests/ConstProduct.spec.ts (13.142 s)
+  Dex
+    ✓ should provide lp (2728 ms)
+    ✓ should provide lp with payload (1106 ms)
+    ✓ should provide lp with payload to a different address (943 ms)
+    ✓ should provide lp (single side) (1308 ms)
+    ✓ should provide lp (single side) with protocol fees (1631 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       31 skipped, 5 passed, 36 total
+Time:        13.5 s

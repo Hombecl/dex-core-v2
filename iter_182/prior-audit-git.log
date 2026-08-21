@@ -1,0 +1,8 @@
+Prior-audit family matches from shadow STATUS files:
+iter_101: pay_vault single-side state-init and token selection.
+iter_120: Vault deposit/pay_vault owner-token-router binding and exact amount.
+iter_125: Vault withdrawal and DESTROY_IF_ZERO tuple transition.
+iter_131: referral-fee output to pay_vault and exact stored amount.
+iter_134: vault_pay_to recipient StateInit and exact token/owner payout.
+iter_174: pay_vault token-side binding with mixed-side falsification.
+iter_175: vault_pay_to owner/token/router sender binding and unreachable amount mutation.

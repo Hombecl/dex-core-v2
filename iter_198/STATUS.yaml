@@ -1,0 +1,129 @@
+schema_version: shadow-v1
+iteration: 198
+phase: completed
+cell_id: AT3
+cell_label: lp_account_direct_add_zero_selector_residual
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AT3
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/lp_account.fc
+        line: 18
+        text: 'if equal_slices(ctx.at(SENDER), storage::pool_address) {'
+      - file: contracts/lp_account.fc
+        line: 25
+        text: 'if equal_slices(ctx.at(SENDER), storage::user_address) {'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 40
+        text: 'if ctx.at(OPCODE) == op::direct_add_liquidity {'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 67
+        text: 'am0 = am0 ? am0 : storage::amount0;'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 68
+        text: 'am1 = am1 ? am1 : storage::amount1;'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 70
+        text: 'throw_unless(error::zero_output, (min_lp_out > 0) & ((am0 > 0) & (am1 > 0)));'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 72
+        text: 'storage::amount0 -= am0;'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 73
+        text: 'storage::amount1 -= am1;'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 77
+        text: 'throw_unless(error::no_liquidity, (storage::amount0 >= 0) & (storage::amount1 >= 0));'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 87
+        text: 'pool::cb_add_liquidity('
+      - file: contracts/lp_account/msgs/user.fc
+        line: 101
+        text: 'storage::save();'
+      - file: contracts/lp_account/msgs/pool.fc
+        line: 18
+        text: 'storage::amount0 += new_amount0;'
+      - file: contracts/lp_account/msgs/pool.fc
+        line: 19
+        text: 'storage::amount1 += new_amount1;'
+      - file: contracts/lp_account/msgs/pool.fc
+        line: 25
+        text: 'mint? = (min_lp_out > 0) & ((storage::amount0 > 0) & (storage::amount1 > 0));'
+      - file: contracts/lp_account/msgs/pool.fc
+        line: 34
+        text: 'pool::cb_add_liquidity('
+      - file: contracts/lp_account/msgs/pool.fc
+        line: 48
+        text: 'storage::amount0 = 0;'
+      - file: contracts/lp_account/msgs/pool.fc
+        line: 49
+        text: 'storage::amount1 = 0;'
+      - file: contracts/lp_account/msgs/pool.fc
+        line: 55
+        text: 'storage::save();'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 26
+        text: 'throw_unless(error::invalid_caller, equal_slices(lp_account~address(params::workchain), ctx.at(SENDER)));'
+      - file: contracts/common/contracts.fc
+        line: 50
+        text: 'return begin_message(op::cb_add_liquidity)'
+  poc_execution:
+    test_file_path: iter_198/poc_lp_account_direct_add_zero_selector_residual.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_198/poc_lp_account_direct_add_zero_selector_residual.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.1s static; 7.119s integration'
+    result: 'PASS (20 cross-file anchors; zero-selector residual model; live direct-add all/partial regression)'
+  prior_art_check:
+    queries:
+      - iter71 S1 direct_add_liquidity_identity_clearance
+      - iter123 AC3 lp_account_refund_then_direct_add_lifecycle
+      - iter126 AD1 lp_account_both_positive_flag_mint_gate
+      - iter186 AQ4 router_provide_both_positive_exception_flag
+    results:
+      - iter71: DEADEND_WITH_PROOF
+      - iter123: DEADEND_WITH_PROOF
+      - iter126: DEADEND_WITH_PROOF
+      - iter186: DEADEND_WITH_PROOF
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "direct_add_liquidity" "use all" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "direct_add_liquidity" "use all" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "storage::amount0" "direct_add_liquidity" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "storage::amount0" "direct_add_liquidity" is:pr'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  shadow_mode: true
+  caller_path: iter_198/callers-grep.txt
+  caller_match_count: 68
+  caller_unique_files: 5
+  prior_audit_path: iter_198/prior-audit-git.log
+  prior_family_matches: [iter71, iter123, iter126, iter186]
+  r15_evidence_files:
+    - iter_198/R15-GH-direct-add-use-all-issue.json
+    - iter_198/R15-GH-direct-add-use-all-pr.json
+    - iter_198/R15-GH-direct-add-amount0-issue.json
+    - iter_198/R15-GH-direct-add-amount0-pr.json
+  source_conclusion: 'Direct-add is user-bound, interprets zero as the full stored leg, checks positive minimum and selected amounts, rejects overdraw through nonnegative residual checks, and sends the exact selected amounts to the authenticated Pool callback before saving the remainder. Mixed, all, one-sided, and overdraw models plus live all/partial tests showed no stale reuse, cross-user route, or attacker-positive delta.'
+  attacker_privilege:
+    privilege_required: external_auth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false

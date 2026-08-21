@@ -1,0 +1,25 @@
+command: rg -n -i 'reset_gas|send_empty|CARRY_ALL_BALANCE|storage::user_address|storage::pool_address|storage::save|reserves::exact|handle_user_messages|sendResetGas|resetGas|lp_account_idata|invalid_caller|check_workchain|should return valid data|sendDirectAddLiquidity|sendRefundMe' contracts/lp_account.fc contracts/lp_account/msgs/user.fc contracts/lp_account/msgs/pool.fc contracts/lp_account/storage.fc contracts/common/contracts.fc contracts/pool/msgs/lp_account.fc contracts/router/dex.fc wrappers/LPAccount.ts wrappers/Pool.ts tests/LPAccount.spec.ts tests/ConstProduct.spec.ts tests/System.spec.ts
+caller_match_count: 63
+caller_unique_files: 12
+caller_files:
+  - contracts/common/contracts.fc
+  - contracts/lp_account.fc
+  - contracts/lp_account/msgs/pool.fc
+  - contracts/lp_account/msgs/user.fc
+  - contracts/lp_account/storage.fc
+  - contracts/pool/msgs/lp_account.fc
+  - contracts/router/dex.fc
+  - tests/ConstProduct.spec.ts
+  - tests/LPAccount.spec.ts
+  - tests/System.spec.ts
+  - wrappers/LPAccount.ts
+  - wrappers/Pool.ts
+representative_hits:
+  - contracts/lp_account/msgs/user.fc:104 op::reset_gas
+  - contracts/lp_account/msgs/user.fc:105 reserves::exact(storage_fee::lp_account)
+  - contracts/lp_account/msgs/user.fc:106 send_empty(0, storage::user_address, CARRY_ALL_BALANCE)
+  - contracts/lp_account.fc:26 stored user sender gate
+  - contracts/lp_account/storage.fc:7 storage::user_address load
+  - wrappers/LPAccount.ts:44 sendResetGas
+  - tests/LPAccount.spec.ts:52 canonical account suite
+callers_grep_done: true

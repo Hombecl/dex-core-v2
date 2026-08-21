@@ -1,0 +1,20 @@
+cross_file_anchors 18
+burn_sender_is_deterministic_lp_wallet true
+response_address_none_gate true
+pool_commits_reserves_and_supply_before_async_outputs true
+dual_pay_to_legs_same_owner true
+one_leg_bounce_has_no_pool_rollback true
+lp_wallet_bounce_restore_is_self_scoped true
+lp_supply_after 900
+reserve0_after 4500
+reserve1_after 8100
+owner_output_after_second_leg_bounce 500
+unauthorized_gain 0
+result PASS
+
+live_regression_command:
+npm test -- --runInBand tests/ConstProduct.spec.ts -t 'should burn liquidity'
+
+live_regression_output:
+PASS tests/ConstProduct.spec.ts (6.374 s)
+Tests: 35 skipped, 1 passed, 36 total

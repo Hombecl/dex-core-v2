@@ -1,0 +1,7 @@
+AT5 prior-family audit:
+- Iter 90 / V5 pool_pay_to_custom_payload_dispatch — DEADEND_WITH_PROOF; only a payload wider than 32 bits with cross_swap entered nested routing, while boundary and malformed shapes used ordinary transfer/refund behavior.
+- Iter 92 / W2 router_pay_to_zero_amount_side_selection — DEADEND_WITH_PROOF; one positive output was enforced by producers and the deterministic Pool sender blocked forged payout data.
+- Iter 128 / AD3 router_nested_route_payload_tail_boundary — DEADEND_WITH_PROOF; nested routing preserved the exact output amount and malformed routes refunded it.
+- Iter 193 / AS1 router_pay_to_cross_swap_recursion — DEADEND_WITH_PROOF; cross-swap recursion applied route validation and per-hop fees without an unbacked output.
+
+Conclusion: AT5 was compared with four prior pay_to, parser-boundary, and nested-route audits before classification.

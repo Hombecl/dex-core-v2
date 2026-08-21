@@ -1,0 +1,19 @@
+static_poc_command:
+node iter_204/poc_pool_protocolfee_recipient_tuple_binding.test.js
+
+static_poc_output:
+cross_file_anchors 20
+both_protocol_fee_legs_bind_owner_excess_original_caller true
+router_pay_to_serialization_order_preserved true
+router_pool_parser_consumes_same_tuple_order true
+external_sender_rejected_at_pool_gate true
+recipient_rotation_requires_trusted_router_path true
+classification KILLED_TRUSTED_ON_TRUSTED
+result PASS
+
+live_regression_command:
+npm test -- --runInBand tests/ConstProduct.spec.ts -t 'should collect fees'
+
+live_regression_output:
+PASS tests/ConstProduct.spec.ts (6.38 s)
+Tests: 35 skipped, 1 passed, 36 total

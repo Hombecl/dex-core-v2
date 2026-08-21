@@ -1,0 +1,123 @@
+schema_version: shadow-v1
+iteration: 200
+phase: completed
+cell_id: AT5
+cell_label: router_pay_to_empty_custom_payload_ref
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AT5
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/router/msgs/pool.fc
+        line: 5
+        text: 'if ctx.at(OPCODE) == op::pay_to {'
+      - file: contracts/router/msgs/pool.fc
+        line: 10
+        text: 'cell custom_payload = in_msg_body~load_maybe_ref();'
+      - file: contracts/router/msgs/pool.fc
+        line: 11
+        text: 'slice additional_info = in_msg_body~load_slice_ref();'
+      - file: contracts/router/msgs/pool.fc
+        line: 28
+        text: 'throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER)));'
+      - file: contracts/router/msgs/pool.fc
+        line: 34
+        text: 'int fwd_opcode = -1;'
+      - file: contracts/router/msgs/pool.fc
+        line: 37
+        text: 'if (tmp_custom_payload_ds.slice_bits() > 32) {'
+      - file: contracts/router/msgs/pool.fc
+        line: 46
+        text: 'if (fwd_opcode == op::cross_swap)'
+      - file: contracts/router/msgs/pool.fc
+        line: 52
+        text: 'int swap_amount = amount0_out + amount1_out;'
+      - file: contracts/router/msgs/pool.fc
+        line: 63
+        text: 'if amount0_out > 0 {'
+      - file: contracts/router/msgs/pool.fc
+        line: 74
+        text: 'jetton_wallet::transfer(fwd_ton_amount, amount0_out, owner, excesses_address)'
+      - file: contracts/router/msgs/pool.fc
+        line: 83
+        text: 'jetton_wallet::transfer(fwd_ton_amount, amount1_out, owner, excesses_address)'
+      - file: contracts/router/dex.fc
+        line: 44
+        text: 'transferred_op = transferred_op == op::cross_swap ? op::swap : transferred_op;'
+      - file: contracts/router/dex.fc
+        line: 47
+        text: 'throw_arg_if(op::transfer_bounce_invalid_pool, 1, equal_slices(_jetton_address, token_wallet1));'
+      - file: contracts/router/dex.fc
+        line: 67
+        text: 'throw_arg_if(op::transfer_bounce_low_gas, 1'
+      - file: contracts/router/dex.fc
+        line: 100
+        text: 'jetton_wallet::transfer(0, _sent_amount, refund_address, excesses_address)'
+      - file: contracts/common/contracts.fc
+        line: 163
+        text: '.store_maybe_ref(_maybe_custom_payload)'
+      - file: contracts/router.fc
+        line: 23
+        text: 'if handle_pool_messages() {'
+      - file: contracts/pool.fc
+        line: 28
+        text: 'if equal_slices(ctx.at(SENDER), storage::router_address) {'
+  poc_execution:
+    test_file_path: iter_200/poc_router_pay_to_empty_custom_payload_ref.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_200/poc_router_pay_to_empty_custom_payload_ref.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.1s static; 6.736s integration'
+    result: 'PASS (18 cross-file anchors; empty/boundary/low-gas branch model; live cross-swap regression)'
+  prior_art_check:
+    queries:
+      - iter90 V5 pool_pay_to_custom_payload_dispatch
+      - iter92 W2 router_pay_to_zero_amount_side_selection
+      - iter128 AD3 router_nested_route_payload_tail_boundary
+      - iter193 AS1 router_pay_to_cross_swap_recursion
+    results:
+      - iter90: DEADEND_WITH_PROOF
+      - iter92: DEADEND_WITH_PROOF
+      - iter128: DEADEND_WITH_PROOF
+      - iter193: DEADEND_WITH_PROOF
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "custom_payload" "pay_to" empty is:issue'
+      - 'repo:ston-fi/dex-core-v2 "custom_payload" "pay_to" empty is:pr'
+      - 'repo:ston-fi/dex-core-v2 "fwd_opcode" "cross_swap" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "fwd_opcode" "cross_swap" is:pr'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  shadow_mode: true
+  caller_path: iter_200/callers-grep.txt
+  caller_match_count: 73
+  caller_unique_files: 5
+  prior_audit_path: iter_200/prior-audit-git.log
+  prior_family_matches: [iter90, iter92, iter128, iter193]
+  r15_evidence_files:
+    - iter_200/R15-GH-custom-payload-pay-to-empty-issue.json
+    - iter_200/R15-GH-custom-payload-pay-to-empty-pr.json
+    - iter_200/R15-GH-fwd-opcode-cross-swap-issue.json
+    - iter_200/R15-GH-fwd-opcode-cross-swap-pr.json
+  source_conclusion: 'Router authenticates the Pool before reading pay_to payloads. Empty, boundary, malformed, and low-gas custom payloads stay on exact-leg transfer or exact-amount refund paths; only a sufficiently wide cross_swap payload with sufficient current gas enters nested routing, which preserves the nonzero amount and revalidates token/pool constraints. No attacker-positive delta was demonstrated.'
+  attacker_privilege:
+    privilege_required: external_auth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false

@@ -1,0 +1,57 @@
+$ node iter_220/poc_router_route_dex_available_gas_exact_boundary.test.js
+cross_file_anchors 30
+exact_gas_threshold_passes_and_one_unit_below_refunds true
+swap_threshold_includes_route_pool_payout_vault_and_jetton_costs true
+forward_branch_uses_deterministic_pool_and_preserves_sent_amount true
+low_gas_branch_returns_exact_sent_amount_to_caller_with_excess_caller true
+cross_swap_reentry_reuses_same_gate_after_pool_pay_to true
+pool_accepts_child_route_only_from_stored_router true
+normal_swap_and_cross_swap_regressions_are_present true
+classification DEADEND_WITH_PROOF
+result PASS
+
+$ (source repo) npm test -- --runInBand tests/System.spec.ts -t 'should handle swaps'
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/System.spec.ts -t should handle swaps
+
+PASS tests/System.spec.ts
+  System
+    Dex
+      ✓ should handle swaps (381 ms)
+      ○ skipped should handle mint & burn liquidity
+      ○ skipped should handle refund partial liquidity
+      ○ skipped should handle invalid transfers
+      ○ skipped should handle cross swap
+    Governance
+      ○ skipped should reset pool gas
+      ○ skipped should reset pool gas (different address)
+      ○ skipped should reset router gas
+      ○ skipped should set fees
+      ○ skipped should collect fees
+
+Test Suites: 1 passed, 1 total
+Tests:       10 skipped, 1 passed, 11 total
+Time:        5.037 s
+
+$ (source repo) npm test -- --runInBand tests/System.spec.ts -t 'should handle cross swap'
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/System.spec.ts -t should handle cross swap
+
+PASS tests/System.spec.ts
+  System
+    Dex
+      ✓ should handle cross swap (419 ms)
+      ○ skipped should handle mint & burn liquidity
+      ○ skipped should handle swaps
+      ○ skipped should handle invalid transfers
+    Governance
+      ○ skipped should reset pool gas
+      ○ skipped should reset pool gas (different address)
+      ○ skipped should reset router gas
+      ○ skipped should lock & unlock pool
+      ○ skipped should set fees
+      ○ skipped should collect fees
+
+Test Suites: 1 passed, 1 total
+Tests:       10 skipped, 1 passed, 11 total
+Time:        4.559 s

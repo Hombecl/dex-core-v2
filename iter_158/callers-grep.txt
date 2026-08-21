@@ -1,0 +1,20 @@
+COMMAND: rg -n "d_p \\* invariant|p_d \\* right_balance|invariant \\* invariant|left_balance \\* right_balance|pool::get_swap_out|try \\{|storage::save" contracts/pool/pools/stableswap/math.fc contracts/pool/pools/weighted_stableswap/math.fc contracts/pool/pools/constant_product/math.fc contracts/pool/msgs/router.fc contracts/pool/msgs/lp_account.fc
+contracts/pool/msgs/router.fc:30:        try { ;; check call_payload body, refund to refund_address if fails
+contracts/pool/msgs/router.fc:78:        try {
+contracts/pool/msgs/router.fc:94:                (out1, protocol_fee_out, ref_fee_out1) = pool::get_swap_out(true, ref_value, amount0, storage::reserve0, storage::reserve1);
+contracts/pool/msgs/router.fc:101:                (out0, protocol_fee_out, ref_fee_out0) = pool::get_swap_out(false, ref_value, amount1, storage::reserve1, storage::reserve0);
+contracts/pool/msgs/router.fc:152:            storage::save();
+contracts/pool/msgs/router.fc:199:        try {
+contracts/pool/msgs/router.fc:237:        try {
+contracts/pool/msgs/router.fc:296:        storage::save();
+contracts/pool/msgs/router.fc:317:        storage::save();
+contracts/pool/msgs/lp_account.fc:34:            try {
+contracts/pool/msgs/lp_account.fc:51:            try { ;; catch math errors
+contracts/pool/msgs/lp_account.fc:132:            storage::save();
+contracts/pool/pools/constant_product/math.fc:48:    return oz_sqrt(left_balance * right_balance);
+contracts/pool/pools/stableswap/math.fc:16:        d_p = (d_p * invariant) / (left_balance * 2);
+contracts/pool/pools/stableswap/math.fc:17:        d_p = (d_p * invariant) / (right_balance * 2);
+contracts/pool/pools/stableswap/math.fc:46:    p_d = muldiv(p_d * right_balance, 2, invariant);
+contracts/pool/pools/stableswap/math.fc:50:    int inv2 = invariant * invariant;
+MATCH_COUNT: 17
+UNIQUE_FILES: 4

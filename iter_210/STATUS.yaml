@@ -1,0 +1,153 @@
+schema_version: shadow-v1
+iteration: 210
+phase: completed
+cell_id: AV3
+cell_label: router_notification_ref_forward_payload_boundary
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AV3
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/router/msgs/jetton.fc
+        line: 5
+        text: 'if ctx.at(OPCODE) == op::ft::transfer_notification {'
+      - file: contracts/router/msgs/jetton.fc
+        line: 6
+        text: 'int jetton_amount = in_msg_body~load_coins();'
+      - file: contracts/router/msgs/jetton.fc
+        line: 7
+        text: 'slice from_address = in_msg_body~load_msg_addr();'
+      - file: contracts/router/msgs/jetton.fc
+        line: 9
+        text: 'if in_msg_body.slice_refs_empty?() {'
+      - file: contracts/router/msgs/jetton.fc
+        line: 15
+        text: 'jetton_wallet::transfer(0, jetton_amount, from_address, from_address)'
+      - file: contracts/router/msgs/jetton.fc
+        line: 24
+        text: 'route_dex_messages('
+      - file: contracts/router/msgs/jetton.fc
+        line: 29
+        text: 'in_msg_body~load_ref()'
+      - file: contracts/router/dex.fc
+        line: 14
+        text: 'slice dex_payload = _dex_payload.begin_parse();'
+      - file: contracts/router/dex.fc
+        line: 15
+        text: 'transferred_op = dex_payload~load_opcode();'
+      - file: contracts/router/dex.fc
+        line: 16
+        text: 'token_wallet1 = dex_payload~load_msg_addr();'
+      - file: contracts/router/dex.fc
+        line: 17
+        text: 'refund_address = dex_payload~load_msg_addr();'
+      - file: contracts/router/dex.fc
+        line: 18
+        text: 'excesses_address = dex_payload~load_msg_addr();'
+      - file: contracts/router/dex.fc
+        line: 19
+        text: 'tx_deadline = dex_payload~load_time();'
+      - file: contracts/router/dex.fc
+        line: 46
+        text: 'throw_arg_if(op::transfer_bounce_invalid_request, 1, (transferred_op != op::swap) & (transferred_op != op::provide_lp));'
+      - file: contracts/router/dex.fc
+        line: 47
+        text: 'throw_arg_if(op::transfer_bounce_invalid_pool, 1, equal_slices(_jetton_address, token_wallet1));'
+      - file: contracts/router/dex.fc
+        line: 50
+        text: 'throw_arg_unless(op::transfer_bounce_wrong_wc, 1, _caller.address::check_workchain(params::workchain));'
+      - file: contracts/router/dex.fc
+        line: 51
+        text: 'throw_arg_unless(op::transfer_bounce_tx_expired, 1, tx_deadline > now());'
+      - file: contracts/router/dex.fc
+        line: 88
+        text: 'pool::$route(transferred_op, _caller, _sent_amount, _jetton_address, token_wallet1, _dex_payload),'
+      - file: contracts/router/dex.fc
+        line: 95
+        text: 'var out_msg_body = jetton_wallet::transfer(0, _sent_amount, refund_address, excesses_address)'
+      - file: contracts/router.fc
+        line: 18
+        text: 'if handle_jetton_messages() {'
+      - file: contracts/common/contracts.fc
+        line: 218
+        text: '.store_maybe_ref(_either_ref) ;; either_forward_payload'
+      - file: contracts/router/msgs/pool.fc
+        line: 113
+        text: 'throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER))); ;; check if its a valid pool'
+      - file: contracts/pool/msgs/router.fc
+        line: 12
+        text: 'slice dex_payload = in_msg_body~load_slice_ref();'
+      - file: contracts/lp_wallet.fc
+        line: 74
+        text: '.store_uint(op::transfer_notification, 32)'
+  poc_execution:
+    test_file_path: iter_210/poc_router_notification_ref_forward_payload_boundary.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_210/poc_router_notification_ref_forward_payload_boundary.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.1s static; 5.295s integration'
+    result: 'PASS (24 cross-file anchors; ref/no-ref route/refund model; live invalid-transfer and swap regressions)'
+  prior_art_check:
+    queries:
+      - iter89 V4 router_route_error_refund_encoding
+      - iter114 AA5 router_transfer_bounce_error_recipient
+      - iter127 AD2 pool_provide_lp_parser_error_refund_typing
+      - iter128 AD3 router_nested_route_payload_tail_boundary
+      - iter133 AE3 router_notification_without_ref_refund_source
+      - iter176 AO4 router_transfer_bounce_refund_payload
+      - iter188 AR1 router_notification_pair_mixing
+      - iter189 AR2 router_owned_wallet_residual_debit
+      - iter192 AR5 router_notification_existing_wallet_collision
+      - iter201 AT1 router_notification_no_ref_wallet_refund
+    results:
+      - iter89: DEADEND_WITH_PROOF
+      - iter114: DEADEND_WITH_PROOF
+      - iter127: DEADEND_WITH_PROOF
+      - iter128: DEADEND_WITH_PROOF
+      - iter133: DEADEND_WITH_PROOF
+      - iter176: DEADEND_WITH_PROOF
+      - iter188: DEADEND_WITH_PROOF
+      - iter189: DEADEND_WITH_PROOF
+      - iter192: DEADEND_WITH_PROOF
+      - iter201: DEADEND_WITH_PROOF
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "slice_refs_empty" "transfer_notification" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "slice_refs_empty" "transfer_notification" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "route_dex_messages" "load_ref" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "route_dex_messages" "load_ref" is:pr'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  shadow_mode: true
+  caller_path: iter_210/callers-grep.txt
+  caller_match_count: 124
+  caller_unique_files: 8
+  prior_audit_path: iter_210/prior-audit-git.log
+  prior_family_matches: [iter89, iter114, iter127, iter128, iter133, iter176, iter188, iter189, iter192, iter201]
+  r15_evidence_files:
+    - iter_210/r15-issues-notification-ref-boundary.json
+    - iter_210/r15-prs-notification-ref-boundary.json
+    - iter_210/r15-issues-route-load-ref.json
+    - iter_210/r15-prs-route-load-ref.json
+  source_conclusion: 'Router transfer notifications with no reference take an exact refund branch; referenced notifications pass one reference to route_dex_messages. The route parser reads fixed operation/token-wallet/refund/excess/deadline fields, validates workchains and operation/pair/deadline constraints, and either derives the deterministic pool route with the original amount/caller or refunds that exact amount. Inline/ref shape, malformed nested payload, and invalid operation cases therefore change liveness/branch selection only; no attacker-positive selected-asset delta was demonstrated.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false

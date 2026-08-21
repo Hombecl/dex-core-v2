@@ -1,0 +1,5 @@
+{
+  "query": "repo:ston-fi/dex-core-v2 \\\"vault bounced deposit\\\" is:pr",
+  "total_count": 0,
+  "items": []
+}

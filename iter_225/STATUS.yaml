@@ -1,0 +1,174 @@
+schema_version: shadow-v1
+iteration: 225
+phase: completed
+cell_id: AX8
+cell_label: router_jetton_notification_empty_ref_bounce_payload_tail
+final_verdict: PRE_KILLED_DUPLICATE
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AX8
+  final_verdict: PRE_KILLED_DUPLICATE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/router/msgs/jetton.fc
+        line: 5
+        text: 'if ctx.at(OPCODE) == op::ft::transfer_notification {'
+      - file: contracts/router/msgs/jetton.fc
+        line: 6
+        text: 'int jetton_amount = in_msg_body~load_coins();'
+      - file: contracts/router/msgs/jetton.fc
+        line: 7
+        text: 'slice from_address = in_msg_body~load_msg_addr();'
+      - file: contracts/router/msgs/jetton.fc
+        line: 9
+        text: 'if in_msg_body.slice_refs_empty?() {'
+      - file: contracts/router/msgs/jetton.fc
+        line: 15
+        text: 'jetton_wallet::transfer(0, jetton_amount, from_address, from_address)'
+      - file: contracts/router/msgs/jetton.fc
+        line: 16
+        text: '.store_uint(0, 1) ;; store same cell'
+      - file: contracts/router/msgs/jetton.fc
+        line: 17
+        text: '.store_uint32(op::transfer_bounce_invalid_request)'
+      - file: contracts/router/msgs/jetton.fc
+        line: 20
+        text: 'route_dex_messages('
+      - file: contracts/router/msgs/jetton.fc
+        line: 21
+        text: 'ctx.at(SENDER),'
+      - file: contracts/router.fc
+        line: 15
+        text: 'if handle_jetton_messages() {'
+      - file: contracts/router/dex.fc
+        line: 53
+        text: 'throw_arg_if(op::transfer_bounce_invalid_request, 1, (transferred_op != op::swap) & (transferred_op != op::provide_lp));'
+      - file: contracts/router/dex.fc
+        line: 99
+        text: 'jetton_wallet::transfer(0, _sent_amount, refund_address, excesses_address)'
+      - file: contracts/common/contracts.fc
+        line: 280
+        text: '(builder) jetton_wallet::transfer(int _fwd_amount, int _jetton_amount, slice _to, slice _response_address) inline {'
+      - file: contracts/common/contracts.fc
+        line: 282
+        text: '.store_coins(_jetton_amount)'
+      - file: contracts/common/contracts.fc
+        line: 283
+        text: '.store_slice(_to)'
+      - file: contracts/common/op.fc
+        line: 48
+        text: 'const op::transfer_bounce_invalid_request = "transfer_bounce_invalid_request"c;'
+      - file: contracts/router/dex.fc
+        line: 46
+        text: 'throw_arg_if(op::transfer_bounce_invalid_request, 1, (transferred_op != op::swap) & (transferred_op != op::provide_lp));'
+      - file: contracts/router/dex.fc
+        line: 47
+        text: 'throw_arg_if(op::transfer_bounce_invalid_pool, 1, equal_slices(_jetton_address, token_wallet1));'
+      - file: contracts/router/dex.fc
+        line: 50
+        text: 'throw_arg_unless(op::transfer_bounce_wrong_wc, 1, _caller.address::check_workchain(params::workchain));'
+      - file: contracts/router/dex.fc
+        line: 95
+        text: 'var out_msg_body = jetton_wallet::transfer(0, _sent_amount, refund_address, excesses_address)'
+      - file: tests/System.spec.ts
+        line: 251
+        text: "it('should handle invalid transfers', async () => {"
+    cross_file_count: 6
+    cross_file_match_count: 123
+    source_scope_restricted: true
+    conclusion: 'AX8 is the same no-reference notification refund path already closed by iter_201/AT1 and iter_133/AE3. The empty-ref branch sends the exact amount through the notifying wallet to from_address, with a fixed invalid-request code; referenced notifications enter route_dex_messages and are separately validated. No new asset or state path exists.'
+    redrill_count: 0
+    audit_result: NOT_AVAILABLE_SHADOW_MODE
+    required_evidence_complete: true
+    no_fabrication: true
+    scope_assets_only: true
+    methodology_audit_exit: NOT_AVAILABLE
+    status_schema_validated: true
+    evidence_gate: PASS_FOR_DUPLICATE
+    shippable: false
+    rejection_reason: 'Exact no-reference notification refund family was already completed as iter_201/AT1 and iter_133/AE3; payload-tail wording does not create an attacker-positive Router balance delta.'
+    attacker_privilege:
+      privilege_required: external_auth
+    fund_loss_demonstrated: false
+    concrete_impact_demonstrated: false
+    callers_grep_artifact: iter_225/callers-grep.txt
+    caller_match_count: 123
+    caller_unique_files: 6
+    cascade_verbatim_hit_count: 21
+    cross_file_anchor_count: 21
+    caller_paths:
+      - contracts/common/contracts.fc
+      - contracts/common/op.fc
+      - contracts/router.fc
+      - contracts/router/dex.fc
+      - contracts/router/msgs/jetton.fc
+      - tests/System.spec.ts
+    evidence_paths:
+      poc_test: iter_225/poc_router_jetton_notification_empty_ref_bounce_payload_tail.test.js
+      poc_run_log: iter_225/poc_router_jetton_notification_empty_ref_bounce_payload_tail.run.log
+      live_regression_log: iter_225/live-router-notification-regression.run.log
+      prior_audit: iter_225/prior-audit-git.log
+    poc_execution:
+      test_file_path: iter_225/poc_router_jetton_notification_empty_ref_bounce_payload_tail.test.js
+      test_file_exists_on_disk: true
+      run_log_path: iter_225/poc_router_jetton_notification_empty_ref_bounce_payload_tail.run.log
+      run_log_exists_on_disk: true
+      runtime: '0.1s static; 6.1s integration'
+      result: 'PASS (21 anchors; exact iter_201/iter_133 duplicate and invalid-transfer regression)'
+    prior_art_check:
+      queries:
+        - 'cell_label notification/no_ref/empty_ref/bounce/payload scan across iter_*/STATUS.yaml'
+      results:
+        - 'iter_201 AT1 and iter_133 AE3: DEADEND_WITH_PROOF exact no-reference notification refund family'
+        - 'iter_102 Y2 and iter_210 AV3: related notification sender/payload families already closed'
+    r15_disclosure_check:
+      gh_search_terms_used:
+        - 'repo:ston-fi/dex-core-v2 "transfer_notification" "slice_refs_empty" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "transfer_notification" "slice_refs_empty" is:pr'
+        - 'repo:ston-fi/dex-core-v2 "transfer_bounce_invalid_request" "no ref" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "transfer_bounce_invalid_request" "no ref" is:pr'
+      gh_search_hits: 0
+      evidence_files:
+        - iter_225/r15-transfer-notification-no-ref-issue.json
+        - iter_225/r15-transfer-notification-no-ref-pr.json
+        - iter_225/r15-invalid-request-no-ref-issue.json
+        - iter_225/r15-invalid-request-no-ref-pr.json
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: PRE_KILLED_DUPLICATE
+  shadow_mode: true
+  caller_path: iter_225/callers-grep.txt
+  caller_match_count: 123
+  caller_unique_files: 6
+  prior_audit_path: iter_225/prior-audit-git.log
+  prior_family_matches: [iter102, iter133, iter201, iter210]
+  r15_evidence_files:
+    - iter_225/r15-transfer-notification-no-ref-issue.json
+    - iter_225/r15-transfer-notification-no-ref-pr.json
+    - iter_225/r15-invalid-request-no-ref-issue.json
+    - iter_225/r15-invalid-request-no-ref-pr.json
+  source_conclusion: 'The no-reference branch refunds the exact amount through the notifying wallet; it cannot debit Router-owned balance, and the referenced route branch retains its existing validation gates.'
+  attacker_privilege:
+    privilege_required: external_auth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_225/poc_router_jetton_notification_empty_ref_bounce_payload_tail.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_225/poc_router_jetton_notification_empty_ref_bounce_payload_tail.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_225/live-router-notification-regression.run.log
+    result: PASS

@@ -1,0 +1,17 @@
+COMMAND: node iter_177/poc_pool_protocol_fee_dual_leg_release.test.js
+EXIT: 0
+OUTPUT:
+{
+  "cross_file_anchors": 13,
+  "dual_positive_fee_case_checked": true,
+  "one_sided_zero_gate_cases": 2,
+  "untrusted_caller_rejected": true,
+  "counters_cleared_after_two_messages": true,
+  "attacker_value_extraction": false,
+  "trusted_on_trusted_only": true,
+  "result": "PASS"
+}
+
+COMMAND: ./node_modules/.bin/jest --runInBand tests/WeightedCPI.spec.ts -t 'should collect fees'
+EXIT: 0
+OUTPUT: PASS tests/WeightedCPI.spec.ts; 1 passed, 24 skipped; 6.528 s.

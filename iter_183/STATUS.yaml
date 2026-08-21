@@ -1,0 +1,100 @@
+schema_version: shadow-v1
+iteration: 183
+phase: completed
+cell_id: AQ1
+cell_label: pool_lp_provide_math_exception_zero_mint_commit
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AQ1
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - "contracts/pool/msgs/router.fc:202: min_lp_out = call_payload~load_coins();"
+      - "contracts/pool/msgs/router.fc:250: lp_account::add_liquidity("
+      - "contracts/pool/msgs/lp_account.fc:4: if ctx.at(OPCODE) == op::cb_add_liquidity {"
+      - "contracts/pool/msgs/lp_account.fc:33: ;; catch math errors"
+      - "contracts/pool/msgs/lp_account.fc:51: try { ;; catch math errors"
+      - "contracts/pool/msgs/lp_account.fc:52: (liquidity, new_collected_protocol_fees0, new_collected_protocol_fees1) = pool::get_lp_provide_out(tot_am0, tot_am1);"
+      - "contracts/pool/msgs/lp_account.fc:55: storage::total_supply_lp += liquidity;"
+      - "contracts/pool/msgs/lp_account.fc:57: storage::collected_token0_protocol_fee += new_collected_protocol_fees0;"
+      - "contracts/pool/msgs/lp_account.fc:60: storage::reserve0 += (tot_am0 - new_collected_protocol_fees0);"
+      - "contracts/pool/msgs/lp_account.fc:61: storage::reserve1 += (tot_am1 - new_collected_protocol_fees1);"
+      - "contracts/pool/msgs/lp_account.fc:69: | (liquidity < min_lp_out)"
+      - "contracts/pool/msgs/lp_account.fc:123: jetton_wallet::mint("
+      - "contracts/pool/msgs/lp_account.fc:126: liquidity,"
+      - "contracts/pool/msgs/lp_account.fc:132: storage::save();"
+      - "contracts/pool/pools/constant_product/pool.fc:25: (int, int, int) pool::get_lp_provide_out(int _left_amount, int _right_amount) inline {"
+      - "contracts/pool/pools/constant_sum/pool.fc:24: (int, int, int) pool::get_lp_provide_out(int _left_amount, int _right_amount) inline {"
+      - "contracts/pool/pools/stableswap/pool.fc:39: (int, int, int) pool::get_lp_provide_out(int _left_amount, int _right_amount) inline {"
+      - "contracts/pool/pools/weighted_const_product/pool.fc:38: (int, int, int) pool::get_lp_provide_out(int _left_amount, int _right_amount) inline {"
+      - "contracts/pool/pools/weighted_stableswap/pool.fc:44: (int, int, int) pool::get_lp_provide_out(int _left_amount, int _right_amount) inline {"
+  poc_execution:
+    test_file_path: iter_183/poc_pool_lp_provide_math_exception_zero_mint_commit.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_183/poc_pool_lp_provide_math_exception_zero_mint_commit.run.log
+    run_log_exists_on_disk: true
+    test_runtime: "0.1s static/model; 35.146s five-variant integration"
+    result: "PASS (18 source anchors; 5 variants; 4 exception models; 13 live provide tests)"
+  prior_art_check:
+    queries:
+      - "zero LP liquidity donation (issues)"
+      - "zero LP liquidity donation (issues + pull requests)"
+      - "min_lp_out donation pool price (issues)"
+      - "min_lp_out donation pool price (issues + pull requests)"
+      - "LP provide math exception zero mint (issues)"
+      - "LP provide math exception zero mint (issues + pull requests)"
+      - "caught get_lp_provide_out (issues)"
+      - "caught get_lp_provide_out (issues + pull requests)"
+    results: "8 valid GitHub searches returned zero results"
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "zero LP liquidity donation"
+      - "min_lp_out donation pool price"
+      - "LP provide math exception zero mint"
+      - "caught get_lp_provide_out"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  selected_cluster_source: POST_MATRIX_CLUSTER_PROPOSALS_28.md
+  caller_grep_path: iter_183/callers-grep.txt
+  caller_match_count: 159
+  caller_unique_files: 11
+  prior_audit_path: iter_183/prior-audit-git.log
+  prior_audit_family_matches:
+    - iter_79
+    - iter_126
+    - iter_130
+    - iter_154
+    - iter_157
+    - iter_162
+    - iter_165
+  r15_evidence_files:
+    - iter_183/R15-GH-zero-lp-liquidity-donation-issue.json
+    - iter_183/R15-GH-zero-lp-liquidity-donation-pr.json
+    - iter_183/R15-GH-min-lp-out-donation-price-issue.json
+    - iter_183/R15-GH-min-lp-out-donation-price-pr.json
+    - iter_183/R15-GH-lp-provide-exception-zero-mint-issue.json
+    - iter_183/R15-GH-lp-provide-exception-zero-mint-pr.json
+    - iter_183/R15-GH-caught-lp-provide-out-issue.json
+    - iter_183/R15-GH-caught-lp-provide-out-pr.json
+  source_conclusion: "A caught get_lp_provide_out exception leaves liquidity and fee outputs at zero. With min_lp_out=0, the Pool callback can commit the donor’s input into reserves and mint zero LP; with min_lp_out>0, the callback enters the refund path. All five implementations preserve this behavior in the provided LP tests. The donor receives no LP entitlement and no external account gains value, so this is an intentional user-funded donation edge rather than attacker-positive extraction. Prior Iter162/165 audited the exact edge; AQ1 is a duplicate dead end."
+  candidate_path: null
+  attacker_privilege: external_auth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  shadow_mode: true

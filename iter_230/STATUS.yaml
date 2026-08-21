@@ -1,0 +1,153 @@
+schema_version: shadow-v1
+iteration: 230
+phase: completed
+cell_id: AX21
+cell_label: lp_wallet_receive_master_from_address_owner_binding
+final_verdict: PRE_KILLED_DUPLICATE
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AX21
+  final_verdict: PRE_KILLED_DUPLICATE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/lp_wallet.fc
+        line: 55
+        text: '() receive_tokens (slice in_msg_body, slice sender_address, int my_ton_balance, int fwd_fee, int msg_value) impure {'
+      - file: contracts/lp_wallet.fc
+        line: 59
+        text: 'slice from_address = in_msg_body~load_msg_addr();'
+      - file: contracts/lp_wallet.fc
+        line: 62
+        text: 'throw_unless(707, equal_slices(jetton_master_address, sender_address)'
+      - file: contracts/lp_wallet.fc
+        line: 63
+        text: '| equal_slices(calculate_user_jetton_lp_wallet_address(from_address, jetton_master_address, jetton_wallet_code), sender_address));'
+      - file: contracts/lp_wallet.fc
+        line: 65
+        text: 'int forward_ton_amount = in_msg_body~load_coins();'
+      - file: contracts/lp_wallet.fc
+        line: 74
+        text: '.store_uint(op::transfer_notification, 32)'
+      - file: contracts/lp_wallet.fc
+        line: 77
+        text: '.store_slice(from_address)'
+      - file: contracts/lp_wallet.fc
+        line: 100
+        text: 'storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);'
+      - file: contracts/lp_wallet.fc
+        line: 174
+        text: 'if (op == op::internal_transfer) {'
+      - file: contracts/common/contracts.fc
+        line: 213
+        text: 'return begin_message(op::internal_transfer)'
+      - file: contracts/common/contracts.fc
+        line: 215
+        text: '.store_slice(_from) ;; from_address'
+      - file: contracts/common/op.fc
+        line: 1
+        text: 'const op::internal_transfer               = 0x178d4519;'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 102
+        text: 'var lp_wallet = contracts::from_sources('
+      - file: tests/System.spec.ts
+        line: 132
+        text: "it('should handle mint & burn liquidity', async () => {"
+    cross_file_count: 7
+    cross_file_match_count: 45
+    source_scope_restricted: true
+    conclusion: 'AX21 exactly reproduces iter_169/AN2 and iter_215/AM5: the stored master may mint and choose the notification source, while an alternate user-wallet sender must equal the deterministic address derived from from_address, master, and wallet code. The source field is forwarded but not used as sender authority, and the canonical mint/burn regression passes.'
+    redrill_count: 0
+    audit_result: NOT_AVAILABLE_SHADOW_MODE
+    required_evidence_complete: true
+    no_fabrication: true
+    scope_assets_only: true
+    methodology_audit_exit: NOT_AVAILABLE
+    status_schema_validated: true
+    evidence_gate: PASS_FOR_DUPLICATE
+    shippable: false
+    rejection_reason: 'Exact LPWallet master-source/from_address notification family already closed as iter_169/AN2 and iter_215/AM5; no external mint authority or cross-wallet credit path exists.'
+    attacker_privilege:
+      privilege_required: privileged_role
+    fund_loss_demonstrated: false
+    concrete_impact_demonstrated: false
+    callers_grep_artifact: iter_230/callers-grep.txt
+    caller_match_count: 45
+    caller_unique_files: 7
+    cascade_verbatim_hit_count: 13
+    cross_file_anchor_count: 13
+    caller_paths:
+      - contracts/common/contracts.fc
+      - contracts/common/op.fc
+      - contracts/lp_wallet.fc
+      - contracts/lp_wallet/jetton-utils.fc
+      - contracts/lp_wallet/storage.fc
+      - contracts/pool/msgs/lp_account.fc
+      - tests/System.spec.ts
+    evidence_paths:
+      poc_test: iter_230/poc_lp_wallet_receive_master_from_address_owner_binding.test.js
+      poc_run_log: iter_230/poc_lp_wallet_receive_master_from_address_owner_binding.run.log
+      live_regression_log: iter_230/live-lp-wallet-mint-regression.run.log
+      prior_audit: iter_230/prior-audit-git.log
+    poc_execution:
+      test_file_path: iter_230/poc_lp_wallet_receive_master_from_address_owner_binding.test.js
+      test_file_exists_on_disk: true
+      run_log_path: iter_230/poc_lp_wallet_receive_master_from_address_owner_binding.run.log
+      run_log_exists_on_disk: true
+      runtime: '0.1s static; 6.7s integration'
+      result: 'PASS (13 anchors; exact iter_169/215 duplicate and mint/burn regression)'
+    prior_art_check:
+      queries:
+        - 'cell_label mint_from/master_source/notification_identity/receive-master/wallet-from scan across iter_*/STATUS.yaml'
+      results:
+        - 'iter_169 AN2, iter_215 AM5, iter_63 R6, iter_51 Q1: same LPWallet authentication/notification family already closed'
+    r15_disclosure_check:
+      gh_search_terms_used:
+        - 'repo:ston-fi/dex-core-v2 "internal_transfer" "from_address" "jetton_master_address" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "internal_transfer" "from_address" "jetton_master_address" is:pr'
+        - 'repo:ston-fi/dex-core-v2 "calculate_user_jetton_lp_wallet_address" "transfer_notification" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "calculate_user_jetton_lp_wallet_address" "transfer_notification" is:pr'
+      gh_search_hits: 0
+      evidence_files:
+        - iter_230/r15-lp-wallet-master-from-address-issue.json
+        - iter_230/r15-lp-wallet-master-from-address-pr.json
+        - iter_230/r15-lp-wallet-user-wallet-source-issue.json
+        - iter_230/r15-lp-wallet-user-wallet-source-pr.json
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: PRE_KILLED_DUPLICATE
+  shadow_mode: true
+  caller_path: iter_230/callers-grep.txt
+  caller_match_count: 45
+  caller_unique_files: 7
+  prior_audit_path: iter_230/prior-audit-git.log
+  prior_family_matches: [iter51, iter63, iter169, iter215]
+  r15_evidence_files:
+    - iter_230/r15-lp-wallet-master-from-address-issue.json
+    - iter_230/r15-lp-wallet-master-from-address-pr.json
+    - iter_230/r15-lp-wallet-user-wallet-source-issue.json
+    - iter_230/r15-lp-wallet-user-wallet-source-pr.json
+  source_conclusion: 'The LPWallet master mint path is trusted, and the alternate sender path is deterministic; from_address is notification metadata, not a substitute for sender authentication.'
+  attacker_privilege:
+    privilege_required: privileged_role
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_230/poc_lp_wallet_receive_master_from_address_owner_binding.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_230/poc_lp_wallet_receive_master_from_address_owner_binding.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_230/live-lp-wallet-mint-regression.run.log
+    result: PASS

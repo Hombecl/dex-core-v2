@@ -1,0 +1,219 @@
+schema_version: shadow-v1
+iteration: 219
+phase: completed
+cell_id: AX2
+cell_label: pool_internal_set_fees_tail_excess_address
+final_verdict: KILLED_TRUSTED_ON_TRUSTED
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AX2
+  final_verdict: KILLED_TRUSTED_ON_TRUSTED
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/pool.fc
+        line: 28
+        text: 'if equal_slices(ctx.at(SENDER), storage::router_address) {'
+      - file: contracts/pool/msgs/router.fc
+        line: 308
+        text: 'if ctx.at(OPCODE) == op::internal_set_fees {'
+      - file: contracts/pool/msgs/router.fc
+        line: 309
+        text: 'int new_lp_fee = in_msg_body~load_uint16();'
+      - file: contracts/pool/msgs/router.fc
+        line: 310
+        text: 'int new_protocol_fee = in_msg_body~load_uint16();'
+      - file: contracts/pool/msgs/router.fc
+        line: 311
+        text: 'slice new_protocol_fee_address = in_msg_body~load_msg_addr();'
+      - file: contracts/pool/msgs/router.fc
+        line: 313
+        text: 'storage::lp_fee = new_lp_fee;'
+      - file: contracts/pool/msgs/router.fc
+        line: 314
+        text: 'storage::protocol_fee = new_protocol_fee;'
+      - file: contracts/pool/msgs/router.fc
+        line: 315
+        text: 'storage::protocol_fee_address = new_protocol_fee_address;'
+      - file: contracts/pool/msgs/router.fc
+        line: 317
+        text: 'storage::save();'
+      - file: contracts/pool/msgs/router.fc
+        line: 320
+        text: 'utils::send_excesses(0, in_msg_body~load_msg_addr(), QCARRY_ALL_BALANCE);'
+      - file: contracts/router.fc
+        line: 28
+        text: 'if equal_slices(ctx.at(SENDER), storage::admin_address) {'
+      - file: contracts/router.fc
+        line: 29
+        text: 'if handle_admin_messages() {'
+      - file: contracts/router/msgs/admin.fc
+        line: 6
+        text: 'if ctx.at(OPCODE) == op::set_fees {'
+      - file: contracts/router/msgs/admin.fc
+        line: 12
+        text: 'int new_lp_fee = in_msg_body~load_uint16();'
+      - file: contracts/router/msgs/admin.fc
+        line: 15
+        text: 'slice jetton_info = in_msg_body~load_slice_ref();'
+      - file: contracts/router/msgs/admin.fc
+        line: 18
+        text: 'slice excesses_recipient = get_excesses_address(jetton_info~load_msg_addr());'
+      - file: contracts/router/msgs/admin.fc
+        line: 19
+        text: 'jetton_info.end_parse();'
+      - file: contracts/router/msgs/admin.fc
+        line: 20
+        text: 'in_msg_body.end_parse();'
+      - file: contracts/router/msgs/admin.fc
+        line: 44
+        text: 'pool::internal_set_fees('
+      - file: contracts/common/utils.fc
+        line: 2
+        text: '_addr = _addr.address::is_none() ? ctx.at(SENDER) : _addr;'
+      - file: contracts/common/op.fc
+        line: 13
+        text: 'const op::internal_set_fees               = "internal_set_fees query_id:uint64 new_lp_fee:uint16 new_protocol_fee:uint16 new_protocol_fee_address:MsgAddress excesses_address:MsgAddress = InternalMsgBody"c & 0x7fffffff;'
+      - file: contracts/common/contracts.fc
+        line: 254
+        text: 'return begin_message(op::internal_set_fees)'
+      - file: contracts/common/contracts.fc
+        line: 255
+        text: '.store_uint(_new_lp_fee, 16)'
+      - file: contracts/common/contracts.fc
+        line: 256
+        text: '.store_uint(_new_protocol_fee, 16)'
+      - file: contracts/common/contracts.fc
+        line: 257
+        text: '.store_slice(_new_protocol_fee_address)'
+      - file: contracts/common/contracts.fc
+        line: 258
+        text: '.store_slice(_excesses_recipient)'
+      - file: tests/ConstProduct.spec.ts
+        line: 1335
+        text: "it('should set fees', async () => {"
+      - file: tests/ConstProduct.spec.ts
+        line: 2357
+        text: "it('should bounce set fees if not admin', async () => {"
+    cross_file_count: 9
+    cross_file_match_count: 122
+    source_scope_restricted: true
+    conclusion: 'The Pool internal fee handler parses three fields, saves them, then parses the excess address; malformed tail parsing reverts the transaction rather than committing a partial fee tuple, and trailing data cannot shift the preceding fields. The Router setter fully parses and validates its body before sending the canonical four-field message. Router admission is admin-gated and Pool admission is Router-gated; addr_none resolves to the Router sender. This is a trusted administrative path, so the trusted-on-trusted kill filter applies.'
+    redrill_count: 0
+    audit_result: NOT_AVAILABLE_SHADOW_MODE
+    required_evidence_complete: true
+    no_fabrication: true
+    scope_assets_only: true
+    methodology_audit_exit: NOT_AVAILABLE
+    status_schema_validated: true
+    evidence_gate: PASS_FOR_KILL
+    shippable: false
+    rejection_reason: 'No external unauthorized fee-update or excess-recipient redirection survived the sender gates; the only harmful state transition is trusted administrative control.'
+    attacker_privilege:
+      privilege_required: privileged_role
+    fund_loss_demonstrated: false
+    concrete_impact_demonstrated: false
+    callers_grep_artifact: iter_219/callers-grep.txt
+    caller_match_count: 122
+    caller_unique_files: 9
+    cascade_verbatim_hit_count: 29
+    cross_file_anchor_count: 29
+    caller_paths:
+      - contracts/common/contracts.fc
+      - contracts/common/op.fc
+      - contracts/common/utils.fc
+      - contracts/pool.fc
+      - contracts/pool/msgs/router.fc
+      - contracts/router.fc
+      - contracts/router/msgs/admin.fc
+      - tests/ConstProduct.spec.ts
+      - wrappers/Router.ts
+    evidence_paths:
+      poc_test: iter_219/poc_pool_internal_set_fees_tail_excess_address.test.js
+      poc_run_log: iter_219/poc_pool_internal_set_fees_tail_excess_address.run.log
+      live_regression_log: iter_219/live-fee-setter-regression.run.log
+      prior_audit: iter_219/prior-audit-git.log
+    poc_execution:
+      test_file_path: iter_219/poc_pool_internal_set_fees_tail_excess_address.test.js
+      test_file_exists_on_disk: true
+      run_log_path: iter_219/poc_pool_internal_set_fees_tail_excess_address.run.log
+      run_log_exists_on_disk: true
+      runtime: '0.4s static; 12.0s integration'
+      result: 'PASS (29 cross-file anchors; successful admin setter and rejected non-admin setter)'
+    prior_art_check:
+      queries:
+        - 'iter98 admin_fee_address_none_transition'
+        - 'iter115 pool_set_fees_protocol_recipient_boundary'
+        - 'iter132 pool_protocol_fee_dual_payload_delivery'
+        - 'iter138 router_admin_reset_pool_gas_recipient'
+        - 'iter139 pool_reset_gas_body_tail_parse'
+        - 'iter145 pool_dispatch_sender_precedence'
+        - 'iter161 variant_setter_deserialization_width'
+        - 'iter196 pool_upgrade_ref_partial_state'
+        - 'iter203 pool_protocolfee_zero_payload_ref_split'
+        - 'iter204 pool_protocolfee_recipient_tuple_binding'
+        - 'iter207 pool_getter_provide_wallet_include_address_alias'
+      results:
+        - iter98: DEADEND_WITH_PROOF
+        - iter115: KILLED_TRUSTED_ON_TRUSTED
+        - iter132: KILLED_TRUSTED_ON_TRUSTED
+        - iter138: KILLED_TRUSTED_ON_TRUSTED
+        - iter139: KILLED_TRUSTED_ON_TRUSTED
+        - iter145: KILLED_TRUSTED_ON_TRUSTED
+        - iter161: DEADEND_WITH_PROOF
+        - iter196: KILLED_TRUSTED_ON_TRUSTED
+        - iter203: KILLED_TRUSTED_ON_TRUSTED
+        - iter204: KILLED_TRUSTED_ON_TRUSTED
+        - iter207: DEADEND_WITH_PROOF
+    r15_disclosure_check:
+      gh_search_terms_used:
+        - 'repo:ston-fi/dex-core-v2 "internal_set_fees" "excesses_address" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "internal_set_fees" "excesses_address" is:pr'
+        - 'repo:ston-fi/dex-core-v2 "set_fees" "addr_none" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "set_fees" "addr_none" is:pr'
+      gh_search_hits: 0
+      evidence_files:
+        - iter_219/r15-issues-internal-set-fees-excess-address.json
+        - iter_219/r15-prs-internal-set-fees-excess-address.json
+        - iter_219/r15-issues-set-fees-addr-none.json
+        - iter_219/r15-prs-set-fees-addr-none.json
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: KILLED_TRUSTED_ON_TRUSTED
+  shadow_mode: true
+  caller_path: iter_219/callers-grep.txt
+  caller_match_count: 122
+  caller_unique_files: 9
+  prior_audit_path: iter_219/prior-audit-git.log
+  prior_family_matches: [iter98, iter115, iter132, iter138, iter139, iter145, iter161, iter196, iter203, iter204, iter207]
+  r15_evidence_files:
+    - iter_219/r15-issues-internal-set-fees-excess-address.json
+    - iter_219/r15-prs-internal-set-fees-excess-address.json
+    - iter_219/r15-issues-set-fees-addr-none.json
+    - iter_219/r15-prs-set-fees-addr-none.json
+  source_conclusion: 'The exact internal_set_fees tuple round-trips without field shifting; malformed excess parsing does not persist the preceding fee writes, and addr_none resolves to the trusted Router sender. External senders cannot enter either the Router admin branch or the Pool Router branch. The hypothesis is killed by trusted-on-trusted scope.'
+  attacker_privilege:
+    privilege_required: privileged_role
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_219/poc_pool_internal_set_fees_tail_excess_address.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_219/poc_pool_internal_set_fees_tail_excess_address.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_219/live-fee-setter-regression.run.log
+    result: PASS
+
+

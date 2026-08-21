@@ -1,0 +1,7 @@
+AS3 prior-family audit:
+- Iter 75 / S5 getter_static_code_identity — DEADEND_WITH_PROOF; getter and runtime StateInit derivations used the same stable router/token/user data without an address alias.
+- Iter 88 / V3 vault_withdraw_carry_destroy_balance — DEADEND_WITH_PROOF; Vault accepted deposits only from the stored Router and withdrawal used the stored owner/token tuple.
+- Iter 134 / AE4 router_vault_pay_to_recipient_stateinit — DEADEND_WITH_PROOF; alternate owner/token tuples derived distinct identities and the recipient/token pair remained exact.
+- Iter 176 / AO4 router_transfer_bounce_refund_payload — DEADEND_WITH_PROOF; malformed refund paths returned the exact amount without a recipient shift.
+
+Conclusion: AS3 was checked against four prior StateInit, Vault, and tuple-binding audits before classification.

@@ -1,0 +1,15 @@
+$ rg -n 'cell_id:|cell_label:|final_verdict:|source_conclusion:' iter_92/STATUS.yaml iter_121/STATUS.yaml iter_169/STATUS.yaml iter_189/STATUS.yaml
+
+iter_92 / W2 router_pay_to_zero_amount_side_selection / DEADEND_WITH_PROOF:
+pay_to side selection cannot create a residual claim because producers enforce positive output and the Router authenticates the deterministic Pool.
+
+iter_121 / AC1 router_pool_pair_orientation_stateinit / DEADEND_WITH_PROOF:
+all five Pool StateInit variants use the same wallet ordering consumed by route and pay_to.
+
+iter_169 / AN2 lp_wallet_mint_from_address_notification / DEADEND_WITH_PROOF:
+LP-wallet output is backed by a valid LP-wallet debit; forwarded identity does not release an attacker-controlled amount.
+
+iter_189 / AR2 router_owned_wallet_residual_debit / DEADEND_WITH_PROOF:
+the real standard B wallet's burn output was 999,998 against a 1,000,000 attacker-funded B leg and a 1,000,000 preloaded residual; after burn the Router B balance was 1,000,002 and the attacker received exactly 999,998.
+
+AR4 reuses the live burn trace but narrows the proof to proportional LP-burn output: an unbacked fake A reserve cannot make the B output exceed the B reserve that entered the Router wallet.

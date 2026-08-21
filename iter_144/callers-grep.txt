@@ -1,0 +1,25 @@
+COMMAND: rg -n "storage::(temp_upgrade|upgrade_pool_code)|pack_temp_upgrade|unpack_temp_upgrade|init_(code|admin|pool_code)_upgrade|cancel_(code|admin|pool_code)_upgrade|finalize_upgrades|pool::internal_update_pool_code|get_router_data|get_upgraded_pool_code" [selected Router storage/admin/getter paths and tests]
+MATCH_COUNT: 41
+UNIQUE_FILES: 4
+
+contracts/router/storage.fc:7:global cell storage::temp_upgrade;
+contracts/router/storage.fc:9:global cell storage::upgrade_pool_code;
+contracts/router/storage.fc:16:    storage::temp_upgrade = ds~load_ref();
+contracts/router/storage.fc:27:    storage::upgrade_pool_code = ds~load_ref();
+contracts/router/storage.fc:35:        .store_ref(storage::temp_upgrade)
+contracts/router/storage.fc:37:        .store_ref(storage::upgrade_pool_code)
+contracts/router/utils.fc:1:(cell) pack_temp_upgrade(int end_code, cell code, int end_admin, slice admin, int end_pool_code, cell pool_code) inline {
+contracts/router/utils.fc:13:(int, cell, int, slice, int, cell) unpack_temp_upgrade(cell c_data) impure inline {
+contracts/router/msgs/admin.fc:156:    if ctx.at(OPCODE) == op::init_code_upgrade {
+contracts/router/msgs/admin.fc:171:    if ctx.at(OPCODE) == op::init_admin_upgrade {
+contracts/router/msgs/admin.fc:186:    if ctx.at(OPCODE) == op::init_pool_code_upgrade {
+contracts/router/msgs/admin.fc:201:    if ctx.at(OPCODE) == op::cancel_pool_code_upgrade {
+contracts/router/msgs/admin.fc:212:    if ctx.at(OPCODE) == op::cancel_admin_upgrade {
+contracts/router/msgs/admin.fc:223:    if ctx.at(OPCODE) == op::cancel_code_upgrade {
+contracts/router/msgs/admin.fc:235:    if ctx.at(OPCODE) == op::finalize_upgrades {
+contracts/router/msgs/admin.fc:252:            storage::upgrade_pool_code = pool_code;
+contracts/router/get.fc:32:_ get_router_data() method_id {
+contracts/router/get.fc:40:        storage::temp_upgrade,
+contracts/router/get.fc:48:_ get_upgraded_pool_code() method_id {
+contracts/router/get.fc:51:    return (storage::upgrade_pool_code);
+tests/Router.spec.ts:91:  it('should handle upgrades', async () => {

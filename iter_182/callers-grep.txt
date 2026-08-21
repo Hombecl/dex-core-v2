@@ -1,0 +1,31 @@
+contracts/pool.fc:28:    if equal_slices(ctx.at(SENDER), storage::router_address) {
+contracts/pool.fc:29:        handle_router_messages();
+contracts/common/contracts.fc:174:(cell) router::vault_pay_to(
+contracts/common/contracts.fc:186:(cell) router::pay_vault(
+contracts/common/contracts.fc:194:        .store_coins(_amount1_out)
+contracts/router.fc:40:    if handle_vault_messages() {
+contracts/router/msgs/vault.fc:1:(int) handle_vault_messages() impure inline {
+contracts/router/msgs/vault.fc:3:    if ctx.at(OPCODE) == op::vault_pay_to {
+contracts/router/msgs/vault.fc:4:        int amount_out = in_msg_body~load_coins();
+contracts/router/msgs/vault.fc:5:        slice token_address = in_msg_body~load_msg_addr();
+contracts/router/msgs/vault.fc:6:        slice to_address = in_msg_body~load_msg_addr();
+contracts/router/msgs/vault.fc:10:            vault_idata(to_address, token_address, my_address()),
+contracts/router/msgs/vault.fc:13:        throw_unless(error::invalid_caller, equal_slices(vault~address(params::workchain), ctx.at(SENDER)));
+contracts/router/msgs/vault.fc:16:        var msg = jetton_wallet::transfer(0, amount_out, to_address, to_address)
+contracts/router/msgs/vault.fc:19:        msgs::send_simple(0, token_address, msg.end_cell(), QCARRY_ALL_BALANCE);
+contracts/vault.fc:5:global slice storage::owner_address;
+contracts/vault.fc:6:global slice storage::token_address; 
+contracts/vault.fc:7:global slice storage::router_address; 
+contracts/vault.fc:8:global int storage::deposited_amount;
+contracts/vault.fc:61:            storage::router_address, 
+contracts/vault.fc:62:            router::vault_pay_to(
+contracts/vault.fc:63:                storage::deposited_amount, 
+contracts/vault.fc:64:                storage::token_address, 
+contracts/vault.fc:65:                storage::owner_address),
+contracts/pool/msgs/router.fc:1:() handle_router_messages() impure inline {
+contracts/pool/msgs/router.fc:122:                    router::pay_vault(
+contracts/pool/msgs/router.fc:125:                        ref_fee_out0, 
+contracts/pool/msgs/router.fc:127:                        ref_fee_out1, 
+caller_match_count: 66
+caller_unique_files: 6
+callers_grep_done: true

@@ -1,0 +1,21 @@
+COMMAND: node iter_164/poc_lp_mint_notification_failure.test.js
+{
+  "variants_checked": 5,
+  "bounded_forward_cases": 108,
+  "notification_sent_cases": 30,
+  "modeled_notification_failure_cases": 6,
+  "wallet_balance_saved_cases": 108,
+  "high_forward_amounts_sanitized": 51,
+  "notification_failure_rolls_back_wallet_credit": false,
+  "notification_bounce_restoration_opcode_present": false,
+  "result": "PASS"
+}
+RUNTIME: 0.3s static/model
+
+COMMAND: npm test -- --runInBand tests/ConstProduct.spec.ts tests/ConstSum.spec.ts tests/Stableswap.spec.ts tests/WeightedCPI.spec.ts tests/WeightedStableswap.spec.ts -t 'should provide lp|should burn liquidity'
+RESULT: PASS
+TEST_SUITES: 5 passed, 5 total
+TESTS: 120 skipped, 18 passed, 138 total
+SNAPSHOTS: 0 total
+RUNTIME: 42.469s
+

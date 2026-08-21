@@ -1,0 +1,24 @@
+COMMAND: rg -n "internal_set_params|new_setter|rate_setter_address|set_rate|storage::rate|load_slice_ref|store_ref|pool::internal_set_params|handle_setter_messages|renderSetterCalls" [selected weighted-stableswap Router/Pool paths and test]
+MATCH_COUNT: 37
+UNIQUE_FILES: 8
+
+contracts/router/pools/weighted_stableswap/contracts.fc:1:(cell) pool::internal_set_params(
+contracts/router/pools/weighted_stableswap/contracts.fc:9:    return begin_message(op::internal_set_params)
+contracts/router/pools/weighted_stableswap/contracts.fc:15:        .store_ref(begin_cell()
+contracts/router/pools/weighted_stableswap/ext_admin.fc:8:        (slice side_wallet, slice new_setter) = (in_msg_body~load_msg_addr(), in_msg_body~load_msg_addr());
+contracts/router/pools/weighted_stableswap/ext_admin.fc:9:        slice ref_data = in_msg_body~load_slice_ref();
+contracts/router/pools/weighted_stableswap/ext_admin.fc:48:        pool::internal_set_params(
+contracts/router/pools/weighted_stableswap/ext_admin.fc:54:                new_setter
+contracts/pool/pools/weighted_stableswap/ext_router.fc:6:    if ctx.at(OPCODE) == op::internal_set_params {
+contracts/pool/pools/weighted_stableswap/ext_router.fc:9:        slice additional_data = in_msg_body~load_slice_ref();
+contracts/pool/pools/weighted_stableswap/ext_router.fc:10:        slice new_setter = additional_data~load_msg_addr();
+contracts/pool/pools/weighted_stableswap/ext_router.fc:15:        storage::rate_setter_address = new_setter;
+contracts/pool/pools/weighted_stableswap/storage.fc:4:global slice storage::rate_setter_address;
+contracts/pool/pools/weighted_stableswap/storage.fc:23:    storage::rate_setter_address = w_params_data~load_msg_addr();
+contracts/pool/pools/weighted_stableswap/storage.fc:53:    .store_slice(storage::rate_setter_address)
+contracts/pool/pools/weighted_stableswap/setter.fc:1:(int) handle_setter_messages() impure inline {
+contracts/pool/pools/weighted_stableswap/setter.fc:4:    if ctx.at(OPCODE) == op::set_rate {
+contracts/pool/pools/weighted_stableswap/setter.fc:7:    throw_unless(error::invalid_amount, new_rate > 0);
+contracts/pool.fc:43: if equal_slices(ctx.at(SENDER), storage::rate_setter_address) { if handle_setter_messages() { return (); } }
+contracts/pool/pools/weighted_stableswap/weighted_stableswap.fc:4:#include "setter.fc";
+tests/WeightedStableswap.spec.ts:239: dexType: "weighted_stableswap"

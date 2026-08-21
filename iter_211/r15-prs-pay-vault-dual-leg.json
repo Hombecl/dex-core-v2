@@ -1,0 +1,5 @@
+{
+  "query": "repo:ston-fi/dex-core-v2 \\\"pay_vault\\\" \\\"amount0_out\\\" \\\"amount1_out\\\" is:pr",
+  "total_count": 0,
+  "items": []
+}

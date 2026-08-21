@@ -1,0 +1,153 @@
+schema_version: shadow-v1
+iteration: 213
+phase: completed
+cell_id: AW1
+cell_label: router_pay_vault_stateinit_bounce_fee_stranding
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AW1
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/pool/msgs/router.fc
+        line: 89
+        text: 'int ref_fee_out1 = 0;'
+      - file: contracts/pool/msgs/router.fc
+        line: 90
+        text: 'ref_value = ref_address.preload_uint(2) == 0 ? 0 : ref_value;'
+      - file: contracts/pool/msgs/router.fc
+        line: 92
+        text: 'if amount0 {'
+      - file: contracts/pool/msgs/router.fc
+        line: 94
+        text: '(out1, protocol_fee_out, ref_fee_out1) = pool::get_swap_out(true, ref_value, amount0, storage::reserve0, storage::reserve1);'
+      - file: contracts/pool/msgs/router.fc
+        line: 101
+        text: '(out0, protocol_fee_out, ref_fee_out0) = pool::get_swap_out(false, ref_value, amount1, storage::reserve1, storage::reserve0);'
+      - file: contracts/pool/msgs/router.fc
+        line: 111
+        text: 'throw_arg_unless(op::swap_refund_tx_expired, 1, tx_deadline > now());'
+      - file: contracts/pool/msgs/router.fc
+        line: 121
+        text: 'if (ref_address.preload_uint(2) != 0) & (ref_fee_out0 + ref_fee_out1 > 0) { ;; 2 messages, pay referral, check ref_fee_out'
+      - file: contracts/pool/msgs/router.fc
+        line: 122
+        text: 'msgs::send_simple(ctx.at(FWD_FEE) * 3 + storage_fee::vault + gas::router::pay_vault + gas::vault::deposit_ref_fee,'
+      - file: contracts/pool/msgs/router.fc
+        line: 124
+        text: 'router::pay_vault('
+      - file: contracts/pool/msgs/router.fc
+        line: 130
+        text: 'storage::token1_address),'
+      - file: contracts/pool/msgs/router.fc
+        line: 135
+        text: 'msgs::send_simple('
+      - file: contracts/pool/msgs/router.fc
+        line: 152
+        text: 'storage::save();'
+      - file: contracts/router/msgs/pool.fc
+        line: 94
+        text: 'if ctx.at(OPCODE) == op::pay_vault {'
+      - file: contracts/router/msgs/pool.fc
+        line: 113
+        text: 'throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER))); ;; check if its a valid pool'
+      - file: contracts/router/msgs/pool.fc
+        line: 118
+        text: 'var vault = contracts::from_sources('
+      - file: contracts/router/msgs/pool.fc
+        line: 121
+        text: 'amount0_out > 0 ? token0_address : token1_address,'
+      - file: contracts/router/msgs/pool.fc
+        line: 127
+        text: 'msgs::send_with_stateinit('
+      - file: contracts/router/msgs/pool.fc
+        line: 131
+        text: 'vault::deposit_ref_fee('
+      - file: contracts/router/msgs/pool.fc
+        line: 132
+        text: 'amount0_out + amount1_out,'
+      - file: contracts/router/dex.fc
+        line: 61
+        text: '+ storage_fee::vault + gas::router::pay_vault + gas::vault::deposit_ref_fee'
+      - file: contracts/router.fc
+        line: 11
+        text: 'if ctx.at(IS_BOUNCED) {'
+      - file: contracts/pool.fc
+        line: 11
+        text: 'if ctx.at(IS_BOUNCED) {'
+      - file: contracts/vault.fc
+        line: 32
+        text: 'if ctx.at(IS_BOUNCED) {'
+      - file: contracts/vault.fc
+        line: 40
+        text: 'if (ctx.at(OPCODE) == op::deposit_ref_fee) & equal_slices(ctx.at(SENDER), storage::router_address) {'
+      - file: contracts/vault.fc
+        line: 44
+        text: 'storage::save();'
+      - file: contracts/common/contracts.fc
+        line: 194
+        text: 'return begin_message(op::pay_vault)'
+  poc_execution:
+    test_file_path: iter_213/poc_router_pay_vault_stateinit_bounce_fee_stranding.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_213/poc_router_pay_vault_stateinit_bounce_fee_stranding.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.4s static; 6.251s integration'
+    result: 'PASS (25 cross-file anchors; downstream bounce/accounting model; live referral-vault regression)'
+  prior_art_check:
+    queries:
+      - iter39 P8xC4 referral_fee_deposit_bounce_reversal
+      - iter60 R5 unknown_op_bounce_typing
+      - iter101 Y1 router_pay_vault_single_side_stateinit
+      - iter131 AE1 pool_swap_referral_output_send_order
+      - iter163 AM1 lp_mint_bounce_pool_commit
+      - iter182 AP5 router_vault_pay_to_amount_tuple
+      - iter195 AS3 router_pay_vault_vault_collision
+    results:
+      - iter39: DEADEND_WITH_PROOF
+      - iter60: DEADEND_WITH_PROOF
+      - iter101: DEADEND_WITH_PROOF
+      - iter131: DEADEND_WITH_PROOF
+      - iter163: DEADEND_WITH_PROOF
+      - iter182: DEADEND_WITH_PROOF
+      - iter195: DEADEND_WITH_PROOF
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "vault bounced deposit" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "vault bounced deposit" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "referral fee bounce" "pay_vault" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "referral fee bounce" "pay_vault" is:pr'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  shadow_mode: true
+  caller_path: iter_213/callers-grep.txt
+  caller_match_count: 86
+  caller_unique_files: 9
+  prior_audit_path: iter_213/prior-audit-git.log
+  prior_family_matches: [iter39, iter60, iter101, iter131, iter163, iter182, iter195]
+  r15_evidence_files:
+    - iter_213/r15-issues-vault-bounced-deposit.json
+    - iter_213/r15-prs-vault-bounced-deposit.json
+    - iter_213/r15-issues-referral-bounce-pay-vault.json
+    - iter_213/r15-prs-referral-bounce-pay-vault.json
+  source_conclusion: 'Pool swap mutates working reserves, builds the exact Router pay_vault message, emits the ordinary pay_to leg, then saves. Router authenticates the deterministic Pool, derives the deterministic Vault StateInit from owner/token/router, and sends deposit_ref_fee with explicit gas/storage budgeting. Router, Pool, and Vault all return on protocol-marked bounces; Vault accepts a deposit only from Router and saves the exact amount. A downstream bounce could strand a referral fee as liveness, but valid standard referrals and StateInit/gas gates leave no external attacker-controlled way to force that bounce. No attacker-positive selected-asset delta was demonstrated.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false

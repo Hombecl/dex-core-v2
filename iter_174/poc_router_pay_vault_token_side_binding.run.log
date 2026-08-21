@@ -1,0 +1,7 @@
+COMMAND: node iter_174/poc_router_pay_vault_token_side_binding.test.js
+EXIT: 0
+OUTPUT: PASS; 5 pool variants checked; 2 valid one-sided referral cases; 1 synthetic mixed-side case; 0 selector mismatches; 0 credited-sum mismatches; 0 mixed-side production paths.
+
+COMMAND: ./node_modules/.bin/jest --runInBand tests/WeightedCPI.spec.ts -t 'should collect ref fee from vault'
+EXIT: 0
+OUTPUT: PASS tests/WeightedCPI.spec.ts; 1 passed, 24 skipped; 6.886 s.

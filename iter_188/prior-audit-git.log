@@ -1,0 +1,6 @@
+Prior-audit evidence selected from shadow workspace:
+iter_51/STATUS.yaml audited the generic untrusted notification sender and found only a sender-derived fresh pair.
+iter_68/STATUS.yaml audited forged token-wallet pair selection and found no existing-pool or victim delta.
+iter_102/STATUS.yaml audited router_route_untrusted_notification_binding and concluded real pools require the real wallet sender.
+iter_133/STATUS.yaml audited no-reference notification refunds; iter169 audited LP-wallet notification provenance.
+AR1 is a narrowed re-drill of those results: forged sender A + existing Router wallet B, hash-sorted pair identity, and the requirement for a second B-originated notification.

@@ -1,0 +1,56 @@
+schema_version: shadow-v1
+iteration: 151
+phase: completed
+cell_id: AI4
+cell_label: deploy_config_variant_binding
+final_verdict: PRE_KILLED_OOS
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AI4
+  final_verdict: PRE_KILLED_OOS
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - "scope.json: contracts/pool.fc"
+      - "scope.json: contracts/router.fc"
+      - "scope.json: contracts/lp_wallet.fc"
+      - "scope.json: contracts/lp_account.fc"
+      - "scope.json: contracts/vault.fc"
+  poc_execution:
+    test_file_path: iter_151/poc_deploy_config_scope_exclusion.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_151/poc_deploy_config_scope_exclusion.run.log
+    run_log_exists_on_disk: true
+    test_runtime: "0.1s scope-only"
+    result: "PASSED (0 deployment-script markers in scope)"
+  prior_art_check:
+    queries: []
+    results: "NOT RUN: AI4 was pre-killed by authoritative scope before OOS code inspection"
+  r15_disclosure_check:
+    gh_search_terms_used: []
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: PRE_KILLED_OOS
+  selected_cluster_source: POST_MATRIX_CLUSTER_PROPOSALS_21.md
+  oos_reason: "AI4 targets scripts/deployRouter.ts, absent from the authoritative selected-assets list; no OOS code was drilled and no candidate was formed."
+  caller_path: "authoritative scope artifact -> selected asset list"
+  caller_match_count: 5
+  caller_unique_files: 1
+  prior_audit_path: null
+  r15_evidence_files: []
+  source_conclusion: "The proposed deployment-config mechanism is outside the selected asset scope. Scope gate passed with zero deployment-script markers; the lane is closed without code inspection."
+  candidate_path: null
+  shadow_mode: true

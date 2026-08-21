@@ -1,0 +1,143 @@
+schema_version: shadow-v1
+iteration: 205
+phase: completed
+cell_id: AU4
+cell_label: router_getter_pair_workchain_addr_none
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AU4
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/router/get.fc
+        line: 3
+        text: '_ get_pool_address(slice token0, slice token1) method_id {'
+      - file: contracts/router/get.fc
+        line: 6
+        text: 'throw_if(error::wrong_address, equal_slices(token0, token1));'
+      - file: contracts/router/get.fc
+        line: 7
+        text: 'throw_unless(error::wrong_workchain, token0.address::check_workchain(params::workchain));'
+      - file: contracts/router/get.fc
+        line: 8
+        text: 'throw_unless(error::wrong_workchain, token1.address::check_workchain(params::workchain));'
+      - file: contracts/router/get.fc
+        line: 10
+        text: 'var pool = contracts::from_sources('
+      - file: contracts/router/get.fc
+        line: 11
+        text: 'pool_idata(my_address(), token0, token1, storage::jetton_lp_wallet_code,  storage::lp_account_code),'
+      - file: contracts/router/get.fc
+        line: 15
+        text: 'return pool~address(params::workchain);'
+      - file: contracts/router/msgs/getter.fc
+        line: 6
+        text: 'if ctx.at(OPCODE) == op::getter_pool_address {'
+      - file: contracts/router/msgs/getter.fc
+        line: 12
+        text: 'throw_if(error::wrong_address, equal_slices(token0, token1));'
+      - file: contracts/router/msgs/getter.fc
+        line: 13
+        text: 'throw_unless(error::wrong_workchain, token0.address::check_workchain(params::workchain));'
+      - file: contracts/router/msgs/getter.fc
+        line: 14
+        text: 'throw_unless(error::wrong_workchain, token1.address::check_workchain(params::workchain));'
+      - file: contracts/router/msgs/getter.fc
+        line: 16
+        text: 'var pool = contracts::from_sources('
+      - file: contracts/router/msgs/getter.fc
+        line: 17
+        text: 'pool_idata(my_address(), token0, token1, storage::jetton_lp_wallet_code,  storage::lp_account_code),'
+      - file: contracts/router/msgs/getter.fc
+        line: 25
+        text: 'anyone::getter_pool_address(pool~address(params::workchain)),'
+      - file: contracts/router/dex.fc
+        line: 78
+        text: 'var pool = contracts::from_sources('
+      - file: contracts/router/dex.fc
+        line: 79
+        text: 'pool_idata(my_address(), _jetton_address, token_wallet1, storage::jetton_lp_wallet_code,  storage::lp_account_code),'
+      - file: contracts/router/dex.fc
+        line: 86
+        text: 'pool~address(params::workchain),'
+      - file: contracts/pool/pools/constant_product/state_init.fc
+        line: 18
+        text: '(cell) pool_idata(slice _router_address, slice _first_jetton_address, slice _second_jetton_address, cell _jetton_lp_wallet_code, cell _lp_account_code) inline {'
+      - file: contracts/pool/pools/constant_product/state_init.fc
+        line: 21
+        text: 'if _first_jetton_address.slice_hash() > _second_jetton_address.slice_hash() {'
+      - file: contracts/pool/pools/constant_product/state_init.fc
+        line: 23
+        text: '.store_slice(_first_jetton_address)   ;; storage::token0_address'
+      - file: contracts/pool/pools/constant_product/state_init.fc
+        line: 27
+        text: '.store_slice(_second_jetton_address) ;; storage::token0_address'
+      - file: contracts/common/utils.fc
+        line: 2
+        text: '_addr = _addr.address::is_none() ? ctx.at(SENDER) : _addr;'
+      - file: contracts/common/contracts.fc
+        line: 114
+        text: '(cell) anyone::getter_pool_address(slice _addr) inline {'
+      - file: contracts/router.fc
+        line: 35
+        text: 'if handle_getter_messages() {'
+  poc_execution:
+    test_file_path: iter_205/poc_router_getter_pair_workchain_addr_none.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_205/poc_router_getter_pair_workchain_addr_none.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.1s static; 4.598s integration'
+    result: 'PASS (21 cross-file anchors; addr_none/workchain boundary model; live pool-address getter regression)'
+  prior_art_check:
+    queries:
+      - iter75 S5 getter_static_code_identity
+      - iter100 X5 getter_payload_ref_shape_boundary
+      - iter109 Z4 router_getter_upgrade_code_visibility
+      - iter121 AC1 router_pool_pair_orientation_stateinit
+      - iter140 AF5 getter_response_state_alias
+    results:
+      - iter75: DEADEND_WITH_PROOF
+      - iter100: DEADEND_WITH_PROOF
+      - iter109: DEADEND_WITH_PROOF
+      - iter121: DEADEND_WITH_PROOF
+      - iter140: DEADEND_WITH_PROOF
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "get_pool_address" "addr_none" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "get_pool_address" "addr_none" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "getter_pool_address" "check_workchain" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "getter_pool_address" "check_workchain" is:pr'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  shadow_mode: true
+  caller_path: iter_205/callers-grep.txt
+  caller_match_count: 73
+  caller_unique_files: 9
+  prior_audit_path: iter_205/prior-audit-git.log
+  prior_family_matches: [iter75, iter100, iter109, iter121, iter140]
+  r15_evidence_files:
+    - iter_205/R15-GH-get-pool-address-addr-none-issue.json
+    - iter_205/R15-GH-get-pool-address-addr-none-pr.json
+    - iter_205/R15-GH-getter-pool-address-workchain-issue.json
+    - iter_205/R15-GH-getter-pool-address-workchain-pr.json
+  source_conclusion: 'Router getters reject equal token pairs and require both tokens to pass strict configured-workchain checks. addr_none is tolerated only by an explicitly no-fail helper used for excess destinations, not by the getter. Getter, async getter, and route-time Pool derivation use the same pool_idata inputs, while StateInit canonicalizes token order by slice hash. No alternate Pool address, value-bearing alias, or attacker-positive delta was demonstrated.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false

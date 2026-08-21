@@ -1,0 +1,7 @@
+AT3 prior-family audit:
+- Iter 71 / S1 direct_add_liquidity_identity_clearance — DEADEND_WITH_PROOF; zero amounts selected all accumulated value, residuals were checked nonnegative, and failed callbacks used a deterministic refund account.
+- Iter 123 / AC3 lp_account_refund_then_direct_add_lifecycle — DEADEND_WITH_PROOF; full and partial direct-add lifecycle cases showed no stale amount replay or cross-user reuse.
+- Iter 126 / AD1 lp_account_both_positive_flag_mint_gate — DEADEND_WITH_PROOF; branch selection still required positive minimum and positive accumulated balance.
+- Iter 186 / AQ4 router_provide_both_positive_exception_flag — DEADEND_WITH_PROOF; the flag changed only the both-positive gate and produced no unbacked LP or reserve mismatch.
+
+Conclusion: AT3 was compared with four prior direct-add, lifecycle, and branch-gate audits before classification.

@@ -1,0 +1,25 @@
+command:
+rg -n 'get_pool_address|getter_pool_address|check_workchain|check_workchain_nofail|addr_none|from_sources|pool_idata|pool~address|slice_hash|send_simple|handle_getter_messages|handle_jetton_messages|storage::pool_code' contracts/router/get.fc contracts/router/msgs/getter.fc contracts/router/dex.fc contracts/router.fc contracts/pool/pools/constant_product/state_init.fc contracts/common/utils.fc contracts/common/contracts.fc contracts/router/msgs/admin.fc contracts/common/op.fc
+
+summary:
+match_count: 73
+unique_files: 9
+callers_grep_done: true
+
+key_matches:
+contracts/router/get.fc:3: _ get_pool_address(slice token0, slice token1) method_id {
+contracts/router/get.fc:7-8: strict token0/token1 check_workchain gates
+contracts/router/get.fc:10-12: pool_idata plus storage::pool_code
+contracts/router/get.fc:15: return pool~address(params::workchain);
+contracts/router/msgs/getter.fc:6: if ctx.at(OPCODE) == op::getter_pool_address {
+contracts/router/msgs/getter.fc:13-14: strict token0/token1 check_workchain gates
+contracts/router/msgs/getter.fc:16-18: same pool_idata derivation
+contracts/router/msgs/getter.fc:25: anyone::getter_pool_address(pool~address(params::workchain))
+contracts/router/dex.fc:78-80: route-time pool_idata plus storage::pool_code
+contracts/router/dex.fc:86: pool~address(params::workchain)
+contracts/pool/pools/constant_product/state_init.fc:21: if _first_jetton_address.slice_hash() > _second_jetton_address.slice_hash() {
+contracts/pool/pools/constant_product/state_init.fc:23-28: canonical token0/token1 ordering
+contracts/common/utils.fc:2-3: explicit addr_none fallback exists only in get_excesses_address
+contracts/common/contracts.fc:114-117: getter_pool_address response builder
+contracts/router.fc:35: if handle_getter_messages() {
+contracts/common/op.fc:40: getter_pool_address opcode schema

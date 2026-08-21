@@ -1,0 +1,7 @@
+{
+  "query": "repo:ston-fi/dex-core-v2 \"deposit_ref_fee\" \"amount0_out\" is:issue",
+  "total_count": 0,
+  "incomplete_results": false,
+  "items": [],
+  "search_type": "lexical"
+}

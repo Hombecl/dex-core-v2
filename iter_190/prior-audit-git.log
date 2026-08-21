@@ -1,0 +1,18 @@
+$ rg -n 'cell_id:|cell_label:|final_verdict:|source_conclusion:' iter_68/STATUS.yaml iter_102/STATUS.yaml iter_121/STATUS.yaml iter_133/STATUS.yaml iter_169/STATUS.yaml
+
+iter_68 / R13 route_token_wallet_binding / DEADEND_WITH_PROOF:
+the Router derives the Pool from the real notification sender plus the body-selected other wallet; forged senders select a different deterministic Pool, and pay_to checks the Pool sender.
+
+iter_102 / Y2 router_route_untrusted_notification_binding / DEADEND_WITH_PROOF:
+the notification sender becomes the deterministic token endpoint; forged body identity does not redirect an existing production pair.
+
+iter_121 / AC1 router_pool_pair_orientation_stateinit / DEADEND_WITH_PROOF:
+all five Pool StateInit variants hash-sort both wallet addresses; Router route/getter/pay_to and Pool amount builders use the same orientation, so reverse order resolves to one stable pair.
+
+iter_133 / AE3 router_notification_without_ref_refund_source / DEADEND_WITH_PROOF:
+refund and output paths preserve the canonical token0/token1 tuple and do not create a wrong-side asset delta.
+
+iter_169 / AN2 lp_wallet_mint_from_address_notification / DEADEND_WITH_PROOF:
+forwarded identity is backed by a valid LP-wallet debit and does not change token-side accounting.
+
+The new AR3 static model and targeted ConstProduct integration re-run the exact reverse-order route with both amount legs and all five StateInit variants; all pass with stable canonical assignments.

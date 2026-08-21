@@ -1,0 +1,5 @@
+{
+  "query": "repo:ston-fi/dex-core-v2 \\\"slice_refs_empty\\\" \\\"transfer_notification\\\" is:pr",
+  "total_count": 0,
+  "items": []
+}

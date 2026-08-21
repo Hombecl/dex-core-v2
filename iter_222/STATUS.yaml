@@ -1,0 +1,194 @@
+schema_version: shadow-v1
+iteration: 222
+phase: completed
+cell_id: AX5
+cell_label: pool_swap_refund_error_payload_amount_binding
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AX5
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/pool/msgs/router.fc
+        line: 4
+        text: 'if ctx.at(OPCODE) == op::swap {'
+      - file: contracts/pool/msgs/router.fc
+        line: 7
+        text: 'slice from_user_address = in_msg_body~load_msg_addr();'
+      - file: contracts/pool/msgs/router.fc
+        line: 9
+        text: 'int amount0 = in_msg_body~load_coins();'
+      - file: contracts/pool/msgs/router.fc
+        line: 10
+        text: 'int amount1 = in_msg_body~load_coins();'
+      - file: contracts/pool/msgs/router.fc
+        line: 30
+        text: 'try { ;; check call_payload body, refund to refund_address if fails'
+      - file: contracts/pool/msgs/router.fc
+        line: 58
+        text: 'router::pay_to('
+      - file: contracts/pool/msgs/router.fc
+        line: 65
+        text: 'amount0,'
+      - file: contracts/pool/msgs/router.fc
+        line: 67
+        text: 'amount1,'
+      - file: contracts/pool/msgs/router.fc
+        line: 111
+        text: 'throw_arg_unless(op::swap_refund_tx_expired, 1, tx_deadline > now());'
+      - file: contracts/pool/msgs/router.fc
+        line: 114
+        text: 'throw_arg_if(op::swap_refund_slippage, 1, min_out > out);'
+      - file: contracts/pool/msgs/router.fc
+        line: 138
+        text: 'router::pay_to('
+      - file: contracts/pool/msgs/router.fc
+        line: 152
+        text: 'storage::save();'
+      - file: contracts/pool/msgs/router.fc
+        line: 153
+        text: '} catch(err_arg, err_code) {'
+      - file: contracts/pool/msgs/router.fc
+        line: 160
+        text: 'router::pay_to('
+      - file: contracts/pool/msgs/router.fc
+        line: 166
+        text: 'refund_payload_cs, ;; clear custom_payload_cs, use refund_payload_cs'
+      - file: contracts/router/msgs/pool.fc
+        line: 13
+        text: 'int amount0_out = additional_info~load_coins();'
+      - file: contracts/router/msgs/pool.fc
+        line: 15
+        text: 'int amount1_out = additional_info~load_coins();'
+      - file: contracts/router/msgs/pool.fc
+        line: 28
+        text: 'throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER)));'
+      - file: contracts/router/msgs/pool.fc
+        line: 52
+        text: 'int swap_amount = amount0_out + amount1_out; ;; one side is zero, so we can sum them'
+      - file: contracts/router/msgs/pool.fc
+        line: 55
+        text: 'route_dex_messages(sent_jetton_address, gas, swap_amount, original_caller, custom_payload);'
+      - file: contracts/common/contracts.fc
+        line: 146
+        text: '(cell) router::pay_to('
+      - file: contracts/common/op.fc
+        line: 10
+        text: 'const op::pay_to                          = "pay_to query_id:uint64 to_address:MsgAddress excesses_address:MsgAddress original_caller:MsgAddress exit_code:uint32 custom_payload:(Maybe ^Cell) additional_info:^[fwd_ton_amount:Coins amount0_out:Coins token0_address:MsgAddress amount1_out:Coins token1_address:MsgAddress] = InternalMsgBody"c & 0x7fffffff;'
+      - file: contracts/pool.fc
+        line: 29
+        text: 'handle_router_messages();'
+      - file: contracts/router.fc
+        line: 23
+        text: 'if handle_pool_messages() {'
+      - file: tests/ConstProduct.spec.ts
+        line: 2334
+        text: "it('should refund swap if fee more than max', async () => {"
+      - file: tests/System.spec.ts
+        line: 251
+        text: "it('should handle invalid transfers', async () => {"
+    cross_file_count: 10
+    cross_file_match_count: 202
+    source_scope_restricted: true
+    conclusion: 'Both Pool swap error branches pass the original input amount0/amount1 pair into router::pay_to. The shared serializer and Router parser use the same field order, Router pay_to requires the deterministic Pool sender, and the Pool persists swap state only on the success path. The two live refund regressions and static model close AX5 as a dead end rather than a shippable asset-loss issue.'
+    redrill_count: 0
+    audit_result: NOT_AVAILABLE_SHADOW_MODE
+    required_evidence_complete: true
+    no_fabrication: true
+    scope_assets_only: true
+    methodology_audit_exit: NOT_AVAILABLE
+    status_schema_validated: true
+    evidence_gate: PASS_FOR_DEADEND
+    shippable: false
+    rejection_reason: 'Error metadata and optional refund payload do not replace the fixed original input amount/token legs; parser order, sender binding, and success-only persistence preserve the refund invariant.'
+    attacker_privilege:
+      privilege_required: external_auth
+    fund_loss_demonstrated: false
+    concrete_impact_demonstrated: false
+    callers_grep_artifact: iter_222/callers-grep.txt
+    caller_match_count: 202
+    caller_unique_files: 10
+    cascade_verbatim_hit_count: 27
+    cross_file_anchor_count: 27
+    caller_paths:
+      - contracts/common/contracts.fc
+      - contracts/common/op.fc
+      - contracts/pool.fc
+      - contracts/pool/msgs/router.fc
+      - contracts/router.fc
+      - contracts/router/dex.fc
+      - contracts/router/msgs/pool.fc
+      - tests/ConstProduct.spec.ts
+      - tests/System.spec.ts
+      - wrappers/Router.ts
+    evidence_paths:
+      poc_test: iter_222/poc_pool_swap_refund_error_payload_amount_binding.test.js
+      poc_run_log: iter_222/poc_pool_swap_refund_error_payload_amount_binding.run.log
+      live_regression_log: iter_222/live-pool-swap-refund-regression.run.log
+      prior_audit: iter_222/prior-audit-git.log
+    poc_execution:
+      test_file_path: iter_222/poc_pool_swap_refund_error_payload_amount_binding.test.js
+      test_file_exists_on_disk: true
+      run_log_path: iter_222/poc_pool_swap_refund_error_payload_amount_binding.run.log
+      run_log_exists_on_disk: true
+      runtime: '0.2s static; 15.1s integration'
+      result: 'PASS (27 cross-file anchors; invalid-transfer and max-fee refund regressions)'
+    prior_art_check:
+      queries:
+        - 'cell_label refund/pay_to/swap/amount/payload scan across iter_*/STATUS.yaml'
+        - 'Git history scan for prior refund and pay_to audits'
+      results:
+        - 'iter1, iter66, iter80, iter86, iter89, iter92, iter102, iter113, iter131, iter133, iter173, iter176, iter193, iter200, iter210: prior families DEADEND_WITH_PROOF'
+        - 'AX5 is distinct: error-tuple amount binding from Pool refund construction through Router decoding and delivery'
+    r15_disclosure_check:
+      gh_search_terms_used:
+        - 'repo:ston-fi/dex-core-v2 "router::pay_to" "swap_refund" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "router::pay_to" "swap_refund" is:pr'
+        - 'repo:ston-fi/dex-core-v2 "swap_refund_slippage" "amount0_out" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "swap_refund_slippage" "amount0_out" is:pr'
+      gh_search_hits: 0
+      evidence_files:
+        - iter_222/r15-router-pay-to-swap-refund-issue.json
+        - iter_222/r15-router-pay-to-swap-refund-pr.json
+        - iter_222/r15-swap-refund-slippage-issue.json
+        - iter_222/r15-swap-refund-slippage-pr.json
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  shadow_mode: true
+  caller_path: iter_222/callers-grep.txt
+  caller_match_count: 202
+  caller_unique_files: 10
+  prior_audit_path: iter_222/prior-audit-git.log
+  prior_family_matches: [iter1, iter66, iter80, iter86, iter89, iter92, iter102, iter113, iter131, iter133, iter173, iter176, iter193, iter200, iter210]
+  r15_evidence_files:
+    - iter_222/r15-router-pay-to-swap-refund-issue.json
+    - iter_222/r15-router-pay-to-swap-refund-pr.json
+    - iter_222/r15-swap-refund-slippage-issue.json
+    - iter_222/r15-swap-refund-slippage-pr.json
+  source_conclusion: 'Pool refund errors use the original input amounts, the shared pay_to tuple is serialized and parsed consistently, the Router accepts pay_to only from the deterministic Pool, and failed swap state is not persisted.'
+  attacker_privilege:
+    privilege_required: external_auth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_222/poc_pool_swap_refund_error_payload_amount_binding.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_222/poc_pool_swap_refund_error_payload_amount_binding.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_222/live-pool-swap-refund-regression.run.log
+    result: PASS

@@ -1,0 +1,79 @@
+schema_version: shadow-v1
+iteration: 186
+phase: completed
+cell_id: AQ4
+cell_label: router_provide_both_positive_exception_flag
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AQ4
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - "contracts/pool/msgs/router.fc:204: both_positive? = call_payload~load_bool();"
+      - "contracts/pool/msgs/router.fc:250: lp_account::add_liquidity("
+      - "contracts/pool/msgs/router.fc:255: both_positive?,"
+      - "contracts/lp_account/msgs/pool.fc:11: int both_positive? = in_msg_body~load_bool();"
+      - "contracts/lp_account/msgs/pool.fc:24: if both_positive? {"
+      - "contracts/lp_account/msgs/pool.fc:25: mint? = (min_lp_out > 0) & ((storage::amount0 > 0) & (storage::amount1 > 0));"
+      - "contracts/lp_account/msgs/pool.fc:27: mint? = (min_lp_out > 0) & (storage::amount0 + storage::amount1 > 0);"
+      - "contracts/lp_account/msgs/pool.fc:34: pool::cb_add_liquidity("
+      - "contracts/pool/msgs/lp_account.fc:26: throw_unless(error::invalid_caller, equal_slices(lp_account~address(params::workchain), ctx.at(SENDER)));"
+      - "contracts/pool/msgs/lp_account.fc:52: (liquidity, new_collected_protocol_fees0, new_collected_protocol_fees1) = pool::get_lp_provide_out(tot_am0, tot_am1);"
+      - "contracts/pool/msgs/lp_account.fc:60: storage::reserve0 += (tot_am0 - new_collected_protocol_fees0);"
+      - "contracts/pool/msgs/lp_account.fc:61: storage::reserve1 += (tot_am1 - new_collected_protocol_fees1);"
+      - "contracts/pool/msgs/lp_account.fc:132: storage::save();"
+  poc_execution:
+    test_file_path: iter_186/poc_router_provide_both_positive_exception_flag.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_186/poc_router_provide_both_positive_exception_flag.run.log
+    run_log_exists_on_disk: true
+    test_runtime: "0.1s static/model; 16.599s integration"
+    result: "PASS (19 cross-file anchors; 7 flag/minimum cases; 5 provide-LP integration tests)"
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 both_positive is:issue"
+      - "repo:ston-fi/dex-core-v2 both_positive is:pr"
+      - "repo:ston-fi/dex-core-v2 single-sided liquidity is:issue"
+      - "repo:ston-fi/dex-core-v2 single-sided liquidity is:pr"
+    results: "4 GitHub API searches returned total_count=0"
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "repo:ston-fi/dex-core-v2 both_positive is:issue"
+      - "repo:ston-fi/dex-core-v2 both_positive is:pr"
+      - "repo:ston-fi/dex-core-v2 single-sided liquidity is:issue"
+      - "repo:ston-fi/dex-core-v2 single-sided liquidity is:pr"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  caller_grep_path: iter_186/callers-grep.txt
+  caller_match_count: 19
+  caller_unique_files: 7
+  prior_audit_path: iter_186/prior-audit-git.log
+  prior_audit_family_matches:
+    - iter_112
+    - iter_126
+  r15_evidence_files:
+    - iter_186/R15-GH-both-positive-issue.json
+    - iter_186/R15-GH-both-positive-pr.json
+    - iter_186/R15-GH-single-side-issue.json
+    - iter_186/R15-GH-single-side-pr.json
+  source_conclusion: "The caller-controlled both_positive bit is forwarded through Router into the deterministic LP Account and selects only whether both accumulated token legs must be positive before a callback. Both branches still require min_lp_out > 0 and at least one real accumulated token amount; the callback uses those exact totals, re-authenticates the derived LP Account, and applies the Pool's normal liquidity/minimum/reserve checks. A false flag permits an intentional single-sided LP callback, while a true flag defers a single leg. Zero-minimum cases do not mint. Static/model and five provide-LP integration tests showed no unbacked LP, reserve mismatch, victim loss, or attacker-positive delta. Iter126 audited the same cell, so AQ4 is a duplicate dead end."
+  attacker_privilege: external_auth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  shadow_mode: true

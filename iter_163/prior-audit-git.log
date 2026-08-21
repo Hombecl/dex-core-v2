@@ -1,0 +1,2 @@
+COMMAND: git log --all --oneline --decorate --regexp-ignore-case --grep='LP mint.*bounce\|mint.*pool save\|internal_transfer.*liquidity\|bounce.*LP' -- contracts/pool.fc contracts/pool/msgs/lp_account.fc contracts/lp_wallet.fc contracts/common/contracts.fc
+RESULT: no matching prior audit commits in the checked history

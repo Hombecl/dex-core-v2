@@ -1,0 +1,14 @@
+AW5 prior-art / audit lookup
+============================
+Command:
+git log --all --oneline -- iter_109/STATUS.yaml iter_196/STATUS.yaml iter_209/STATUS.yaml iter_212/STATUS.yaml
+
+063d463 shadow: complete iter109 Z4
+
+Selected prior statuses:
+iter_109/STATUS.yaml => iteration=109 cell=Z4 router_getter_upgrade_code_visibility verdict=DEADEND_WITH_PROOF
+iter_196/STATUS.yaml => iteration=196 cell=AS4 pool_upgrade_ref_partial_state verdict=KILLED_TRUSTED_ON_TRUSTED
+iter_209/STATUS.yaml => iteration=209 cell=AV1 vault_withdraw_destroy_redeposit_code_identity verdict=DEADEND_WITH_PROOF
+iter_212/STATUS.yaml => iteration=212 cell=AV5 router_vault_getter_addr_none_identity verdict=DEADEND_WITH_PROOF
+
+Prior conclusion: Router getter/code-visibility, pool upgrade identity, and Vault StateInit identity were previously drilled. AW5 isolates whether the actual Router upgrade storage path can mutate vault_code; it cannot. Any deliberate new derivation in replacement Router code is a trusted admin code change and is classified KILLED_TRUSTED_ON_TRUSTED.

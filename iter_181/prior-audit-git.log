@@ -1,0 +1,10 @@
+Prior-audit family matches from shadow STATUS files:
+iter_38: permissionless referral-vault withdrawal clears and saves before any later replay.
+iter_61: withdrawal replay/bounce is rejected after the stored amount is zeroed.
+iter_78: referral-vault deposit/withdraw identity is owner-token-router bound.
+iter_83: destroy-and-redeposit recreates the same zero-balance vault without stale state.
+iter_88: DESTROY_IF_ZERO withdrawal and repeated collection are covered.
+iter_104: permissionless withdraw_fee replay requires a new stored-router deposit.
+iter_125: concurrent deposit/withdraw transition model found no duplicate payout.
+iter_134: exact stored amount/owner/token router_pay_to tuple was verified.
+iter_175: altered vault owner/token tuples fail Router sender authentication.

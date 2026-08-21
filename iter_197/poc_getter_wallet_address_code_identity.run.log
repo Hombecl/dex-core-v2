@@ -1,0 +1,16 @@
+cross_file_anchors 19
+getter_state_init_matches_mint_state_init true
+getter_state_init_matches_burn_callback_state_init true
+owner_master_code_all_bound true
+different_owner_distinct true
+different_master_distinct true
+different_code_distinct true
+attacker_positive_delta false
+result PASS
+
+live_regression_command:
+npm test -- --runInBand tests/System.spec.ts -t 'should handle mint & burn liquidity'
+
+live_regression_output:
+PASS tests/System.spec.ts (5.141 s)
+Tests: 10 skipped, 1 passed, 11 total

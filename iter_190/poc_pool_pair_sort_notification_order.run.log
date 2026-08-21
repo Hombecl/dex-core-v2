@@ -1,0 +1,15 @@
+COMMAND 1: node iter_190/poc_pool_pair_sort_notification_order.test.js
+cross_file_anchors 26
+variant_state_init_sorters 5
+reversed_notification_same_pool true
+forward_and_reverse_amounts_canonicalized true
+token0_token1_assignment_stable true
+attacker_positive_delta false
+result PASS
+
+COMMAND 2 (source repo cwd): npm test -- --runInBand tests/ConstProduct.spec.ts -t 'should provide lp'
+PASS tests/ConstProduct.spec.ts (10.688 s)
+Tests: 31 skipped, 5 passed, 36 total
+Matched: should provide lp; should provide lp with payload; should provide lp with payload to a different address; should provide lp (single side); should provide lp (single side) with protocol fees.
+
+The static model covers forward/reverse endpoint order and all five Pool StateInit sorters. The live regression covers normal/reversed LP notifications and canonical reserve assignment without a wrong-side output.

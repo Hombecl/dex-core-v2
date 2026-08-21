@@ -1,0 +1,22 @@
+COMMAND: node iter_154/poc_stableswap_invariant_solver_denominator_boundary.test.js
+{
+  "raw_division_sites_checked": 4,
+  "reachability_guards_checked": 5,
+  "amp_boundary_values_checked": 5,
+  "reserve_ratio_boundary_pairs_checked": 7,
+  "invariant_cases": 32,
+  "output_solver_cases": 64,
+  "max_invariant_iterations": 134,
+  "max_output_iterations": 45,
+  "fail_closed_invariant_cases": 3,
+  "fail_closed_output_cases": 0,
+  "non_positive_denominators": 0,
+  "under_converged_outputs": 0,
+  "result": "PASS"
+}
+
+COMMAND: npm test -- --runInBand tests/Stableswap.spec.ts -t 'should swap|should provide lp|should burn liquidity|should swap with different amp|should refund swap|should direct add liquidity'
+RESULT: PASS tests/Stableswap.spec.ts
+TEST_SUITES: 1 passed, 1 total
+TESTS: 14 skipped, 12 passed, 26 total
+RUNTIME: 15.03s

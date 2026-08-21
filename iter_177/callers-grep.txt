@@ -1,0 +1,10 @@
+COMMAND: rg -n 'collect_fees|protocol_fee_address|collected_token0_protocol_fee|collected_token1_protocol_fee|router::pay_to|storage::save|should collect fees' selected source/test files
+RESULT: 32 matches across 7 files; callers_grep_done=true.
+
+contracts/pool.fc:21-24 — only stored protocol_fee_address reaches collect_fees handler
+contracts/pool/msgs/protocolfee.fc:4-5 — collect_fees requires both counters positive
+contracts/pool/msgs/protocolfee.fc:22-55 — two one-sided pay_to messages preserve token/amount legs
+contracts/pool/msgs/protocolfee.fc:57-60 — both counters clear and save after message construction
+contracts/router/msgs/pool.fc:5-86 — Router validates pool-originated pay_to messages
+contracts/common/contracts.fc:146-172 — pay_to builder preserves each leg
+tests/WeightedCPI.spec.ts:1226 — live collection test

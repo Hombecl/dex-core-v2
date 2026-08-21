@@ -1,0 +1,31 @@
+command:
+rg -n 'pay_to|custom_payload|additional_info|fwd_opcode|cross_swap|amount0_out|amount1_out|swap_amount|invalid_caller|transfer_bounce|route_dex_messages|store_maybe_ref|router_address|handle_pool_messages' contracts/router/msgs/pool.fc contracts/router/dex.fc contracts/common/contracts.fc contracts/router.fc contracts/pool.fc
+
+summary:
+match_count: 73
+unique_files: 5
+callers_grep_done: true
+
+key_matches:
+contracts/router/msgs/pool.fc:5: if ctx.at(OPCODE) == op::pay_to
+contracts/router/msgs/pool.fc:10: cell custom_payload = in_msg_body~load_maybe_ref()
+contracts/router/msgs/pool.fc:11: slice additional_info = in_msg_body~load_slice_ref()
+contracts/router/msgs/pool.fc:28: deterministic Pool sender gate
+contracts/router/msgs/pool.fc:34: int fwd_opcode = -1
+contracts/router/msgs/pool.fc:37: if (tmp_custom_payload_ds.slice_bits() > 32)
+contracts/router/msgs/pool.fc:46: if (fwd_opcode == op::cross_swap)
+contracts/router/msgs/pool.fc:52: int swap_amount = amount0_out + amount1_out
+contracts/router/msgs/pool.fc:63: if amount0_out > 0
+contracts/router/msgs/pool.fc:74: jetton_wallet::transfer(... amount0_out, owner, excesses_address)
+contracts/router/msgs/pool.fc:83: jetton_wallet::transfer(... amount1_out, owner, excesses_address)
+contracts/router/dex.fc:44: cross_swap normalized to swap
+contracts/router/dex.fc:47: equal token-wallet invalid-pool guard
+contracts/router/dex.fc:67: low-gas route guard
+contracts/router/dex.fc:89: derived Pool route
+contracts/router/dex.fc:100: exact sent amount refund on route failure
+contracts/common/contracts.fc:163: .store_maybe_ref(_maybe_custom_payload)
+contracts/router.fc:23: if handle_pool_messages()
+contracts/pool.fc:28: if equal_slices(ctx.at(SENDER), storage::router_address)
+
+conclusion:
+The Pool sender is authenticated before payload interpretation. Empty, 32-bit-boundary, malformed, and low-gas payloads remain normal exact-leg transfers or exact-amount refunds; only a payload wider than the opcode with cross_swap and sufficient current gas enters nested routing, which revalidates route identity and preserves the exact nonzero amount.

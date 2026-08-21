@@ -1,0 +1,19 @@
+contracts/common/contracts.fc:120:(cell) lp_account::add_liquidity(
+contracts/common/contracts.fc:125:    int _both_positive?,
+contracts/common/contracts.fc:136:        .store_bool(_both_positive?)
+contracts/pool/msgs/router.fc:178:    if ctx.at(OPCODE) == op::provide_lp {
+contracts/pool/msgs/router.fc:195:        int both_positive? = 0;
+contracts/pool/msgs/router.fc:204:            both_positive? = call_payload~load_bool();
+contracts/pool/msgs/router.fc:250:                lp_account::add_liquidity(
+contracts/pool/msgs/router.fc:255:                    both_positive?,
+contracts/lp_account/msgs/pool.fc:6:    if ctx.at(OPCODE) == op::add_liquidity {
+contracts/lp_account/msgs/pool.fc:11:        int both_positive? = in_msg_body~load_bool();
+contracts/lp_account/msgs/pool.fc:24:        if both_positive? {
+contracts/lp_account/msgs/pool.fc:34:                pool::cb_add_liquidity(
+contracts/pool/msgs/lp_account.fc:4:    if ctx.at(OPCODE) == op::cb_add_liquidity {
+contracts/pool/msgs/lp_account.fc:26:        throw_unless(error::invalid_caller, equal_slices(lp_account~address(params::workchain), ctx.at(SENDER)));
+contracts/pool/msgs/lp_account.fc:52:                (liquidity, new_collected_protocol_fees0, new_collected_protocol_fees1) = pool::get_lp_provide_out(tot_am0, tot_am1);
+contracts/pool/msgs/lp_account.fc:60:            storage::reserve0 += (tot_am0 - new_collected_protocol_fees0);
+contracts/pool/msgs/lp_account.fc:61:            storage::reserve1 += (tot_am1 - new_collected_protocol_fees1);
+contracts/pool/msgs/lp_account.fc:132:        storage::save();
+contracts/pool.fc:37:    if handle_lp_account_messages() {

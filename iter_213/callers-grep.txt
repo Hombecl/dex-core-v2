@@ -1,0 +1,18 @@
+AW1 callers_grep_done=true
+command: rg -n 'pay_vault|deposit_ref_fee|IS_BOUNCED|send_with_stateinit|storage::save|route_dex_messages|ref_address|check_workchain_nofail|wrong_workchain|insufficient_gas|ref_fee_out|storage::reserve|storage::collected|handle_pool_messages|handle_vault_messages|vault_idata|vault_code|QCARRY_ALL_BALANCE|CARRY_ALL_BALANCE|NORMAL' contracts/pool/msgs/router.fc contracts/router/msgs/pool.fc contracts/router/dex.fc contracts/router.fc contracts/pool.fc contracts/vault.fc contracts/common/contracts.fc contracts/common/op.fc contracts/router/storage.fc wrappers/Router.ts wrappers/Vault.ts tests/ConstProduct.spec.ts tests/ConstSum.spec.ts
+match_count: 86
+unique_files: 9
+key_matches:
+  - contracts/pool/msgs/router.fc:89-105 computes one-sided swap/referral fee outputs and mutates reserves.
+  - contracts/pool/msgs/router.fc:111-118 validates deadline, output, and reserve state before send construction.
+  - contracts/pool/msgs/router.fc:121-132 emits pay_vault with exact fee fields and explicit gas/storage budget.
+  - contracts/pool/msgs/router.fc:135-152 emits pay_to and then storage::save().
+  - contracts/router/msgs/pool.fc:94-113 parses pay_vault and authenticates deterministic Pool sender.
+  - contracts/router/msgs/pool.fc:118-136 derives deterministic Vault StateInit and sends deposit_ref_fee.
+  - contracts/router/dex.fc:56-63 includes Vault/router/pool deposit gas in route validation.
+  - contracts/router.fc:11-12 ignores protocol-marked bounces and 23-24 dispatches pool messages.
+  - contracts/pool.fc:11-13 ignores protocol-marked bounces and 28-30 gates router messages.
+  - contracts/vault.fc:32-34 ignores protocol-marked bounces.
+  - contracts/vault.fc:36-46 requires Router sender, saves exact deposit, and routes excesses.
+  - contracts/common/contracts.fc:186-203 serializes pay_vault fee/token tuple.
+  - contracts/common/op.fc:25-27 defines pay_vault/deposit_ref_fee schemas.

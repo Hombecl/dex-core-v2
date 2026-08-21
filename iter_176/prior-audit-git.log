@@ -1,0 +1,7 @@
+COMMAND: rg --files iter_* | rg 'prior-audit|audit|R15' and inspect matching STATUS.yaml source conclusions
+RESULT: AO4 family is already covered by completed shadow audits:
+iter_89 V4 router_route_error_refund_encoding — DEADEND_WITH_PROOF
+iter_114 AA5 router_transfer_bounce_error_recipient — DEADEND_WITH_PROOF
+iter_127 AD2 pool_provide_lp_parser_error_refund_typing — DEADEND_WITH_PROOF
+iter_133 AE3 router_notification_without_ref_refund_source — DEADEND_WITH_PROOF
+The exact outer/inner route refund and recipient split is a duplicate family; no novel candidate survives.

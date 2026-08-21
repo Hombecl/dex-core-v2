@@ -1,0 +1,81 @@
+schema_version: shadow-v1
+iteration: 177
+phase: completed
+cell_id: AO5
+cell_label: pool_protocol_fee_dual_leg_release
+final_verdict: KILLED_TRUSTED_ON_TRUSTED
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AO5
+  final_verdict: KILLED_TRUSTED_ON_TRUSTED
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - "contracts/pool.fc:22: if equal_slices(ctx.at(SENDER), storage::protocol_fee_address) {"
+      - "contracts/pool/msgs/protocolfee.fc:4: if ctx.at(OPCODE) == op::collect_fees {"
+      - "contracts/pool/msgs/protocolfee.fc:5: throw_unless(error::zero_output, (storage::collected_token0_protocol_fee > 0) & (storage::collected_token1_protocol_fee > 0));"
+      - "contracts/pool/msgs/protocolfee.fc:25: router::pay_to("
+      - "contracts/pool/msgs/protocolfee.fc:32: storage::collected_token0_protocol_fee,"
+      - "contracts/pool/msgs/protocolfee.fc:42: router::pay_to("
+      - "contracts/pool/msgs/protocolfee.fc:51: storage::collected_token1_protocol_fee,"
+      - "contracts/pool/msgs/protocolfee.fc:57: storage::collected_token0_protocol_fee = 0;"
+      - "contracts/pool/msgs/protocolfee.fc:58: storage::collected_token1_protocol_fee = 0;"
+      - "contracts/pool/msgs/protocolfee.fc:60: storage::save();"
+      - "contracts/router/msgs/pool.fc:28: throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER)));"
+      - "contracts/common/contracts.fc:146: (cell) router::pay_to("
+  poc_execution:
+    test_file_path: iter_177/poc_pool_protocol_fee_dual_leg_release.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_177/poc_pool_protocol_fee_dual_leg_release.run.log
+    run_log_exists_on_disk: true
+    test_runtime: "0.2s static/model; 6.528s integration"
+    result: "PASS (13 source anchors; 2 zero-leg models; 1 live collection test)"
+  prior_art_check:
+    queries:
+      - "collect_fees dual leg protocol fee (issues)"
+      - "collect_fees dual leg protocol fee (issues + pull requests)"
+      - "protocol_fee_address pay_to counter clear (issues)"
+      - "protocol_fee_address pay_to counter clear (issues + pull requests)"
+    results: "4 valid GitHub searches returned zero results"
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "collect_fees dual leg protocol fee"
+      - "protocol_fee_address pay_to counter clear"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: KILLED_TRUSTED_ON_TRUSTED
+  selected_cluster_source: POST_MATRIX_CLUSTER_PROPOSALS_26.md
+  caller_grep_path: iter_177/callers-grep.txt
+  caller_match_count: 32
+  caller_unique_files: 7
+  prior_audit_path: iter_177/prior-audit-git.log
+  prior_audit_family_matches:
+    - iter_57/R1
+    - iter_74/S4
+    - iter_97/X2
+    - iter_115/AA4
+    - iter_132/AE2
+  r15_evidence_files:
+    - iter_177/R15-GH-collect-fees-dual-leg-issue.json
+    - iter_177/R15-GH-collect-fees-dual-leg-pr.json
+    - iter_177/R15-GH-protocol-fee-counter-clear-issue.json
+    - iter_177/R15-GH-protocol-fee-counter-clear-pr.json
+  source_conclusion: "collect_fees is reachable only from the stored protocol_fee_address, requires both counters positive, emits exact one-sided token legs through Router, then clears both counters and saves. A single-sided counter can strand a protocol fee, but it is trusted-role liveness/griefing with no external attacker-positive delta and is explicitly killed by the trusted-on-trusted filter. Prior S4/X2/AE2 audits cover the same family."
+  candidate_path: null
+  attacker_privilege: privileged_role
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  shadow_mode: true

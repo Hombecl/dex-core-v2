@@ -1,0 +1,9 @@
+COMMAND: rg -n 'route_dex_messages|refund_address|excesses_address|transfer_bounce|pay_to|transfer_notification|wrong_workchain|invalid_pool' selected source/test files
+RESULT: 84 matches across 6 files; callers_grep_done=true.
+
+contracts/router/dex.fc:1-98 — outer parse catch and inner validation catch emit exact _sent_amount with separate recipient rules
+contracts/router/msgs/jetton.fc:5-24 — transfer_notification is one production caller
+contracts/router/msgs/pool.fc:5-55 — pool pay_to cross-swap is the second production caller
+contracts/pool/msgs/router.fc:30-172 — Pool catches malformed/failed swap payloads and routes original legs through pay_to
+contracts/common/contracts.fc:146-172 — pay_to builder preserves owner/excess/original caller and token legs
+contracts/common/op.fc:4-10,59-64 — DexPayload field order and transfer-bounce error opcodes

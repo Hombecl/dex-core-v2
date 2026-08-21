@@ -1,0 +1,5 @@
+{
+  "query": "repo:ston-fi/dex-core-v2 \\\"send_tokens\\\" \\\"on_bounce\\\" \\\"state_init\\\" is:issue",
+  "total_count": 0,
+  "items": []
+}

@@ -1,0 +1,8 @@
+Prior-audit family matches from shadow STATUS files:
+iter_79: initial LP-provide min/supply boundary across all five implementations.
+iter_126: both_positive/minimum gating cannot mint zero legs.
+iter_130: Pool callback success save is separate from failed-add refund and cannot mint stale state.
+iter_154: LP-provide arithmetic and callback boundary model.
+iter_157: variant get_lp_provide_out exception and fee-output anchors.
+iter_162: exact zero-result provide leaves a user donation, no LP/protocol fee credit, and no extraction.
+iter_165: zero-LP donation can shift reserve ratio only through donor-funded input; no external loss.

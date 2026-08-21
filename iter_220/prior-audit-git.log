@@ -1,0 +1,18 @@
+# AX3 prior-audit-git.log
+$ git log --all --oneline -- iter_1/STATUS.yaml iter_102/STATUS.yaml iter_114/STATUS.yaml iter_133/STATUS.yaml iter_139/STATUS.yaml iter_193/STATUS.yaml iter_210/STATUS.yaml
+1b4c27a shadow: complete iter139 AF4 trusted kill
+991c982 shadow: complete iter133 AE3 deadend
+b21792c shadow: complete iter114 AA5
+6cabd61 shadow: complete iter102 Y2
+388c94e checkpoint: v4flash shadow iter100
+
+$ selected prior status summaries
+iter_1: cell_label:=swap final_verdict:=DEADEND_WITH_PROOF 
+iter_102: cell_label:=router_route_untrusted_notification_binding final_verdict:=DEADEND_WITH_PROOF 
+iter_114: cell_label:=router_transfer_bounce_error_recipient final_verdict:=DEADEND_WITH_PROOF 
+iter_133: cell_label:=router_notification_without_ref_refund_source final_verdict:=DEADEND_WITH_PROOF 
+iter_139: cell_label:=pool_reset_gas_body_tail_parse final_verdict:=KILLED_TRUSTED_ON_TRUSTED 
+iter_193: cell_label:=router_pay_to_cross_swap_recursion final_verdict:=DEADEND_WITH_PROOF 
+iter_210: cell_label:=router_notification_ref_forward_payload_boundary final_verdict:=DEADEND_WITH_PROOF
+
+Prior-family conclusion: earlier route notification, transfer-bounce refund, excess-recipient, pool-to-router re-entry, and current cross-route cells all found deterministic refund/caller or trusted Router/Pool binding. No prior record shows an external asset-release path from the exact gas boundary.

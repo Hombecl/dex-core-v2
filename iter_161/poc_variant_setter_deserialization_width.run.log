@@ -1,0 +1,17 @@
+COMMAND: node iter_161/poc_variant_setter_deserialization_width.test.js
+{
+  "setter_fields_checked": 3,
+  "width_pairs_checked": 3,
+  "domain_edges_checked": 21,
+  "wcpi_narrow_storage_bits": 64,
+  "wcpi_max_accepted_weight_bits": 60,
+  "truncation_reachable_under_admin_bound": false,
+  "pool_setter_save_sites_checked": 3,
+  "result": "PASS"
+}
+
+COMMAND: npm test -- --runInBand tests/Stableswap.spec.ts tests/WeightedCPI.spec.ts tests/WeightedStableswap.spec.ts -t 'should set params|should set param|should set new rate'
+RESULT: PASS, 3 suites
+TEST_SUITES: 3 passed, 3 total
+TESTS: 73 skipped, 6 passed, 79 total
+RUNTIME: 16.864s

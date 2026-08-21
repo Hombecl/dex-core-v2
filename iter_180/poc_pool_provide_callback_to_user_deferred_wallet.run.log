@@ -1,0 +1,27 @@
+cross_file_anchors 17
+identity_cases 4
+explicit_delegation_supported true
+forged_user_sender_rejected true
+mint_owner_follows_to_user true
+attacker_value_extraction false
+result PASS
+
+PASS tests/System.spec.ts (5.696 s)
+  System
+    Dex
+      ✓ should handle mint & burn liquidity (464 ms)
+      ○ skipped should handle refund partial liquidity
+      ○ skipped should handle swaps
+      ○ skipped should handle invalid transfers
+      ○ skipped should handle cross swap
+    Governance
+      ○ skipped should reset pool gas
+      ○ skipped should reset pool gas (different address)
+      ○ skipped should reset router gas
+      ○ skipped should lock & unlock pool
+      ○ skipped should set fees
+      ○ skipped should collect fees
+
+Test Suites: 1 passed, 1 total
+Tests:       10 skipped, 1 passed, 11 total
+Time:        5.994 s

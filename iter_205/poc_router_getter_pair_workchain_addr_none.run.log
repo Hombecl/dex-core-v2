@@ -1,0 +1,20 @@
+static_poc_command:
+node iter_205/poc_router_getter_pair_workchain_addr_none.test.js
+
+static_poc_output:
+cross_file_anchors 21
+addr_none_rejected_by_strict_getter_workchain_checks true
+addr_none_only_tolerated_by_explicit_nofail_helper true
+wrong_workchain_rejected true
+equal_token_pair_rejected true
+getter_and_route_share_pool_idata_inputs true
+pool_state_init_normalizes_token_order true
+classification DEADEND_WITH_PROOF
+result PASS
+
+live_regression_command:
+npm test -- --runInBand tests/Router.spec.ts -t 'should return valid pool address'
+
+live_regression_output:
+PASS tests/Router.spec.ts
+Tests: 3 skipped, 1 passed, 4 total

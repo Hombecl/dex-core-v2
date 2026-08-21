@@ -1,0 +1,18 @@
+contracts/router/msgs/jetton.fc:5:    if ctx.at(OPCODE) == op::ft::transfer_notification {
+contracts/router/msgs/jetton.fc:24:        route_dex_messages(
+contracts/router/dex.fc:77:        ;; route call to the correct pool
+contracts/router/dex.fc:79:            pool_idata(my_address(), _jetton_address, token_wallet1, storage::jetton_lp_wallet_code,  storage::lp_account_code),
+contracts/router/dex.fc:88:            pool::$route(transferred_op, _caller, _sent_amount, _jetton_address, token_wallet1, _dex_payload),
+contracts/common/contracts.fc:222:(cell) pool::$route(
+contracts/common/contracts.fc:233:    if _sender_jetton_address.slice_hash() > _other_jetton_address.slice_hash() {
+contracts/common/contracts.fc:235:            .store_coins(_jetton_amount)
+contracts/common/contracts.fc:240:            .store_coins(_jetton_amount)
+contracts/pool/pools/constant_product/state_init.fc:19:(cell) pool_idata(slice _router_address, slice _first_jetton_address, slice _second_jetton_address, cell _jetton_lp_wallet_code, cell _lp_account_code) inline {
+contracts/pool/pools/constant_product/state_init.fc:22:    if _first_jetton_address.slice_hash() > _second_jetton_address.slice_hash() {
+contracts/pool/msgs/lp_account.fc:35:                throw_unless(error::low_liquidity, (tot_am0 > 0) & (tot_am1 > 0));
+contracts/pool/msgs/lp_account.fc:123:                    user_address,
+contracts/lp_account/msgs/pool.fc:24:        if both_positive? {
+contracts/lp_account/msgs/pool.fc:34:                pool::cb_add_liquidity(
+contracts/lp_wallet.fc:103:() burn_tokens (slice in_msg_body, slice sender_address, int msg_value, int fwd_fee) impure {
+contracts/pool/msgs/lp_wallet.fc:20:        throw_unless(error::invalid_caller, equal_slices(lp_wallet~address(params::workchain), ctx.at(SENDER)));
+contracts/router/msgs/pool.fc:28:        throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER)));

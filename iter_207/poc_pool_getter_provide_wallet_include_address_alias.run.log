@@ -1,0 +1,19 @@
+static_poc_command:
+node iter_207/poc_pool_getter_provide_wallet_include_address_alias.test.js
+
+static_poc_output:
+cross_file_anchors 23
+include_address_false_and_true_share_wallet_address true
+include_address_only_controls_optional_response_ref true
+request_field_order_owner_then_include_bit_preserved true
+wrong_workchain_returns_addr_none_without_wallet_derivation true
+lp_wallet_owner_sender_binding_preserved true
+classification DEADEND_WITH_PROOF
+result PASS
+
+live_regression_command:
+npm test -- --runInBand tests/System.spec.ts -t 'should handle mint & burn liquidity'
+
+live_regression_output:
+PASS tests/System.spec.ts (5.103 s)
+Tests: 10 skipped, 1 passed, 11 total

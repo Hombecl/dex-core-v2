@@ -1,0 +1,21 @@
+$ (source repo) npm test -- --runInBand tests/ConstProduct.spec.ts -t 'should direct add liquidity (all)'
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/ConstProduct.spec.ts -t should direct add liquidity (all)
+
+PASS tests/ConstProduct.spec.ts
+  Dex
+    ✓ should direct add liquidity (all) (1248 ms)
+Test Suites: 1 passed, 1 total
+Tests: 35 skipped, 1 passed, 36 total
+Time: 6.31 s
+
+$ (source repo) npm test -- --runInBand tests/ConstProduct.spec.ts -t 'should direct add liquidity (partial)'
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/ConstProduct.spec.ts -t should direct add liquidity (partial)
+
+PASS tests/ConstProduct.spec.ts
+  Dex
+    ✓ should direct add liquidity (partial) (1252 ms)
+Test Suites: 1 passed, 1 total
+Tests: 35 skipped, 1 passed, 36 total
+Time: 8.583 s

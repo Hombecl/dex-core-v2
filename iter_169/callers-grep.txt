@@ -1,0 +1,59 @@
+COMMAND: rg -n "from_address|transfer_notification|route_dex_messages|pool_idata|jetton_amount|balance -=|balance \+=|storage::save|_jetton_address|token_wallet1|jetton_wallet::transfer" contracts/lp_wallet.fc contracts/router/msgs/jetton.fc contracts/router/dex.fc contracts/common/contracts.fc contracts/pool/msgs/router.fc contracts/pool/msgs/lp_account.fc
+MATCH_COUNT: 54
+UNIQUE_FILES: 6
+
+contracts/pool/msgs/router.fc:14:        dex_payload~load_msg_addr(); ;; skip token_wallet1
+contracts/pool/msgs/router.fc:152:            storage::save();
+contracts/pool/msgs/router.fc:186:        dex_payload~load_msg_addr(); ;; skip token_wallet1 
+contracts/pool/msgs/router.fc:296:        storage::save();
+contracts/pool/msgs/router.fc:317:        storage::save();
+contracts/pool/msgs/lp_account.fc:115:            ) { ;; do not send transfer_notification, if gas is too low, mint may revert
+contracts/pool/msgs/lp_account.fc:132:            storage::save();
+contracts/router/msgs/jetton.fc:5:    if ctx.at(OPCODE) == op::ft::transfer_notification {
+contracts/router/msgs/jetton.fc:6:        int jetton_amount = in_msg_body~load_coins();
+contracts/router/msgs/jetton.fc:7:        slice from_address = in_msg_body~load_msg_addr();
+contracts/router/msgs/jetton.fc:15:                jetton_wallet::transfer(0, jetton_amount, from_address, from_address)
+contracts/router/msgs/jetton.fc:24:        route_dex_messages(
+contracts/router/msgs/jetton.fc:27:            jetton_amount, 
+contracts/router/msgs/jetton.fc:28:            from_address, 
+contracts/common/contracts.fc:214:        .store_coins(_amount) ;; jetton_amount
+contracts/common/contracts.fc:215:        .store_slice(_from) ;; from_address
+contracts/common/contracts.fc:225:    int _jetton_amount, 
+contracts/common/contracts.fc:226:    slice _sender_jetton_address, 
+contracts/common/contracts.fc:227:    slice _other_jetton_address, 
+contracts/common/contracts.fc:233:    if _sender_jetton_address.slice_hash() > _other_jetton_address.slice_hash() {
+contracts/common/contracts.fc:235:            .store_coins(_jetton_amount)
+contracts/common/contracts.fc:240:            .store_coins(_jetton_amount);
+contracts/common/contracts.fc:280:(builder) jetton_wallet::transfer(int _fwd_amount, int _jetton_amount, slice _to, slice _response_address) inline {
+contracts/common/contracts.fc:282:        .store_coins(_jetton_amount)
+contracts/lp_wallet.fc:12:    int jetton_amount = in_msg_body~load_coins();
+contracts/lp_wallet.fc:18:    balance -= jetton_amount;
+contracts/lp_wallet.fc:39:        .store_coins(jetton_amount)
+contracts/lp_wallet.fc:51:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:57:    int jetton_amount = in_msg_body~load_coins();
+contracts/lp_wallet.fc:58:    balance += jetton_amount;
+contracts/lp_wallet.fc:59:    slice from_address = in_msg_body~load_msg_addr();
+contracts/lp_wallet.fc:63:        | equal_slices(calculate_user_jetton_lp_wallet_address(from_address, jetton_master_address, jetton_wallet_code), sender_address));
+contracts/lp_wallet.fc:74:            .store_uint(op::transfer_notification, 32)
+contracts/lp_wallet.fc:76:            .store_coins(jetton_amount)
+contracts/lp_wallet.fc:77:            .store_slice(from_address)
+contracts/lp_wallet.fc:100:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:106:    int jetton_amount = in_msg_body~load_coins();
+contracts/lp_wallet.fc:109:    balance -= jetton_amount;
+contracts/lp_wallet.fc:118:        .store_coins(jetton_amount)
+contracts/lp_wallet.fc:133:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:144:    int jetton_amount = in_msg_body~load_coins();
+contracts/lp_wallet.fc:145:    balance += jetton_amount;
+contracts/lp_wallet.fc:146:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/router/dex.fc:1:() route_dex_messages(slice _jetton_address, int _available_gas, int _sent_amount, slice _caller, cell _dex_payload) impure inline {
+contracts/router/dex.fc:8:    slice token_wallet1 = null();
+contracts/router/dex.fc:16:        token_wallet1 = dex_payload~load_msg_addr();
+contracts/router/dex.fc:22:            token_wallet1.address::check_workchain(params::workchain)
+contracts/router/dex.fc:32:            _jetton_address, 
+contracts/router/dex.fc:33:            jetton_wallet::transfer(0, _sent_amount, _caller, _caller)
+contracts/router/dex.fc:47:        throw_arg_if(op::transfer_bounce_invalid_pool, 1, equal_slices(_jetton_address, token_wallet1));
+contracts/router/dex.fc:79:            pool_idata(my_address(), _jetton_address, token_wallet1, storage::jetton_lp_wallet_code,  storage::lp_account_code),
+contracts/router/dex.fc:88:            pool::$route(transferred_op, _caller, _sent_amount, _jetton_address, token_wallet1, _dex_payload), 
+contracts/router/dex.fc:95:        var out_msg_body = jetton_wallet::transfer(0, _sent_amount, refund_address, excesses_address)
+contracts/router/dex.fc:98:        msgs::send_simple(0, _jetton_address, out_msg_body.end_cell(), QCARRY_ALL_BALANCE);
+

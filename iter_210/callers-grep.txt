@@ -1,0 +1,20 @@
+AV3 callers_grep_done=true
+command: rg -n 'transfer_notification|slice_refs_empty|route_dex_messages|dex_payload|load_ref|store_maybe_ref|forward_payload|refund_address|transfer_bounce_invalid_request|transfer_bounce_invalid_pool|transfer_bounce_wrong_wc|transfer_bounce_tx_expired|transfer_bounce_low_gas|pool::\\$route|handle_jetton_messages|router::pay_to|router::pay_vault|from_user_address|token_wallet1|custom_payload|refund_payload' contracts/router/msgs/jetton.fc contracts/router/dex.fc contracts/router.fc contracts/common/contracts.fc contracts/common/op.fc contracts/router/msgs/pool.fc contracts/pool/msgs/router.fc contracts/pool.fc contracts/lp_wallet.fc wrappers/Router.ts tests/System.spec.ts tests/ConstSum.spec.ts tests/Stableswap.spec.ts
+match_count: 124
+unique_files: 8
+key_matches:
+  - contracts/router/msgs/jetton.fc:5-9 detects transfer_notification and checks for a payload ref.
+  - contracts/router/msgs/jetton.fc:12-19 no-ref branch refunds the exact amount to from_address through the notifying wallet.
+  - contracts/router/msgs/jetton.fc:24-30 referenced branch passes the exact sender, amount, caller, and one payload ref to route_dex_messages.
+  - contracts/router/dex.fc:14-19 parses operation, token_wallet1, refund, excesses, and deadline.
+  - contracts/router/dex.fc:21-25 validates the three parsed addresses' workchains.
+  - contracts/router/dex.fc:46-51 validates operation, pair inequality, lock, caller workchain, and deadline.
+  - contracts/router/dex.fc:77-90 derives and sends the deterministic pool route with the original amount/caller.
+  - contracts/router/dex.fc:91-98 refunds the original amount on route validation failure.
+  - contracts/router.fc:18-20 dispatches transfer notifications before other handlers.
+  - contracts/common/contracts.fc:218 preserves the optional forward payload reference.
+  - contracts/common/op.fc:4-6 defines cross_swap, swap, and provide_lp payload schemas.
+  - contracts/router/msgs/pool.fc:113-135 validates pool-originated messages and routes output/referral legs.
+  - contracts/pool/msgs/router.fc:4-12 parses nested swap payload fields.
+  - contracts/lp_wallet.fc:72-79 emits notification payload as the remaining transfer body.
+  - tests/System.spec.ts:251-260 exercises invalid transfer refund.

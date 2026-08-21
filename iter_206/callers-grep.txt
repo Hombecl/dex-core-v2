@@ -1,0 +1,24 @@
+command:
+rg -n 'getter_pool_data|collected_token0_protocol_fee|collected_token1_protocol_fee|protocol_fee_address|collect_fees|handle_protocolfee_messages|handle_getter_messages|storage::save|send_simple|getter_pool_address|store_coins\(_collected|internal_set_fees|set_fees' contracts/pool/msgs/getter.fc contracts/pool/msgs/protocolfee.fc contracts/pool.fc contracts/pool/headers.fc contracts/common/contracts.fc contracts/router/msgs/admin.fc contracts/router.fc contracts/common/op.fc
+
+summary:
+match_count: 67
+unique_files: 8
+callers_grep_done: true
+
+key_matches:
+contracts/pool/headers.fc:3-4: both fee-counter globals
+contracts/pool.fc:22-23: stored protocol-fee sender dispatches collect_fees
+contracts/pool.fc:48: getter dispatch remains separate and read-only
+contracts/pool/msgs/getter.fc:6: getter_pool_data opcode
+contracts/pool/msgs/getter.fc:19-21: protocol address and both current counters copied into response
+contracts/pool/msgs/getter.fc:23: response sent to ctx.at(SENDER) with IGNORE_ERRORS
+contracts/pool/msgs/protocolfee.fc:5: both counters positive gate
+contracts/pool/msgs/protocolfee.fc:32: token0 counter used in exact pay_to leg
+contracts/pool/msgs/protocolfee.fc:51: token1 counter used in exact pay_to leg
+contracts/pool/msgs/protocolfee.fc:57-60: both counters zeroed and storage saved
+contracts/common/contracts.fc:99-102: getter response serializes fee address and both counter values
+contracts/router/msgs/admin.fc:6: set_fees handler
+contracts/router/msgs/admin.fc:44-47: internal_set_fees carries new protocol recipient
+contracts/common/op.fc:11: collect_fees schema
+contracts/common/op.fc:38: getter_pool_data schema

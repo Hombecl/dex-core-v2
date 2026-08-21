@@ -1,0 +1,22 @@
+COMMAND: node iter_173/poc_pool_swap_trycatch_reserve_rollback.test.js
+{
+  "variants_checked": 5,
+  "variant_source_checks": 5,
+  "failure_kinds_checked": 5,
+  "modeled_failed_cases": 25,
+  "modeled_success_cases": 5,
+  "refund_emission_cases": 25,
+  "caught_state_persistence_mismatches": 0,
+  "catch_branch_has_success_save": false,
+  "persistent_state_uses_explicit_save": true,
+  "reserve_fee_state_rollback_verified": true,
+  "attacker_value_extraction": false,
+  "result": "PASS"
+}
+RUNTIME: 0.1s static/model
+
+COMMAND: npm test -- --runInBand tests/ConstProduct.spec.ts tests/ConstSum.spec.ts tests/Stableswap.spec.ts tests/WeightedCPI.spec.ts tests/WeightedStableswap.spec.ts -t 'should swap|should refund'
+RESULT: PASS
+TEST_SUITES: 5 passed, 54 passed, 84 skipped, 138 total
+SNAPSHOTS: 0 total
+RUNTIME: 83.152s

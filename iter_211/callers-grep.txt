@@ -1,0 +1,20 @@
+AV4 callers_grep_done=true
+command: rg -n 'pay_vault|amount0_out|amount1_out|vault::deposit_ref_fee|ref_fee_out|ref_address|one is always zero|both positive|invalid_caller|handle_pool_messages|router::pay_vault|vault_idata|storage::vault_code|storage::router_address|storage::deposited_amount|pay_to|pool::get_swap_out|pool::\\$route|send_with_stateinit' contracts/router/msgs/pool.fc contracts/common/contracts.fc contracts/common/op.fc contracts/router.fc contracts/router/storage.fc contracts/pool/msgs/router.fc contracts/pool.fc contracts/vault.fc contracts/router/dex.fc wrappers/Router.ts wrappers/Vault.ts tests/ConstProduct.spec.ts tests/ConstSum.spec.ts tests/Stableswap.spec.ts
+match_count: 92
+unique_files: 9
+key_matches:
+  - contracts/router/msgs/pool.fc:94-113 parses amount0_out/amount1_out and authenticates the deterministic Pool sender.
+  - contracts/router/msgs/pool.fc:118-124 selects token0 when amount0_out > 0, otherwise token1, using owner/token/router in vault_idata.
+  - contracts/router/msgs/pool.fc:127-135 sends one deposit_ref_fee with amount0_out + amount1_out.
+  - contracts/pool/msgs/router.fc:92-104 has mutually exclusive amount0/amount1 swap branches.
+  - contracts/pool/msgs/router.fc:94 and 101 assign only ref_fee_out1 or ref_fee_out0 per swap direction.
+  - contracts/pool/msgs/router.fc:121-130 emits router::pay_vault only when the summed referral fee is positive.
+  - contracts/common/contracts.fc:186-203 serializes the two fee legs and their token addresses in order.
+  - contracts/common/op.fc:25 defines the pay_vault tuple.
+  - contracts/router.fc:23 dispatches pool messages before vault messages.
+  - contracts/router/storage.fc:8,24 carries the configured vault code.
+  - contracts/vault.fc:40-44 accepts deposits only from the stored Router and saves the exact amount.
+  - contracts/router/dex.fc:61 includes vault gas in swap-route validation.
+  - wrappers/Router.ts:530-538 exposes vault identity by user/token.
+  - wrappers/Vault.ts:43-49 covers public withdraw trigger.
+  - tests/ConstProduct.spec.ts and tests/ConstSum.spec.ts cover referral-vault collection after one-sided swaps.

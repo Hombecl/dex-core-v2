@@ -1,0 +1,98 @@
+schema_version: shadow-v1
+iteration: 181
+phase: completed
+cell_id: AP4
+cell_label: vault_withdraw_permissionless_replay
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AP4
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - "contracts/vault.fc:40: if (ctx.at(OPCODE) == op::deposit_ref_fee) & equal_slices(ctx.at(SENDER), storage::router_address) {"
+      - "contracts/vault.fc:43: storage::deposited_amount += in_msg_body~load_coins();"
+      - "contracts/vault.fc:44: storage::save();"
+      - "contracts/vault.fc:51: if ctx.at(OPCODE) == op::withdraw_fee {"
+      - "contracts/vault.fc:52: throw_unless(error::zero_output, storage::deposited_amount > 0);"
+      - "contracts/vault.fc:62: router::vault_pay_to("
+      - "contracts/vault.fc:63: storage::deposited_amount,"
+      - "contracts/vault.fc:68: storage::deposited_amount = 0;"
+      - "contracts/vault.fc:69: storage::save();"
+      - "contracts/router/msgs/vault.fc:3: if ctx.at(OPCODE) == op::vault_pay_to {"
+      - "contracts/router/msgs/vault.fc:10: vault_idata(to_address, token_address, my_address()),"
+      - "contracts/router/msgs/vault.fc:13: throw_unless(error::invalid_caller, equal_slices(vault~address(params::workchain), ctx.at(SENDER)));"
+      - "contracts/router/msgs/vault.fc:19: msgs::send_simple(0, token_address, msg.end_cell(), QCARRY_ALL_BALANCE);"
+      - "contracts/pool/msgs/router.fc:122: router::pay_vault("
+      - "contracts/common/contracts.fc:174: (cell) router::vault_pay_to("
+  poc_execution:
+    test_file_path: iter_181/poc_vault_withdraw_permissionless_replay.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_181/poc_vault_withdraw_permissionless_replay.run.log
+    run_log_exists_on_disk: true
+    test_runtime: "0.4s static/model; 5.869s integration"
+    result: "PASS (15 source anchors; 4 tuple cases; 1 live referral-fee collection regression)"
+  prior_art_check:
+    queries:
+      - "withdraw_fee permissionless replay (issues)"
+      - "withdraw_fee permissionless replay (issues + pull requests)"
+      - "vault concurrent withdrawal deposit (issues)"
+      - "vault concurrent withdrawal deposit (issues + pull requests)"
+      - "deposited_amount withdraw_fee duplicate (issues)"
+      - "deposited_amount withdraw_fee duplicate (issues + pull requests)"
+      - "referral vault withdrawal replay (issues)"
+      - "referral vault withdrawal replay (issues + pull requests)"
+    results: "8 valid GitHub searches returned zero results"
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "withdraw_fee permissionless replay"
+      - "vault concurrent withdrawal deposit"
+      - "deposited_amount withdraw_fee duplicate"
+      - "referral vault withdrawal replay"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  selected_cluster_source: POST_MATRIX_CLUSTER_PROPOSALS_27.md
+  caller_grep_path: iter_181/callers-grep.txt
+  caller_match_count: 45
+  caller_unique_files: 6
+  prior_audit_path: iter_181/prior-audit-git.log
+  prior_audit_family_matches:
+    - iter_38
+    - iter_61
+    - iter_78
+    - iter_83
+    - iter_88
+    - iter_104
+    - iter_125
+    - iter_134
+    - iter_175
+  r15_evidence_files:
+    - iter_181/R15-GH-vault-withdraw-permissionless-replay-issue.json
+    - iter_181/R15-GH-vault-withdraw-permissionless-replay-pr.json
+    - iter_181/R15-GH-vault-concurrent-withdraw-issue.json
+    - iter_181/R15-GH-vault-concurrent-withdraw-pr.json
+    - iter_181/R15-GH-deposited-amount-duplicate-issue.json
+    - iter_181/R15-GH-deposited-amount-duplicate-pr.json
+    - iter_181/R15-GH-referral-vault-withdraw-replay-issue.json
+    - iter_181/R15-GH-referral-vault-withdraw-replay-pr.json
+  source_conclusion: "Permissionless withdrawal is only a trigger: Vault requires a positive stored amount, emits the immutable stored token/owner/router tuple, zeroes deposited_amount, and saves. Router accepts the message only from the matching deterministic Vault and transfers the exact amount to the stored owner via the stored token wallet. Sequential and concurrent models plus live referral-fee collection found no replay, duplicate payout, or attacker-positive delta. Prior Iter61/78/83/88/104/125/134/175 audits cover this exact family, so AP4 is a duplicate dead end."
+  candidate_path: null
+  attacker_privilege: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  shadow_mode: true

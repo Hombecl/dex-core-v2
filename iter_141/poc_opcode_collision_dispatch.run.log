@@ -1,0 +1,23 @@
+Command: node iter_141/poc_opcode_collision_dispatch.test.js
+Result:
+{
+  "inventory": 62,
+  "distinct_masked_values": 61,
+  "duplicate_groups": [
+    {
+      "value": "0x178d4519",
+      "names": ["internal_transfer", "internal_transfer"]
+    }
+  ],
+  "unexpected_collisions": 0,
+  "dispatcher_files": 7,
+  "result": "PASS"
+}
+
+Command: npm test -- --runInBand tests/Router.spec.ts tests/System.spec.ts tests/LPAccount.spec.ts -t 'should handle|should return valid|should reset|should provide|should swap|should burn|should collect|should refund'
+Result: PASS
+Test Suites: 3 passed, 3 total
+Tests: 3 skipped, 13 passed, 16 total
+Snapshots: 0 total
+Time: 12.401 s
+Ran all test suites matching the selected Router/System/LPAccount paths.

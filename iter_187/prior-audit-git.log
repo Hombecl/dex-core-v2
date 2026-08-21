@@ -1,0 +1,5 @@
+Prior-audit evidence selected from shadow workspace:
+iter_116/STATUS.yaml cell_label=pool_max_coins_invariant_boundary final_verdict=DEADEND_WITH_PROOF
+iter_116/source_conclusion: MAX_COINS is 2^120-1. LP-account callback math may transiently compute values above that bound, but the pool checks total supply and both reserves before minting; the failure branch sends the exact pair back to the deterministically derived LP account, where it is stored for the same user and excesses are returned. Swap reserve checks likewise refund on an out-of-range result. No attacker-controlled asset delta was demonstrated.
+iter_126/STATUS.yaml includes the same LP callback bound anchors and confirms no unbacked mint or reserve mismatch.
+iter_183/STATUS.yaml audited the caught LP-provide exception plus min_lp_out=0 and found only a user-funded donation edge.

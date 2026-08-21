@@ -1,0 +1,5 @@
+command: npm test -- --runInBand tests/LPAccount.spec.ts
+result: PASS
+test: LPAccount > Getters > should return valid data
+summary: 1 passed
+note: repository has no dedicated reset_gas integration test; the static PoC covers the reset branch and the suite confirms canonical LPAccount state/getter wiring.

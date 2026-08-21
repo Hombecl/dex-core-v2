@@ -1,0 +1,5 @@
+{
+  "command": "gh search issues 'collect_fees dual leg protocol fee' --repo ston-fi/dex-core-v2 --include-prs --limit 10",
+  "total_count": 0,
+  "items": []
+}

@@ -1,0 +1,75 @@
+schema_version: shadow-v1
+iteration: 161
+phase: completed
+cell_id: AK4
+cell_label: variant_setter_deserialization_width
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AK4
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - "contracts/router/pools/stableswap/ext_admin.fc:10: int new_amp = in_msg_body~load_uint32();"
+      - "contracts/pool/pools/stableswap/ext_router.fc:8: int new_amp = in_msg_body~load_uint32();"
+      - "contracts/pool/pools/stableswap/storage.fc:14: storage::amp = ds~load_uint32();"
+      - "contracts/router/pools/weighted_const_product/ext_admin.fc:7: new_w = in_msg_body~load_uint128()"
+      - "contracts/pool/pools/weighted_const_product/ext_router.fc:9: int new_w = in_msg_body~load_uint128();"
+      - "contracts/pool/pools/weighted_const_product/storage.fc:14: storage::w0 = ds~load_uint(64);"
+      - "contracts/router/pools/weighted_const_product/ext_admin.fc:22: throw_unless(error::invalid_amount, (0 < new_w) & (new_w < math::ONE_DEC));"
+      - "contracts/router/pools/weighted_stableswap/ext_admin.fc:26: throw_unless(error::math_error, (new_amp <= (2000 * math::ONE_DEC)));"
+      - "contracts/pool/pools/weighted_stableswap/storage.fc:20: storage::amp = w_params_data~load_uint(128);"
+      - "contracts/pool/pools/weighted_stableswap/storage.fc:51: .store_uint(storage::rate, 128)"
+      - "contracts/pool/pools/weighted_stableswap/ext_router.fc:26: storage::save();"
+  poc_execution:
+    test_file_path: iter_161/poc_variant_setter_deserialization_width.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_161/poc_variant_setter_deserialization_width.run.log
+    run_log_exists_on_disk: true
+    test_runtime: "0.4s static/model; 16.864s integration"
+    result: "PASS (21 domain edges; 6 live setter tests)"
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 setter width truncation weight is:issue"
+      - "repo:ston-fi/dex-core-v2 setter width truncation weight is:pr"
+      - "repo:ston-fi/dex-core-v2 weighted stableswap rate width is:issue"
+      - "repo:ston-fi/dex-core-v2 weighted stableswap rate width is:pr"
+    results: "4 queries returned total_count=0"
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "setter width truncation weight"
+      - "weighted stableswap rate width"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  selected_cluster_source: POST_MATRIX_CLUSTER_PROPOSALS_23.md
+  caller_path: "Router setter load width -> Pool ext-router load width -> variant storage load/store width -> math-domain guard -> setter save"
+  caller_match_count: 52
+  caller_unique_files: 11
+  prior_audit_path: iter_161/prior-audit-git.log
+  r15_evidence_files:
+    - iter_161/R15-GH-setter-width-truncation-issue.json
+    - iter_161/R15-GH-setter-width-truncation-pr.json
+    - iter_161/R15-GH-wstable-rate-width-issue.json
+    - iter_161/R15-GH-wstable-rate-width-pr.json
+  boundary_result: "Stableswap amp uses 32 bits end-to-end; Weighted Stableswap amp/rate/weight uses 128 bits end-to-end; Weighted CPI narrows 128-bit weight to 64-bit storage, but its admin guard caps accepted weights below 1e18 (60 bits)."
+  source_conclusion: "No setter field is truncated within its accepted domain. The only width asymmetry is bounded before the 64-bit Weighted CPI storage write. Parameter setter integration passed, and no attacker-controlled math-domain activation or value movement was demonstrated. Setter configuration requires the Router admin path."
+  candidate_path: null
+  attacker_privilege: privileged_role
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  shadow_mode: true

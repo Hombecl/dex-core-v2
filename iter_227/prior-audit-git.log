@@ -1,0 +1,14 @@
+query: rg -n -i 'cell_label:.*(vault|deposit_ref_fee|tail|response|replay)' iter_*/STATUS.yaml
+exact_prior_matches:
+  - iter_214 AW2 vault_deposit_ref_fee_tail_response_isolation DEADEND_WITH_PROOF
+  - iter_120 AB5 vault_deposit_extra_payload_state_boundary DEADEND_WITH_PROOF
+  - iter_125 AB6 vault_concurrent_deposit_withdraw_transition DEADEND_WITH_PROOF
+  - iter_211 AV4 pool_pay_vault_both_positive_side_selector KILLED_TRUSTED_ON_TRUSTED
+prior_evidence:
+  - iter_214/STATUS.yaml
+  - iter_214/poc_vault_deposit_ref_fee_tail_response_isolation.test.js
+  - iter_214/poc_vault_deposit_ref_fee_tail_response_isolation.run.log
+  - iter_214/callers-grep.txt
+prior_audit_conclusion: 'AX10 is the same Vault deposit amount/response tail family already completed as iter_214/AW2; trailing data is inert after the two parsed fields and the sender chain is Router-bound.'
+git_log:
+388c94e checkpoint: v4flash shadow iter100

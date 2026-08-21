@@ -1,0 +1,7 @@
+AT1 prior-family audit:
+- Iter 133 / AE3 router_notification_without_ref_refund_source — DEADEND_WITH_PROOF; no-reference notifications refunded the exact amount through the notifying wallet and could not debit Router-owned tokens.
+- Iter 102 / Y2 router_route_untrusted_notification_binding — DEADEND_WITH_PROOF; forged notification senders formed only forged-asset routes while real pools required real wallet senders.
+- Iter 169 / AN2 lp_wallet_mint_from_address_notification — DEADEND_WITH_PROOF; from_address forwarding was backed by an LP-wallet debit and produced no external token release.
+- Iter 60 / R5 unknown_op_bounce_typing — DEADEND_WITH_PROOF; malformed message paths preserved typed refund behavior without an unauthorized balance delta.
+
+Conclusion: AT1 was compared with four prior notification, refund, and sender-binding audits before classification.

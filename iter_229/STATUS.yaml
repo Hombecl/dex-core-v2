@@ -1,0 +1,161 @@
+schema_version: shadow-v1
+iteration: 229
+phase: completed
+cell_id: AX16
+cell_label: lp_account_reset_gas_user_destination_carry
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AX16
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/lp_account.fc
+        line: 15
+        text: 'throw_unless(error::wrong_workchain, ctx.at(SENDER).address::check_workchain(params::workchain));'
+      - file: contracts/lp_account.fc
+        line: 26
+        text: 'if equal_slices(ctx.at(SENDER), storage::user_address) {'
+      - file: contracts/lp_account.fc
+        line: 27
+        text: 'if handle_user_messages() {'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 104
+        text: 'if ctx.at(OPCODE) == op::reset_gas {'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 105
+        text: 'reserves::exact(storage_fee::lp_account);'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 106
+        text: 'msgs::send_empty(0, storage::user_address, CARRY_ALL_BALANCE);'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 107
+        text: 'return (true);'
+      - file: contracts/lp_account/storage.fc
+        line: 7
+        text: 'storage::user_address = ds~load_msg_addr();'
+      - file: contracts/lp_account/storage.fc
+        line: 8
+        text: 'storage::pool_address = ds~load_msg_addr();'
+      - file: contracts/common/contracts.fc
+        line: 10
+        text: '(cell) lp_account_idata(slice _pool_address, slice _user_address) inline {'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 26
+        text: 'throw_unless(error::invalid_caller, equal_slices(lp_account~address(params::workchain), ctx.at(SENDER)));'
+      - file: contracts/router/dex.fc
+        line: 50
+        text: 'throw_arg_unless(op::transfer_bounce_wrong_wc, 1, _caller.address::check_workchain(params::workchain));'
+      - file: wrappers/LPAccount.ts
+        line: 44
+        text: 'async sendResetGas(provider: ContractProvider, via: Sender, value?: bigint) {'
+      - file: wrappers/LPAccount.ts
+        line: 48
+        text: 'body: beginMessage(lpAccOpcodes.resetGas)'
+      - file: tests/LPAccount.spec.ts
+        line: 52
+        text: "it('should return valid data', async () => {"
+    cross_file_count: 12
+    cross_file_match_count: 63
+    source_scope_restricted: true
+    conclusion: 'LPAccount reset_gas is reachable only after the root workchain check and stored-user sender gate. It does not parse a body-controlled destination, does not mutate LPAccount storage, and sends only the balance above the exact storage reserve to the stored user. A second call has no remaining excess, while Pool/Router identity paths remain sender-bound.'
+    redrill_count: 0
+    audit_result: NOT_AVAILABLE_SHADOW_MODE
+    required_evidence_complete: true
+    no_fabrication: true
+    scope_assets_only: true
+    methodology_audit_exit: NOT_AVAILABLE
+    status_schema_validated: true
+    evidence_gate: PASS_FOR_DEADEND
+    shippable: false
+    rejection_reason: 'The reset payout destination is immutable stored user state, access is user-gated, and the operation only returns that account''s own excess TON without changing token or LP state.'
+    attacker_privilege:
+      privilege_required: external_auth
+    fund_loss_demonstrated: false
+    concrete_impact_demonstrated: false
+    callers_grep_artifact: iter_229/callers-grep.txt
+    caller_match_count: 63
+    caller_unique_files: 12
+    cascade_verbatim_hit_count: 16
+    cross_file_anchor_count: 16
+    caller_paths:
+      - contracts/common/contracts.fc
+      - contracts/lp_account.fc
+      - contracts/lp_account/msgs/pool.fc
+      - contracts/lp_account/msgs/user.fc
+      - contracts/lp_account/storage.fc
+      - contracts/pool/msgs/lp_account.fc
+      - contracts/router/dex.fc
+      - tests/ConstProduct.spec.ts
+      - tests/LPAccount.spec.ts
+      - tests/System.spec.ts
+      - wrappers/LPAccount.ts
+      - wrappers/Pool.ts
+    evidence_paths:
+      poc_test: iter_229/poc_lp_account_reset_gas_user_destination_carry.test.js
+      poc_run_log: iter_229/poc_lp_account_reset_gas_user_destination_carry.run.log
+      live_regression_log: iter_229/live-lp-account-reset-regression.run.log
+      prior_audit: iter_229/prior-audit-git.log
+    poc_execution:
+      test_file_path: iter_229/poc_lp_account_reset_gas_user_destination_carry.test.js
+      test_file_exists_on_disk: true
+      run_log_path: iter_229/poc_lp_account_reset_gas_user_destination_carry.run.log
+      run_log_exists_on_disk: true
+      runtime: '0.1s static; 4.3s related integration suite'
+      result: 'PASS (16 anchors; LPAccount suite passed; no dedicated reset test exists)'
+    prior_art_check:
+      queries:
+        - 'cell_label reset_gas/reset/gas/carry/destination/lp_account scan across iter_*/STATUS.yaml'
+      results:
+        - 'iter_138 and iter_139 cover Router/Pool reset_gas; iter_99 and iter_107 cover related carry/destination families; no exact LPAccount user reset_gas audit found'
+    r15_disclosure_check:
+      gh_search_terms_used:
+        - 'repo:ston-fi/dex-core-v2 "reset_gas" "storage::user_address" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "reset_gas" "storage::user_address" is:pr'
+        - 'repo:ston-fi/dex-core-v2 "send_empty" "CARRY_ALL_BALANCE" "reset_gas" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "send_empty" "CARRY_ALL_BALANCE" "reset_gas" is:pr'
+      gh_search_hits: 0
+      evidence_files:
+        - iter_229/r15-lp-account-reset-gas-user-issue.json
+        - iter_229/r15-lp-account-reset-gas-user-pr.json
+        - iter_229/r15-lp-account-reset-gas-carry-issue.json
+        - iter_229/r15-lp-account-reset-gas-carry-pr.json
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  shadow_mode: true
+  caller_path: iter_229/callers-grep.txt
+  caller_match_count: 63
+  caller_unique_files: 12
+  prior_audit_path: iter_229/prior-audit-git.log
+  prior_family_matches: [iter99, iter107, iter138, iter139]
+  r15_evidence_files:
+    - iter_229/r15-lp-account-reset-gas-user-issue.json
+    - iter_229/r15-lp-account-reset-gas-user-pr.json
+    - iter_229/r15-lp-account-reset-gas-carry-issue.json
+    - iter_229/r15-lp-account-reset-gas-carry-pr.json
+  source_conclusion: 'Reset gas is a stored-user-only, storage-preserving excess TON return; it cannot redirect another user or extract token/LP state.'
+  attacker_privilege:
+    privilege_required: external_auth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_229/poc_lp_account_reset_gas_user_destination_carry.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_229/poc_lp_account_reset_gas_user_destination_carry.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_229/live-lp-account-reset-regression.run.log
+    result: PASS

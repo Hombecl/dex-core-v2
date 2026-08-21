@@ -1,0 +1,25 @@
+COMMAND: node iter_158/poc_cross_variant_math_intermediate_bitwidth.test.js
+{
+  "tvm_positive_width_bits": 256,
+  "reserve_width_bits": 120,
+  "explicit_overflow_sites_found": 2,
+  "extreme_reserve_pair": [
+    "1",
+    "1329227995784915872903807060280344575"
+  ],
+  "extreme_second_d_p_product_bits": 360,
+  "extreme_get_out_product_bits": 359,
+  "balanced_second_d_p_product_bits": 242,
+  "constant_product_bits": 240,
+  "fixed_point_coin_bits": 180,
+  "rate_muldiv_result_bits": 248,
+  "caught_math_paths_checked": 2,
+  "persistent_value_release_observed": 0,
+  "result": "PASS"
+}
+
+COMMAND: npm test -- --runInBand tests/Stableswap.spec.ts tests/WeightedStableswap.spec.ts -t 'should swap'
+RESULT: PASS, 2 suites
+TEST_SUITES: 2 passed, 2 total
+TESTS: 46 skipped, 8 passed, 54 total
+RUNTIME: 15.584s

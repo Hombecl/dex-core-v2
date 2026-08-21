@@ -1,0 +1,75 @@
+schema_version: shadow-v1
+iteration: 159
+phase: completed
+cell_id: AK2
+cell_label: pool_fee_aggregate_floor_ceiling
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AK2
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - "contracts/pool/pools/constant_product/pool.fc:9: protocol_fee_out = divc(base_out * storage::protocol_fee, params::fee_divider);"
+      - "contracts/pool/pools/constant_product/pool.fc:13: ref_fee_out = divc(base_out * _ref_value, params::fee_divider);"
+      - "contracts/pool/pools/constant_sum/pool.fc:15: base_out -= protocol_fee_out + ref_fee_out;"
+      - "contracts/pool/pools/stableswap/pool.fc:29: base_out -= protocol_fee_out + ref_fee_out;"
+      - "contracts/pool/pools/weighted_const_product/pool.fc:23: base_out -= protocol_fee_out + ref_fee_out;"
+      - "contracts/pool/pools/weighted_stableswap/pool.fc:23: base_out -= protocol_fee_out + ref_fee_out;"
+      - "contracts/pool/msgs/router.fc:90: ref_value = ref_address.preload_uint(2) == 0 ? 0 : ref_value;"
+      - "contracts/pool/msgs/router.fc:113: throw_arg_if(op::swap_refund_0_out, 1, out < 1);"
+      - "contracts/pool/msgs/router.fc:152: storage::save();"
+      - "contracts/router/msgs/admin.fc:28: (params::min_fee  <= new_protocol_fee)"
+      - "contracts/router/msgs/admin.fc:32: (new_lp_fee <= params::max_fee)"
+  poc_execution:
+    test_file_path: iter_159/poc_pool_fee_aggregate_floor_ceiling.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_159/poc_pool_fee_aggregate_floor_ceiling.run.log
+    run_log_exists_on_disk: true
+    test_runtime: "0.2s model/static; 25.384s integration"
+    result: "PASS (250025 fee cases; 10 live tests across 5 suites)"
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 referral fee rounding output is:issue"
+      - "repo:ston-fi/dex-core-v2 referral fee rounding output is:pr"
+      - "repo:ston-fi/dex-core-v2 protocol fee ceil output is:issue"
+      - "repo:ston-fi/dex-core-v2 protocol fee ceil output is:pr"
+    results: "4 queries returned total_count=0"
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "referral fee rounding output"
+      - "protocol fee ceil output"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  selected_cluster_source: POST_MATRIX_CLUSTER_PROPOSALS_23.md
+  caller_path: "Five Pool fee layers -> Router referral normalization -> reserve mutation -> tiny-output/refund and reserve checks -> storage save"
+  caller_match_count: 60
+  caller_unique_files: 7
+  prior_audit_path: iter_159/prior-audit-git.log
+  r15_evidence_files:
+    - iter_159/R15-GH-referral-rounding-output-issue.json
+    - iter_159/R15-GH-referral-rounding-output-pr.json
+    - iter_159/R15-GH-protocol-ceil-output-issue.json
+    - iter_159/R15-GH-protocol-ceil-output-pr.json
+  boundary_result: "Across all five variants and all allowed protocol/referral fee pairs for base outputs 0..10000, every fee leg reconstructed the original base output; 65 cases produced out<1 and were routed to the Router refund gate."
+  source_conclusion: "Ceil-rounded protocol and referral fees can exceed a tiny base output, but the resulting non-positive user output is rejected before success-only persistence. For every accepted modeled case, out + protocol_fee_out + ref_fee_out equals base_out exactly. No successful over-deduction, reserve drift, or attacker-controlled value release was demonstrated."
+  candidate_path: null
+  attacker_privilege: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  shadow_mode: true

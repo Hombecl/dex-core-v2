@@ -1,0 +1,74 @@
+schema_version: shadow-v1
+iteration: 149
+phase: completed
+cell_id: AI2
+cell_label: lp_wallet_state_init_encoding
+final_verdict: PRE_KILLED_DUPLICATE
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AI2
+  final_verdict: PRE_KILLED_DUPLICATE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - "contracts/lp_wallet/jetton-utils.fc:6: cell calculate_jetton_lp_wallet_state_init(slice owner_address, slice jetton_master_address, cell jetton_wallet_code) inline {"
+      - "contracts/lp_wallet/jetton-utils.fc:13: .store_dict(jetton_wallet_code)"
+      - "contracts/lp_wallet/jetton-utils.fc:14: .store_dict(pack_jetton_lp_wallet_data(0, owner_address, jetton_master_address, jetton_wallet_code))"
+      - "contracts/lp_wallet/jetton-utils.fc:22: .store_uint(cell_hash(state_init), 256)"
+      - "contracts/lp_wallet/jetton-utils.fc:27: return calculate_jetton_lp_wallet_address(calculate_jetton_lp_wallet_state_init(owner_address, jetton_master_address, jetton_wallet_code));"
+      - "contracts/lp_wallet.fc:23: cell state_init = calculate_jetton_lp_wallet_state_init(to_owner_address, jetton_master_address, jetton_wallet_code);"
+      - "contracts/lp_wallet.fc:63: equal_slices(calculate_user_jetton_lp_wallet_address(from_address, jetton_master_address, jetton_wallet_code), sender_address)"
+      - "contracts/lp_wallet/storage.fc:9: set_data(pack_jetton_lp_wallet_data(balance, owner_address, jetton_master_address, jetton_wallet_code));"
+      - "contracts/common/contracts.fc:19: (cell) lp_wallet_idata(slice _owner_address, slice _jetton_master_address, cell _jetton_wallet_code) inline {"
+      - "contracts/common/contracts.fc:24: .store_ref(_jetton_wallet_code)"
+      - "contracts/pool/get.fc:45: lp_wallet_idata(owner_address, my_address(), storage::jetton_lp_wallet_code),"
+      - "contracts/pool/msgs/getter.fc:58: lp_wallet_idata(owner_address, my_address(), storage::jetton_lp_wallet_code),"
+  poc_execution:
+    test_file_path: iter_149/poc_lp_wallet_state_init_encoding_duplicate.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_149/poc_lp_wallet_state_init_encoding_duplicate.run.log
+    run_log_exists_on_disk: true
+    test_runtime: "0.1s static duplicate audit"
+    result: "PASSED (U4 overlap; 0 novel surface delta)"
+  prior_art_check:
+    queries:
+      - "prior cell U4/iter_84 lp_wallet_codecell_sender_collision"
+      - "prior cluster AG2 lp_wallet_identity"
+      - "LP-wallet StateInit store_dict R15 searches"
+    results: "U4 is closed DEADEND_WITH_PROOF; AG2 was pre-killed from U4/R8/AB4; fresh GitHub searches returned total_count=0"
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "LP wallet state init store_dict"
+      - "calculate_jetton_lp_wallet_state_init"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: PRE_KILLED_DUPLICATE
+  selected_cluster_source: POST_MATRIX_CLUSTER_PROPOSALS_21.md
+  duplicate_prior_cells:
+    - U4/iter_84
+    - AG2/iter_141-142 planning
+  caller_path: "LP-wallet StateInit utility -> runtime send/receive derivation -> storage pack -> Pool getter/idata callers"
+  caller_match_count: 54
+  caller_unique_files: 12
+  prior_audit_path: iter_149/prior-audit-git.log
+  r15_evidence_files:
+    - iter_149/R15-GH-wallet-state-init-issue.json
+    - iter_149/R15-GH-wallet-state-init-pr.json
+    - iter_149/R15-GH-wallet-derivation-issue.json
+    - iter_149/R15-GH-wallet-derivation-pr.json
+  source_conclusion: "AI2 is the exact LP-wallet StateInit identity/encoding mechanism already covered by U4 and the pre-killed AG2 cluster. Current source checks confirm the same utility, packing, derivation, and Pool caller paths; no novel production surface remains."
+  candidate_path: null
+  shadow_mode: true

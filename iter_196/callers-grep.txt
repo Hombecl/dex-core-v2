@@ -1,0 +1,28 @@
+command:
+rg -n 'admin_address|handle_admin_messages|init_pool_code_upgrade|cancel_pool_code_upgrade|finalize_upgrades|upgrade_pool_code|update_pool_code|internal_update_pool_code|set_code|storage::save|router_address|pool_idata|pool::internal_update_pool_code' contracts/router.fc contracts/router/msgs/admin.fc contracts/router/storage.fc contracts/pool.fc contracts/pool/msgs/router.fc contracts/common/contracts.fc
+
+summary:
+match_count: 56
+unique_files: 6
+callers_grep_done: true
+
+key_matches:
+contracts/router.fc:28: if equal_slices(ctx.at(SENDER), storage::admin_address)
+contracts/router.fc:29: if handle_admin_messages()
+contracts/router/msgs/admin.fc:117: if ctx.at(OPCODE) == op::update_pool_code
+contracts/router/msgs/admin.fc:127: throw_if(error::empty_cell, storage::upgrade_pool_code.cell::is_empty())
+contracts/router/msgs/admin.fc:132: var pool = contracts::from_sources(
+contracts/router/msgs/admin.fc:142: pool::internal_update_pool_code(storage::upgrade_pool_code)
+contracts/router/msgs/admin.fc:186: if ctx.at(OPCODE) == op::init_pool_code_upgrade
+contracts/router/msgs/admin.fc:191: now() + params::twodays
+contracts/router/msgs/admin.fc:235: if ctx.at(OPCODE) == op::finalize_upgrades
+contracts/router/msgs/admin.fc:252: storage::upgrade_pool_code = pool_code
+contracts/router/storage.fc:9: global cell storage::upgrade_pool_code
+contracts/router/storage.fc:37: .store_ref(storage::upgrade_pool_code)
+contracts/pool.fc:28: if equal_slices(ctx.at(SENDER), storage::router_address)
+contracts/pool/msgs/router.fc:302: if ctx.at(OPCODE) == op::internal_update_pool_code
+contracts/pool/msgs/router.fc:304: set_code(new_code)
+contracts/common/contracts.fc:262: (cell) pool::internal_update_pool_code(cell _new_pool_code)
+
+conclusion:
+The code-upgrade reference is staged, delay-bounded, finalized into Router storage, and sent to a deterministic Pool. External callers are stopped at Router admin dispatch, and the Pool applies set_code only from its stored Router. Any harmful upgrade selection requires the trusted admin role and is killed as trusted-on-trusted.

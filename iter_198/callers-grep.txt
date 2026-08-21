@@ -1,0 +1,35 @@
+command:
+rg -n 'direct_add_liquidity|amount0|amount1|storage::amount0|storage::amount1|both_positive|cb_add_liquidity|invalid_caller|storage::save|DESTROY_IF_ZERO|CARRY_ALL_BALANCE|refund_me' contracts/lp_account.fc contracts/lp_account/msgs/user.fc contracts/lp_account/msgs/pool.fc contracts/lp_account/storage.fc contracts/pool/msgs/lp_account.fc contracts/common/contracts.fc
+
+summary:
+match_count: 68
+unique_files: 5
+callers_grep_done: true
+
+key_matches:
+contracts/lp_account.fc:18: if equal_slices(ctx.at(SENDER), storage::pool_address)
+contracts/lp_account.fc:25: if equal_slices(ctx.at(SENDER), storage::user_address)
+contracts/lp_account/msgs/user.fc:40: if ctx.at(OPCODE) == op::direct_add_liquidity
+contracts/lp_account/msgs/user.fc:67: am0 = am0 ? am0 : storage::amount0
+contracts/lp_account/msgs/user.fc:68: am1 = am1 ? am1 : storage::amount1
+contracts/lp_account/msgs/user.fc:70: positive min_lp_out and both selected amounts gate
+contracts/lp_account/msgs/user.fc:72: storage::amount0 -= am0
+contracts/lp_account/msgs/user.fc:73: storage::amount1 -= am1
+contracts/lp_account/msgs/user.fc:77: nonnegative residual gate
+contracts/lp_account/msgs/user.fc:87: pool::cb_add_liquidity(
+contracts/lp_account/msgs/user.fc:101: storage::save()
+contracts/lp_account/msgs/pool.fc:18: storage::amount0 += new_amount0
+contracts/lp_account/msgs/pool.fc:19: storage::amount1 += new_amount1
+contracts/lp_account/msgs/pool.fc:25: both_positive? branch
+contracts/lp_account/msgs/pool.fc:34: pool::cb_add_liquidity(
+contracts/lp_account/msgs/pool.fc:48: storage::amount0 = 0
+contracts/lp_account/msgs/pool.fc:49: storage::amount1 = 0
+contracts/lp_account/msgs/pool.fc:55: storage::save()
+contracts/lp_account/storage.fc:19: store amount0
+contracts/lp_account/storage.fc:20: store amount1
+contracts/pool/msgs/lp_account.fc:26: deterministic LP-account sender gate
+contracts/common/contracts.fc:39: pool::cb_add_liquidity(
+contracts/common/contracts.fc:50: begin_message(op::cb_add_liquidity)
+
+conclusion:
+Zero is an explicit “use all stored amount” selector, not a free amount. The selected values are checked positive and bounded by the stored balances before subtraction; the callback carries those exact selected values, and the LP-account remainder is saved. Mixed, all, one-sided, and overdraw cases preserve conservation or reject.

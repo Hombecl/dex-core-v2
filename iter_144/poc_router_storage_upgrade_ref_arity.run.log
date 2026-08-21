@@ -1,0 +1,16 @@
+COMMAND: node iter_144/poc_router_storage_upgrade_ref_arity.test.js
+{
+  "outer_storage_fields_checked": 5,
+  "static_ref_fields_checked": 5,
+  "temp_upgrade_tuple_fields_checked": 6,
+  "upgrade_branches_checked": 7,
+  "transition_models_checked": 6,
+  "unexpected_ref_arity_aliases": 0,
+  "result": "PASS"
+}
+
+COMMAND: npm test -- --runInBand tests/Router.spec.ts tests/System.spec.ts
+RESULT: PASS
+TEST_SUITES: 2 passed
+TESTS: 15 passed, 15 total
+RUNTIME: 9.354s

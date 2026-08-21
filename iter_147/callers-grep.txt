@@ -1,0 +1,30 @@
+COMMAND: rg -n "load_(slice_ref|maybe_ref|ref)|store_(ref|maybe_ref|slice_ref)|custom_payload|additional_(info|data|fields)|end_parse|preload_uint(32)|route_dex_messages" [selected interface paths and representative tests]
+MATCH_COUNT: 99
+UNIQUE_FILES: 14
+
+contracts/pool/msgs/router.fc:12:        slice dex_payload = in_msg_body~load_slice_ref();
+contracts/pool/msgs/router.fc:31:            slice call_payload = dex_payload~load_slice_ref();
+contracts/pool/msgs/router.fc:36:            custom_payload_cs = call_payload~load_maybe_ref();
+contracts/pool/msgs/router.fc:38:            refund_payload_cs = call_payload~load_maybe_ref();
+contracts/pool/msgs/router.fc:49:            call_payload.end_parse();
+contracts/pool/msgs/router.fc:200:            slice call_payload = dex_payload~load_slice_ref();
+contracts/pool/msgs/router.fc:206:            custom_payload_cs = call_payload~load_maybe_ref();
+contracts/pool/msgs/lp_account.fc:12:        cell custom_payload_cs = in_msg_body~load_maybe_ref();
+contracts/pool/msgs/lp_account.fc:13:        slice additional_data = in_msg_body~load_slice_ref();
+contracts/pool/msgs/lp_account.fc:143:        cell left_maybe_payload = in_msg_body~load_maybe_ref();
+contracts/pool/msgs/lp_account.fc:144:        cell right_maybe_payload = in_msg_body~load_maybe_ref();
+contracts/router/msgs/pool.fc:10:        cell custom_payload = in_msg_body~load_maybe_ref();
+contracts/router/msgs/pool.fc:11:        slice additional_info = in_msg_body~load_slice_ref();
+contracts/router/msgs/pool.fc:33:            if (tmp_custom_payload_ds.slice_bits() > 32) {
+contracts/router/msgs/pool.fc:34:                fwd_opcode = tmp_custom_payload_ds.preload_uint(32);
+contracts/router/msgs/pool.fc:55:            route_dex_messages(sent_jetton_address, gas, swap_amount, original_caller, custom_payload);
+contracts/router/msgs/pool.fc:75:                        .store_maybe_ref(custom_payload)
+contracts/router/msgs/pool.fc:97:        slice additional_info = in_msg_body~load_slice_ref();
+contracts/lp_account/msgs/user.fc:5:        cell left_maybe_payload = in_msg_body~load_maybe_ref();
+contracts/lp_account/msgs/user.fc:53:        cell custom_payload_cs = in_msg_body~load_maybe_ref();
+contracts/lp_account/msgs/user.fc:54:        slice additional_fields = in_msg_body~load_slice_ref();
+contracts/lp_account/msgs/user.fc:58:        additional_fields.end_parse();
+contracts/lp_wallet.fc:26:    cell custom_payload = in_msg_body~load_dict();
+contracts/lp_wallet.fc:108:    cell custom_payload = in_msg_body~load_maybe_ref();
+contracts/lp_wallet.fc:121:        .store_maybe_ref(custom_payload)
+contracts/pool/msgs/getter.fc:65:        msgs::send_simple(0, ctx.at(SENDER), msg.store_maybe_ref(included_address).end_cell(), CARRY_ALL_BALANCE | IGNORE_ERRORS);

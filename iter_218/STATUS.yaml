@@ -1,0 +1,199 @@
+schema_version: shadow-v1
+iteration: 218
+phase: completed
+cell_id: AX1
+cell_label: router_admin_temp_upgrade_tuple_rebinding
+final_verdict: KILLED_TRUSTED_ON_TRUSTED
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AX1
+  final_verdict: KILLED_TRUSTED_ON_TRUSTED
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/router.fc
+        line: 28
+        text: 'if equal_slices(ctx.at(SENDER), storage::admin_address) {'
+      - file: contracts/router.fc
+        line: 29
+        text: 'if handle_admin_messages() {'
+      - file: contracts/router/storage.fc
+        line: 7
+        text: 'global cell storage::temp_upgrade;'
+      - file: contracts/router/storage.fc
+        line: 9
+        text: 'global cell storage::upgrade_pool_code;'
+      - file: contracts/router/storage.fc
+        line: 16
+        text: 'storage::temp_upgrade = ds~load_ref();'
+      - file: contracts/router/storage.fc
+        line: 35
+        text: '.store_ref(storage::temp_upgrade)'
+      - file: contracts/router/storage.fc
+        line: 36
+        text: '.store_ref(storage::_static)'
+      - file: contracts/router/storage.fc
+        line: 37
+        text: '.store_ref(storage::upgrade_pool_code)'
+      - file: contracts/router/utils.fc
+        line: 1
+        text: '(cell) pack_temp_upgrade(int end_code, cell code, int end_admin, slice admin, int end_pool_code, cell pool_code) inline {'
+      - file: contracts/router/utils.fc
+        line: 3
+        text: '.store_time(end_code)'
+      - file: contracts/router/utils.fc
+        line: 4
+        text: '.store_time(end_admin)'
+      - file: contracts/router/utils.fc
+        line: 5
+        text: '.store_time(end_pool_code)'
+      - file: contracts/router/utils.fc
+        line: 7
+        text: '.store_ref(code)'
+      - file: contracts/router/utils.fc
+        line: 8
+        text: '.store_ref(pool_code)'
+      - file: contracts/router/utils.fc
+        line: 13
+        text: '(int, cell, int, slice, int, cell) unpack_temp_upgrade(cell c_data) impure inline {'
+      - file: contracts/router/utils.fc
+        line: 16
+        text: 'int end_code = s_data~load_time();'
+      - file: contracts/router/utils.fc
+        line: 17
+        text: 'int end_admin = s_data~load_time();'
+      - file: contracts/router/utils.fc
+        line: 18
+        text: 'int end_pool_code = s_data~load_time();'
+      - file: contracts/router/utils.fc
+        line: 21
+        text: 'cell code = s_data~load_ref();'
+      - file: contracts/router/utils.fc
+        line: 22
+        text: 'cell pool_code = s_data~load_ref();'
+      - file: contracts/router/msgs/admin.fc
+        line: 156
+        text: 'if ctx.at(OPCODE) == op::init_code_upgrade {'
+      - file: contracts/router/msgs/admin.fc
+        line: 171
+        text: 'if ctx.at(OPCODE) == op::init_admin_upgrade {'
+      - file: contracts/router/msgs/admin.fc
+        line: 186
+        text: 'if ctx.at(OPCODE) == op::init_pool_code_upgrade {'
+      - file: contracts/router/msgs/admin.fc
+        line: 201
+        text: 'if ctx.at(OPCODE) == op::cancel_pool_code_upgrade {'
+      - file: contracts/router/msgs/admin.fc
+        line: 223
+        text: 'if ctx.at(OPCODE) == op::cancel_code_upgrade {'
+      - file: contracts/router/msgs/admin.fc
+        line: 235
+        text: 'if ctx.at(OPCODE) == op::finalize_upgrades {'
+      - file: contracts/router/msgs/admin.fc
+        line: 257
+        text: 'storage::temp_upgrade = pack_temp_upgrade(end_code, new_code, end_admin, new_admin, end_pool_code, pool_code);'
+      - file: contracts/common/op.fc
+        line: 23
+        text: 'const op::finalize_upgrades               = "finalize_upgrades query_id:uint64 = InternalMsgBody"c & 0x7fffffff;'
+      - file: wrappers/Router.ts
+        line: 47
+        text: 'codeEnd: ds_p.loadUintBig(64),'
+      - file: tests/ConstProduct.spec.ts
+        line: 1162
+        text: "it('should finalize new pool code', async () => {"
+  cross_file_count: 6
+  cross_file_match_count: 88
+  source_scope_restricted: true
+  conclusion: 'The temporary upgrade cell has six fields serialized and deserialized in the same order: three deadlines, admin address, Router code, and pool code. Each init and cancel branch rewrites only its own field while preserving the other five; finalize applies only ready fields and saves the remaining tuple. The entire state machine is reachable only through the Router admin sender gate, so any harmful partial-finalize behavior is trusted-on-trusted.'
+  redrill_count: 0
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  required_evidence_complete: true
+  no_fabrication: true
+  scope_assets_only: true
+  methodology_audit_exit: NOT_AVAILABLE
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_KILL
+  shippable: false
+  rejection_reason: 'No tuple rebinding was reproduced; any intentional harmful upgrade remains an admin-controlled trusted operation.'
+  attacker_privilege:
+    privilege_required: privileged_role
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  callers_grep_artifact: iter_218/callers-grep.txt
+  caller_match_count: 88
+  caller_unique_files: 6
+  cascade_verbatim_hit_count: 30
+  cross_file_anchor_count: 30
+  caller_paths:
+    - contracts/router.fc
+    - contracts/router/storage.fc
+    - contracts/router/msgs/admin.fc
+    - contracts/router/utils.fc
+    - contracts/common/op.fc
+    - tests/ConstProduct.spec.ts
+  evidence_paths:
+    poc_test: iter_218/poc_router_admin_temp_upgrade_tuple_rebinding.test.js
+    poc_run_log: iter_218/poc_router_admin_temp_upgrade_tuple_rebinding.run.log
+    live_regression_log: iter_218/live-upgrade-state-machine-regression.run.log
+    prior_audit: iter_218/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_218/poc_router_admin_temp_upgrade_tuple_rebinding.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_218/poc_router_admin_temp_upgrade_tuple_rebinding.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.4s static; 10.2s integration'
+    result: 'PASS (30 cross-file anchors; six-field staging/cancel/finalize model; six live upgrade regressions)'
+  prior_art_check:
+    queries:
+      - 'iter59 R4 code_upgrade_rollback'
+      - 'iter105 Y5 router_upgrade_parallel_finalize_cancel'
+      - 'iter144 AH4 router_storage_upgrade_ref_arity'
+      - 'iter196 AS4 pool_upgrade_ref_partial_state'
+    results:
+      - iter59: DEADEND_WITH_PROOF
+      - iter105: DEADEND_WITH_PROOF
+      - iter144: DEADEND_WITH_PROOF
+      - iter196: KILLED_TRUSTED_ON_TRUSTED
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "pack_temp_upgrade" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "pack_temp_upgrade" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "cancel_pool_code_upgrade" "finalize_upgrades" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "cancel_pool_code_upgrade" "finalize_upgrades" is:pr'
+    gh_search_hits: 0
+    evidence_files:
+      - iter_218/r15-issues-pack-temp-upgrade.json
+      - iter_218/r15-prs-pack-temp-upgrade.json
+      - iter_218/r15-issues-cancel-pool-finalize.json
+      - iter_218/r15-prs-cancel-pool-finalize.json
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: KILLED_TRUSTED_ON_TRUSTED
+  shadow_mode: true
+  caller_path: iter_218/callers-grep.txt
+  caller_match_count: 88
+  caller_unique_files: 6
+  prior_audit_path: iter_218/prior-audit-git.log
+  prior_family_matches: [iter59, iter105, iter144, iter196]
+  r15_evidence_files:
+    - iter_218/r15-issues-pack-temp-upgrade.json
+    - iter_218/r15-prs-pack-temp-upgrade.json
+    - iter_218/r15-issues-cancel-pool-finalize.json
+    - iter_218/r15-prs-cancel-pool-finalize.json
+  source_conclusion: 'The six-field Router upgrade tuple round-trips without cross-field rebinding, partial cancels preserve unrelated fields, and finalization applies only expired components. External senders cannot reach the admin handler. This is a trusted-role upgrade lifecycle, not an external unauthorized H/C path.'
+  attacker_privilege:
+    privilege_required: privileged_role
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false

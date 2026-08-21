@@ -1,0 +1,22 @@
+COMMAND: node iter_172/poc_lp_account_callback_replay_query_identity.test.js
+{
+  "variants_checked": 5,
+  "callback_field_model_cases": 9,
+  "sender_tuple_cases": 6,
+  "authenticated_tuple_cases": 3,
+  "rejected_sender_or_user_tuple_cases": 3,
+  "explicit_third_party_recipient_cases": 2,
+  "replay_cases_checked": 4,
+  "callback_replay_state_paths": 0,
+  "duplicate_lp_mint_paths": 0,
+  "query_id_changes_reuse_state": false,
+  "user_tuple_change_preserves_valid_sender": false,
+  "result": "PASS"
+}
+RUNTIME: 0.1s static/model
+
+COMMAND: npm test -- --runInBand tests/ConstProduct.spec.ts tests/ConstSum.spec.ts tests/Stableswap.spec.ts tests/WeightedCPI.spec.ts tests/WeightedStableswap.spec.ts -t 'should provide lp|should burn liquidity|should refund'
+RESULT: PASS
+TEST_SUITES: 5 passed, 54 passed, 84 skipped, 138 total
+SNAPSHOTS: 0 total
+RUNTIME: 97.596s

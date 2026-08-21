@@ -1,0 +1,25 @@
+COMMAND 1: node iter_191/poc_lp_burn_fake_pair_supply_release.test.js
+cross_file_anchors 15
+fake_pair_lp_supply_created true
+forged_A_input 1000000000000
+attacker_B_input 1000000
+burn_B_output_bound 999999
+router_B_baseline 1000000
+router_B_after_burn 1000001
+unbacked_real_asset_release false
+attacker_positive_delta false
+result PASS
+
+COMMAND 2 (source repo cwd): node -r ts-node/register /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-flash-wt/blind-test-vps/ston-dot-fi-dex-smart-contracts-v2-flash/iter_189/poc_router_owned_wallet_residual_debit.integration.js
+B_notification_router_to_fake_pair true
+router_wallet_baseline 1000000
+router_wallet_after_burn 1000002
+attacker_funded_B_leg 1000000
+fake_A_leg 1000000000000
+lp_minted 999998999
+victim_router_wallet_debit 999998
+attacker_B_wallet_credit 999998
+residual_not_drained true
+result PASS
+
+The burn-focused model and the live fake-pair trace both show the B output is bounded by the real B reserve/credit; the unbacked A leg does not release residual B value.

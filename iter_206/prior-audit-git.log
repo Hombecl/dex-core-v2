@@ -1,0 +1,8 @@
+AU5 prior-family audit:
+- Iter 74 / S4 protocol_fee_dual_leg_clearance — DEADEND_WITH_PROOF; one-sided counter visibility can strand only a protocol-owned fee and does not create an external gain.
+- Iter 97 / X2 pool_protocol_fee_counter_reserve_conservation — DEADEND_WITH_PROOF; exact dual collection clears both counters and no repeatable external mismatch survives.
+- Iter 132 / AE2 pool_protocol_fee_dual_payload_delivery — KILLED_TRUSTED_ON_TRUSTED; collection payload and delivery are trusted-role controlled.
+- Iter 140 / AF5 getter_response_state_alias — DEADEND_WITH_PROOF; getter responses do not alias or mutate value-bearing state.
+- Iter 177 / AO5 pool_protocol_fee_dual_leg_release — KILLED_TRUSTED_ON_TRUSTED; dual release, clear, and post-collection liveness are trusted-role behavior.
+
+Conclusion: AU5 was compared with five prior protocol-counter and getter-state audits before classification.

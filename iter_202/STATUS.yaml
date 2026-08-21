@@ -1,0 +1,126 @@
+schema_version: shadow-v1
+iteration: 202
+phase: completed
+cell_id: AT2
+cell_label: lp_account_refund_destroy_redeploy_identity
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AT2
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/lp_account.fc
+        line: 17
+        text: 'if equal_slices(ctx.at(SENDER), storage::pool_address) {'
+      - file: contracts/lp_account.fc
+        line: 24
+        text: 'if equal_slices(ctx.at(SENDER), storage::user_address) {'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 4
+        text: 'if ctx.at(OPCODE) == op::refund_me {'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 9
+        text: 'throw_unless(error::no_liquidity, (storage::amount0 > 0) | (storage::amount1 > 0));'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 20
+        text: 'pool::cb_refund_me('
+      - file: contracts/lp_account/msgs/user.fc
+        line: 27
+        text: 'CARRY_ALL_BALANCE | DESTROY_IF_ZERO'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 30
+        text: 'storage::amount0 = 0;'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 31
+        text: 'storage::amount1 = 0;'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 33
+        text: 'storage::save();'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 138
+        text: 'if ctx.at(OPCODE) == op::cb_refund_me {'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 146
+        text: 'lp_account_idata(my_address(), user_address)'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 151
+        text: 'throw_unless(error::invalid_caller, equal_slices(lp_account~address(params::workchain), ctx.at(SENDER)));'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 153
+        text: '(int gas, int mode) = (0, CARRY_REMAINING_GAS);'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 160
+        text: 'router::pay_to('
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 181
+        text: 'router::pay_to('
+      - file: contracts/common/contracts.fc
+        line: 25
+        text: '(cell) pool::cb_refund_me('
+      - file: contracts/common/contracts.fc
+        line: 33
+        text: '.store_slice(ctx.at(SENDER))'
+      - file: contracts/lp_account/storage.fc
+        line: 19
+        text: '.store_coins(storage::amount0)'
+      - file: contracts/lp_account/storage.fc
+        line: 20
+        text: '.store_coins(storage::amount1)'
+  poc_execution:
+    test_file_path: iter_202/poc_lp_account_refund_destroy_redeploy_identity.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_202/poc_lp_account_refund_destroy_redeploy_identity.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.1s static; 6.136s integration'
+    result: 'PASS (20 cross-file anchors; clear/destroy/redeploy model; live partial-refund regression)'
+  prior_art_check:
+    queries:
+      - iter72 S2 direct_refund_me_bounce_replay
+      - iter107 Z2 lp_account_refund_excess_carry_destination
+      - iter123 AC3 lp_account_refund_then_direct_add_lifecycle
+      - iter179 AP2 lp_account_cb_refund_dual_leg_mode_split
+    results:
+      - iter72: DEADEND_WITH_PROOF
+      - iter107: DEADEND_WITH_PROOF
+      - iter123: DEADEND_WITH_PROOF
+      - iter179: DEADEND_WITH_PROOF
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "refund_me" "DESTROY_IF_ZERO" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "refund_me" "DESTROY_IF_ZERO" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "cb_refund_me" "CARRY_REMAINING_GAS" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "cb_refund_me" "CARRY_REMAINING_GAS" is:pr'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  shadow_mode: true
+  caller_path: iter_202/callers-grep.txt
+  caller_match_count: 83
+  caller_unique_files: 5
+  prior_audit_path: iter_202/prior-audit-git.log
+  prior_family_matches: [iter72, iter107, iter123, iter179]
+  r15_evidence_files:
+    - iter_202/R15-GH-refund-destroy-zero-issue.json
+    - iter_202/R15-GH-refund-destroy-zero-pr.json
+    - iter_202/R15-GH-cb-refund-carry-gas-issue.json
+    - iter_202/R15-GH-cb-refund-carry-gas-pr.json
+  source_conclusion: 'Refund is user-gated, sends the exact pre-clear amounts, clears both stored legs in one transaction, and saves. A second refund sees zero liquidity. Pool re-derives the LP-account identity and routes exact token legs; redeployment is only the zero-minimum failure fallback, so stale liquidity cannot be replayed or redirected.'
+  attacker_privilege:
+    privilege_required: external_auth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false

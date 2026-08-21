@@ -1,0 +1,17 @@
+COMMAND: node iter_157/poc_cross_variant_math_signature.test.js
+{
+  "variants_checked": 5,
+  "api_functions_checked": 4,
+  "signature_comparisons": 20,
+  "router_side_calls_checked": 2,
+  "lp_provide_calls_checked": 2,
+  "lp_burn_calls_checked": 1,
+  "variant_argument_order_mismatches": 0,
+  "result": "PASS"
+}
+
+COMMAND: npm test -- --runInBand tests/ConstProduct.spec.ts tests/ConstSum.spec.ts tests/Stableswap.spec.ts tests/WeightedCPI.spec.ts tests/WeightedStableswap.spec.ts -t 'should swap'
+RESULT: PASS, 5 suites
+TEST_SUITES: 5 passed, 5 total
+TESTS: 120 skipped, 18 passed, 138 total
+RUNTIME: 34.003s

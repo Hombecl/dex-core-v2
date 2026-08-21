@@ -1,0 +1,15 @@
+command: node iter_213/poc_router_pay_vault_stateinit_bounce_fee_stranding.test.js
+cross_file_anchors 25
+addr_none_and_zero_fee_suppress_pay_vault true
+valid_referral_uses_deterministic_stateinit_and_exact_amount true
+pool_save_follows_message_construction true
+bounced_router_or_vault_messages_return_without_external_recredit true
+production_stateinit_and_gas_guards_block_attacker_forced_bounce true
+classification DEADEND_WITH_PROOF
+result PASS
+
+command: npm test -- --runInBand tests/ConstProduct.spec.ts -t 'should collect ref fee from vault'
+result: PASS
+test_file: tests/ConstProduct.spec.ts
+tests: 35 skipped, 1 passed, 36 total
+duration: 6.251s

@@ -1,0 +1,9 @@
+command: node iter_224/poc_pool_getter_data_tuple_field_alignment.test.js
+cross_file_anchors 27
+getter_pool_data_field_order_matches_builder_input_order true
+fee_widths_and_coin_widths_are_explicit true
+getter_response_is_read_only_and_sender_scoped true
+collect_fees_clear_save_is_separate_from_getter_response true
+iter_206_exact_family_previously_completed true
+classification PRE_KILLED_DUPLICATE
+result PASS

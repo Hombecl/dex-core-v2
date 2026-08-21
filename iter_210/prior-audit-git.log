@@ -1,0 +1,13 @@
+AV3 prior-family audit (read from prior iteration STATUS.yaml records):
+- iter_89 / V4 router_route_error_refund_encoding: DEADEND_WITH_PROOF; outer/inner parser failure refunds preserved the exact amount and correct available recipient.
+- iter_114 / AA5 router_transfer_bounce_error_recipient: DEADEND_WITH_PROOF; error metadata did not change the refund recipient or amount.
+- iter_127 / AD2 pool_provide_lp_parser_error_refund_typing: DEADEND_WITH_PROOF; malformed nested payloads returned exact legs through the typed refund path.
+- iter_128 / AD3 router_nested_route_payload_tail_boundary: DEADEND_WITH_PROOF; reference-depth and exact-tail boundaries stayed on route or refund branches without a value delta.
+- iter_133 / AE3 router_notification_without_ref_refund_source: DEADEND_WITH_PROOF; no-ref notifications refunded through the notifying wallet and could not debit Router-owned assets.
+- iter_176 / AO4 router_transfer_bounce_refund_payload: DEADEND_WITH_PROOF; outer and inner route errors preserved amount and validated refund/excess fields.
+- iter_188 / AR1 router_notification_pair_mixing: DEADEND_WITH_PROOF; notification sender/token pair mixing derived a distinct pair or refunded.
+- iter_189 / AR2 router_owned_wallet_residual_debit: DEADEND_WITH_PROOF; Router-owned wallet residual paths did not create an unbacked debit.
+- iter_192 / AR5 router_notification_existing_wallet_collision: DEADEND_WITH_PROOF; notification-derived identities did not collide with an existing production wallet path.
+- iter_201 / AT1 router_notification_no_ref_wallet_refund: DEADEND_WITH_PROOF; no-ref and invalid-operation cases refunded exact input.
+
+Conclusion: AV3 is a fresh ref/inline parser drill, but every reachable producer/consumer family is already closed with no attacker-positive selected-asset delta.

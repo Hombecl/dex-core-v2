@@ -1,0 +1,7 @@
+AU3 prior-family audit:
+- Iter 74 / S4 protocol_fee_dual_leg_clearance — DEADEND_WITH_PROOF; both counters must be positive and protocol fee release is protocol-owned.
+- Iter 97 / X2 pool_protocol_fee_counter_reserve_conservation — DEADEND_WITH_PROOF; exact dual pay_to legs clear both counters once without an external tuple mismatch.
+- Iter 132 / AE2 pool_protocol_fee_dual_payload_delivery — KILLED_TRUSTED_ON_TRUSTED; payload and destination choice are controlled by the stored protocol-fee sender.
+- Iter 177 / AO5 pool_protocol_fee_dual_leg_release — KILLED_TRUSTED_ON_TRUSTED; dual release and recipient tuple are trusted-role behavior.
+
+Conclusion: AU3 was compared with four prior protocol-fee, payload, and dual-release audits before classification.

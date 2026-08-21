@@ -1,0 +1,33 @@
+command:
+rg -n 'get_wallet_address|lp_wallet_idata|jetton_lp_wallet_code|lp_wallet~state_init|calculate_jetton_lp_wallet_state_init|calculate_jetton_lp_wallet_address|cell_hash\(state_init\)|burn_notification_ext|invalid_caller|internal_transfer|storage::save|handle_lp_wallet_messages' contracts/pool/get.fc contracts/pool/msgs/lp_account.fc contracts/pool/msgs/lp_wallet.fc contracts/common/contracts.fc contracts/lp_wallet/jetton-utils.fc contracts/lp_wallet.fc contracts/pool.fc
+
+summary:
+match_count: 35
+unique_files: 7
+callers_grep_done: true
+
+key_matches:
+contracts/pool/get.fc:39: slice get_wallet_address(slice owner_address) method_id
+contracts/pool/get.fc:45: lp_wallet_idata(owner_address, my_address(), storage::jetton_lp_wallet_code)
+contracts/pool/get.fc:46: return lp_wallet~address(params::workchain)
+contracts/pool/msgs/lp_account.fc:103: lp_wallet_idata(
+contracts/pool/msgs/lp_account.fc:104: to_user_address
+contracts/pool/msgs/lp_account.fc:106: storage::jetton_lp_wallet_code
+contracts/pool/msgs/lp_account.fc:122: lp_wallet~state_init()
+contracts/pool/msgs/lp_wallet.fc:12: lp_wallet_idata(
+contracts/pool/msgs/lp_wallet.fc:13: from_address
+contracts/pool/msgs/lp_wallet.fc:20: deterministic LP-wallet invalid_caller gate
+contracts/common/contracts.fc:19: lp_wallet_idata(slice _owner_address, slice _jetton_master_address, cell _jetton_wallet_code)
+contracts/common/contracts.fc:22: .store_slice(_owner_address)
+contracts/common/contracts.fc:23: .store_slice(_jetton_master_address)
+contracts/common/contracts.fc:24: .store_ref(_jetton_wallet_code)
+contracts/lp_wallet/jetton-utils.fc:10: calculate_jetton_lp_wallet_state_init(slice owner_address, slice jetton_master_address, cell jetton_wallet_code)
+contracts/lp_wallet/jetton-utils.fc:22: .store_uint(cell_hash(state_init), 256)
+contracts/lp_wallet.fc:23: calculate_jetton_lp_wallet_state_init(to_owner_address, jetton_master_address, jetton_wallet_code)
+contracts/lp_wallet.fc:24: calculate_jetton_lp_wallet_address(state_init)
+contracts/lp_wallet.fc:37: op::internal_transfer
+contracts/lp_wallet.fc:116: op::burn_notification_ext
+contracts/pool.fc:33: if handle_lp_wallet_messages()
+
+conclusion:
+Getter, mint, and burn callback paths use the same owner/master/code tuple and the same deterministic StateInit hash derivation. Changing any tuple component produces a distinct address, and the live mint/burn path resolves the getter-derived LP wallet without an address alias.

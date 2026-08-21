@@ -1,0 +1,19 @@
+COMMAND: rg -n "calculate_jetton_lp_wallet_state_init|calculate_user_jetton_lp_wallet_address|pack_jetton_lp_wallet_data|store_dict|store_ref|lp_wallet_idata|jetton_wallet_code|state_init|cell_hash" [selected LP-wallet utility/runtime and Pool callers]
+MATCH_COUNT: 54
+UNIQUE_FILES: 12
+
+contracts/lp_wallet/jetton-utils.fc:1:cell pack_jetton_lp_wallet_data(int balance, slice owner_address, slice jetton_master_address, cell jetton_wallet_code) inline {
+contracts/lp_wallet/jetton-utils.fc:6:cell calculate_jetton_lp_wallet_state_init(slice owner_address, slice jetton_master_address, cell jetton_wallet_code) inline {
+contracts/lp_wallet/jetton-utils.fc:13:    .store_dict(jetton_wallet_code)
+contracts/lp_wallet/jetton-utils.fc:14:    .store_dict(pack_jetton_lp_wallet_data(0, owner_address, jetton_master_address, jetton_wallet_code))
+contracts/lp_wallet/jetton-utils.fc:22:    .store_uint(cell_hash(state_init), 256)
+contracts/lp_wallet/jetton-utils.fc:26:slice calculate_user_jetton_lp_wallet_address(slice owner_address, slice jetton_master_address, cell jetton_wallet_code) inline {
+contracts/lp_wallet/jetton-utils.fc:27:  return calculate_jetton_lp_wallet_address(calculate_jetton_lp_wallet_state_init(owner_address, jetton_master_address, jetton_wallet_code));
+contracts/lp_wallet.fc:23:    cell state_init = calculate_jetton_lp_wallet_state_init(to_owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:63:        | equal_slices(calculate_user_jetton_lp_wallet_address(from_address, jetton_master_address, jetton_wallet_code), sender_address));
+contracts/lp_wallet/storage.fc:9:    set_data(pack_jetton_lp_wallet_data(balance, owner_address, jetton_master_address, jetton_wallet_code));
+contracts/common/contracts.fc:19:(cell) lp_wallet_idata(slice _owner_address, slice _jetton_master_address, cell _jetton_wallet_code) inline {
+contracts/common/contracts.fc:24:        .store_ref(_jetton_wallet_code)
+contracts/pool/get.fc:45:        lp_wallet_idata(owner_address, my_address(), storage::jetton_lp_wallet_code),
+contracts/pool/msgs/getter.fc:58:                lp_wallet_idata(owner_address, my_address(), storage::jetton_lp_wallet_code),
+contracts/pool/msgs/lp_wallet.fc:12:            lp_wallet_idata(

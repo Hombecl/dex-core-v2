@@ -1,0 +1,15 @@
+COMMAND: node iter_145/poc_pool_dispatch_sender_precedence.test.js
+{
+  "dispatch_layers_checked": 5,
+  "value_bearing_handlers_checked": 4,
+  "protocol_fee_role_mutation_sites": 1,
+  "collision_models_checked": 3,
+  "external_sender_bypass_paths": 0,
+  "result": "PASS"
+}
+
+COMMAND: npm test -- --runInBand tests/System.spec.ts tests/Router.spec.ts -t 'should set fees|should collect fees|should handle swaps|should handle mint|should handle upgrades|should lock|should reset'
+RESULT: PASS
+TEST_SUITES: 2 passed
+TESTS: 9 passed, 6 skipped, 15 total
+RUNTIME: 8.559s

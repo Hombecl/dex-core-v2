@@ -1,0 +1,15 @@
+query: rg -n -i 'cell_label:.*(notification|no_ref|empty_ref|bounce|payload)' iter_*/STATUS.yaml
+exact_prior_matches:
+  - iter_201 AT1 router_notification_no_ref_wallet_refund DEADEND_WITH_PROOF
+  - iter_133 AE3 router_notification_without_ref_refund_source DEADEND_WITH_PROOF
+  - iter_102 Y2 router_route_untrusted_notification_binding DEADEND_WITH_PROOF
+  - iter_210 AV3 router_notification_ref_forward_payload_boundary DEADEND_WITH_PROOF
+prior_evidence:
+  - iter_201/STATUS.yaml
+  - iter_201/poc_router_notification_no_ref_wallet_refund.test.js
+  - iter_201/poc_router_notification_no_ref_wallet_refund.run.log
+  - iter_201/callers-grep.txt
+  - iter_201/prior-audit-git.log
+prior_audit_conclusion: 'AX8 is the same no-reference transfer-notification refund family already completed as iter_201/AT1 and iter_133/AE3; the proposed payload-tail wording does not add a distinct state or asset path.'
+git_log:
+991c982 shadow: complete iter133 AE3 deadend

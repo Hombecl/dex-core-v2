@@ -1,0 +1,21 @@
+Command: node iter_142/poc_callback_operation_typing_alias.test.js
+Result:
+{
+  "edge_count": 10,
+  "operations": [
+    "cb_add_liquidity", "cb_refund_me", "pay_to", "pay_vault",
+    "vault_pay_to", "deposit_ref_fee", "add_liquidity",
+    "internal_transfer", "burn_notification_ext", "transfer_notification"
+  ],
+  "selected_asset_count": 5,
+  "wrong_producer_consumer_pairs": 0,
+  "result": "PASS"
+}
+
+Command: npm test -- --runInBand tests/System.spec.ts tests/ConstProduct.spec.ts tests/WeightedCPI.spec.ts -t 'should handle|should collect|should refund|should provide|should swap|should burn'
+Result: PASS
+Test Suites: 3 passed, 3 total
+Tests: 29 skipped, 43 passed, 72 total
+Snapshots: 0 total
+Time: 53.7 s
+Ran all selected System/ConstProduct/WeightedCPI routes.

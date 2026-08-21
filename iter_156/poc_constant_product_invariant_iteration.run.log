@@ -1,0 +1,17 @@
+COMMAND: node iter_156/poc_constant_product_invariant_iteration.test.js
+{
+  "sqrt_cases": 4381,
+  "sqrt_drift_cases": 0,
+  "swap_cases": 75,
+  "successful_conservation_cases": 35,
+  "small_output_refund_cases": 40,
+  "reserve_mutation_before_checks": true,
+  "success_only_save_after_checks": true,
+  "result": "PASS"
+}
+
+COMMAND: npm test -- --runInBand tests/ConstProduct.spec.ts -t 'should swap|should provide lp|should burn liquidity|should refund swap|should swap with 0 ref fee|should swap with max ref fee'
+RESULT: PASS tests/ConstProduct.spec.ts
+TEST_SUITES: 1 passed, 1 total
+TESTS: 24 skipped, 12 passed, 36 total
+RUNTIME: 15.698s

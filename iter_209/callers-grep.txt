@@ -1,0 +1,25 @@
+AV1 callers_grep_done=true
+command: rg -n 'vault_idata|vault_pay_to|deposit_ref_fee|withdraw_fee|DESTROY_IF_ZERO|CARRY_ALL_BALANCE|storage::deposited_amount|storage::owner_address|storage::token_address|storage::router_address|handle_vault_messages|invalid_caller|send_with_stateinit|send_simple|router::vault_pay_to|jetton_wallet::transfer|my_address\\(\\)|get_vault_address|vault_code|vaultStorageParser|sendWithdrawFee' contracts/vault.fc contracts/common/contracts.fc contracts/common/op.fc contracts/router.fc contracts/router/get.fc contracts/router/storage.fc contracts/router/msgs/vault.fc contracts/router/msgs/pool.fc contracts/router/dex.fc wrappers/Vault.ts wrappers/Router.ts tests/ConstSum.spec.ts tests/Stableswap.spec.ts
+match_count: 96
+unique_files: 13
+key_matches:
+  - contracts/vault.fc:12-15 loads owner, token, router, and deposited amount.
+  - contracts/vault.fc:40-44 accepts deposit_ref_fee only from stored router, adds amount, and saves.
+  - contracts/vault.fc:51-52 permits withdraw only for a positive stored amount.
+  - contracts/vault.fc:60-66 emits vault_pay_to with stored amount/token/owner and CARRY_ALL_BALANCE | DESTROY_IF_ZERO.
+  - contracts/vault.fc:68-69 clears deposited_amount and saves after message construction.
+  - contracts/common/contracts.fc:1-7 vault_idata stores user/token/router and zero amount.
+  - contracts/common/contracts.fc:174-183 vault_pay_to preserves amount/token/to tuple.
+  - contracts/common/contracts.fc:289-296 deposit_ref_fee preserves amount/response tuple.
+  - contracts/common/op.fc:26-28 distinct vault_pay_to, deposit_ref_fee, and withdraw_fee opcodes.
+  - contracts/router.fc:40 routes vault_pay_to to handle_vault_messages.
+  - contracts/router/get.fc:18-29 get_vault_address uses the same user/token/router/code tuple.
+  - contracts/router/storage.fc:8,24 stores and loads vault_code.
+  - contracts/router/msgs/vault.fc:9-13 reconstructs and authenticates the deterministic vault sender.
+  - contracts/router/msgs/vault.fc:16-19 sends the fixed amount to the fixed to_address through token_address.
+  - contracts/router/msgs/pool.fc:118-135 derives a vault from owner/token/router and sends the exact summed fee.
+  - contracts/router/dex.fc:61,84-89 covers vault gas and state-init delivery in the swap route.
+  - wrappers/Vault.ts:43-49 sends the empty withdraw_fee body.
+  - wrappers/Router.ts:530-534 exposes the same vault getter tuple.
+  - tests/ConstSum.spec.ts:1243-1280 covers two successive withdrawals after a new referral deposit.
+  - tests/Stableswap.spec.ts:1272-1310 covers the same lifecycle in another pool family.

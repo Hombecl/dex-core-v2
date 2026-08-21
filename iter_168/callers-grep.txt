@@ -1,0 +1,90 @@
+COMMAND: rg -n "user_address|to_user|to_user_address|from_address|lp_account_idata|lp_wallet_idata|ctx.at\\(SENDER\\)|transfer_notification|cb_add_liquidity|storage::save|equal_slices" contracts/pool/msgs/lp_account.fc contracts/lp_account/msgs/user.fc contracts/lp_account/msgs/pool.fc contracts/pool/msgs/router.fc contracts/common/contracts.fc contracts/lp_wallet.fc contracts/pool/get.fc
+MATCH_COUNT: 85
+UNIQUE_FILES: 7
+
+contracts/pool/get.fc:13:        lp_account_idata(my_address(), owner_address),
+contracts/pool/get.fc:45:        lp_wallet_idata(owner_address, my_address(), storage::jetton_lp_wallet_code),
+contracts/lp_wallet.fc:20:    throw_unless(705, equal_slices(owner_address, sender_address));
+contracts/lp_wallet.fc:51:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:59:    slice from_address = in_msg_body~load_msg_addr();
+contracts/lp_wallet.fc:62:    throw_unless(707, equal_slices(jetton_master_address, sender_address)
+contracts/lp_wallet.fc:63:        | equal_slices(calculate_user_jetton_lp_wallet_address(from_address, jetton_master_address, jetton_wallet_code), sender_address));
+contracts/lp_wallet.fc:74:            .store_uint(op::transfer_notification, 32)
+contracts/lp_wallet.fc:77:            .store_slice(from_address)
+contracts/lp_wallet.fc:100:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:111:    throw_unless(705, equal_slices(owner_address, sender_address));
+contracts/lp_wallet.fc:133:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:146:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/common/contracts.fc:1:(cell) vault_idata(slice _user_address, slice _token_address, slice _router_address) inline {
+contracts/common/contracts.fc:3:        .store_slice(_user_address)
+contracts/common/contracts.fc:10:(cell) lp_account_idata(slice _pool_address, slice _user_address) inline {
+contracts/common/contracts.fc:12:        .store_slice(_user_address)
+contracts/common/contracts.fc:19:(cell) lp_wallet_idata(slice _owner_address, slice _jetton_master_address, cell _jetton_wallet_code) inline {
+contracts/common/contracts.fc:33:        .store_slice(ctx.at(SENDER)) ;; called only in LPAccount from owner, we can safely use sender_address
+contracts/common/contracts.fc:39:(cell) pool::cb_add_liquidity(
+contracts/common/contracts.fc:40:    slice _user_address, 
+contracts/common/contracts.fc:43:    slice _to_user,
+contracts/common/contracts.fc:50:    return begin_message(op::cb_add_liquidity)
+contracts/common/contracts.fc:53:        .store_slice(_user_address)
+contracts/common/contracts.fc:58:            .store_slice(_to_user)
+contracts/common/contracts.fc:66:(cell) anyone::getter_lp_account_data(slice _user_address, slice _pool_address, int _left_amount, int _right_amount) inline {
+contracts/common/contracts.fc:68:        .store_slice(_user_address)
+contracts/common/contracts.fc:126:    slice _to_user,
+contracts/common/contracts.fc:137:        .store_slice(_to_user)
+contracts/common/contracts.fc:215:        .store_slice(_from) ;; from_address
+contracts/lp_account/msgs/user.fc:36:        storage::save();
+contracts/lp_account/msgs/user.fc:45:            + storage_fee::pool + gas::pool::cb_add_liquidity 
+contracts/lp_account/msgs/user.fc:52:        slice to_user = in_msg_body~load_msg_addr();
+contracts/lp_account/msgs/user.fc:62:            to_user.address::check_workchain(params::workchain)
+contracts/lp_account/msgs/user.fc:87:            pool::cb_add_liquidity(
+contracts/lp_account/msgs/user.fc:88:                ctx.at(SENDER), 
+contracts/lp_account/msgs/user.fc:91:                to_user,
+contracts/lp_account/msgs/user.fc:100:        storage::save();
+contracts/lp_account/msgs/user.fc:106:        msgs::send_empty(0, storage::user_address, CARRY_ALL_BALANCE);
+contracts/pool/msgs/lp_account.fc:4:    if ctx.at(OPCODE) == op::cb_add_liquidity {
+contracts/pool/msgs/lp_account.fc:9:        slice user_address = in_msg_body~load_msg_addr();
+contracts/pool/msgs/lp_account.fc:14:        slice to_user_address = additional_data~load_msg_addr();
+contracts/pool/msgs/lp_account.fc:19:            lp_account_idata(
+contracts/pool/msgs/lp_account.fc:21:                user_address
+contracts/pool/msgs/lp_account.fc:26:        throw_unless(error::invalid_caller, equal_slices(lp_account~address(params::workchain), ctx.at(SENDER)));
+contracts/pool/msgs/lp_account.fc:77:                lp_account_idata(
+contracts/pool/msgs/lp_account.fc:103:                lp_wallet_idata(
+contracts/pool/msgs/lp_account.fc:104:                    to_user_address, 
+contracts/pool/msgs/lp_account.fc:111:            int used_gas = ctx.at(FWD_FEE) + gas::pool::cb_add_liquidity;
+contracts/pool/msgs/lp_account.fc:115:            ) { ;; do not send transfer_notification, if gas is too low, mint may revert
+contracts/pool/msgs/lp_account.fc:124:                    user_address, 
+contracts/pool/msgs/lp_account.fc:132:            storage::save();
+contracts/pool/msgs/lp_account.fc:142:        slice user_address = in_msg_body~load_msg_addr();
+contracts/pool/msgs/lp_account.fc:147:            lp_account_idata(my_address(), user_address),
+contracts/pool/msgs/lp_account.fc:151:        throw_unless(error::invalid_caller, equal_slices(lp_account~address(params::workchain), ctx.at(SENDER)));
+contracts/pool/msgs/lp_account.fc:163:                    user_address, 
+contracts/pool/msgs/lp_account.fc:164:                    user_address, 
+contracts/pool/msgs/lp_account.fc:165:                    user_address, 
+contracts/pool/msgs/lp_account.fc:183:                    user_address, 
+contracts/pool/msgs/lp_account.fc:184:                    user_address, 
+contracts/pool/msgs/lp_account.fc:185:                    user_address, 
+contracts/pool/msgs/router.fc:7:        slice from_user_address = in_msg_body~load_msg_addr();
+contracts/pool/msgs/router.fc:42:            to_address = to_address.address::is_none() ? from_user_address : to_address;
+contracts/pool/msgs/router.fc:57:                ctx.at(SENDER), 
+contracts/pool/msgs/router.fc:59:                    from_user_address,
+contracts/pool/msgs/router.fc:123:                    ctx.at(SENDER),
+contracts/pool/msgs/router.fc:137:                ctx.at(SENDER), 
+contracts/pool/msgs/router.fc:139:                    from_user_address,
+contracts/pool/msgs/router.fc:152:            storage::save();
+contracts/pool/msgs/router.fc:159:                ctx.at(SENDER), 
+contracts/pool/msgs/router.fc:161:                    from_user_address,
+contracts/pool/msgs/router.fc:194:        slice to_user = null();
+contracts/pool/msgs/router.fc:203:            to_user = call_payload~load_msg_addr();
+contracts/pool/msgs/router.fc:211:            throw_arg_unless(op::provide_refund_wrong_workchain, 1, to_user.address::check_workchain(params::workchain));
+contracts/pool/msgs/router.fc:218:                ctx.at(SENDER), 
+contracts/pool/msgs/router.fc:241:                lp_account_idata(my_address(), from_user),
+contracts/pool/msgs/router.fc:256:                    to_user,
+contracts/pool/msgs/router.fc:269:                ctx.at(SENDER), 
+contracts/pool/msgs/router.fc:296:        storage::save();
+contracts/pool/msgs/router.fc:317:        storage::save();
+contracts/lp_account/msgs/pool.fc:12:        slice to_user = in_msg_body~load_msg_addr();
+contracts/lp_account/msgs/pool.fc:34:                pool::cb_add_liquidity(
+contracts/lp_account/msgs/pool.fc:35:                    storage::user_address, 
+contracts/lp_account/msgs/pool.fc:38:                    to_user,
+contracts/lp_account/msgs/pool.fc:55:        storage::save();
+

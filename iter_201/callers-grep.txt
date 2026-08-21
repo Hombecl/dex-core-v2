@@ -1,0 +1,25 @@
+command:
+rg -n 'transfer_notification|slice_refs_empty|jetton_amount|from_address|jetton_wallet::transfer|ctx.at\(SENDER\)|route_dex_messages|transfer_bounce_invalid_request|router_address|handle_jetton_messages|handle_pool_messages|store_slice\(_to_address\)|store_slice\(_response_address\)' contracts/router/msgs/jetton.fc contracts/common/contracts.fc contracts/router.fc contracts/router/dex.fc contracts/pool.fc
+
+summary:
+match_count: 42
+unique_files: 5
+callers_grep_done: true
+
+key_matches:
+contracts/router/msgs/jetton.fc:5: if ctx.at(OPCODE) == op::ft::transfer_notification
+contracts/router/msgs/jetton.fc:6: int jetton_amount = in_msg_body~load_coins()
+contracts/router/msgs/jetton.fc:7: slice from_address = in_msg_body~load_msg_addr()
+contracts/router/msgs/jetton.fc:9: if in_msg_body.slice_refs_empty?()
+contracts/router/msgs/jetton.fc:15: jetton_wallet::transfer(0, jetton_amount, from_address, from_address)
+contracts/router/msgs/jetton.fc:20: route_dex_messages(
+contracts/router/msgs/jetton.fc:21: ctx.at(SENDER)
+contracts/router.fc:15: if handle_jetton_messages()
+contracts/router.fc:23: if handle_pool_messages()
+contracts/router/dex.fc:53: throw_arg_if(op::transfer_bounce_invalid_request, 1
+contracts/router/dex.fc:99: jetton_wallet::transfer(0, _sent_amount, refund_address, excesses_address)
+contracts/common/contracts.fc:280: jetton_wallet::transfer(int _fwd_amount, int _jetton_amount, slice _to, slice _response_address)
+contracts/pool.fc:28: if equal_slices(ctx.at(SENDER), storage::router_address)
+
+conclusion:
+The no-reference path sends an exact amount to the notifying wallet with from_address as the token transfer owner/response. A foreign or fake notifying wallet can only move its own balance; a Router-owned wallet cannot be made to emit the message by an external notification. Referenced notifications enter the separately validated route path, so no Router balance debit is reachable.

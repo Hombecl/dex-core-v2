@@ -1,0 +1,85 @@
+schema_version: shadow-v1
+iteration: 190
+phase: completed
+cell_id: AR3
+cell_label: pool_pair_sort_notification_order
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AR3
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - "contracts/common/contracts.fc:222: (cell) pool::$route("
+      - "contracts/common/contracts.fc:231: if _sender_jetton_address.slice_hash() > _other_jetton_address.slice_hash() {"
+      - "contracts/router/dex.fc:79: pool_idata(my_address(), _jetton_address, token_wallet1, storage::jetton_lp_wallet_code,  storage::lp_account_code),"
+      - "contracts/router/dex.fc:88: pool::$route(transferred_op, _caller, _sent_amount, _jetton_address, token_wallet1, _dex_payload),"
+      - "contracts/router/msgs/pool.fc:19: pool_idata("
+      - "contracts/router/msgs/pool.fc:50: slice sent_jetton_address = amount0_out > 0 ? token0_address : token1_address;"
+      - "contracts/pool/msgs/router.fc:9: int amount0 = in_msg_body~load_coins();"
+      - "contracts/pool/msgs/router.fc:10: int amount1 = in_msg_body~load_coins();"
+      - "contracts/pool/pools/constant_product/state_init.fc:21: if _first_jetton_address.slice_hash() > _second_jetton_address.slice_hash() {"
+      - "contracts/pool/pools/constant_sum/state_init.fc:21: if _first_jetton_address.slice_hash() > _second_jetton_address.slice_hash() {"
+      - "contracts/pool/pools/stableswap/state_init.fc:22: if _first_jetton_address.slice_hash() > _second_jetton_address.slice_hash() {"
+      - "contracts/pool/pools/weighted_const_product/state_init.fc:22: if _first_jetton_address.slice_hash() > _second_jetton_address.slice_hash() {"
+      - "contracts/pool/pools/weighted_stableswap/state_init.fc:32: if _first_jetton_address.slice_hash() > _second_jetton_address.slice_hash() {"
+      - "contracts/pool/msgs/router.fc:227: storage::token0_address,"
+      - "contracts/pool/msgs/router.fc:229: storage::token1_address"
+  poc_execution:
+    test_file_path: iter_190/poc_pool_pair_sort_notification_order.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_190/poc_pool_pair_sort_notification_order.run.log
+    run_log_exists_on_disk: true
+    test_runtime: "0.2s static; 10.688s integration"
+    result: "PASS (26 cross-file anchors; five StateInit variants; reverse-order LP regression 5 passed)"
+  prior_art_check:
+    queries:
+      - "iter_68 route_token_wallet_binding"
+      - "iter_102 router_route_untrusted_notification_binding"
+      - "iter_121 router_pool_pair_orientation_stateinit"
+      - "iter_133 router_notification_without_ref_refund_source"
+      - "iter_169 lp_wallet_mint_from_address_notification"
+    results: "Prior orientation/notification audits rechecked; all relevant matches DEADEND_WITH_PROOF"
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "repo:ston-fi/dex-core-v2 \"reversed notification\" amount is:issue"
+      - "repo:ston-fi/dex-core-v2 \"reversed notification\" amount is:pr"
+      - "repo:ston-fi/dex-core-v2 \"token0\" \"token1\" orientation is:issue"
+      - "repo:ston-fi/dex-core-v2 \"token0\" \"token1\" orientation is:pr"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  caller_grep_path: iter_190/callers-grep.txt
+  caller_match_count: 142
+  caller_unique_files: 14
+  prior_audit_path: iter_190/prior-audit-git.log
+  prior_audit_family_matches:
+    - iter_68
+    - iter_102
+    - iter_121
+    - iter_133
+    - iter_169
+  r15_evidence_files:
+    - iter_190/R15-GH-reversed-notification-issue.json
+    - iter_190/R15-GH-reversed-notification-pr.json
+    - iter_190/R15-GH-token-orientation-issue.json
+    - iter_190/R15-GH-token-orientation-pr.json
+  source_conclusion: "pool::$route compares the sender and other wallet slice hashes and writes the incoming amount into the canonical amount0/amount1 slot. Every Pool StateInit variant uses the same hash ordering for token0/token1, and the Pool parser, storage, Router pay_to, and swap/LP paths consume that same canonical tuple. Reversing notification order therefore reaches the same Pool and swaps which incoming leg is positive without swapping the asset identity; the static 26-anchor model and five passing ConstProduct provide-LP regressions showed no wrong-side output or attacker-positive delta. AR3 is a duplicate orientation dead end of AC1/iter_121."
+  attacker_privilege: external_auth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  shadow_mode: true

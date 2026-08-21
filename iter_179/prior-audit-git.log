@@ -1,0 +1,7 @@
+Prior-audit family matches from shadow STATUS files:
+iter_72: refund_me clears both LP-account balances and cb_refund_me routes exact stored amounts; second refund sees zero.
+iter_93: cb_refund_me reconstructs the LP-account and routes both legs through deterministic Router pay_to.
+iter_99: CARRY_REMAINING_GAS and multi-leg callback carry paths were modeled and integrated.
+iter_107: LP-account refund/excess carry destination is user-gated and token routing remains stored-user-bound.
+iter_108: cb_refund_me issue/PR prior-art family was audited with no duplicate or stranded claim.
+iter_123: refund-then-direct-add lifecycle preserves exact amounts and clears residual state.

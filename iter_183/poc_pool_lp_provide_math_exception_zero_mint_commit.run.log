@@ -1,0 +1,13 @@
+cross_file_anchors 18
+variant_math_implementations 5
+exception_models 4
+zero_min_exception_commits_reserves true
+zero_min_exception_mints_lp false
+donor_lp_entitlement 0
+attacker_value_extraction false
+result PASS
+
+Test Suites: 5 passed, 5 total
+Tests:       125 skipped, 13 passed, 138 total
+Time:        35.146 s
+Ran all test suites matching the five Pool variant suites with tests matching "should provide lp".

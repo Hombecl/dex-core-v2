@@ -1,0 +1,45 @@
+contracts/lp_wallet.fc:37:        .store_uint(op::internal_transfer, 32)
+contracts/lp_wallet.fc:74:            .store_uint(op::transfer_notification, 32)
+contracts/lp_wallet.fc:116:        .store_uint(op::burn_notification_ext, 32)
+contracts/lp_wallet.fc:139:    int op = in_msg_body~load_uint(32);
+contracts/lp_wallet.fc:141:    throw_unless(709, (op == op::internal_transfer) | (op == op::burn_notification_ext));
+contracts/lp_wallet.fc:167:    int op = in_msg_body~load_uint(32);
+contracts/lp_wallet.fc:174:    if (op == op::internal_transfer) { 
+contracts/router/msgs/getter.fc:6:    if ctx.at(OPCODE) == op::getter_pool_address { 
+contracts/pool/msgs/lp_wallet.fc:4:    if ctx.at(OPCODE) == op::burn_notification_ext { 
+contracts/router/msgs/pool.fc:5:    if ctx.at(OPCODE) == op::pay_to { 
+contracts/router/msgs/pool.fc:9:        _ = in_msg_body~load_uint(32); ;; ignore exit code
+contracts/router/msgs/pool.fc:34:                fwd_opcode = tmp_custom_payload_ds.preload_uint(32);
+contracts/router/msgs/pool.fc:94:    if ctx.at(OPCODE) == op::pay_vault { 
+contracts/pool/msgs/protocolfee.fc:4:    if ctx.at(OPCODE) == op::collect_fees { ;; throwable
+contracts/router/msgs/jetton.fc:5:    if ctx.at(OPCODE) == op::ft::transfer_notification {
+contracts/router/msgs/vault.fc:3:    if ctx.at(OPCODE) == op::vault_pay_to {
+contracts/pool/msgs/lp_account.fc:4:    if ctx.at(OPCODE) == op::cb_add_liquidity {
+contracts/pool/msgs/lp_account.fc:138:    if ctx.at(OPCODE) == op::cb_refund_me {
+contracts/router/msgs/admin.fc:6:    if ctx.at(OPCODE) == op::set_fees { 
+contracts/router/msgs/admin.fc:55:    if ctx.at(OPCODE) == op::reset_pool_gas { 
+contracts/router/msgs/admin.fc:86:    if ctx.at(OPCODE) == op::update_pool_status {
+contracts/router/msgs/admin.fc:117:    if ctx.at(OPCODE) == op::update_pool_code {
+contracts/router/msgs/admin.fc:148:    if ctx.at(OPCODE) == op::update_status {
+contracts/router/msgs/admin.fc:156:    if ctx.at(OPCODE) == op::init_code_upgrade {
+contracts/router/msgs/admin.fc:171:    if ctx.at(OPCODE) == op::init_admin_upgrade {
+contracts/router/msgs/admin.fc:186:    if ctx.at(OPCODE) == op::init_pool_code_upgrade {
+contracts/router/msgs/admin.fc:201:    if ctx.at(OPCODE) == op::cancel_pool_code_upgrade {
+contracts/router/msgs/admin.fc:212:    if ctx.at(OPCODE) == op::cancel_admin_upgrade {
+contracts/router/msgs/admin.fc:223:    if ctx.at(OPCODE) == op::cancel_code_upgrade {
+contracts/router/msgs/admin.fc:235:    if ctx.at(OPCODE) == op::finalize_upgrades {
+contracts/router/msgs/admin.fc:263:    if ctx.at(OPCODE) == op::reset_gas {
+contracts/lp_account/msgs/user.fc:4:    if ctx.at(OPCODE) == op::refund_me { 
+contracts/lp_account/msgs/user.fc:40:    if ctx.at(OPCODE) == op::direct_add_liquidity {
+contracts/lp_account/msgs/user.fc:104:    if ctx.at(OPCODE) == op::reset_gas {
+contracts/pool/msgs/router.fc:4:    if ctx.at(OPCODE) == op::swap {
+contracts/pool/msgs/router.fc:178:    if ctx.at(OPCODE) == op::provide_lp { 
+contracts/pool/msgs/router.fc:288:    if ctx.at(OPCODE) == op::reset_gas {
+contracts/pool/msgs/router.fc:294:    if ctx.at(OPCODE) == op::internal_update_status {
+contracts/pool/msgs/router.fc:302:    if ctx.at(OPCODE) == op::internal_update_pool_code {
+contracts/pool/msgs/router.fc:308:    if ctx.at(OPCODE) == op::internal_set_fees {
+contracts/lp_account/msgs/pool.fc:6:    if ctx.at(OPCODE) == op::add_liquidity { 
+contracts/pool/msgs/getter.fc:6:    if ctx.at(OPCODE) == op::getter_pool_data { 
+contracts/pool/msgs/getter.fc:27:    if ctx.at(OPCODE) == op::getter_lp_account_address { 
+contracts/pool/msgs/getter.fc:42:    if ctx.at(OPCODE) == op::ft::provide_wallet_address {
+contracts/lp_account/msgs/getter.fc:6:    if (ctx.at(OPCODE) == op::getter_lp_account_data) { 

@@ -1,0 +1,164 @@
+schema_version: shadow-v1
+iteration: 227
+phase: completed
+cell_id: AX10
+cell_label: vault_deposit_ref_fee_response_tail_replay
+final_verdict: PRE_KILLED_DUPLICATE
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AX10
+  final_verdict: PRE_KILLED_DUPLICATE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/vault.fc
+        line: 34
+        text: 'if (ctx.at(OPCODE) == op::deposit_ref_fee) & equal_slices(ctx.at(SENDER), storage::router_address) {'
+      - file: contracts/vault.fc
+        line: 36
+        text: 'storage::deposited_amount += in_msg_body~load_coins();'
+      - file: contracts/vault.fc
+        line: 39
+        text: 'utils::send_excesses(0, in_msg_body~load_msg_addr(), QCARRY_ALL_BALANCE);'
+      - file: contracts/common/utils.fc
+        line: 2
+        text: '_addr = _addr.address::is_none() ? ctx.at(SENDER) : _addr;'
+      - file: contracts/common/utils.fc
+        line: 3
+        text: 'throw_unless(error::wrong_workchain, _addr.address::check_workchain(params::workchain));'
+      - file: contracts/common/contracts.fc
+        line: 289
+        text: '(cell) vault::deposit_ref_fee('
+      - file: contracts/common/contracts.fc
+        line: 294
+        text: '.store_coins(_amount)'
+      - file: contracts/common/contracts.fc
+        line: 295
+        text: '.store_slice(_response_address)'
+      - file: contracts/common/contracts.fc
+        line: 296
+        text: '.end_cell();'
+      - file: contracts/router/msgs/pool.fc
+        line: 113
+        text: 'throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER))); ;; check if its a valid pool'
+      - file: contracts/router/msgs/pool.fc
+        line: 127
+        text: 'msgs::send_with_stateinit('
+      - file: contracts/router/msgs/pool.fc
+        line: 131
+        text: 'vault::deposit_ref_fee('
+      - file: contracts/router/msgs/pool.fc
+        line: 132
+        text: 'amount0_out + amount1_out,'
+      - file: contracts/pool/msgs/router.fc
+        line: 121
+        text: 'if (ref_address.preload_uint(2) != 0) & (ref_fee_out0 + ref_fee_out1 > 0) {'
+      - file: contracts/pool/msgs/router.fc
+        line: 124
+        text: 'router::pay_vault('
+      - file: contracts/router.fc
+        line: 29
+        text: 'if handle_vault_messages() {'
+      - file: contracts/common/op.fc
+        line: 27
+        text: 'const op::deposit_ref_fee                 = "deposit_ref_fee query_id:uint64 jetton_amount:Coins excesses_address:MsgAddress = InternalMsgBody"c & 0x7fffffff;'
+      - file: tests/ConstProduct.spec.ts
+        line: 1390
+        text: "it('should collect ref fee from vault', async () => {"
+    cross_file_count: 6
+    cross_file_match_count: 106
+    source_scope_restricted: true
+    conclusion: 'AX10 exactly reproduces iter_214/AW2: the Vault reads amount then response address, stores the amount, and routes excesses; trailing body data cannot shift prior fields. Router and Pool sender gates prevent external access, and the live referral-vault path passes.'
+    redrill_count: 0
+    audit_result: NOT_AVAILABLE_SHADOW_MODE
+    required_evidence_complete: true
+    no_fabrication: true
+    scope_assets_only: true
+    methodology_audit_exit: NOT_AVAILABLE
+    status_schema_validated: true
+    evidence_gate: PASS_FOR_DUPLICATE
+    shippable: false
+    rejection_reason: 'Exact Vault deposit tail/response family was completed as iter_214/AW2; no parser shift or replay path exists.'
+    attacker_privilege:
+      privilege_required: external_auth
+    fund_loss_demonstrated: false
+    concrete_impact_demonstrated: false
+    callers_grep_artifact: iter_227/callers-grep.txt
+    caller_match_count: 106
+    caller_unique_files: 6
+    cascade_verbatim_hit_count: 19
+    cross_file_anchor_count: 19
+    caller_paths:
+      - contracts/common/contracts.fc
+      - contracts/common/op.fc
+      - contracts/pool/msgs/router.fc
+      - contracts/router/msgs/pool.fc
+      - contracts/vault.fc
+      - tests/ConstProduct.spec.ts
+    evidence_paths:
+      poc_test: iter_227/poc_vault_deposit_ref_fee_response_tail_replay.test.js
+      poc_run_log: iter_227/poc_vault_deposit_ref_fee_response_tail_replay.run.log
+      live_regression_log: iter_227/live-vault-deposit-tail-regression.run.log
+      prior_audit: iter_227/prior-audit-git.log
+    poc_execution:
+      test_file_path: iter_227/poc_vault_deposit_ref_fee_response_tail_replay.test.js
+      test_file_exists_on_disk: true
+      run_log_path: iter_227/poc_vault_deposit_ref_fee_response_tail_replay.run.log
+      run_log_exists_on_disk: true
+      runtime: '0.1s static; 7.2s integration'
+      result: 'PASS (19 anchors; exact iter_214 duplicate and referral-vault regression)'
+    prior_art_check:
+      queries:
+        - 'cell_label vault/deposit_ref_fee/tail/response/replay scan across iter_*/STATUS.yaml'
+      results:
+        - 'iter_214 AW2 exact family DEADEND_WITH_PROOF; iter_120, iter_125, iter_211 related families also closed'
+    r15_disclosure_check:
+      gh_search_terms_used:
+        - 'repo:ston-fi/dex-core-v2 "deposit_ref_fee" "response_address" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "deposit_ref_fee" "response_address" is:pr'
+        - 'repo:ston-fi/dex-core-v2 "vault::deposit_ref_fee" "store_slice" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "vault::deposit_ref_fee" "store_slice" is:pr'
+      gh_search_hits: 0
+      evidence_files:
+        - iter_227/r15-deposit-ref-fee-response-issue.json
+        - iter_227/r15-deposit-ref-fee-response-pr.json
+        - iter_227/r15-vault-deposit-builder-tail-issue.json
+        - iter_227/r15-vault-deposit-builder-tail-pr.json
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: PRE_KILLED_DUPLICATE
+  shadow_mode: true
+  caller_path: iter_227/callers-grep.txt
+  caller_match_count: 106
+  caller_unique_files: 6
+  prior_audit_path: iter_227/prior-audit-git.log
+  prior_family_matches: [iter120, iter125, iter211, iter214]
+  r15_evidence_files:
+    - iter_227/r15-deposit-ref-fee-response-issue.json
+    - iter_227/r15-deposit-ref-fee-response-pr.json
+    - iter_227/r15-vault-deposit-builder-tail-issue.json
+    - iter_227/r15-vault-deposit-builder-tail-pr.json
+  source_conclusion: 'Vault parses only amount and response address; trailing data is inert and the Router sender gate prevents external deposit/replay.'
+  attacker_privilege:
+    privilege_required: external_auth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_227/poc_vault_deposit_ref_fee_response_tail_replay.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_227/poc_vault_deposit_ref_fee_response_tail_replay.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_227/live-vault-deposit-tail-regression.run.log
+    result: PASS

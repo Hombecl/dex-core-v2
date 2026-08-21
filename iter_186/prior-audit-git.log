@@ -1,0 +1,5 @@
+Prior-audit evidence selected from shadow workspace:
+iter_126/STATUS.yaml cell_label=lp_account_both_positive_flag_mint_gate final_verdict=DEADEND_WITH_PROOF
+iter_126/source_conclusion: The caller-controlled both_positive bit is forwarded unchanged from Pool parser to the deterministic LP account and selects only the requirement that both accumulated legs be positive. Both branches require min_lp_out > 0 and a positive accumulated balance; neither can mint zero legs. Pool callback caller derivation, liquidity/minimum checks, total-supply and reserve bounds, and exact-leg reserve updates remain independent of the bit. No unbacked LP mint or reserve mismatch was reproduced.
+iter_112/STATUS.yaml: the same deferred single-sided amount family was audited with deterministic pool/user isolation and successful-mint clearing.
+iter_126/STATUS.yaml R15 terms included both_positive and single-side liquidity issue/PR searches.

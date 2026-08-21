@@ -1,0 +1,5 @@
+{
+  "query": "repo:ston-fi/dex-core-v2 \"reversed notification\" amount is:pr",
+  "total_count": 0,
+  "items": []
+}

@@ -1,0 +1,8 @@
+AU4 prior-family audit:
+- Iter 75 / S5 getter_static_code_identity — DEADEND_WITH_PROOF; Router getter identity stayed bound to the stored code/data tuple.
+- Iter 100 / X5 getter_payload_ref_shape_boundary — DEADEND_WITH_PROOF; getter response/ref shape was read-only and requester-bound.
+- Iter 109 / Z4 router_getter_upgrade_code_visibility — DEADEND_WITH_PROOF; upgraded code visibility did not create an address or authorization alias.
+- Iter 121 / AC1 router_pool_pair_orientation_stateinit — DEADEND_WITH_PROOF; getter and route pair orientation used the same canonical StateInit ordering.
+- Iter 140 / AF5 getter_response_state_alias — DEADEND_WITH_PROOF; getter response state did not alias or mutate value-bearing state.
+
+Conclusion: AU4 was compared with five prior getter, address-identity, and pair-orientation audits before classification.

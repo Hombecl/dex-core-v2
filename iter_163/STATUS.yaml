@@ -1,0 +1,78 @@
+schema_version: shadow-v1
+iteration: 163
+phase: completed
+cell_id: AM1
+cell_label: lp_mint_bounce_pool_commit
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AM1
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - "contracts/pool.fc:11:    if ctx.at(IS_BOUNCED) {"
+      - "contracts/pool.fc:12:        ;; mint should never"
+      - "contracts/pool/msgs/lp_account.fc:102:            var lp_wallet = contracts::from_sources("
+      - "contracts/pool/msgs/lp_account.fc:103:                lp_wallet_idata("
+      - "contracts/pool/msgs/lp_account.fc:119:            msgs::send_with_stateinit("
+      - "contracts/pool/msgs/lp_account.fc:123:                jetton_wallet::mint("
+      - "contracts/pool/msgs/lp_account.fc:132:            storage::save();"
+      - "contracts/lp_wallet.fc:58:    balance += jetton_amount;"
+      - "contracts/lp_wallet.fc:62:    throw_unless(707, equal_slices(jetton_master_address, sender_address)"
+      - "contracts/lp_wallet.fc:100:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);"
+      - "contracts/lp_wallet.fc:136:() on_bounce (slice in_msg_body) impure {"
+      - "contracts/pool/get.fc:44:    var lp_wallet = contracts::from_sources("
+      - "contracts/common/contracts.fc:206:(cell) jetton_wallet::mint("
+  poc_execution:
+    test_file_path: iter_163/poc_lp_mint_bounce_pool_commit.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_163/poc_lp_mint_bounce_pool_commit.run.log
+    run_log_exists_on_disk: true
+    test_runtime: "0.1s static/model; 39.681s integration"
+    result: "PASS (4 canonical mint cases; 18 live LP provide/burn tests)"
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 LP mint bounce pool save is:issue"
+      - "repo:ston-fi/dex-core-v2 LP mint bounce pool save is:pr"
+      - "repo:ston-fi/dex-core-v2 jetton internal_transfer bounce liquidity is:issue"
+      - "repo:ston-fi/dex-core-v2 jetton internal_transfer bounce liquidity is:pr"
+    results: "4 queries returned total_count=0"
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "LP mint bounce pool save"
+      - "jetton internal_transfer bounce liquidity"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  selected_cluster_source: POST_MATRIX_CLUSTER_PROPOSALS_24.md
+  caller_path: "Pool bounced-message gate -> LP-account derived LP-wallet StateInit -> internal_transfer mint -> LP-wallet sender check/balance save -> LP-wallet bounce restoration"
+  caller_match_count: 29
+  caller_unique_files: 6
+  prior_audit_path: iter_163/prior-audit-git.log
+  r15_evidence_files:
+    - iter_163/R15-GH-lp-mint-bounce-pool-save-issue.json
+    - iter_163/R15-GH-lp-mint-bounce-pool-save-pr.json
+    - iter_163/R15-GH-internal-transfer-bounce-liquidity-issue.json
+    - iter_163/R15-GH-internal-transfer-bounce-liquidity-pr.json
+  boundary_result: "Pool persists the callback state after dispatching the LP-wallet internal_transfer, and its bounced-message branch performs no repair. However, the five variant paths derive the LP wallet with the Pool as master and the same code tuple used by the wallet getter; LP-wallet receive_tokens credits only after the master/user-wallet sender check and saves the balance. Four canonical mint models had matching Pool supply and wallet balance deltas, and no valid-state bounce path was found."
+  source_conclusion: "The theoretical Pool-save/LP-wallet-credit mismatch is not production-reachable through the canonical StateInit and sender path. Invalid sender input is rejected before wallet credit, and live LP provide/burn flows passed. No attacker-controlled fund loss or LP-supply-without-balance state was demonstrated."
+  candidate_path: null
+  attacker_privilege: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  shadow_mode: true
+

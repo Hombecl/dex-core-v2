@@ -1,0 +1,20 @@
+COMMAND: node iter_187/poc_pool_lp_provide_max_input_exception.test.js
+EXIT: 0
+cross_file_anchors 16
+variant_implementations 5
+boundary_cases 5
+max_coins 1329227995784915872903807060280344575
+exact_boundary_allowed true
+over_bound_cases_refund_or_throw true
+success_save_after_bounds true
+exact_input_legs_refunded_on_failure true
+attacker_positive_delta false
+prior_iter_116_duplicate true
+result PASS
+
+COMMAND: npm test -- --runInBand tests/ConstProduct.spec.ts -t 'should provide lp'
+EXIT: 0
+PASS tests/ConstProduct.spec.ts (11.588 s)
+Tests: 31 skipped, 5 passed, 36 total
+Passed: should provide lp; should provide lp with payload; should provide lp with payload to a different address; should provide lp (single side); should provide lp (single side) with protocol fees
+Ran all test suites matching tests/ConstProduct.spec.ts with tests matching "should provide lp".

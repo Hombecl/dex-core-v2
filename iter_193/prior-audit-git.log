@@ -1,0 +1,7 @@
+AS1 prior-family audit:
+- Iter 99: callback_carry_remaining_gas_reentry — DEADEND_WITH_PROOF; callback gas/reentry did not create an unbacked balance.
+- Iter 118: router_cross_router_original_caller_binding — DEADEND_WITH_PROOF; nested route caller binding remained constrained.
+- Iter 128: router_nested_route_payload_tail_boundary — DEADEND_WITH_PROOF; payload-tail boundary did not alter the value path.
+- Iter 189: router_owned_wallet_residual_debit — DEADEND_WITH_PROOF; a forged pair did not drain the preloaded real Router-wallet residual.
+
+Conclusion: AS1 is the same async route/value-conservation family and was checked against four earlier deadend records before classification.

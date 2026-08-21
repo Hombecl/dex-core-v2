@@ -1,0 +1,11 @@
+AV4 prior-family audit (read from prior iteration STATUS.yaml records):
+- iter_101 / Y1 router_pay_vault_single_side_stateinit: DEADEND_WITH_PROOF; one populated referral leg selected the matching token and zero fee produced no value.
+- iter_120 / AB5 vault_deposit_extra_payload_state_boundary: DEADEND_WITH_PROOF; Vault stored only the Router-authenticated amount and fixed owner/token/router tuple.
+- iter_131 / AE1 pool_swap_referral_output_send_order: DEADEND_WITH_PROOF; swap arithmetic emitted referral pay_vault only after one-sided output/referral calculation and saved exact state.
+- iter_174 / AO2 router_pay_vault_token_side_binding: DEADEND_WITH_PROOF; Router selected the positive fee token and derived the matching Vault.
+- iter_182 / AP5 router_vault_pay_to_amount_tuple: DEADEND_WITH_PROOF; pay_vault and withdrawal retained exact amount/token/owner tuples.
+- iter_195 / AS3 router_pay_vault_vault_collision: DEADEND_WITH_PROOF; alternate owner/token tuples were distinct deterministic Vault identities.
+- iter_203 / AU2 pool_protocolfee_zero_payload_ref_split: KILLED_TRUSTED_ON_TRUSTED; fee-leg selection was controlled by the trusted protocol-fee sender.
+- iter_204 / AU3 pool_protocolfee_recipient_tuple_binding: KILLED_TRUSTED_ON_TRUSTED; harmful recipient tuple mutation required trusted Pool/Router behavior.
+
+Conclusion: a dual-positive pay_vault tuple would be economically misclassified as token0, but production generation is mutually one-sided and Router rejects non-Pool senders; the residual concern is trusted-on-trusted only.

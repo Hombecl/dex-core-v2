@@ -1,0 +1,21 @@
+contracts/lp_account/msgs/user.fc:56:        slice excesses_address = additional_fields~load_msg_addr();
+contracts/lp_account/msgs/user.fc:62:            to_user.address::check_workchain(params::workchain)
+contracts/lp_account/msgs/user.fc:64:            & excesses_address.address::check_workchain(params::workchain));
+contracts/lp_account/msgs/user.fc:96:                excesses_address
+contracts/router/dex.fc:18:        excesses_address = dex_payload~load_msg_addr();
+contracts/router/dex.fc:24:            & excesses_address.address::check_workchain(params::workchain)
+contracts/pool/msgs/lp_account.fc:84:            msgs::send_with_stateinit(
+contracts/pool/msgs/lp_account.fc:99:                CARRY_ALL_BALANCE
+contracts/pool/msgs/lp_account.fc:132:            storage::save();
+contracts/pool/msgs/lp_wallet.fc:8:        slice response_address = in_msg_body~load_msg_addr();
+contracts/pool/msgs/lp_wallet.fc:23:        throw_unless(error::wrong_address, response_address.preload_uint(2) == 0);
+contracts/pool/msgs/router.fc:18:        slice excesses_address = dex_payload~load_msg_addr();
+contracts/pool/msgs/router.fc:45:            to_address.address::check_workchain(params::workchain)
+contracts/pool/msgs/router.fc:211:            throw_arg_unless(op::provide_refund_wrong_workchain, 1, to_user.address::check_workchain(params::workchain));
+contracts/pool/msgs/router.fc:259:                    excesses_address
+contracts/lp_wallet.fc:58:    balance += jetton_amount;
+contracts/lp_wallet.fc:60:    slice response_address = in_msg_body~load_msg_addr();
+contracts/lp_wallet.fc:74:            .store_uint(op::transfer_notification, 32)
+contracts/lp_wallet.fc:89:    if ((response_address.preload_uint(2) != 0) & (msg_value > 0)) {
+contracts/lp_wallet.fc:92:        .store_slice(response_address)
+contracts/lp_wallet.fc:100:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);

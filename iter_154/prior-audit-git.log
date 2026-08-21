@@ -1,0 +1,2 @@
+COMMAND: git log --all --oneline --decorate --regexp-ignore-case --grep='stableswap\|invariant\|denominator\|amplification' -- contracts/pool/pools/stableswap contracts/pool/msgs/router.fc contracts/pool/msgs/lp_account.fc contracts/router/pools/stableswap
+RESULT: no matching prior audit commits in the checked history

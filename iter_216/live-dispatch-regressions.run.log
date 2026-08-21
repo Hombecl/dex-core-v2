@@ -1,0 +1,13 @@
+$ npm test -- --runInBand tests/System.spec.ts -t 'should handle (mint & burn liquidity|invalid transfers)'
+
+PASS tests/System.spec.ts (5.173 s)
+  System
+    Dex
+      ✓ should handle mint & burn liquidity (515 ms)
+      ✓ should handle invalid transfers (193 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       9 skipped, 2 passed, 11 total
+Snapshots:   0 total
+Time:        5.379 s
+Ran all test suites matching /tests\\/System.spec.ts/i with tests matching "should handle (mint & burn liquidity|invalid transfers)".

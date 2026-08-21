@@ -1,0 +1,5 @@
+COMMAND: git log --all --oneline --decorate -- contracts/pool/pools/*/state_init.fc contracts/pool/pools/*/storage.fc
+603cacd bump v2.2
+
+AUDIT/SECURITY HISTORY SEARCH:
+Only commit touching the selected variant state-init/storage paths is 603cacd bump v2.2; no audit, security review, finding, or prior-report artifact was present in reachable Git history for these paths.

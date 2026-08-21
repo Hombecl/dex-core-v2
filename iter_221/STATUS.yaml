@@ -1,0 +1,188 @@
+schema_version: shadow-v1
+iteration: 221
+phase: completed
+cell_id: AX4
+cell_label: lp_account_direct_add_post_send_commit_order
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AX4
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/lp_account.fc
+        line: 19
+        text: 'if equal_slices(ctx.at(SENDER), storage::pool_address) {'
+      - file: contracts/lp_account.fc
+        line: 26
+        text: 'if equal_slices(ctx.at(SENDER), storage::user_address) {'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 40
+        text: 'if ctx.at(OPCODE) == op::direct_add_liquidity {'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 43
+        text: 'throw_unless(error::insufficient_gas, ctx.at(MSG_VALUE) > ctx.at(FWD_FEE) * 4'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 72
+        text: 'storage::amount0 -= am0;'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 73
+        text: 'storage::amount1 -= am1;'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 84
+        text: 'msgs::send_simple('
+      - file: contracts/lp_account/msgs/user.fc
+        line: 87
+        text: 'pool::cb_add_liquidity('
+      - file: contracts/lp_account/msgs/user.fc
+        line: 98
+        text: 'CARRY_ALL_BALANCE | DESTROY_IF_ZERO'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 100
+        text: 'storage::save();'
+      - file: contracts/lp_account/msgs/pool.fc
+        line: 6
+        text: 'if ctx.at(OPCODE) == op::add_liquidity {'
+      - file: contracts/lp_account/msgs/pool.fc
+        line: 18
+        text: 'storage::amount0 += new_amount0;'
+      - file: contracts/lp_account/msgs/pool.fc
+        line: 55
+        text: 'storage::save();'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 4
+        text: 'if ctx.at(OPCODE) == op::cb_add_liquidity {'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 26
+        text: 'throw_unless(error::invalid_caller, equal_slices(lp_account~address(params::workchain), ctx.at(SENDER)));'
+      - file: contracts/lp_account/storage.fc
+        line: 15
+        text: '() storage::save() impure inline_ref {'
+      - file: contracts/common/contracts.fc
+        line: 222
+        text: '(cell) pool::$route('
+      - file: wrappers/LPAccount.ts
+        line: 53
+        text: 'async sendDirectAddLiquidity('
+      - file: tests/ConstProduct.spec.ts
+        line: 2005
+        text: "it('should direct add liquidity (all)', async () => {"
+      - file: tests/ConstProduct.spec.ts
+        line: 2043
+        text: "it('should direct add liquidity (partial)', async () => {"
+    cross_file_count: 9
+    cross_file_match_count: 105
+    source_scope_restricted: true
+    conclusion: 'Direct add subtracts the requested amounts, enqueues the deterministic Pool callback, and saves the zeroed LP-account state in the same transaction. The callback is asynchronous and cannot re-enter before the save; its sender is checked against the deterministic LP account. A second direct add therefore sees zero stored amounts, while external senders fail the LP-account user/pool gates.'
+    redrill_count: 0
+    audit_result: NOT_AVAILABLE_SHADOW_MODE
+    required_evidence_complete: true
+    no_fabrication: true
+    scope_assets_only: true
+    methodology_audit_exit: NOT_AVAILABLE
+    status_schema_validated: true
+    evidence_gate: PASS_FOR_DEADEND
+    shippable: false
+    rejection_reason: 'The apparent send-before-save ordering does not expose pre-commit state; the LP account is account-local and all callback paths are sender-bound.'
+    attacker_privilege:
+      privilege_required: external_auth
+    fund_loss_demonstrated: false
+    concrete_impact_demonstrated: false
+    callers_grep_artifact: iter_221/callers-grep.txt
+    caller_match_count: 105
+    caller_unique_files: 9
+    cascade_verbatim_hit_count: 28
+    cross_file_anchor_count: 28
+    caller_paths:
+      - contracts/common/contracts.fc
+      - contracts/lp_account.fc
+      - contracts/lp_account/msgs/pool.fc
+      - contracts/lp_account/msgs/user.fc
+      - contracts/lp_account/storage.fc
+      - contracts/pool/msgs/lp_account.fc
+      - tests/ConstProduct.spec.ts
+      - tests/ConstSum.spec.ts
+      - wrappers/LPAccount.ts
+    evidence_paths:
+      poc_test: iter_221/poc_lp_account_direct_add_post_send_commit_order.test.js
+      poc_run_log: iter_221/poc_lp_account_direct_add_post_send_commit_order.run.log
+      live_regression_log: iter_221/live-direct-add-regression.run.log
+      prior_audit: iter_221/prior-audit-git.log
+    poc_execution:
+      test_file_path: iter_221/poc_lp_account_direct_add_post_send_commit_order.test.js
+      test_file_exists_on_disk: true
+      run_log_path: iter_221/poc_lp_account_direct_add_post_send_commit_order.run.log
+      run_log_exists_on_disk: true
+      runtime: '0.4s static; 15.0s integration'
+      result: 'PASS (28 cross-file anchors; all/partial direct-add regressions)'
+    prior_art_check:
+      queries:
+        - 'iter112 lp_account_add_liquidity_storage_merge'
+        - 'iter123 lp_account_refund_then_direct_add_lifecycle'
+        - 'iter130 lp_account_mint_destroy_save_order'
+        - 'iter161 variant_setter_deserialization_width'
+        - 'iter198 lp_account_direct_add_zero_selector_residual'
+        - 'iter202 lp_account_refund_destroy_redeploy_identity'
+        - 'iter208 lp_wallet_send_tokens_stateinit_bounce_debit_restore'
+        - 'iter215 lp_wallet_master_source_auth_alias'
+      results:
+        - iter112: DEADEND_WITH_PROOF
+        - iter123: DEADEND_WITH_PROOF
+        - iter130: DEADEND_WITH_PROOF
+        - iter161: DEADEND_WITH_PROOF
+        - iter198: DEADEND_WITH_PROOF
+        - iter202: DEADEND_WITH_PROOF
+        - iter208: DEADEND_WITH_PROOF
+        - iter215: DEADEND_WITH_PROOF
+    r15_disclosure_check:
+      gh_search_terms_used:
+        - 'repo:ston-fi/dex-core-v2 "direct_add_liquidity" "storage::save" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "direct_add_liquidity" "storage::save" is:pr'
+        - 'repo:ston-fi/dex-core-v2 "cb_add_liquidity" "DESTROY_IF_ZERO" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "cb_add_liquidity" "DESTROY_IF_ZERO" is:pr'
+      gh_search_hits: 0
+      evidence_files:
+        - iter_221/r15-issues-direct-add-save-order.json
+        - iter_221/r15-prs-direct-add-save-order.json
+        - iter_221/r15-issues-callback-destroy-zero.json
+        - iter_221/r15-prs-callback-destroy-zero.json
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  shadow_mode: true
+  caller_path: iter_221/callers-grep.txt
+  caller_match_count: 105
+  caller_unique_files: 9
+  prior_audit_path: iter_221/prior-audit-git.log
+  prior_family_matches: [iter112, iter123, iter130, iter161, iter198, iter202, iter208, iter215]
+  r15_evidence_files:
+    - iter_221/r15-issues-direct-add-save-order.json
+    - iter_221/r15-prs-direct-add-save-order.json
+    - iter_221/r15-issues-callback-destroy-zero.json
+    - iter_221/r15-prs-callback-destroy-zero.json
+  source_conclusion: 'The LP account commits zero amounts after enqueueing the Pool callback; child execution is later, and the callback validates the deterministic LP-account sender. A later direct-add call cannot reuse cleared amounts and an external sender cannot enter the account.'
+  attacker_privilege:
+    privilege_required: external_auth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_221/poc_lp_account_direct_add_post_send_commit_order.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_221/poc_lp_account_direct_add_post_send_commit_order.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_221/live-direct-add-regression.run.log
+    result: PASS
+

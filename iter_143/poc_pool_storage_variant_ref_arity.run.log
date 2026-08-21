@@ -1,0 +1,19 @@
+COMMAND: node iter_143/poc_pool_storage_variant_ref_arity.test.js
+{
+  "pool_families": 5,
+  "common_base_fields": 9,
+  "variant_parameter_layouts_checked": [
+    "none",
+    "amp:uint32",
+    "w0:uint64",
+    "amp/rate/w0/rate_setter:uint128/ref"
+  ],
+  "storage_round_trip_order_failures": 0,
+  "result": "PASS"
+}
+
+COMMAND: npm test -- --runInBand tests/ConstProduct.spec.ts tests/ConstSum.spec.ts tests/Stableswap.spec.ts tests/WeightedCPI.spec.ts tests/WeightedStableswap.spec.ts -t 'should collect|should provide|should swap|should burn|should refund'
+RESULT: PASS
+TEST_SUITES: 5 passed
+TESTS: 83 passed, 55 skipped, 138 total
+RUNTIME: 106.789s

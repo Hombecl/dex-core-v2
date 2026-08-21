@@ -1,0 +1,74 @@
+schema_version: shadow-v1
+iteration: 148
+phase: completed
+cell_id: AI1
+cell_label: variant_extension_wiring
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AI1
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - "helpers/helpers.ts:87: renderRouterAdminExtCalls: fs.existsSync(`contracts/router/pools/${opts.dexType}/ext_admin.fc`),"
+      - "helpers/helpers.ts:88: renderPoolExtRouterCalls: fs.existsSync(`contracts/pool/pools/${opts.dexType}/ext_router.fc`),"
+      - "helpers/helpers.ts:89: renderSetterCalls: fs.existsSync(`contracts/pool/pools/${opts.dexType}/setter.fc`),"
+      - "contracts/router/router.fc:5: if (renderRouterAdminExtCalls) {"
+      - "contracts/router/msgs/admin.fc:271: print(`if handle_ext_admin_messages() { return (true); }`);"
+      - "contracts/pool.fc:42: if (renderSetterCalls) {"
+      - "contracts/pool/msgs/router.fc:326: print(`if handle_ext_router_messages() { return (); }`);"
+      - "contracts/router/pools/stableswap/contracts.fc:4: .store_uint32(_new_amp)"
+      - "contracts/pool/pools/stableswap/ext_router.fc:8: int new_amp = in_msg_body~load_uint32();"
+      - "contracts/router/pools/weighted_const_product/contracts.fc:9: .store_uint(_new_w, 128)"
+      - "contracts/pool/pools/weighted_const_product/ext_router.fc:9: int new_w = in_msg_body~load_uint128();"
+      - "contracts/router/pools/weighted_stableswap/contracts.fc:15: .store_ref(begin_cell()"
+      - "contracts/pool/pools/weighted_stableswap/ext_router.fc:9: slice additional_data = in_msg_body~load_slice_ref();"
+      - "tests/WeightedStableswap.spec.ts:251: dexType: \"weighted_stableswap\","
+  poc_execution:
+    test_file_path: iter_148/poc_variant_extension_wiring.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_148/poc_variant_extension_wiring.run.log
+    run_log_exists_on_disk: true
+    test_runtime: "0.2s static; 104.076s integration"
+    result: "PASSED (5 DEX families; 3 wiring edges; 83 integration tests)"
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 renderRouterAdminExtCalls is:issue"
+      - "repo:ston-fi/dex-core-v2 renderRouterAdminExtCalls is:pr"
+      - "repo:ston-fi/dex-core-v2 internal_set_params ext_router is:issue"
+      - "repo:ston-fi/dex-core-v2 internal_set_params ext_router is:pr"
+    results: "4 queries returned total_count=0"
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "renderRouterAdminExtCalls"
+      - "internal_set_params ext_router"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  selected_cluster_source: POST_MATRIX_CLUSTER_PROPOSALS_21.md
+  caller_path: "dexType preprocessor flags -> Router/Pool conditional includes and dispatch -> variant parameter builders/consumers -> five family integration suites"
+  caller_match_count: 80
+  caller_unique_files: 28
+  prior_audit_path: iter_148/prior-audit-git.log
+  r15_evidence_files:
+    - iter_148/R15-GH-variant-wiring-issue.json
+    - iter_148/R15-GH-variant-wiring-pr.json
+    - iter_148/R15-GH-variant-consumer-issue.json
+    - iter_148/R15-GH-variant-consumer-pr.json
+  source_conclusion: "The helper derives all three extension flags from the corresponding family files; the generated Router/Pool include and dispatch hooks match each family; stable and weighted parameter builders match their Pool consumers; all five family integration suites passed. No omitted handler, mismatched builder/consumer, attacker-reachable variant confusion, or direct asset delta was demonstrated."
+  candidate_path: null
+  shadow_mode: true

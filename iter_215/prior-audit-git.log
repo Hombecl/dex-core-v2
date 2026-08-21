@@ -1,0 +1,17 @@
+AW3 prior-art / audit lookup
+============================
+Command:
+git log --all --oneline -- iter_119/STATUS.yaml iter_124/STATUS.yaml iter_135/STATUS.yaml iter_149/STATUS.yaml iter_166/STATUS.yaml
+
+8e21842 shadow: complete iter135 AE5 deadend
+c3b25b3 shadow: complete iter124 AC4 deadend
+c684b2a shadow: complete iter119 AB4 deadend
+
+Selected prior statuses:
+iter_119/STATUS.yaml => iteration=119 cell=AB4 lp_wallet_master_credit_debit_conservation verdict=DEADEND_WITH_PROOF
+iter_124/STATUS.yaml => iteration=124 cell=AC4 lp_wallet_forward_payload_reference_depth verdict=DEADEND_WITH_PROOF
+iter_135/STATUS.yaml => iteration=135 cell=AE5 lp_wallet_transfer_response_excess_commit verdict=DEADEND_WITH_PROOF
+iter_149/STATUS.yaml => iteration=149 cell=AI2 lp_wallet_state_init_encoding verdict=PRE_KILLED_DUPLICATE
+iter_166/STATUS.yaml => iteration=166 cell=AM4 lp_wallet_invalid_owner_state_init verdict=DEADEND_WITH_PROOF
+
+Prior conclusion: LP-wallet master/source sender authorization, owner/code/master StateInit binding, and credit/debit conservation were already drilled. AW3 rechecks the OR authorization branches with a fresh 31-anchor model and the live mint/burn regression; no attacker-positive alias or credit survives transaction semantics.

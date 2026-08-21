@@ -1,0 +1,16 @@
+COMMAND: node iter_153/poc_weighted_stableswap_solver_convergence.test.js
+{
+  "solver_functions_checked": 2,
+  "guard_layers_checked": 3,
+  "mutation_order_checks": 3,
+  "positive_samples_checked": 4,
+  "max_approx_iterations": 3,
+  "under_converged_positive_outputs": 0,
+  "result": "PASS"
+}
+
+COMMAND: npm test -- --runInBand tests/WeightedStableswap.spec.ts -t 'should collect|should swap|should provide|should burn|should refund|should swap with different ratio'
+RESULT: PASS
+TEST_SUITES: 1 passed
+TESTS: 16 passed, 12 skipped, 28 total
+RUNTIME: 23.11s

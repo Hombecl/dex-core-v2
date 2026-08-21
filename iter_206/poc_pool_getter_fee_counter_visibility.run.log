@@ -1,0 +1,19 @@
+static_poc_command:
+node iter_206/poc_pool_getter_fee_counter_visibility.test.js
+
+static_poc_output:
+cross_file_anchors 21
+getter_reads_both_counters_from_current_storage true
+collect_requires_both_counters_positive true
+collect_clears_both_counters_before_save true
+post_save_getter_returns_zero_counters true
+stale_read_only_view_cannot_bypass_collect_gate true
+classification DEADEND_WITH_PROOF
+result PASS
+
+live_regression_command:
+npm test -- --runInBand tests/ConstProduct.spec.ts -t 'should collect fees|should bounce collect fees if no fee'
+
+live_regression_output:
+PASS tests/ConstProduct.spec.ts (8.072 s)
+Tests: 34 skipped, 2 passed, 36 total

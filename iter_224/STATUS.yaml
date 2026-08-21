@@ -1,0 +1,188 @@
+schema_version: shadow-v1
+iteration: 224
+phase: completed
+cell_id: AX7
+cell_label: pool_getter_data_tuple_field_alignment
+final_verdict: PRE_KILLED_DUPLICATE
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AX7
+  final_verdict: PRE_KILLED_DUPLICATE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/common/contracts.fc
+        line: 75
+        text: '(cell) anyone::getter_pool_data('
+      - file: contracts/common/contracts.fc
+        line: 90
+        text: '.store_bool(_is_locked)'
+      - file: contracts/common/contracts.fc
+        line: 91
+        text: '.store_coins(_left_reserve)'
+      - file: contracts/common/contracts.fc
+        line: 92
+        text: '.store_coins(_right_reserve)'
+      - file: contracts/common/contracts.fc
+        line: 93
+        text: '.store_slice(_left_token_address)'
+      - file: contracts/common/contracts.fc
+        line: 94
+        text: '.store_slice(_right_token_address)'
+      - file: contracts/common/contracts.fc
+        line: 97
+        text: '.store_uint(_lp_fee, 16)'
+      - file: contracts/common/contracts.fc
+        line: 98
+        text: '.store_uint(_protocol_fee, 16)'
+      - file: contracts/common/contracts.fc
+        line: 99
+        text: '.store_slice(_protocol_fee_address)'
+      - file: contracts/common/contracts.fc
+        line: 100
+        text: '.store_coins(_total_supply_lp)'
+      - file: contracts/common/contracts.fc
+        line: 101
+        text: '.store_coins(_collected_left_token_protocol_fees)'
+      - file: contracts/common/contracts.fc
+        line: 102
+        text: '.store_coins(_collected_right_token_protocol_fees)'
+      - file: contracts/pool/msgs/getter.fc
+        line: 6
+        text: 'if ctx.at(OPCODE) == op::getter_pool_data {'
+      - file: contracts/pool/msgs/getter.fc
+        line: 9
+        text: 'var out_msg_body = anyone::getter_pool_data('
+      - file: contracts/pool/msgs/getter.fc
+        line: 20
+        text: 'storage::collected_token0_protocol_fee,'
+      - file: contracts/pool/msgs/getter.fc
+        line: 21
+        text: 'storage::collected_token1_protocol_fee'
+      - file: contracts/pool/msgs/getter.fc
+        line: 23
+        text: 'msgs::send_simple(0, ctx.at(SENDER), out_msg_body, CARRY_ALL_BALANCE | IGNORE_ERRORS);'
+      - file: contracts/pool/msgs/protocolfee.fc
+        line: 4
+        text: 'if ctx.at(OPCODE) == op::collect_fees { ;; throwable'
+      - file: contracts/pool/msgs/protocolfee.fc
+        line: 57
+        text: 'storage::collected_token0_protocol_fee = 0;'
+      - file: contracts/pool/msgs/protocolfee.fc
+        line: 58
+        text: 'storage::collected_token1_protocol_fee = 0;'
+      - file: contracts/pool/msgs/protocolfee.fc
+        line: 60
+        text: 'storage::save();'
+      - file: contracts/pool.fc
+        line: 48
+        text: 'if handle_getter_messages() {'
+      - file: contracts/pool/get.fc
+        line: 1
+        text: ';; get methods'
+      - file: wrappers/Pool.ts
+        line: 260
+        text: 'async sendGetterPoolData(provider: ContractProvider, via: Sender, value?: bigint) {'
+      - file: tests/Pool.spec.ts
+        line: 178
+        text: 'const deployPoolResult = await pool.sendGetterPoolData(router.getSender(), toNano(''0.05''));'
+    cross_file_count: 9
+    cross_file_match_count: 143
+    source_scope_restricted: true
+    conclusion: 'AX7 exactly reproduces the getter_pool_data tuple/counter family completed as iter_206/AU5. The builder field order, explicit widths, sender-scoped read-only response, and separate collect_fees clear/save path are already evidenced; no new cell remains.'
+    redrill_count: 0
+    audit_result: NOT_AVAILABLE_SHADOW_MODE
+    required_evidence_complete: true
+    no_fabrication: true
+    scope_assets_only: true
+    methodology_audit_exit: NOT_AVAILABLE
+    status_schema_validated: true
+    evidence_gate: PASS_FOR_DUPLICATE
+    shippable: false
+    rejection_reason: 'Exact prior family iter_206/AU5 already closed getter_pool_data field/counter visibility; AX7 adds no distinct attack surface.'
+    attacker_privilege:
+      privilege_required: external_unauth
+    fund_loss_demonstrated: false
+    concrete_impact_demonstrated: false
+    callers_grep_artifact: iter_224/callers-grep.txt
+    caller_match_count: 143
+    caller_unique_files: 9
+    cascade_verbatim_hit_count: 27
+    cross_file_anchor_count: 27
+    caller_paths:
+      - contracts/common/contracts.fc
+      - contracts/common/op.fc
+      - contracts/pool.fc
+      - contracts/pool/get.fc
+      - contracts/pool/msgs/getter.fc
+      - contracts/pool/msgs/protocolfee.fc
+      - tests/ConstProduct.spec.ts
+      - tests/Pool.spec.ts
+      - wrappers/Pool.ts
+    evidence_paths:
+      poc_test: iter_224/poc_pool_getter_data_tuple_field_alignment.test.js
+      poc_run_log: iter_224/poc_pool_getter_data_tuple_field_alignment.run.log
+      live_regression_log: iter_224/live-pool-getter-tuple-regression.run.log
+      prior_audit: iter_224/prior-audit-git.log
+    poc_execution:
+      test_file_path: iter_224/poc_pool_getter_data_tuple_field_alignment.test.js
+      test_file_exists_on_disk: true
+      run_log_path: iter_224/poc_pool_getter_data_tuple_field_alignment.run.log
+      run_log_exists_on_disk: true
+      runtime: '0.2s static; 4.7s integration'
+      result: 'PASS (27 anchors; exact iter_206 duplicate and Pool getter regression)'
+    prior_art_check:
+      queries:
+        - 'getter_pool_data / pool_getter_data / getter counter / tuple field scan'
+      results:
+        - 'iter_206 AU5 pool_getter_fee_counter_visibility DEADEND_WITH_PROOF with matching PoC, callers, live regression, and R15 artifacts'
+    r15_disclosure_check:
+      gh_search_terms_used:
+        - 'repo:ston-fi/dex-core-v2 "getter_pool_data" "reserve0" "reserve1" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "getter_pool_data" "reserve0" "reserve1" is:pr'
+        - 'repo:ston-fi/dex-core-v2 "anyone::getter_pool_data" "protocol_fee" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "anyone::getter_pool_data" "protocol_fee" is:pr'
+      gh_search_hits: 0
+      evidence_files:
+        - iter_224/r15-getter-pool-data-reserve-order-issue.json
+        - iter_224/r15-getter-pool-data-reserve-order-pr.json
+        - iter_224/r15-anyone-getter-pool-data-fee-issue.json
+        - iter_224/r15-anyone-getter-pool-data-fee-pr.json
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: PRE_KILLED_DUPLICATE
+  shadow_mode: true
+  caller_path: iter_224/callers-grep.txt
+  caller_match_count: 143
+  caller_unique_files: 9
+  prior_audit_path: iter_224/prior-audit-git.log
+  prior_family_matches: [iter206]
+  r15_evidence_files:
+    - iter_224/r15-getter-pool-data-reserve-order-issue.json
+    - iter_224/r15-getter-pool-data-reserve-order-pr.json
+    - iter_224/r15-anyone-getter-pool-data-fee-issue.json
+    - iter_224/r15-anyone-getter-pool-data-fee-pr.json
+  source_conclusion: 'The getter_pool_data tuple is already covered by iter_206/AU5; its response does not mutate state or authorize collection, and collect_fees clears counters separately.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_224/poc_pool_getter_data_tuple_field_alignment.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_224/poc_pool_getter_data_tuple_field_alignment.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_224/live-pool-getter-tuple-regression.run.log
+    result: PASS

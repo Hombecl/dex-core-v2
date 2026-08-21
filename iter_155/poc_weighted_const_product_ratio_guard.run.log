@@ -1,0 +1,18 @@
+COMMAND: node iter_155/poc_weighted_const_product_ratio_guard.test.js
+{
+  "ratio_constant_checked": "300000000000000000",
+  "weight_domain_bounds_checked": 2,
+  "directional_guard_paths_checked": 2,
+  "reserve_boundary_values_checked": 9,
+  "exact_boundary_cases": 12,
+  "rejected_above_boundary": 9,
+  "fee_adjusted_cases": 36,
+  "direction_specific_ratio_bypasses": 0,
+  "result": "PASS"
+}
+
+COMMAND: npm test -- --runInBand tests/WeightedCPI.spec.ts -t 'should swap|should provide lp|should burn liquidity|should swap with different ratio|should refund swap'
+RESULT: PASS tests/WeightedCPI.spec.ts
+TEST_SUITES: 1 passed, 1 total
+TESTS: 15 skipped, 10 passed, 25 total
+RUNTIME: 14.629s

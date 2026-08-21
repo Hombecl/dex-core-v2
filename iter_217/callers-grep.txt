@@ -1,0 +1,27 @@
+AW5 caller/dataflow grep
+========================
+Command:
+rg -n 'vault_code|storage::load|storage::save|_static|upgrade_pool_code|temp_upgrade|init_code_upgrade|finalize_upgrades|cancel_code_upgrade|set_code|pack_temp_upgrade|unpack_temp_upgrade|admin_address|handle_admin_messages|get_vault_address|vault_idata|send_with_stateinit|deposit_ref_fee|withdraw_fee|equal_slices|invalid_caller|state_init|Pool code upgrade' contracts/router.fc contracts/router/storage.fc contracts/router/msgs/admin.fc contracts/router/utils.fc contracts/router/get.fc contracts/router/msgs/pool.fc contracts/vault.fc contracts/common/contracts.fc wrappers/Router.ts wrappers/Vault.ts tests/ConstProduct.spec.ts tests/ConstSum.spec.ts
+
+match_count=104
+caller_unique_files=10
+contracts/common/contracts.fc
+contracts/router.fc
+contracts/router/get.fc
+contracts/router/msgs/admin.fc
+contracts/router/msgs/pool.fc
+contracts/router/storage.fc
+contracts/router/utils.fc
+contracts/vault.fc
+tests/ConstProduct.spec.ts
+wrappers/Router.ts
+
+Representative dataflow anchors:
+contracts/router.fc:28-30 admin sender gate and admin handler
+contracts/router/storage.fc:21-24 static code tuple including vault_code
+contracts/router/storage.fc:31-38 save preserves _static and only stores upgrade_pool_code separately
+contracts/router/msgs/admin.fc:156-168 Router code upgrade staging
+contracts/router/msgs/admin.fc:235-260 finalize set_code and separate pool-code commit
+contracts/router/get.fc:18-29 getter derives vault from stored vault_code
+contracts/router/msgs/pool.fc:118-135 pay_vault derives and deploys Vault from stored vault_code
+contracts/vault.fc:40-46 Router-only deposit path

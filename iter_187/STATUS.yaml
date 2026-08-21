@@ -1,0 +1,82 @@
+schema_version: shadow-v1
+iteration: 187
+phase: completed
+cell_id: AQ5
+cell_label: pool_lp_provide_max_input_exception
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AQ5
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - "contracts/pool/msgs/lp_account.fc:52: (liquidity, new_collected_protocol_fees0, new_collected_protocol_fees1) = pool::get_lp_provide_out(tot_am0, tot_am1);"
+      - "contracts/pool/msgs/lp_account.fc:55: storage::total_supply_lp += liquidity;"
+      - "contracts/pool/msgs/lp_account.fc:60: storage::reserve0 += (tot_am0 - new_collected_protocol_fees0);"
+      - "contracts/pool/msgs/lp_account.fc:61: storage::reserve1 += (tot_am1 - new_collected_protocol_fees1);"
+      - "contracts/pool/msgs/lp_account.fc:70: | (storage::total_supply_lp > math::MAX_COINS)"
+      - "contracts/pool/msgs/lp_account.fc:71: | (storage::reserve0 > math::MAX_COINS)"
+      - "contracts/pool/msgs/lp_account.fc:72: | (storage::reserve1 > math::MAX_COINS)"
+      - "contracts/pool/msgs/lp_account.fc:88: lp_account::add_liquidity("
+      - "contracts/pool/msgs/lp_account.fc:132: storage::save();"
+      - "contracts/pool/pools/constant_product/pool.fc:28: int new_reserve0 = storage::reserve0 + _left_amount;"
+      - "contracts/pool/pools/constant_sum/pool.fc:27: int new_reserve0 = storage::reserve0 + _left_amount;"
+      - "contracts/pool/pools/stableswap/pool.fc:42: int new_reserve0 = storage::reserve0 + _left_amount;"
+      - "contracts/pool/pools/weighted_const_product/pool.fc:44: int new_reserve0 = storage::reserve0 + _left_amount;"
+      - "contracts/pool/pools/weighted_stableswap/pool.fc:50: int new_reserve0 = storage::reserve0 + _left_amount;"
+      - "node_modules/@ston-fi/funcbox/contracts/math/math.fc:53: const int math::MAX_COINS = 2^120 - 1"
+  poc_execution:
+    test_file_path: iter_187/poc_pool_lp_provide_max_input_exception.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_187/poc_pool_lp_provide_max_input_exception.run.log
+    run_log_exists_on_disk: true
+    test_runtime: "0.1s static/model; 11.772s integration"
+    result: "PASS (16 cross-file anchors; 5 variant implementations; 5 MAX_COINS boundary cases; 5 provide-LP integration tests)"
+  prior_art_check:
+    queries:
+      - "repo:ston-fi/dex-core-v2 \"lp provide\" \"MAX_COINS\" is:issue"
+      - "repo:ston-fi/dex-core-v2 \"lp provide\" \"MAX_COINS\" is:pr"
+      - "repo:ston-fi/dex-core-v2 \"max-width\" liquidity is:issue"
+      - "repo:ston-fi/dex-core-v2 \"max-width\" liquidity is:pr"
+    results: "4 GitHub API searches returned total_count=0"
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "repo:ston-fi/dex-core-v2 \"lp provide\" \"MAX_COINS\" is:issue"
+      - "repo:ston-fi/dex-core-v2 \"lp provide\" \"MAX_COINS\" is:pr"
+      - "repo:ston-fi/dex-core-v2 \"max-width\" liquidity is:issue"
+      - "repo:ston-fi/dex-core-v2 \"max-width\" liquidity is:pr"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  caller_grep_path: iter_187/callers-grep.txt
+  caller_match_count: 29
+  caller_unique_files: 9
+  prior_audit_path: iter_187/prior-audit-git.log
+  prior_audit_family_matches:
+    - iter_116
+    - iter_126
+    - iter_183
+  r15_evidence_files:
+    - iter_187/R15-GH-lp-provide-max-coins-issue.json
+    - iter_187/R15-GH-lp-provide-max-coins-pr.json
+    - iter_187/R15-GH-max-width-liquidity-issue.json
+    - iter_187/R15-GH-max-width-liquidity-pr.json
+  source_conclusion: "All five selected Pool math variants add the callback input legs before their invariant calculation. LP-account catches math exceptions, then checks total supply and both reserves against math::MAX_COINS before the only success-side storage::save(); out-of-range state enters the exact-leg refund/redeposit branch. MAX_COINS is 2^120-1; exact-boundary arithmetic remains admissible, while reserve/supply-plus-input cases above the bound are fail-closed in the model. The static boundary PoC and five provide-LP integration tests showed no wrapped value, persisted over-bound state, victim loss, or attacker-positive delta. Iter116 audited the same MAX_COINS family, so AQ5 is a duplicate dead end."
+  attacker_privilege: external_auth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  shadow_mode: true

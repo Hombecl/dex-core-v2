@@ -1,0 +1,9 @@
+Prior-audit family matches from shadow STATUS files:
+iter_26: response_address must be addr_none to prevent burn-side payout redirection.
+iter_58: LP-wallet burn callback is deterministic and pool validates the originating LP wallet.
+iter_77: burn debit restores on bounce; Pool sends two owner-directed payout legs.
+iter_95: burn responses require addr_none; response forms do not create a destination alias.
+iter_106: LP-wallet burn callbacks are owner-bound and replay/bounce does not create a second transition.
+iter_110: response/excess forms govern residual TON only, not LP-token payouts.
+iter_135: LP-wallet response fields do not mutate token ownership; Pool burn validates the LP wallet.
+iter_171: exact response_address.preload_uint(2) == 0 gate and noncanonical-form model already audited.

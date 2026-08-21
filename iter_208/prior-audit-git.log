@@ -1,0 +1,8 @@
+AV2 prior-family audit (read from prior iteration STATUS.yaml records):
+- iter_96 / X1 lp_wallet_bounce_balance_restoration: DEADEND_WITH_PROOF; bounce amount restoration matches the wallet's own outbound debit.
+- iter_119 / AB4 lp_wallet_internal_transfer_balance_bounce: DEADEND_WITH_PROOF; internal-transfer debit/credit and bounce conservation were already exercised.
+- iter_135 / AE5 lp_wallet_forward_ton_debit: DEADEND_WITH_PROOF; response and forward fields did not alter jetton debit restoration.
+- iter_136 / AF1 lp_wallet_bounced_header_spoof_restore: DEADEND_WITH_PROOF; on_bounce requires the VM bounced flag and an allowed opcode.
+- iter_163 / AM1 lp_wallet_mint_bounce_pool_save: DEADEND_WITH_PROOF; canonical StateInit and sender path prevented an attacker-positive stuck debit.
+
+Conclusion: AV2 is a re-drill of the send_tokens -> StateInit -> internal_transfer -> on_bounce balance path, and the prior family is closed with no attacker-positive delta.

@@ -1,0 +1,80 @@
+schema_version: shadow-v1
+iteration: 174
+phase: completed
+cell_id: AO2
+cell_label: router_pay_vault_token_side_binding
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AO2
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - "contracts/pool/msgs/router.fc:94: (out1, protocol_fee_out, ref_fee_out1) = pool::get_swap_out(true, ref_value, amount0, storage::reserve0, storage::reserve1);"
+      - "contracts/pool/msgs/router.fc:101: (out0, protocol_fee_out, ref_fee_out0) = pool::get_swap_out(false, ref_value, amount1, storage::reserve1, storage::reserve0);"
+      - "contracts/pool/msgs/router.fc:121: if (ref_address.preload_uint(2) != 0) & (ref_fee_out0 + ref_fee_out1 > 0) {"
+      - "contracts/pool/msgs/router.fc:124: router::pay_vault("
+      - "contracts/pool/msgs/router.fc:127: ref_fee_out0,"
+      - "contracts/pool/msgs/router.fc:129: ref_fee_out1,"
+      - "contracts/router/msgs/pool.fc:94: if ctx.at(OPCODE) == op::pay_vault"
+      - "contracts/router/msgs/pool.fc:113: throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER)));"
+      - "contracts/router/msgs/pool.fc:119: vault_idata("
+      - "contracts/router/msgs/pool.fc:121: amount0_out > 0 ? token0_address : token1_address,"
+      - "contracts/router/msgs/pool.fc:131: vault::deposit_ref_fee("
+      - "contracts/vault.fc:40: if (ctx.at(OPCODE) == op::deposit_ref_fee) & equal_slices(ctx.at(SENDER), storage::router_address) {"
+  poc_execution:
+    test_file_path: iter_174/poc_router_pay_vault_token_side_binding.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_174/poc_router_pay_vault_token_side_binding.run.log
+    run_log_exists_on_disk: true
+    test_runtime: "0.2s static/model; 6.886s integration"
+    result: "PASS (5 variants static; 1 live referral-vault test)"
+  prior_art_check:
+    queries:
+      - "pay_vault token side binding (issues)"
+      - "pay_vault token side binding (issues + pull requests)"
+      - "referral vault token mismatch (issues)"
+      - "referral vault token mismatch (issues + pull requests)"
+    results: "4 valid GitHub searches returned zero results"
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "pay_vault token side binding"
+      - "referral vault token mismatch"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  selected_cluster_source: POST_MATRIX_CLUSTER_PROPOSALS_26.md
+  caller_grep_path: iter_174/callers-grep.txt
+  caller_match_count: 50
+  caller_unique_files: 7
+  prior_audit_path: iter_174/prior-audit-git.log
+  prior_audit_family_matches:
+    - iter_78/T3
+    - iter_101/Y1
+    - iter_120/AB5
+    - iter_131/AE1
+  r15_evidence_files:
+    - iter_174/R15-GH-pay-vault-token-side-issue.json
+    - iter_174/R15-GH-pay-vault-token-side-pr.json
+    - iter_174/R15-GH-referral-vault-token-issue.json
+    - iter_174/R15-GH-referral-vault-token-pr.json
+  source_conclusion: "The Pool swap producer assigns exactly one referral-fee leg per valid swap. Router pay_vault authenticates the deterministic Pool, selects the matching token side, and sends the summed fee to a Vault keyed by owner/token/router; Vault accepts deposits only from Router. Static two-direction and mixed-side falsification plus the live referral-vault test found no token redirect or attacker-positive delta. Prior T3/Y1/AB5/AE1 shadow audits already cover this family, so AO2 is a duplicate dead end."
+  candidate_path: null
+  attacker_privilege: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  shadow_mode: true

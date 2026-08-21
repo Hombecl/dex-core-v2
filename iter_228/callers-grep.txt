@@ -1,0 +1,26 @@
+command: rg -n -i 'getter_lp_account_data|anyone::getter_lp_account_data|storage::user_address|storage::pool_address|storage::amount0|storage::amount1|handle_getter_messages|CARRY_ALL_BALANCE|IGNORE_ERRORS|readAddress|readBigNumber|getLPAccountData|sendGetterLPAccountData|should return valid data' contracts/lp_account.fc contracts/lp_account/get.fc contracts/lp_account/msgs/getter.fc contracts/lp_account/msgs/pool.fc contracts/lp_account/msgs/user.fc contracts/common/contracts.fc contracts/common/op.fc wrappers/LPAccount.ts tests/LPAccount.spec.ts tests/System.spec.ts tests/ConstProduct.spec.ts
+caller_match_count: 54
+caller_unique_files: 10
+caller_files:
+  - contracts/common/contracts.fc
+  - contracts/common/op.fc
+  - contracts/lp_account.fc
+  - contracts/lp_account/get.fc
+  - contracts/lp_account/msgs/getter.fc
+  - contracts/lp_account/msgs/pool.fc
+  - contracts/lp_account/msgs/user.fc
+  - tests/ConstProduct.spec.ts
+  - tests/LPAccount.spec.ts
+  - wrappers/LPAccount.ts
+representative_hits:
+  - contracts/lp_account/msgs/getter.fc:6 getter_lp_account_data
+  - contracts/lp_account/msgs/getter.fc:10 storage::user_address
+  - contracts/lp_account/msgs/getter.fc:11 storage::pool_address
+  - contracts/lp_account/msgs/getter.fc:12 storage::amount0
+  - contracts/lp_account/msgs/getter.fc:13 storage::amount1
+  - contracts/common/contracts.fc:66 anyone::getter_lp_account_data
+  - contracts/lp_account/get.fc:3 typed getter tuple
+  - wrappers/LPAccount.ts:95 sendGetterLPAccountData
+  - wrappers/LPAccount.ts:104 getLPAccountData
+  - tests/LPAccount.spec.ts:52 should return valid data
+callers_grep_done: true

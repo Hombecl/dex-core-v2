@@ -1,0 +1,5 @@
+{
+  "query": "repo:ston-fi/dex-core-v2 \"fake pair\" burn liquidity is:pr",
+  "total_count": 0,
+  "items": []
+}

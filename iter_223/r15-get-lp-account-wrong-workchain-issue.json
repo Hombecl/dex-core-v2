@@ -1,0 +1,7 @@
+{
+  "query": "repo:ston-fi/dex-core-v2 \"get_lp_account_address\" \"wrong_workchain\" is:issue",
+  "total_count": 0,
+  "incomplete_results": false,
+  "items": [],
+  "search_type": "lexical"
+}

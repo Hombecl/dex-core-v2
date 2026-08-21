@@ -1,0 +1,109 @@
+$ (source repo) npm test -- --runInBand tests/ConstProduct.spec.ts -t 'should set fees'
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/ConstProduct.spec.ts -t should set fees
+
+PASS tests/ConstProduct.spec.ts (5.476 s)
+  Const Product
+    wip
+      ○ skipped 123
+    Pool code upgrade
+      ○ skipped should init new pool code
+      ○ skipped should cancel new pool code
+      ○ skipped should finalize new pool code
+      ○ skipped should not finalize new pool code if time not passed
+      ○ skipped should set new pool code on pool
+      ○ skipped should not set new pool code if empty
+    Fees
+      ✓ should set fees (968 ms)
+      ○ skipped should collect fees
+      ○ skipped should collect ref fee from vault
+    Dex
+      ○ skipped should deploy dex
+      ○ skipped should swap
+      ○ skipped should provide lp
+      ○ skipped should provide lp with payload
+      ○ skipped should provide lp with payload to a different address
+      ○ skipped should handle more complex scenarios
+      ○ skipped should provide lp (single side)
+      ○ skipped should burn lp and swap
+      ○ skipped should provide lp (single side) with protocol fees
+      ○ skipped should burn liquidity
+      ○ skipped should cross-swap on the same router
+      ○ skipped should cross-swap on 2 routers
+      ○ skipped should direct add liquidity (all)
+      ○ skipped should direct add liquidity (partial)
+      ○ skipped should refund swap if tx is expired
+      ○ skipped should swap with 0 ref fee
+      ○ skipped should swap with max ref fee
+    Refund
+      ○ skipped should refund partial liquidity
+      ○ skipped should refund both lp tokens
+      ○ skipped should refund swap
+      ○ skipped should refund cross-swap on the same router
+      ○ skipped should refund cross-swap on 2 routers (in)
+      ○ skipped should refund cross-swap on 2 routers (mid)
+      ○ skipped should refund swap if fee more than max
+    Bounce
+      ○ skipped should bounce set fees if not admin
+      ○ skipped should bounce collect fees if no fee
+
+Test Suites: 1 passed, 1 total
+Tests:       35 skipped, 1 passed, 36 total
+Snapshots:   0 total
+Time:        5.629 s, estimated 9 s
+Ran all test suites matching /tests\/ConstProduct.spec.ts/i with tests matching "should set fees".
+
+$ (source repo) npm test -- --runInBand tests/ConstProduct.spec.ts -t 'should bounce set fees if not admin'
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/ConstProduct.spec.ts -t should bounce set fees if not admin
+
+PASS tests/ConstProduct.spec.ts (5.827 s)
+  Const Product
+    wip
+      ○ skipped 123
+    Pool code upgrade
+      ○ skipped should init new pool code
+      ○ skipped should cancel new pool code
+      ○ skipped should finalize new pool code
+      ○ skipped should not finalize new pool code if time not passed
+      ○ skipped should set new pool code on pool
+      ○ skipped should not set new pool code if empty
+    Fees
+      ○ skipped should set fees
+      ○ skipped should collect fees
+      ○ skipped should collect ref fee from vault
+    Dex
+      ○ skipped should deploy dex
+      ○ skipped should swap
+      ○ skipped should provide lp
+      ○ skipped should provide lp with payload
+      ○ skipped should provide lp with payload to a different address
+      ○ skipped should handle more complex scenarios
+      ○ skipped should provide lp (single side)
+      ○ skipped should burn lp and swap
+      ○ skipped should provide lp (single side) with protocol fees
+      ○ skipped should burn liquidity
+      ○ skipped should cross-swap on the same router
+      ○ skipped should cross-swap on 2 routers
+      ○ skipped should direct add liquidity (all)
+      ○ skipped should direct add liquidity (partial)
+      ○ skipped should refund swap if tx is expired
+      ○ skipped should swap with 0 ref fee
+      ○ skipped should swap with max ref fee
+    Refund
+      ○ skipped should refund partial liquidity
+      ○ skipped should refund both lp tokens
+      ○ skipped should refund swap
+      ○ skipped should refund cross-swap on the same router
+      ○ skipped should refund cross-swap on 2 routers (in)
+      ○ skipped should refund cross-swap on 2 routers (mid)
+      ○ skipped should refund swap if fee more than max
+    Bounce
+      ✓ should bounce set fees if not admin (1168 ms)
+      ○ skipped should bounce collect fees if no fee
+
+Test Suites: 1 passed, 1 total
+Tests:       35 skipped, 1 passed, 36 total
+Snapshots:   0 total
+Time:        5.96 s, estimated 6 s
+Ran all test suites matching /tests\/ConstProduct.spec.ts/i with tests matching "should bounce set fees if not admin".

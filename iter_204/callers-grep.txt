@@ -1,0 +1,28 @@
+command:
+rg -n 'collect_fees|protocol_fee_address|new_protocol_fee_address|router::pay_to|maybe_payload|store_slice\(_to_address\)|store_slice\(_excesses_address\)|store_slice\(_original_caller\)|invalid_caller|handle_protocolfee_messages|handle_pool_messages|jetton_wallet::transfer|storage::save' contracts/pool/msgs/protocolfee.fc contracts/pool.fc contracts/pool/msgs/router.fc contracts/common/contracts.fc contracts/router/msgs/pool.fc contracts/router.fc
+
+summary:
+match_count: 54
+unique_files: 6
+callers_grep_done: true
+
+key_matches:
+contracts/pool.fc:22: if equal_slices(ctx.at(SENDER), storage::protocol_fee_address) {
+contracts/pool.fc:23: handle_protocolfee_messages();
+contracts/pool/msgs/protocolfee.fc:4: if ctx.at(OPCODE) == op::collect_fees { ;; throwable
+contracts/pool/msgs/protocolfee.fc:25: router::pay_to(
+contracts/pool/msgs/protocolfee.fc:26-28: three protocol_fee_address tuple fields
+contracts/pool/msgs/protocolfee.fc:42: router::pay_to(
+contracts/pool/msgs/protocolfee.fc:43-45: three protocol_fee_address tuple fields
+contracts/pool/msgs/protocolfee.fc:60: storage::save();
+contracts/pool/msgs/router.fc:311: slice new_protocol_fee_address = in_msg_body~load_msg_addr();
+contracts/pool/msgs/router.fc:315: storage::protocol_fee_address = new_protocol_fee_address;
+contracts/pool/msgs/router.fc:317: storage::save();
+contracts/common/contracts.fc:146: (cell) router::pay_to(
+contracts/common/contracts.fc:159: .store_slice(_to_address)
+contracts/common/contracts.fc:160: .store_slice(_excesses_address)
+contracts/common/contracts.fc:161: .store_slice(_original_caller)
+contracts/router/msgs/pool.fc:28: throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER))); ;; check if its a valid pool
+contracts/router/msgs/pool.fc:74: jetton_wallet::transfer(fwd_ton_amount, amount0_out, owner, excesses_address)
+contracts/router/msgs/pool.fc:83: jetton_wallet::transfer(fwd_ton_amount, amount1_out, owner, excesses_address)
+contracts/router.fc:23: if handle_pool_messages() {

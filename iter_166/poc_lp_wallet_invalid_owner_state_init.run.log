@@ -1,0 +1,21 @@
+COMMAND: node iter_166/poc_lp_wallet_invalid_owner_state_init.test.js
+{
+  "variants_checked": 5,
+  "variant_identity_checks": 5,
+  "owner_forms_checked": 4,
+  "accepted_standard_forms": 1,
+  "rejected_noncanonical_forms": 3,
+  "owner_tuple_hashes_distinct": true,
+  "getter_and_mint_tuple_match": true,
+  "pool_to_user_cross_owner_alias": false,
+  "result": "PASS"
+}
+RUNTIME: 0.2s static/model
+
+COMMAND: npm test -- --runInBand tests/ConstProduct.spec.ts tests/ConstSum.spec.ts tests/Stableswap.spec.ts tests/WeightedCPI.spec.ts tests/WeightedStableswap.spec.ts -t 'should provide lp|should burn liquidity'
+RESULT: PASS
+TEST_SUITES: 5 passed, 5 total
+TESTS: 120 skipped, 18 passed, 138 total
+SNAPSHOTS: 0 total
+RUNTIME: 38.443s
+

@@ -1,0 +1,31 @@
+command:
+rg -n 'refund_me|DESTROY_IF_ZERO|CARRY_ALL_BALANCE|cb_refund_me|amount0|amount1|storage::amount0|storage::amount1|CARRY_REMAINING_GAS|router::pay_to|invalid_caller|storage::save|lp_account_idata|pool_address|user_address' contracts/lp_account.fc contracts/lp_account/msgs/user.fc contracts/lp_account/storage.fc contracts/pool/msgs/lp_account.fc contracts/common/contracts.fc
+
+summary:
+match_count: 83
+unique_files: 5
+callers_grep_done: true
+
+key_matches:
+contracts/lp_account.fc:17: if equal_slices(ctx.at(SENDER), storage::pool_address)
+contracts/lp_account.fc:24: if equal_slices(ctx.at(SENDER), storage::user_address)
+contracts/lp_account/msgs/user.fc:4: if ctx.at(OPCODE) == op::refund_me
+contracts/lp_account/msgs/user.fc:9: storage::amount0 > 0 or storage::amount1 > 0
+contracts/lp_account/msgs/user.fc:20: pool::cb_refund_me(
+contracts/lp_account/msgs/user.fc:27: CARRY_ALL_BALANCE | DESTROY_IF_ZERO
+contracts/lp_account/msgs/user.fc:30: storage::amount0 = 0
+contracts/lp_account/msgs/user.fc:31: storage::amount1 = 0
+contracts/lp_account/msgs/user.fc:33: storage::save()
+contracts/pool/msgs/lp_account.fc:138: if ctx.at(OPCODE) == op::cb_refund_me
+contracts/pool/msgs/lp_account.fc:146: lp_account_idata(my_address(), user_address)
+contracts/pool/msgs/lp_account.fc:151: deterministic LP-account sender gate
+contracts/pool/msgs/lp_account.fc:153: CARRY_REMAINING_GAS
+contracts/pool/msgs/lp_account.fc:160: router::pay_to(
+contracts/pool/msgs/lp_account.fc:181: router::pay_to(
+contracts/common/contracts.fc:25: (cell) pool::cb_refund_me(
+contracts/common/contracts.fc:33: .store_slice(ctx.at(SENDER))
+contracts/lp_account/storage.fc:19: .store_coins(storage::amount0)
+contracts/lp_account/storage.fc:20: .store_coins(storage::amount1)
+
+conclusion:
+Refund is user-gated, sends the exact pre-clear amounts, clears both stored legs in the same transaction, and saves. A second refund sees zero liquidity. Pool re-derives the LP-account identity and routes exact token legs; redeployment is only the zero-minimum failure fallback, so stale liquidity cannot be replayed.

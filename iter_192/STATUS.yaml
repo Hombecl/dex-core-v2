@@ -1,0 +1,88 @@
+schema_version: shadow-v1
+iteration: 192
+phase: completed
+cell_id: AR5
+cell_label: router_notification_existing_wallet_collision
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AR5
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - "contracts/router/msgs/jetton.fc:7: slice from_address = in_msg_body~load_msg_addr();"
+      - "contracts/router/msgs/jetton.fc:24: route_dex_messages("
+      - "contracts/router/dex.fc:1: () route_dex_messages(slice _jetton_address, int _available_gas, int _sent_amount, slice _caller, cell _dex_payload)"
+      - "contracts/router/dex.fc:88: pool::$route(transferred_op, _caller, _sent_amount, _jetton_address, token_wallet1, _dex_payload),"
+      - "contracts/pool/msgs/router.fc:180: slice from_user = in_msg_body~load_msg_addr();"
+      - "contracts/pool/msgs/router.fc:241: lp_account_idata(my_address(), from_user),"
+      - "contracts/pool/msgs/lp_account.fc:103: lp_wallet_idata("
+      - "contracts/pool/msgs/lp_account.fc:123: jetton_wallet::mint("
+      - "contracts/lp_account/msgs/pool.fc:4: if ctx.at(OPCODE) == op::add_liquidity"
+      - "contracts/lp_account/msgs/pool.fc:14: slice to_user = in_msg_body~load_msg_addr();"
+      - "contracts/lp_account/msgs/pool.fc:21: storage::amount0 += new_amount0;"
+      - "contracts/lp_wallet.fc:63: | equal_slices(calculate_user_jetton_lp_wallet_address(from_address, jetton_master_address, jetton_wallet_code), sender_address));"
+      - "contracts/router/msgs/pool.fc:28: throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER)));"
+      - "contracts/common/contracts.fc:146: (cell) router::pay_to("
+  poc_execution:
+    test_file_path: iter_192/poc_router_notification_existing_wallet_collision.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_192/poc_router_notification_existing_wallet_collision.run.log
+    run_log_exists_on_disk: true
+    test_runtime: "0.2s static; 6.009s integration"
+    result: "PASS (16 cross-file anchors; identity separation model; recipient-split regression passed)"
+  prior_art_check:
+    queries:
+      - "iter_51 notification_identity_owner_binding"
+      - "iter_68 route_token_wallet_binding"
+      - "iter_102 router_route_untrusted_notification_binding"
+      - "iter_121 router_pool_pair_orientation_stateinit"
+      - "iter_133 router_notification_without_ref_refund_source"
+      - "iter_189 router_owned_wallet_residual_debit"
+      - "iter_190 pool_pair_sort_notification_order"
+    results: "Prior identity, orientation, and residual audits rechecked; all relevant matches DEADEND_WITH_PROOF"
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "repo:ston-fi/dex-core-v2 \"from_address\" \"to_user\" is:issue"
+      - "repo:ston-fi/dex-core-v2 \"from_address\" \"to_user\" is:pr"
+      - "repo:ston-fi/dex-core-v2 \"notification sender\" wallet identity is:issue"
+      - "repo:ston-fi/dex-core-v2 \"notification sender\" wallet identity is:pr"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  caller_grep_path: iter_192/callers-grep.txt
+  caller_match_count: 62
+  caller_unique_files: 8
+  prior_audit_path: iter_192/prior-audit-git.log
+  prior_audit_family_matches:
+    - iter_51
+    - iter_68
+    - iter_102
+    - iter_121
+    - iter_133
+    - iter_189
+    - iter_190
+  r15_evidence_files:
+    - iter_192/R15-GH-from-to-identity-issue.json
+    - iter_192/R15-GH-from-to-identity-pr.json
+    - iter_192/R15-GH-notification-wallet-identity-issue.json
+    - iter_192/R15-GH-notification-wallet-identity-pr.json
+  source_conclusion: "The notification sender selects the first Pool endpoint; from_address is passed as _caller and then from_user, which keys LP-account state; to_user is separately used to derive the recipient LP-wallet while minting uses the LP-account user_address. Different forged senders form different deterministic pairs, so they do not collide with a real Router-owned wallet pair. A real B endpoint can complete the forged pair only through its real token transfer path, which fixes from_address to the actual transfer owner and credits the Router B wallet by the same amount. The static 16-anchor identity model and the passing recipient-split integration showed no unauthorized victim-to-attacker asset delta. AR5 is DEADEND_WITH_PROOF."
+  attacker_privilege: external_auth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  shadow_mode: true

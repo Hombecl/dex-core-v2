@@ -1,0 +1,8 @@
+Prior-audit family matches from shadow STATUS files:
+iter_10: provision payload recipient and both-positive mode cross-file matrix.
+iter_81: initial LP callback is accepted only from deterministic (pool,user) LP account.
+iter_84: LP-wallet owner/master/code tuple and alternate recipient state-init binding.
+iter_166: to_user workchain and LP-wallet StateInit identity checks.
+iter_168: exact user_address/to_user_address callback identity and explicit third-party delegation.
+iter_170: callback refund/excess identity split.
+iter_172: callback replay/query identity; altered user fails, altered to_user is explicit recipient selection.

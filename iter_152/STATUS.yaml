@@ -1,0 +1,74 @@
+schema_version: shadow-v1
+iteration: 152
+phase: completed
+cell_id: AI5
+cell_label: weighted_setter_ref_forwarding
+final_verdict: PRE_KILLED_DUPLICATE_TRUSTED_ROLE
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AI5
+  final_verdict: PRE_KILLED_DUPLICATE_TRUSTED_ROLE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - "contracts/router/pools/weighted_stableswap/contracts.fc:9: return begin_message(op::internal_set_params)"
+      - "contracts/router/pools/weighted_stableswap/contracts.fc:15: .store_ref(begin_cell()"
+      - "contracts/router/pools/weighted_stableswap/ext_admin.fc:9: slice ref_data = in_msg_body~load_slice_ref();"
+      - "contracts/router/pools/weighted_stableswap/ext_admin.fc:48: pool::internal_set_params("
+      - "contracts/router/pools/weighted_stableswap/ext_admin.fc:54: new_setter"
+      - "contracts/pool/pools/weighted_stableswap/ext_router.fc:9: slice additional_data = in_msg_body~load_slice_ref();"
+      - "contracts/pool/pools/weighted_stableswap/ext_router.fc:10: slice new_setter = additional_data~load_msg_addr();"
+      - "contracts/pool/pools/weighted_stableswap/ext_router.fc:15: storage::rate_setter_address = new_setter;"
+      - "contracts/pool/pools/weighted_stableswap/storage.fc:23: storage::rate_setter_address = w_params_data~load_msg_addr();"
+      - "contracts/pool/pools/weighted_stableswap/setter.fc:4: if ctx.at(OPCODE) == op::set_rate {"
+      - "contracts/pool.fc:43: if equal_slices(ctx.at(SENDER), storage::rate_setter_address) { if handle_setter_messages() { return (); } }"
+  poc_execution:
+    test_file_path: iter_152/poc_weighted_setter_ref_forwarding_duplicate.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_152/poc_weighted_setter_ref_forwarding_duplicate.run.log
+    run_log_exists_on_disk: true
+    test_runtime: "0.3s static duplicate audit"
+    result: "PASSED (P10/Q4/U5 overlap; 0 novel surface delta)"
+  prior_art_check:
+    queries:
+      - "prior cell P10xC2/iter_47 governance_rate x amount_conservation"
+      - "prior cell Q4/iter_54 rate_transition_boundary"
+      - "prior cell U5/iter_85 weighted_rate_setter_domain_boundary"
+    results: "All three prior cells are closed DEADEND_WITH_PROOF; U5 applied the trusted-on-trusted kill"
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - "weighted stableswap rate setter"
+      - "setter ref forwarding"
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: PRE_KILLED_DUPLICATE_TRUSTED_ROLE
+  selected_cluster_source: POST_MATRIX_CLUSTER_PROPOSALS_21.md
+  duplicate_prior_cells:
+    - P10xC2/iter_47
+    - Q4/iter_54
+    - U5/iter_85
+  caller_path: "Router weighted-stableswap admin builder -> Pool internal_set_params ref consumer -> stored setter -> Pool dispatcher/set_rate"
+  caller_match_count: 37
+  caller_unique_files: 8
+  prior_audit_path: iter_152/prior-audit-git.log
+  r15_evidence_files:
+    - iter_152/R15-GH-rate-setter-issue.json
+    - iter_152/R15-GH-rate-setter-pr.json
+    - iter_152/R15-GH-setter-ref-issue.json
+    - iter_152/R15-GH-setter-ref-pr.json
+  source_conclusion: "AI5 exactly restates the previously audited weighted-stableswap rate-setter path. The ref edge and setter gate are consistent, and the remaining concern is trusted/admin rate configuration already killed by U5; no novel external path or asset delta remains."
+  candidate_path: null
+  shadow_mode: true

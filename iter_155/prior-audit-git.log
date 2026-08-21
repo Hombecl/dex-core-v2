@@ -1,0 +1,2 @@
+COMMAND: git log --all --oneline --decorate --regexp-ignore-case --grep='weighted.*const\|max.*ratio\|ratio.*guard\|weightedmath' -- contracts/pool/pools/weighted_const_product contracts/pool/msgs/router.fc contracts/router/pools/weighted_const_product
+RESULT: no matching prior audit commits in the checked history

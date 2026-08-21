@@ -1,0 +1,22 @@
+# AX2 prior-audit-git.log
+$ git log --all --oneline -- iter_98/STATUS.yaml iter_115/STATUS.yaml iter_132/STATUS.yaml iter_138/STATUS.yaml iter_139/STATUS.yaml iter_145/STATUS.yaml iter_161/STATUS.yaml iter_196/STATUS.yaml iter_203/STATUS.yaml iter_204/STATUS.yaml iter_207/STATUS.yaml
+1b4c27a shadow: complete iter139 AF4 trusted kill
+5acac98 shadow: complete iter138 AF3 trusted kill
+fb85b1f shadow: complete iter132 AE2 trusted kill
+46bb180 shadow: complete iter115 AA4 kill
+388c94e checkpoint: v4flash shadow iter100
+
+$ awk '/^(cell_label|final_verdict):/{...}' selected prior STATUS.yaml files
+iter_98: cell_label:=admin_fee_address_none_transition final_verdict:=DEADEND_WITH_PROOF 
+iter_115: cell_label:=pool_set_fees_protocol_recipient_boundary final_verdict:=KILLED_TRUSTED_ON_TRUSTED 
+iter_132: cell_label:=pool_protocol_fee_dual_payload_delivery final_verdict:=KILLED_TRUSTED_ON_TRUSTED 
+iter_138: cell_label:=router_admin_reset_pool_gas_recipient final_verdict:=KILLED_TRUSTED_ON_TRUSTED 
+iter_139: cell_label:=pool_reset_gas_body_tail_parse final_verdict:=KILLED_TRUSTED_ON_TRUSTED 
+iter_145: cell_label:=pool_dispatch_sender_precedence final_verdict:=KILLED_TRUSTED_ON_TRUSTED 
+iter_161: cell_label:=variant_setter_deserialization_width final_verdict:=DEADEND_WITH_PROOF 
+iter_196: cell_label:=pool_upgrade_ref_partial_state final_verdict:=KILLED_TRUSTED_ON_TRUSTED 
+iter_203: cell_label:=pool_protocolfee_zero_payload_ref_split final_verdict:=KILLED_TRUSTED_ON_TRUSTED 
+iter_204: cell_label:=pool_protocolfee_recipient_tuple_binding final_verdict:=KILLED_TRUSTED_ON_TRUSTED 
+iter_207: cell_label:=pool_getter_provide_wallet_include_address_alias final_verdict:=DEADEND_WITH_PROOF
+
+Prior-family conclusion: fee setter protocol-recipient, protocol-fee delivery, admin recipient, reset-gas tail, sender precedence, setter-width, pool-upgrade state, and getter fee families were previously drilled. No unresolved external unauthorized fee-update path was disclosed; trusted admin/Router paths are prior killed/deadend controls.

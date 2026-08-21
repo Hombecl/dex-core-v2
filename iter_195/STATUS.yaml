@@ -1,0 +1,132 @@
+schema_version: shadow-v1
+iteration: 195
+phase: completed
+cell_id: AS3
+cell_label: router_pay_vault_vault_collision
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AS3
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/router/msgs/pool.fc
+        line: 94
+        text: 'if ctx.at(OPCODE) == op::pay_vault'
+      - file: contracts/router/msgs/pool.fc
+        line: 113
+        text: 'throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER)));'
+      - file: contracts/router/msgs/pool.fc
+        line: 118
+        text: 'var vault = contracts::from_sources('
+      - file: contracts/router/msgs/pool.fc
+        line: 119
+        text: 'vault_idata('
+      - file: contracts/router/msgs/pool.fc
+        line: 121
+        text: 'amount0_out > 0 ? token0_address : token1_address'
+      - file: contracts/router/msgs/pool.fc
+        line: 127
+        text: 'msgs::send_with_stateinit('
+      - file: contracts/router/msgs/pool.fc
+        line: 130
+        text: 'vault~state_init()'
+      - file: contracts/router/msgs/pool.fc
+        line: 131
+        text: 'vault::deposit_ref_fee('
+      - file: contracts/router/msgs/pool.fc
+        line: 132
+        text: 'amount0_out + amount1_out'
+      - file: contracts/router/msgs/vault.fc
+        line: 10
+        text: 'vault_idata(to_address, token_address, my_address())'
+      - file: contracts/router/msgs/vault.fc
+        line: 13
+        text: 'throw_unless(error::invalid_caller, equal_slices(vault~address(params::workchain), ctx.at(SENDER)));'
+      - file: contracts/router/msgs/vault.fc
+        line: 16
+        text: 'jetton_wallet::transfer(0, amount_out, to_address, to_address)'
+      - file: contracts/vault.fc
+        line: 40
+        text: 'if (ctx.at(OPCODE) == op::deposit_ref_fee) & equal_slices(ctx.at(SENDER), storage::router_address) {'
+      - file: contracts/vault.fc
+        line: 43
+        text: 'storage::deposited_amount += in_msg_body~load_coins();'
+      - file: contracts/vault.fc
+        line: 62
+        text: 'router::vault_pay_to('
+      - file: contracts/vault.fc
+        line: 64
+        text: 'storage::token_address,'
+      - file: contracts/vault.fc
+        line: 65
+        text: 'storage::owner_address),'
+      - file: contracts/vault.fc
+        line: 68
+        text: 'storage::deposited_amount = 0;'
+      - file: contracts/common/contracts.fc
+        line: 1
+        text: '(cell) vault_idata(slice _user_address, slice _token_address, slice _router_address) inline {'
+      - file: contracts/common/contracts.fc
+        line: 186
+        text: '(cell) router::pay_vault('
+      - file: contracts/router/get.fc
+        line: 25
+        text: 'vault_idata(user, token, my_address()),'
+  poc_execution:
+    test_file_path: iter_195/poc_router_pay_vault_vault_collision.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_195/poc_router_pay_vault_vault_collision.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.1s static; 6.488s integration'
+    result: 'PASS (21 cross-file anchors; Vault tuple collision model; live referral-fee collection regression)'
+  prior_art_check:
+    queries:
+      - iter75 S5 getter_static_code_identity
+      - iter88 V3 vault_withdraw_carry_destroy_balance
+      - iter134 AE4 router_vault_pay_to_recipient_stateinit
+      - iter176 AO4 router_transfer_bounce_refund_payload
+    results:
+      - iter75: DEADEND_WITH_PROOF
+      - iter88: DEADEND_WITH_PROOF
+      - iter134: DEADEND_WITH_PROOF
+      - iter176: DEADEND_WITH_PROOF
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "pay_vault" "deposit_ref_fee" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "pay_vault" "deposit_ref_fee" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "vault_idata" "token0_address" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "vault_idata" "token0_address" is:pr'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: DEADEND_WITH_PROOF
+  shadow_mode: true
+  caller_path: iter_195/callers-grep.txt
+  caller_match_count: 50
+  caller_unique_files: 5
+  prior_audit_path: iter_195/prior-audit-git.log
+  prior_family_matches: [iter75, iter88, iter134, iter176]
+  r15_evidence_files:
+    - iter_195/R15-GH-pay-vault-deposit-issue.json
+    - iter_195/R15-GH-pay-vault-deposit-pr.json
+    - iter_195/R15-GH-vault-idata-token0-issue.json
+    - iter_195/R15-GH-vault-idata-token0-pr.json
+  source_conclusion: 'pay_vault authenticates the deterministic Pool sender, selects the positive fee token, and derives Vault StateInit from owner, token, and Router. The Vault accepts deposits only from its stored Router and stores the same tuple; withdrawal re-derives that tuple and transfers the stored amount to the stored owner. Alternate owner or token tuples are distinct identities, so no Vault or LP-wallet collision or unauthorized referral-fee credit was demonstrated.'
+  attacker_privilege:
+    privilege_required: external_auth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false

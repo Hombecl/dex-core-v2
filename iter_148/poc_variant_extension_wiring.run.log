@@ -1,0 +1,15 @@
+COMMAND: node iter_148/poc_variant_extension_wiring.test.js
+{
+  "dex_families_checked": 5,
+  "compile_flag_dimensions_checked": 3,
+  "extension_wiring_edges_checked": 3,
+  "include_dispatch_mismatches": 0,
+  "builder_consumer_arity_mismatches": 0,
+  "result": "PASS"
+}
+
+COMMAND: npm test -- --runInBand tests/ConstProduct.spec.ts tests/ConstSum.spec.ts tests/Stableswap.spec.ts tests/WeightedCPI.spec.ts tests/WeightedStableswap.spec.ts -t 'should collect|should provide|should swap|should burn|should refund|should handle cross swap'
+RESULT: PASS
+TEST_SUITES: 5 passed
+TESTS: 83 passed, 55 skipped, 138 total
+RUNTIME: 104.076s

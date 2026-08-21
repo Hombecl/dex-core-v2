@@ -1,0 +1,15 @@
+COMMAND: node iter_146/poc_lp_account_storage_coin_arity.test.js
+{
+  "address_fields_checked": 2,
+  "coin_fields_checked": 2,
+  "producer_consumer_paths_checked": 5,
+  "state_transitions_checked": 5,
+  "cross_leg_aliases": 0,
+  "result": "PASS"
+}
+
+COMMAND: npm test -- --runInBand tests/LPAccount.spec.ts tests/Pool.spec.ts
+RESULT: PASS
+TEST_SUITES: 2 passed
+TESTS: 5 passed, 5 total
+RUNTIME: 5.701s

@@ -1,0 +1,27 @@
+command: rg -n -i 'handle_router_messages|handle_pool_messages|router::pay_to|route_dex_messages|send_tokens|swap\(|refund|pay_to|amount0_out|amount1_out' contracts/pool.fc contracts/router.fc contracts/pool/msgs/router.fc contracts/router/msgs/pool.fc contracts/common/contracts.fc contracts/common/op.fc contracts/router/dex.fc wrappers/Router.ts tests/ConstProduct.spec.ts tests/System.spec.ts
+caller_match_count: 202
+caller_unique_files: 10
+caller_files:
+  - contracts/common/contracts.fc
+  - contracts/common/op.fc
+  - contracts/pool.fc
+  - contracts/pool/msgs/router.fc
+  - contracts/router.fc
+  - contracts/router/dex.fc
+  - contracts/router/msgs/pool.fc
+  - tests/ConstProduct.spec.ts
+  - tests/System.spec.ts
+  - wrappers/Router.ts
+representative_hits:
+  - contracts/pool.fc:29 handle_router_messages();
+  - contracts/pool/msgs/router.fc:58 router::pay_to(...)
+  - contracts/pool/msgs/router.fc:160 refund router::pay_to(...)
+  - contracts/router/msgs/pool.fc:5 op::pay_to
+  - contracts/router/msgs/pool.fc:28 deterministic invalid_caller gate
+  - contracts/router/msgs/pool.fc:55 route_dex_messages(...)
+  - contracts/common/contracts.fc:146 router::pay_to serializer
+  - contracts/common/op.fc:10 pay_to schema
+  - contracts/router.fc:23 handle_pool_messages();
+  - tests/ConstProduct.spec.ts:2334 should refund swap if fee more than max
+  - tests/System.spec.ts:251 should handle invalid transfers
+callers_grep_done: true

@@ -1,0 +1,30 @@
+COMMAND: rg -n -g '*.fc' "_MAX_IN_RATIO|error::max_in_ratio|calc_out_given_in|pool::get_swap_out|storage::w0|complement\(\)|storage::save" contracts/pool/pools/weighted_const_product contracts/pool/msgs/router.fc contracts/router/pools/weighted_const_product
+contracts/pool/pools/weighted_const_product/get.fc:16:        storage::w0
+contracts/pool/msgs/router.fc:94:                (out1, protocol_fee_out, ref_fee_out1) = pool::get_swap_out(true, ref_value, amount0, storage::reserve0, storage::reserve1);
+contracts/pool/msgs/router.fc:101:                (out0, protocol_fee_out, ref_fee_out0) = pool::get_swap_out(false, ref_value, amount1, storage::reserve1, storage::reserve0);
+contracts/pool/msgs/router.fc:152:            storage::save();
+contracts/pool/msgs/router.fc:296:        storage::save();
+contracts/pool/msgs/router.fc:317:        storage::save();
+contracts/pool/pools/weighted_const_product/storage.fc:1:global storage::w0;
+contracts/pool/pools/weighted_const_product/storage.fc:14:    storage::w0 = ds~load_uint(64);
+contracts/pool/pools/weighted_const_product/storage.fc:28:() storage::save() impure inline {
+contracts/pool/pools/weighted_const_product/storage.fc:39:        .store_uint(storage::w0, 64)
+contracts/pool/pools/weighted_const_product/math.fc:1:const _MAX_IN_RATIO = 300000000000000000; ;; 0.3e18
+contracts/pool/pools/weighted_const_product/math.fc:13:int calc_out_given_in(int _balance_in, int _weight_in, int _amount_in, int _balance_out) impure inline {
+contracts/pool/pools/weighted_const_product/math.fc:21:    throw_unless(error::max_in_ratio, _amount_in <= _balance_in.math::fp::mul(_MAX_IN_RATIO));
+contracts/pool/pools/weighted_const_product/math.fc:24:    int weight_out = _weight_in.math::fp::complement();
+contracts/pool/pools/weighted_const_product/math.fc:32:    return _balance_out.math::fp::mul(power.math::fp::complement()).math::fp::to();
+contracts/pool/pools/weighted_const_product/pool.fc:1:(int, int, int) pool::get_swap_out(int _side, int _ref_value, int _amount_in, int _reserve_in, int _reserve_out) inline {
+contracts/pool/pools/weighted_const_product/pool.fc:9:        base_out = calc_out_given_in(_reserve_in, storage::w0, base_in_without_fee, _reserve_out);
+contracts/pool/pools/weighted_const_product/pool.fc:11:        base_out = calc_out_given_in(_reserve_in, storage::w0.math::fp::complement(), base_in_without_fee, _reserve_out);
+contracts/pool/pools/weighted_const_product/pool.fc:31:        storage::w0, 
+contracts/pool/pools/weighted_const_product/pool.fc:32:        storage::w0.math::fp::complement()
+contracts/pool/pools/weighted_const_product/pool.fc:39:        int _w0 = storage::w0;
+contracts/pool/pools/weighted_const_product/pool.fc:40:        int _w1 = storage::w0.math::fp::complement();
+contracts/pool/pools/weighted_const_product/state_init.fc:14:        .store_uint(0, 64) ;; storage::w0  (0)
+contracts/pool/pools/weighted_const_product/ext_router.fc:12:        if storage::w0 == 0 {
+contracts/pool/pools/weighted_const_product/ext_router.fc:16:                storage::w0 = new_w;
+contracts/pool/pools/weighted_const_product/ext_router.fc:18:                storage::w0 = new_w.math::fp::complement();
+contracts/pool/pools/weighted_const_product/ext_router.fc:21:        storage::save();
+MATCH_COUNT: 27
+UNIQUE_FILES: 7

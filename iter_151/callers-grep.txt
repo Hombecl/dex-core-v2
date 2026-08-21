@@ -1,0 +1,11 @@
+COMMAND: scope-only check against /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+MATCH_COUNT: 5 selected asset markers; 0 deployment-script markers
+UNIQUE_FILES: 1 scope artifact
+VERBATIM_SCOPE_HITS:
+scope.json: contracts/pool.fc
+scope.json: contracts/router.fc
+scope.json: contracts/lp_wallet.fc
+scope.json: contracts/lp_account.fc
+scope.json: contracts/vault.fc
+EXCLUDED:
+scripts/deployRouter.ts is absent from the authoritative selected-assets list; no OOS code was drilled.
