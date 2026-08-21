@@ -1,0 +1,61 @@
+schema_version: shadow-v1
+iteration: 101
+phase: completed
+cell_id: Y1
+cell_label: router_pay_vault_single_side_stateinit
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: Y1
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits: []
+  poc_execution:
+    test_file_path: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon/tests/ConstProduct.spec.ts,tests/ConstSum.spec.ts,tests/Stableswap.spec.ts,tests/WeightedStableswap.spec.ts
+    test_file_exists_on_disk: true
+    run_log_path: iter_101/poc_router_pay_vault_single_side_stateinit.run.log
+    run_log_exists_on_disk: true
+    test_runtime: 17.479s
+    result: PASSED (4 passed, 109 skipped, 113 total)
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 pay_vault is:issue'
+      - 'repo:ston-fi/dex-core-v2 pay_vault is:pr'
+      - 'repo:ston-fi/dex-core-v2 deposit_ref_fee is:issue'
+      - 'repo:ston-fi/dex-core-v2 deposit_ref_fee is:pr'
+    results: all four returned total_count 0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'pay_vault on repository issue page'
+      - 'pay_vault on repository pull-request page'
+      - 'deposit_ref_fee on repository issue page'
+      - 'deposit_ref_fee on repository pull-request page'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_101/callers-grep.txt
+  caller_grep_match_count: 19
+  caller_grep_unique_files: 4
+  prior_audit_path: iter_101/prior-audit-git.log
+  prior_audit_bytes: 78
+  r15_search_files:
+    - iter_101/R15-GH-pay-vault-issue.json
+    - iter_101/R15-GH-pay-vault-pr.json
+    - iter_101/R15-GH-deposit-ref-fee-issue.json
+    - iter_101/R15-GH-deposit-ref-fee-pr.json
+  source_conclusion: 'The pool-originated pay_vault tuple has one populated referral leg on the swap path, and the router authenticates the originating pool plus the derived vault before transferring tokens. Two-sided or zero-sided tuples do not yield attacker-controlled asset release; zero fee deposits no value.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_101-Y1.md

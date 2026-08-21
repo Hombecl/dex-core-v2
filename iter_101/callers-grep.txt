@@ -1,0 +1,19 @@
+contracts/vault.fc:40:    if (ctx.at(OPCODE) == op::deposit_ref_fee) & equal_slices(ctx.at(SENDER), storage::router_address) {
+contracts/vault.fc:51:    if ctx.at(OPCODE) == op::withdraw_fee { 
+contracts/vault.fc:56:            + gas::router::vault_pay_to + gas::vault::withdraw_fee
+contracts/vault.fc:62:            router::vault_pay_to(
+contracts/common/contracts.fc:1:(cell) vault_idata(slice _user_address, slice _token_address, slice _router_address) inline {
+contracts/common/contracts.fc:174:(cell) router::vault_pay_to(
+contracts/common/contracts.fc:179:    return begin_message(op::vault_pay_to)
+contracts/common/contracts.fc:186:(cell) router::pay_vault(
+contracts/common/contracts.fc:194:    return begin_message(op::pay_vault)
+contracts/common/contracts.fc:289:(cell) vault::deposit_ref_fee(
+contracts/common/contracts.fc:293:    return begin_message(op::deposit_ref_fee)
+contracts/common/op.fc:25:const op::pay_vault                       = "pay_vault query_id:uint64 owner:MsgAddress excesses_address:MsgAddress additional_info:^[amount0_out:Coins token0_address:MsgAddress amount1_out:Coins token1_address:MsgAddress] = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:26:const op::vault_pay_to                    = "vault_pay_to query_id:uint64 amount_out:Coins token_address:MsgAddress to_address:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:27:const op::deposit_ref_fee                 = "deposit_ref_fee query_id:uint64 jetton_amount:Coins excesses_address:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:28:const op::withdraw_fee                    = "withdraw_fee query_id:uint64 = InternalMsgBody"c & 0x7fffffff;
+contracts/common/gas.fc:4:const gas::router::vault_pay_to = 20000000;
+contracts/common/gas.fc:5:const gas::router::pay_vault = 20000000;
+contracts/common/gas.fc:22:const gas::vault::deposit_ref_fee = 10000000;
+contracts/common/gas.fc:23:const gas::vault::withdraw_fee = 10000000;
