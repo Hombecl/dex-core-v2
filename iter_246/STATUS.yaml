@@ -1,0 +1,172 @@
+schema_version: shadow-v1
+iteration: 246
+phase: completed
+cell_id: BA3
+cell_label: lp_wallet_get_data_storage_tuple_staleness
+final_verdict: PRE_KILLED_DUPLICATE
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: BA3
+  final_verdict: PRE_KILLED_DUPLICATE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/lp_wallet/storage.fc
+        line: 1
+        text: '(int, slice, slice, cell) storage::load() inline'
+      - file: contracts/lp_wallet/storage.fc
+        line: 3
+        text: 'ds~load_coins(), ds~load_msg_addr(), ds~load_msg_addr(), ds~load_ref()'
+      - file: contracts/lp_wallet/storage.fc
+        line: 4
+        text: 'ds.end_parse();'
+      - file: contracts/lp_wallet/storage.fc
+        line: 9
+        text: 'pack_jetton_lp_wallet_data(balance, owner_address, jetton_master_address, jetton_wallet_code)'
+      - file: contracts/lp_wallet.fc
+        line: 17
+        text: '(int balance, slice owner_address, slice jetton_master_address, cell jetton_wallet_code) = storage::load();'
+      - file: contracts/lp_wallet.fc
+        line: 51
+        text: 'storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);'
+      - file: contracts/lp_wallet.fc
+        line: 55
+        text: '(int balance, slice owner_address, slice jetton_master_address, cell jetton_wallet_code) = storage::load();'
+      - file: contracts/lp_wallet.fc
+        line: 100
+        text: 'storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);'
+      - file: contracts/lp_wallet.fc
+        line: 104
+        text: '(int balance, slice owner_address, slice jetton_master_address, cell jetton_wallet_code) = storage::load();'
+      - file: contracts/lp_wallet.fc
+        line: 133
+        text: 'storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);'
+      - file: contracts/lp_wallet.fc
+        line: 138
+        text: '(int balance, slice owner_address, slice jetton_master_address, cell jetton_wallet_code) = storage::load();'
+      - file: contracts/lp_wallet.fc
+        line: 146
+        text: 'storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);'
+      - file: contracts/lp_wallet.fc
+        line: 187
+        text: '(int, slice, slice, cell) get_wallet_data() method_id'
+      - file: contracts/lp_wallet.fc
+        line: 188
+        text: 'return storage::load();'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 1
+        text: 'handle_lp_wallet_messages() impure inline'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 102
+        text: 'var lp_wallet = contracts::from_sources('
+      - file: contracts/lp_wallet/jetton-utils.fc
+        line: 19
+        text: 'cell pack_jetton_lp_wallet_data'
+      - file: tests/System.spec.ts
+        line: 176
+        text: 'jettonAmount: (await lpWallet.getWalletData()).balance,'
+  source_scope_restricted: true
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  required_evidence_complete: true
+  no_fabrication: true
+  scope_assets_only: true
+  methodology_audit_exit: NOT_AVAILABLE
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_DEADEND
+  shippable: false
+  rejection_reason: 'get_wallet_data reads the current storage cell and returns the same four-field tuple that all send, receive, burn, and bounce paths reload and save. The tuple is terminally parsed and packed in the same order. A normal pre/post-message read snapshot cannot mutate token, LP, or TON state and cannot alter deterministic wallet identity.'
+  duplicate_family: 'iter_136 lp_wallet_bounce_query_id_alias, iter_146 LPAccount/storage tuple arity, iter_167 lp_mint_carry_value_commit, iter_185 lp_mint_state_init_identity, iter_191 lp_burn_dual_output_bounce_correlation, iter_234 lp_wallet_receive_response_excess_destination, and iter_239 getter response carry family'
+  caller_match_count: 308
+  caller_unique_files: 39
+  cascade_verbatim_hit_count: 18
+  cross_file_anchor_count: 19
+  caller_paths:
+    - contracts/lp_wallet.fc
+    - contracts/lp_wallet/storage.fc
+    - contracts/lp_wallet/jetton-utils.fc
+    - contracts/pool.fc
+    - contracts/pool/msgs/lp_account.fc
+    - contracts/pool/msgs/lp_wallet.fc
+    - contracts/router.fc
+    - contracts/router/msgs/jetton.fc
+    - contracts/router/msgs/pool.fc
+    - contracts/vault.fc
+    - tests/System.spec.ts
+  callers_grep_artifact: iter_246/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_246/poc_lp_wallet_get_data_storage_tuple.test.js
+    poc_run_log: iter_246/poc_lp_wallet_get_data_storage_tuple.run.log
+    live_regression_log: iter_246/live-lp-wallet-get-data-regression.run.log
+    prior_audit: iter_246/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_246/poc_lp_wallet_get_data_storage_tuple.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_246/poc_lp_wallet_get_data_storage_tuple.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.1s static; 6.141s integration'
+    result: 'PASS (19 cross-file anchors; two tuple cases; three preserved identity fields; terminal parse; targeted LPWallet/LPAccount regressions)'
+  prior_art_check:
+    queries:
+      - 'cell_label get_wallet_data/getWalletData/storage tuple/load/save/pack wallet data scan across iter_*/STATUS.yaml'
+    results:
+      - 'iter_136 lp_wallet_bounce_query_id_alias: DEADEND_WITH_PROOF'
+      - 'iter_146 lp_account_storage_coin_arity: DEADEND_WITH_PROOF'
+      - 'iter_167 lp_mint_carry_value_commit: DEADEND_WITH_PROOF'
+      - 'iter_185 lp_mint_state_init_identity: DEADEND_WITH_PROOF'
+      - 'iter_191 lp_burn_dual_output_bounce_correlation: DEADEND_WITH_PROOF'
+      - 'iter_234 lp_wallet_receive_response_excess_destination: DEADEND_WITH_PROOF'
+      - 'iter_239 lp_account_getter_data_response_carry_destroy: PRE_KILLED_DUPLICATE'
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "get_wallet_data()" "storage::load()" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "get_wallet_data()" "storage::load()" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "pack_jetton_lp_wallet_data" "get_wallet_data" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "pack_jetton_lp_wallet_data" "get_wallet_data" is:pr'
+    gh_search_hits: 0
+    evidence_files:
+      - iter_246/r15-get-wallet-data-storage-load-issue.json
+      - iter_246/r15-get-wallet-data-storage-load-pr.json
+      - iter_246/r15-pack-wallet-data-getter-issue.json
+      - iter_246/r15-pack-wallet-data-getter-pr.json
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: PRE_KILLED_DUPLICATE
+  shadow_mode: true
+  caller_path: iter_246/callers-grep.txt
+  caller_match_count: 308
+  caller_unique_files: 39
+  prior_audit_path: iter_246/prior-audit-git.log
+  prior_family_matches: [iter136, iter146, iter167, iter185, iter191, iter234, iter239]
+  r15_evidence_files:
+    - iter_246/r15-get-wallet-data-storage-load-issue.json
+    - iter_246/r15-get-wallet-data-storage-load-pr.json
+    - iter_246/r15-pack-wallet-data-getter-issue.json
+    - iter_246/r15-pack-wallet-data-getter-pr.json
+  source_conclusion: 'BA3 is a read-only LPWallet storage/getter duplicate. get_wallet_data invokes storage::load at query time; storage::load and pack_jetton_lp_wallet_data preserve balance, owner, master, and code order; each async mutation reloads and saves; Pool uses deterministic wallet StateInit. No stale tuple can grant ownership or create an attacker-positive asset delta.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_246/poc_lp_wallet_get_data_storage_tuple.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_246/poc_lp_wallet_get_data_storage_tuple.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_246/live-lp-wallet-get-data-regression.run.log
+    result: PASS

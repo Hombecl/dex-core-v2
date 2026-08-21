@@ -1,0 +1,32 @@
+$ npm test -- --runInBand tests/LPAccount.spec.ts tests/System.spec.ts -t 'should return valid data|should handle mint & burn liquidity'
+
+> @ston-fi/dex-core-v2@2.2.0 test
+> jest --verbose --runInBand tests/LPAccount.spec.ts tests/System.spec.ts -t should return valid data|should handle mint & burn liquidity
+
+PASS tests/System.spec.ts
+  System
+    Dex
+      ✓ should handle mint & burn liquidity (627 ms)
+      ○ skipped should handle refund partial liquidity
+      ○ skipped should handle swaps
+      ○ skipped should handle invalid transfers
+      ○ skipped should handle cross swap
+    Governance
+      ○ skipped should reset pool gas
+      ○ skipped should reset pool gas (different address)
+      ○ skipped should reset router gas
+      ○ skipped should lock & unlock pool
+      ○ skipped should set fees
+      ○ skipped should collect fees
+
+PASS tests/LPAccount.spec.ts
+  LPAccount
+    Getters
+      ✓ should return valid data (10 ms)
+
+Test Suites: 2 passed, 2 total
+Tests:       10 skipped, 2 passed, 12 total
+Snapshots:   0 total
+Time:        6.141 s, estimated 7 s
+Ran all test suites matching /tests\/LPAccount.spec.ts|tests\/System.spec.ts/i with tests matching "should return valid data|should handle mint & burn liquidity".
+exit=0

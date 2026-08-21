@@ -1,0 +1,21 @@
+COMMAND:
+rg -n --no-heading -i 'get_wallet_data|getWalletData|wallet data|storage tuple|storage::load|storage::save|pack_jetton_lp_wallet_data' CHAIN_HYPOTHESIS_TABLE.md iter_*/STATUS.yaml
+
+RELEVANT PRIOR RESULTS:
+iter_136 lp_wallet_bounce_query_id_alias: DEADEND_WITH_PROOF
+  LPWallet bounce parses only the two typed outbound operation opcodes, reloads its own four-field storage, restores the encoded jetton amount, and saves; query_id is carried but does not select another wallet or user.
+iter_146 lp_account_storage_coin_arity: DEADEND_WITH_PROOF
+  Storage tuple field order and Coins widths are preserved across LPAccount load/save and getter producer/consumer paths.
+iter_167 lp_mint_carry_value_commit: DEADEND_WITH_PROOF
+  LP-wallet balance is incremented by the exact jetton amount and saved independently; residual TON and notification payload are separate.
+iter_185 lp_mint_state_init_identity: DEADEND_WITH_PROOF
+  LP-wallet credit sender and deterministic StateInit identity remain bound to master/owner/code; mint output cannot be rebound through a read or notification path.
+iter_191 lp_burn_dual_output_bounce_correlation: DEADEND_WITH_PROOF
+  Burn output routing is tied to the deterministic LP wallet and fixed token amounts; getter or bounce state cannot change the committed token identity.
+iter_234 lp_wallet_receive_response_excess_destination: DEADEND_WITH_PROOF
+  Response/excess is residual TON only after the wallet reloads and updates its balance; it does not alter the wallet identity tuple.
+iter_239 lp_account_getter_data_response_carry_destroy: PRE_KILLED_DUPLICATE
+  Getter response carries the current stored tuple and does not create a stateful mutation or destination substitution.
+
+CONCLUSION:
+BA3 is a read-only getter/storage duplicate. The getter calls storage::load at query time, storage load/save share one four-field order with terminal parsing, and each async mutation reloads/saves that tuple. A normal pre/post-message snapshot is not attacker-controlled asset movement.

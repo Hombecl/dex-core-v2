@@ -1,0 +1,12 @@
+$ node iter_246/poc_lp_wallet_get_data_storage_tuple.test.js
+{
+  "result": "PASS",
+  "classification": "PRE_KILLED_DUPLICATE",
+  "cell": "BA3",
+  "cross_file_anchors": 19,
+  "tuple_cases": 2,
+  "identity_fields_preserved": 3,
+  "terminal_parse_checks": 1,
+  "reason": "get_wallet_data returns the current four-field storage tuple, storage load/save use the same Coins/address/address/ref order with end_parse, and every async balance mutation reloads and saves the tuple. A read snapshot is not a state mutation or an attacker-controlled asset delta"
+}
+exit=0

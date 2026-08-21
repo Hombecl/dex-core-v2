@@ -1,0 +1,46 @@
+COMMAND:
+rg -n --no-heading 'get_wallet_data|storage::load()|storage::save(|pack_jetton_lp_wallet_data|load_coins()|load_msg_addr()|load_ref()|end_parse()|send_raw_message|receive_tokens|send_tokens|burn_tokens|on_bounce' contracts/lp_wallet.fc contracts/lp_wallet contracts/pool.fc contracts/pool contracts/router.fc contracts/router contracts/vault.fc contracts/common tests/System.spec.ts tests/LPAccount.spec.ts
+
+RESULT:
+caller_match_count=308
+caller_unique_files=39
+cross_file_requirement=PASS (39 files > 4)
+
+UNIQUE_CALLER_FILES:
+contracts/lp_wallet.fc
+contracts/lp_wallet/jetton-utils.fc
+contracts/lp_wallet/storage.fc
+contracts/pool.fc
+contracts/pool/get.fc
+contracts/pool/msgs/getter.fc
+contracts/pool/msgs/lp_account.fc
+contracts/pool/msgs/lp_wallet.fc
+contracts/pool/msgs/protocolfee.fc
+contracts/pool/msgs/router.fc
+contracts/pool/pools/README.md
+contracts/pool/pools/constant_product/get.fc
+contracts/pool/pools/constant_product/storage.fc
+contracts/pool/pools/constant_sum/get.fc
+contracts/pool/pools/stableswap/ext_router.fc
+contracts/pool/pools/stableswap/get.fc
+contracts/pool/pools/stableswap/storage.fc
+contracts/pool/pools/weighted_const_product/get.fc
+contracts/pool/pools/weighted_const_product/storage.fc
+contracts/pool/pools/weighted_stableswap/get.fc
+contracts/pool/pools/weighted_stableswap/storage.fc
+contracts/router.fc
+contracts/router/dex.fc
+contracts/router/get.fc
+contracts/router/msgs/admin.fc
+contracts/router/msgs/getter.fc
+contracts/router/msgs/jetton.fc
+contracts/router/msgs/vault.fc
+contracts/router/pools/stableswap/ext_admin.fc
+contracts/router/pools/weighted_const_product/ext_admin.fc
+contracts/router/pools/weighted_stableswap/ext_admin.fc
+contracts/router/storage.fc
+contracts/router/utils.fc
+contracts/vault.fc
+
+INTERPRETATION:
+The getter is backed by the same storage tuple used by send, receive, burn, and bounce paths. Pool consumers use the wallet identity StateInit and live tests read wallet data after value-bearing operations; no separate cached tuple or stateful getter mutation exists.
