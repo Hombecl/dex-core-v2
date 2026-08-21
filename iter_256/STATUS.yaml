@@ -1,0 +1,189 @@
+schema_version: shadow-v1
+iteration: 256
+phase: completed
+cell_id: CC3
+cell_label: lp_account_callback_mint_carry_stateinit_order
+final_verdict: PRE_KILLED_DUPLICATE
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: CC3
+  final_verdict: PRE_KILLED_DUPLICATE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/lp_account/msgs/pool.fc
+        line: 18
+        text: 'storage::amount0 += new_amount0;'
+      - file: contracts/lp_account/msgs/pool.fc
+        line: 45
+        text: 'CARRY_ALL_BALANCE | DESTROY_IF_ZERO'
+      - file: contracts/lp_account/msgs/pool.fc
+        line: 48
+        text: 'storage::amount0 = 0;'
+      - file: contracts/common/contracts.fc
+        line: 50
+        text: 'return begin_message(op::cb_add_liquidity)'
+      - file: contracts/common/contracts.fc
+        line: 206
+        text: '(cell) jetton_wallet::mint('
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 26
+        text: 'throw_unless(error::invalid_caller, equal_slices(lp_account~address(params::workchain), ctx.at(SENDER)));'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 122
+        text: 'lp_wallet~state_init(),'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 123
+        text: 'jetton_wallet::mint('
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 132
+        text: 'storage::save();'
+      - file: contracts/lp_wallet.fc
+        line: 58
+        text: 'balance += jetton_amount;'
+      - file: contracts/lp_wallet.fc
+        line: 63
+        text: '| equal_slices(calculate_user_jetton_lp_wallet_address(from_address, jetton_master_address, jetton_wallet_code), sender_address));'
+      - file: contracts/lp_wallet.fc
+        line: 174
+        text: 'if (op == op::internal_transfer) {'
+      - file: contracts/lp_wallet/storage.fc
+        line: 9
+        text: 'set_data(pack_jetton_lp_wallet_data(balance, owner_address, jetton_master_address, jetton_wallet_code));'
+      - file: tests/System.spec.ts
+        line: 132
+        text: "it('should handle mint & burn liquidity', async () => {"
+      - file: tests/System.spec.ts
+        line: 205
+        text: "it('should handle refund partial liquidity', async () => {"
+      - file: tests/ConstProduct.spec.ts
+        line: 1679
+        text: "it('should handle more complex scenarios', async () => {"
+  source_scope_restricted: true
+  scope_assets_only: true
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  methodology_audit_exit: NOT_AVAILABLE
+  required_evidence_complete: true
+  no_fabrication: true
+  shippable: false
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_DEADEND
+  rejection_reason: 'The Pool callback authenticates the deterministic LPAccount, clamps only fwd_amount, constructs the deterministic LPWallet StateInit, sends the exact liquidity amount in jetton_wallet::mint with CARRY_ALL_BALANCE, and saves Pool state. LPWallet accepts the Pool master, credits the exact amount, and saves independently; malformed callback and failed-liquidity branches do not persist a mint. Existing-wallet, new-StateInit, forward-clamp, invalid-caller, and failure-refund models plus live mint/refund regressions show no attacker-positive delta.'
+  duplicate_family: 'iter_8 LP-account callback save, iter_67 Pool callback failure rollback, iter_130 LP-account DESTROY_IF_ZERO save order, iter_135 LPWallet StateInit/mint credit, iter_163 LP mint bounce conservation, iter_164 notification funding boundary, iter_167 LP mint carry commit, iter_168 callback identity, iter_169 forward clamp, iter_172 callback replay identity, iter_180 user/to_user identity, iter_185 LP mint StateInit carry, iter_197 StateInit tuple identity, iter_208 LPWallet StateInit bounce restore, iter_221 direct-add callback save, iter_233 LPWallet StateInit collision, iter_252 receive conservation, and iter_254 receive funding ordering'
+  caller_match_count: 43
+  caller_unique_files: 7
+  cascade_verbatim_hit_count: 16
+  cross_file_anchor_count: 16
+  caller_paths:
+    - contracts/common/contracts.fc
+    - contracts/lp_account/msgs/pool.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_wallet/storage.fc
+    - contracts/pool/msgs/lp_account.fc
+    - tests/ConstProduct.spec.ts
+    - tests/System.spec.ts
+  callers_grep_artifact: iter_256/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_256/poc_lp_account_callback_mint_carry_stateinit_order.test.js
+    poc_run_log: iter_256/poc_lp_account_callback_mint_carry_stateinit_order.run.log
+    live_regression_log: iter_256/live-lp-account-callback-mint-regression.run.log
+    prior_audit: iter_256/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_256/poc_lp_account_callback_mint_carry_stateinit_order.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_256/poc_lp_account_callback_mint_carry_stateinit_order.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.1s static; 12.483s integration'
+    result: 'PASS (16 cross-file anchors; five carry/StateInit cases; exact Pool supply and LPWallet deltas; invalid callback/failure branches produce no mint; three live regressions)'
+  prior_art_check:
+    queries:
+      - 'cb_add_liquidity/lp_account mint/LPWallet StateInit/CARRY_ALL_BALANCE/internal_transfer/receive_tokens/callback save scan across CHAIN_HYPOTHESIS_TABLE.md and iter_*/STATUS.yaml'
+    results:
+      - 'iter_8 LP-account add/save: DEADEND_WITH_PROOF'
+      - 'iter_67 cb_add_liquidity failure rollback: DEADEND_WITH_PROOF'
+      - 'iter_130 LP-account DESTROY_IF_ZERO save order: DEADEND_WITH_PROOF'
+      - 'iter_135 LPWallet StateInit and mint credit: DEADEND_WITH_PROOF'
+      - 'iter_163 LP mint bounce conservation: DEADEND_WITH_PROOF'
+      - 'iter_164 notification funding boundary: DEADEND_WITH_PROOF'
+      - 'iter_167 LP mint carry commit: DEADEND_WITH_PROOF'
+      - 'iter_168 callback identity: DEADEND_WITH_PROOF'
+      - 'iter_169 forward clamp: DEADEND_WITH_PROOF'
+      - 'iter_172 callback replay identity: DEADEND_WITH_PROOF'
+      - 'iter_180 callback user/to_user identity: DEADEND_WITH_PROOF'
+      - 'iter_185 LP mint StateInit carry: PRE_KILLED_DUPLICATE'
+      - 'iter_197 StateInit tuple identity: DEADEND_WITH_PROOF'
+      - 'iter_208 LPWallet StateInit bounce restore: PRE_KILLED_DUPLICATE'
+      - 'iter_221 direct-add callback save: PRE_KILLED_DUPLICATE'
+      - 'iter_233 LPWallet StateInit collision: PRE_KILLED_DUPLICATE'
+      - 'iter_252 receive conservation: PRE_KILLED_DUPLICATE'
+      - 'iter_254 receive funding ordering: PRE_KILLED_DUPLICATE'
+    r15_disclosure_check:
+      gh_search_terms_used:
+        - 'repo:ston-fi/dex-core-v2 "lp_wallet~state_init" "jetton_wallet::mint" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "lp_wallet~state_init" "jetton_wallet::mint" is:pr'
+        - 'repo:ston-fi/dex-core-v2 "cb_add_liquidity" "CARRY_ALL_BALANCE" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "cb_add_liquidity" "CARRY_ALL_BALANCE" is:pr'
+      gh_search_hits: 0
+      evidence_files:
+        - iter_256/r15-lp-callback-stateinit-issue.json
+        - iter_256/r15-lp-callback-stateinit-pr.json
+        - iter_256/r15-lp-callback-carry-issue.json
+        - iter_256/r15-lp-callback-carry-pr.json
+    attacker_privilege:
+      privilege_required: external_unauth
+    fund_loss_demonstrated: false
+    concrete_impact_demonstrated: false
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "lp_wallet~state_init" "jetton_wallet::mint" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "lp_wallet~state_init" "jetton_wallet::mint" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "cb_add_liquidity" "CARRY_ALL_BALANCE" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "cb_add_liquidity" "CARRY_ALL_BALANCE" is:pr'
+    gh_search_hits: 0
+    evidence_files:
+      - iter_256/r15-lp-callback-stateinit-issue.json
+      - iter_256/r15-lp-callback-stateinit-pr.json
+      - iter_256/r15-lp-callback-carry-issue.json
+      - iter_256/r15-lp-callback-carry-pr.json
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: PRE_KILLED_DUPLICATE
+  shadow_mode: true
+  caller_path: iter_256/callers-grep.txt
+  caller_match_count: 43
+  caller_unique_files: 7
+  prior_audit_path: iter_256/prior-audit-git.log
+  prior_family_matches: [iter8, iter67, iter130, iter135, iter163, iter164, iter167, iter168, iter169, iter172, iter180, iter185, iter197, iter208, iter221, iter233, iter252, iter254]
+  r15_evidence_files:
+    - iter_256/r15-lp-callback-stateinit-issue.json
+    - iter_256/r15-lp-callback-stateinit-pr.json
+    - iter_256/r15-lp-callback-carry-issue.json
+    - iter_256/r15-lp-callback-carry-pr.json
+  source_conclusion: 'CC3 is the Pool callback LP mint carry/StateInit duplicate. The exact LP amount and deterministic LPWallet identity remain bound across existing and new-wallet flows; forward-amount clipping changes notification only; invalid and failure branches do not persist a mint. No attacker-positive token, LP, or TON delta was demonstrated.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_256/poc_lp_account_callback_mint_carry_stateinit_order.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_256/poc_lp_account_callback_mint_carry_stateinit_order.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_256/live-lp-account-callback-mint-regression.run.log
+    result: PASS

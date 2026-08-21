@@ -1,0 +1,15 @@
+43
+7
+contracts/common/contracts.fc
+contracts/lp_account/msgs/pool.fc
+contracts/lp_wallet.fc
+contracts/lp_wallet/storage.fc
+contracts/pool/msgs/lp_account.fc
+tests/ConstProduct.spec.ts
+tests/System.spec.ts
+
+Command:
+matches=$(rg -n --no-heading 'cb_add_liquidity|lp_account::add_liquidity|storage::amount0|storage::amount1|CARRY_ALL_BALANCE|DESTROY_IF_ZERO|lp_wallet_idata|lp_wallet~state_init|jetton_wallet::mint|internal_transfer|receive_tokens|calculate_user_jetton_lp_wallet_address|storage::save|send_with_stateinit|should handle mint & burn liquidity|should handle refund partial liquidity|should handle more complex scenarios' contracts/lp_account/msgs/pool.fc contracts/pool/msgs/lp_account.fc contracts/common/contracts.fc contracts/lp_wallet.fc contracts/lp_wallet/storage.fc tests/System.spec.ts tests/ConstProduct.spec.ts)
+printf '%s\\n' "$matches" | wc -l
+printf '%s\\n' "$matches" | cut -d: -f1 | sort -u | wc -l
+printf '%s\\n' "$matches" | cut -d: -f1 | sort -u

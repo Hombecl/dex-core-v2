@@ -1,0 +1,23 @@
+iter_8: LP-account add zeroes forwarded amounts before saving; Pool callback state is saved only on mint success.
+iter_67: cb_add_liquidity mutates only in memory and saves only on successful mint; failure sends a StateInit refund without saving tentative Pool globals.
+iter_130: LP-account DESTROY_IF_ZERO and save ordering; Pool success sends one LP-wallet mint and saves, failure uses min_lp_out=0.
+iter_135: LP-wallet StateInit, receive sender authorization, exact mint body, and balance save.
+iter_163: Pool callback commits before outbound internal_transfer; five variants and four mint models conserved Pool supply and LPWallet balance; no valid-state bounce path.
+iter_164: LP-wallet credits before optional notification; notification failure does not roll back LP credit.
+iter_167: LP mint carry-value commit family.
+iter_168: authenticated LPAccount sender -> explicit to_user LPWallet StateInit -> user_address mint source.
+iter_169: Pool clamps an overlarge forward amount before mint.
+iter_172: cb_add_liquidity schema, sender derivation, LPWallet mint, and LPAccount clear/save ordering; replay models found no duplicate mint.
+iter_180: deterministic callback/authenticated user and explicit LPWallet recipient; live mint/burn coverage passed.
+iter_185: exact LP-wallet StateInit, forward clamp, exact LP amount with CARRY_ALL_BALANCE, independent wallet save; duplicate of prior mint/state-init audits.
+iter_197: getter, mint callback, and burn callback use the same owner/master/code StateInit tuple.
+iter_208: LPWallet internal_transfer/state-init/bounce restoration exact amount.
+iter_221: direct-add and DESTROY_IF_ZERO callback/save audit.
+iter_233: LPWallet receive StateInit collision audit.
+iter_252: LPWallet StateInit/master/source/receive balance conservation audit.
+iter_254: LPWallet receive storage/gas floor and notification ordering audit.
+
+Command:
+rg -n --no-heading -i 'cb_add_liquidity|lp_account.*mint|mint.*lp_wallet|state_init.*lp_wallet|send_with_stateinit.*lp_wallet|CARRY_ALL_BALANCE.*lp_wallet|liquidity.*storage::save|mint.*storage::save|callback.*mint|carry.*state|internal_transfer|receive_tokens' CHAIN_HYPOTHESIS_TABLE.md iter_*/STATUS.yaml
+
+Conclusion: CC3 directly overlaps the already audited Pool callback commit, LPWallet StateInit identity, forward clamp, bounce restoration, and carry-value conservation families.
