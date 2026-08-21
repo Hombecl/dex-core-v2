@@ -1,0 +1,1 @@
+AF1 bounce-header edge check passed: only protocol-bounced messages enter on_bounce, allowed bodies restore exactly one prior outbound amount, invalid opcodes are rejected, and a replayed bounce is consumed in the model

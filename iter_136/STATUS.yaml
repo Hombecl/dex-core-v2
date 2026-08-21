@@ -1,0 +1,78 @@
+schema_version: shadow-v1
+iteration: 136
+phase: completed
+cell_id: AF1
+cell_label: lp_wallet_bounced_header_spoof_restore
+final_verdict: DEADEND_WITH_PROOF
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contracts-v2-flash/scope.json
+  selected_assets:
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/lp_wallet.fc
+    - contracts/lp_account.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: AF1
+  final_verdict: DEADEND_WITH_PROOF
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - 'contracts/lp_wallet.fc:136: () on_bounce (slice in_msg_body) impure {'
+      - 'contracts/lp_wallet.fc:137: in_msg_body~skip_bits(32);'
+      - 'contracts/lp_wallet.fc:141: throw_unless(709, (op == op::internal_transfer) | (op == op::burn_notification_ext));'
+      - 'contracts/lp_wallet.fc:143: int query_id = in_msg_body~load_uint(64);'
+      - 'contracts/lp_wallet.fc:144: int jetton_amount = in_msg_body~load_coins();'
+      - 'contracts/lp_wallet.fc:145: balance += jetton_amount;'
+      - 'contracts/lp_wallet.fc:146: storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);'
+      - 'contracts/lp_wallet.fc:154: slice cs = in_msg_full.begin_parse();'
+      - 'contracts/lp_wallet.fc:155: int flags = cs~load_uint(4);'
+      - 'contracts/lp_wallet.fc:156: if (flags & 1) {'
+      - 'contracts/lp_wallet.fc:169: if (op == op::transfer) {'
+      - 'contracts/lp_wallet.fc:174: if (op == op::internal_transfer) {'
+      - 'contracts/lp_wallet.fc:179: if (op == op::burn) {'
+      - 'contracts/lp_wallet.fc:131: send_raw_message(msg.end_cell(), 64);'
+      - 'contracts/lp_wallet.fc:133: storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);'
+      - 'contracts/pool/msgs/lp_wallet.fc:20: throw_unless(error::invalid_caller, equal_slices(lp_wallet~address(params::workchain), ctx.at(SENDER)));'
+      - 'contracts/pool/msgs/lp_account.fc:119: msgs::send_with_stateinit('
+  poc_execution:
+    test_file_path: iter_136/poc_lp_wallet_bounced_header_spoof_restore.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_136/poc_lp_wallet_bounced_header_spoof_restore.run.log,iter_136/integration.run.log
+    run_log_exists_on_disk: true
+    test_runtime: '35.581s integration; model passed'
+    result: 'PASSED (integration: 18 passed, 120 skipped, 138 total across 5 suites; model: passed)'
+  prior_art_check:
+    queries:
+      - 'repo:ston-fi/dex-core-v2 "on_bounce" "burn_notification_ext" "internal_transfer" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "on_bounce" "burn_notification_ext" "internal_transfer" is:pr'
+      - 'repo:ston-fi/dex-core-v2 bounced lp_wallet balance is:issue'
+      - 'repo:ston-fi/dex-core-v2 bounced lp_wallet balance is:pr'
+    results: all four returned total_count 0
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'LP-wallet bounced header restoration repository issue search'
+      - 'LP-wallet bounced header restoration repository pull-request search'
+      - 'LP-wallet bounced-bit forge repository issue search'
+      - 'LP-wallet bounced-bit forge repository pull-request search'
+    gh_search_hits: 0
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: deadend_with_proof
+  caller_grep_path: iter_136/callers-grep.txt
+  caller_grep_match_count: 138
+  caller_grep_unique_files: 7
+  prior_audit_path: iter_136/prior-audit-git.log
+  prior_audit_bytes: 29
+  r15_search_files:
+    - iter_136/R15-GH-lp-wallet-bounced-header-restore-issue.json
+    - iter_136/R15-GH-lp-wallet-bounced-header-restore-pr.json
+    - iter_136/R15-GH-lp-wallet-bounced-bit-forge-issue.json
+    - iter_136/R15-GH-lp-wallet-bounced-bit-forge-pr.json
+  source_conclusion: 'LP-wallet on_bounce is reached only through the incoming bounced-header flag, skips the bounce wrapper, accepts only internal_transfer or burn_notification_ext, and restores the body amount once before saving. The only production emitters debit the LP wallet first and send with bounce enabled; the receive/mint and pool burn paths use deterministic wallet identities. Model replay and invalid-op cases fail, while LP provide/burn integrations pass; no externally deliverable balance inflation path was reproduced.'
+  candidate_path: /Users/homanyeungmac/dormant-pipeline/gpt-queue-daemon/shadow-candidates/hackenproof/ston-dot-fi-dex-smart-contracts-v2/iter_136-AF1.md
