@@ -1,0 +1,15 @@
+COMMAND: npm test -- --runInBand tests/System.spec.ts tests/ConstProduct.spec.ts tests/ConstSum.spec.ts -t 'should reset router gas|should direct add liquidity'
+WORKDIR: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon
+EXIT: 0
+RESULT:
+PASS tests/ConstProduct.spec.ts (6.741 s)
+  should direct add liquidity (all)
+  should direct add liquidity (partial)
+PASS tests/ConstSum.spec.ts
+  should direct add liquidity (all)
+  should direct add liquidity (partial)
+PASS tests/System.spec.ts
+  should reset router gas (218 ms)
+Test Suites: 3 passed, 3 total
+Tests: 65 skipped, 5 passed, 70 total
+Time: 15.234 s

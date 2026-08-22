@@ -1,0 +1,24 @@
+CALLERS_GREP_DONE=true
+COMMAND: rg -n "equal_slices\\(ctx\\.at\\(SENDER\\), storage::(user_address|pool_address)\\)|op::reset_gas|storage::exact|reserves::exact\\(storage_fee::lp_account\\)|send_empty\\(0, storage::user_address|DESTROY_IF_ZERO|storage::save|lp_account_idata|state_init needed since lp_account might be already destroyed|lp_account::add_liquidity|sendResetGas|direct add liquidity" contracts/lp_account.fc contracts/lp_account/storage.fc contracts/lp_account/msgs/user.fc contracts/pool/msgs/lp_account.fc contracts/common/contracts.fc contracts/common/op.fc wrappers/LPAccount.ts tests/ConstProduct.spec.ts tests/ConstSum.spec.ts
+WORKDIR: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon
+RESULT: 23 lifecycle anchors across 9 files.
+KEY_CALLERS:
+contracts/lp_account.fc:19:    if equal_slices(ctx.at(SENDER), storage::pool_address) {
+contracts/lp_account.fc:26:    if equal_slices(ctx.at(SENDER), storage::user_address) {
+contracts/lp_account/storage.fc:15:() storage::save() impure inline_ref {
+contracts/common/contracts.fc:10:(cell) lp_account_idata(slice _pool_address, slice _user_address) inline {
+contracts/common/contracts.fc:120:(cell) lp_account::add_liquidity(
+contracts/common/contracts.fc:269:    return begin_message(op::reset_gas)
+contracts/common/op.fc:14:const op::reset_gas                       = "reset_gas query_id:uint64 = InternalMsgBody"c & 0x7fffffff;
+contracts/lp_account/msgs/user.fc:30:            CARRY_ALL_BALANCE | DESTROY_IF_ZERO
+contracts/lp_account/msgs/user.fc:98:            CARRY_ALL_BALANCE | DESTROY_IF_ZERO
+contracts/lp_account/msgs/user.fc:104:    if ctx.at(OPCODE) == op::reset_gas {
+contracts/lp_account/msgs/user.fc:105:        reserves::exact(storage_fee::lp_account);
+contracts/lp_account/msgs/user.fc:106:        msgs::send_empty(0, storage::user_address, CARRY_ALL_BALANCE);
+contracts/pool/msgs/lp_account.fc:74:            ;; state_init needed since lp_account might be already destroyed
+contracts/pool/msgs/lp_account.fc:77:                lp_account_idata(
+contracts/pool/msgs/lp_account.fc:88:                lp_account::add_liquidity(
+contracts/pool/msgs/lp_account.fc:132:            storage::save();
+wrappers/LPAccount.ts:44:    async sendResetGas(provider: ContractProvider, via: Sender, value?: bigint) {
+tests/ConstProduct.spec.ts:2043:        it('should direct add liquidity (partial)', async () => {
+tests/ConstSum.spec.ts:1515:        it('should direct add liquidity (partial)', async () => {

@@ -1,0 +1,5 @@
+COMMAND: node iter_267/poc_lp_account_reset_gas_after_destroy_redeploy_floor.test.js
+WORKDIR: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-flash-wt/blind-test-vps/ston-dot-fi-dex-smart-contracts-v2-flash
+EXIT: 0
+OUTPUT:
+{"result":"PASS","classification":"PRE_KILLED_DUPLICATE","cell":"DE1","cross_file_anchors":19,"cases":7,"full_destroy_reset":"destroyed_no_code","partial_residual":[2,0],"failure_redeploy_amounts":[7,9],"wrong_caller_rejected":true,"persistent_attacker_delta":0,"reason":"reset_gas is reachable only from the stored LPAccount user, reserves the exact LPAccount storage floor, and sends only excess TON to that same user. A full direct-add leaves no code for a later reset_gas call; a failure StateInit recreates the exact pool/user tuple with exact token amounts, and reset_gas does not clear or redirect those amounts. No attacker-positive persistent delta is reachable."}
