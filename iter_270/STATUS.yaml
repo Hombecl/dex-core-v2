@@ -1,0 +1,184 @@
+final_verdict: PRE_KILLED_DUPLICATE
+schema_version: shadow-v1
+iteration: 270
+phase: completed
+cell_id: DF2
+cell_label: lp_wallet_receive_precredit_sender_exception
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: DF2
+  final_verdict: PRE_KILLED_DUPLICATE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/lp_wallet.fc
+        line: 54
+        text: '() receive_tokens (slice in_msg_body, slice sender_address, int my_ton_balance, int fwd_fee, int msg_value) impure {'
+      - file: contracts/lp_wallet.fc
+        line: 58
+        text: 'balance += jetton_amount;'
+      - file: contracts/lp_wallet.fc
+        line: 62
+        text: 'throw_unless(707, equal_slices(jetton_master_address, sender_address)'
+      - file: contracts/lp_wallet.fc
+        line: 63
+        text: '| equal_slices(calculate_user_jetton_lp_wallet_address(from_address, jetton_master_address, jetton_wallet_code), sender_address));'
+      - file: contracts/lp_wallet.fc
+        line: 65
+        text: 'int forward_ton_amount = in_msg_body~load_coins();'
+      - file: contracts/lp_wallet.fc
+        line: 68
+        text: 'msg_value -= (storage_fee + REQUIRED_GAS);'
+      - file: contracts/lp_wallet.fc
+        line: 71
+        text: 'msg_value -= (forward_ton_amount + fwd_fee);'
+      - file: contracts/lp_wallet.fc
+        line: 74
+        text: '.store_uint(op::transfer_notification, 32)'
+      - file: contracts/lp_wallet.fc
+        line: 86
+        text: 'send_raw_message(msg.end_cell(), 1);'
+      - file: contracts/lp_wallet.fc
+        line: 97
+        text: 'send_raw_message(msg.end_cell(), 2);'
+      - file: contracts/lp_wallet.fc
+        line: 100
+        text: 'storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);'
+      - file: contracts/lp_wallet.fc
+        line: 174
+        text: 'if (op == op::internal_transfer) {'
+      - file: contracts/lp_wallet.fc
+        line: 175
+        text: 'receive_tokens(in_msg_body, sender_address, my_balance, fwd_fee, msg_value);'
+      - file: contracts/lp_wallet/op.fc
+        line: 2
+        text: 'const op::transfer_notification = 0x7362d09c;'
+      - file: contracts/lp_wallet/op.fc
+        line: 3
+        text: 'const op::internal_transfer = 0x178d4519;'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 20
+        text: 'throw_unless(error::invalid_caller, equal_slices(lp_wallet~address(params::workchain), ctx.at(SENDER)));'
+      - file: contracts/common/contracts.fc
+        line: 213
+        text: 'return begin_message(op::internal_transfer)'
+      - file: tests/ConstProduct.spec.ts
+        line: 1488
+        text: "it('should provide lp', async () => {"
+      - file: tests/ConstSum.spec.ts
+        line: 1319
+        text: "it('should provide lp', async () => {"
+      - file: tests/WeightedCPI.spec.ts
+        line: 1405
+        text: "it('should provide lp', async () => {"
+  source_scope_restricted: true
+  scope_assets_only: true
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  methodology_audit_exit: NOT_AVAILABLE
+  required_evidence_complete: true
+  no_fabrication: true
+  shippable: false
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_DEADEND
+  rejection_reason: 'LPWallet working state increments before sender and funding checks, but every failure path reverts before the delayed storage::save. Only the configured master or deterministic source wallet can commit a credit; notification and excess sends occur before the same atomic save. No rejected provenance can preserve a balance increase.'
+  duplicate_family: 'P5xC2 receive conservation, R8 master alias, AW3 master/source auth alias, AX22 forward amount accounting, AX23 StateInit collision, BB5 master/source branch, CC1 storage-floor notification order, DD4 response after notification, DE5 bounce opcode partition, and DF1 notification wallet-code identity'
+  caller_match_count: 49
+  caller_unique_files: 10
+  cascade_verbatim_hit_count: 20
+  cross_file_anchor_count: 19
+  caller_paths:
+    - contracts/lp_wallet.fc
+    - contracts/lp_wallet/op.fc
+    - contracts/lp_wallet/storage.fc
+    - contracts/common/contracts.fc
+    - contracts/common/op.fc
+    - contracts/pool/msgs/lp_wallet.fc
+    - contracts/pool/msgs/lp_account.fc
+    - tests/ConstProduct.spec.ts
+    - tests/ConstSum.spec.ts
+    - tests/WeightedCPI.spec.ts
+  callers_grep_artifact: iter_270/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_270/poc_lp_wallet_receive_precredit_sender_exception.test.js
+    poc_run_log: iter_270/poc_lp_wallet_receive_precredit_sender_exception.run.log
+    live_regression_log: iter_270/live-lp-wallet-provide-regression.run.log
+    prior_audit: iter_270/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_270/poc_lp_wallet_receive_precredit_sender_exception.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_270/poc_lp_wallet_receive_precredit_sender_exception.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.1s static; 16.463s integration'
+    result: 'PASS; 19 cross-file anchors, five valid/reverted receive cases, exact final balance, three live provide-LP regressions, and zero persistent attacker delta'
+  prior_art_check:
+    queries:
+      - 'git history and prior STATUS.yaml scan for LPWallet precredit, sender authorization, forward TON, notification/excess, storage floor, and delayed save'
+      - 'GitHub API R15 issue and PR searches for receive_tokens/balance increment/sender check and forward amount/storage save/source-wallet identity combinations'
+    results:
+      - 'P5xC2, R8, AW3, AX22, AX23, BB5, CC1, DD4, DE5, and DF1: adjacent LPWallet and notification families closed'
+    r15_disclosure_check:
+      gh_search_terms_used:
+        - 'repo:ston-fi/dex-core-v2 "receive_tokens" "balance +=" "throw_unless(707" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "receive_tokens" "balance +=" "throw_unless(707" is:pr'
+        - 'repo:ston-fi/dex-core-v2 "forward_ton_amount" "storage::save" "calculate_user_jetton_lp_wallet_address" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "forward_ton_amount" "storage::save" "calculate_user_jetton_lp_wallet_address" is:pr'
+      gh_search_hits: 0
+      evidence_files:
+        - iter_270/r15-wallet-precredit-sender-issue.json
+        - iter_270/r15-wallet-precredit-sender-pr.json
+        - iter_270/r15-wallet-precredit-forward-issue.json
+        - iter_270/r15-wallet-precredit-forward-pr.json
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "receive_tokens" "balance +=" "throw_unless(707" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "receive_tokens" "balance +=" "throw_unless(707" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "forward_ton_amount" "storage::save" "calculate_user_jetton_lp_wallet_address" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "forward_ton_amount" "storage::save" "calculate_user_jetton_lp_wallet_address" is:pr'
+    gh_search_hits: 0
+    evidence_files:
+      - iter_270/r15-wallet-precredit-sender-issue.json
+      - iter_270/r15-wallet-precredit-sender-pr.json
+      - iter_270/r15-wallet-precredit-forward-issue.json
+      - iter_270/r15-wallet-precredit-forward-pr.json
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: PRE_KILLED_DUPLICATE
+  shadow_mode: true
+  caller_path: iter_270/callers-grep.txt
+  caller_match_count: 49
+  caller_unique_files: 10
+  prior_audit_path: iter_270/prior-audit-git.log
+  prior_family_matches: [P5xC2, R8, AW3, AX22, AX23, BB5, CC1, DD4, DE5, DF1]
+  r15_evidence_files:
+    - iter_270/r15-wallet-precredit-sender-issue.json
+    - iter_270/r15-wallet-precredit-sender-pr.json
+    - iter_270/r15-wallet-precredit-forward-issue.json
+    - iter_270/r15-wallet-precredit-forward-pr.json
+  source_conclusion: 'DF2 is a duplicate LPWallet precredit and exception-atomicity family. Invalid sender, malformed body, and underfunded forward failures revert the provisional amount before save; valid master/source-wallet paths save exact credits. Three live provide-LP regressions pass; no attacker-positive token, TON, balance, or persistent-state delta was demonstrated.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_270/poc_lp_wallet_receive_precredit_sender_exception.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_270/poc_lp_wallet_receive_precredit_sender_exception.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_270/live-lp-wallet-provide-regression.run.log
+    result: PASS

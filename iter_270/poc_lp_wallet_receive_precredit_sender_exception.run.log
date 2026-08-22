@@ -1,0 +1,5 @@
+COMMAND: node iter_270/poc_lp_wallet_receive_precredit_sender_exception.test.js
+WORKDIR: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-flash-wt/blind-test-vps/ston-dot-fi-dex-smart-contracts-v2-flash
+EXIT: 0
+OUTPUT:
+{"result":"PASS","classification":"PRE_KILLED_DUPLICATE","cell":"DF2","cross_file_anchors":19,"cases":5,"valid_sender_paths":["master","derived_source_wallet"],"reverted_paths":["invalid_sender","underfunded_forward","malformed_body"],"final_balance":140,"persistent_attacker_delta":0,"reason":"The apparent precredit is working state. Unauthorized sender, malformed-body, and underfunded-forward failures revert the whole receive transaction before the delayed storage::save; valid master and deterministic source-wallet sends save the exact credited amount. No rejected provenance can preserve a balance increase."}

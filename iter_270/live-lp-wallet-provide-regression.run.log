@@ -1,0 +1,13 @@
+COMMAND: npm test -- --runInBand tests/ConstProduct.spec.ts tests/ConstSum.spec.ts tests/WeightedCPI.spec.ts -t 'should provide lp$'
+WORKDIR: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon
+EXIT: 0
+RESULT:
+PASS tests/ConstSum.spec.ts (5.612 s)
+  should provide lp (1323 ms)
+PASS tests/WeightedCPI.spec.ts (6.072 s)
+  should provide lp (1276 ms)
+PASS tests/ConstProduct.spec.ts
+  should provide lp (1222 ms)
+Test Suites: 3 passed, 3 total
+Tests: 81 skipped, 3 passed, 84 total
+Time: 16.463 s

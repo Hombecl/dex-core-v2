@@ -1,0 +1,24 @@
+COMMAND: git log --all --format='%h %ad %s' --date=short --max-count=26 -- CHAIN_HYPOTHESIS_TABLE.md
+LATEST_COMMITS:
+00de8ed shadow: complete iter269 DF1
+0fb6990 shadow: complete iter268 DE5
+e508e14 shadow: complete iter267 DE1
+1e28530 shadow: complete iter266 DE4
+7fba5e8 shadow: complete iter265 DE3
+04fa4eb shadow: complete iter264 DE2
+e909e01 shadow: complete iter263 DD5
+
+PRIOR_RELEVANT_AUDITS:
+P5xC2 LPWallet receive amount conservation: closed; wallet balance credits match accepted sender and delivered amount.
+R8 LPWallet receive master alias: closed; master/derived-wallet alternatives do not bypass authority.
+AW3 LPWallet master/source auth alias: closed; source/master tuple edges do not credit an unintended owner.
+AX22 LPWallet master forward amount accounting: closed; storage/gas/forward boundaries do not create an unmatched credit.
+AX23 LPWallet receive StateInit collision: closed; derived wallet sender does not alias another owner wallet.
+BB5 LPWallet master/source branch: PRE_KILLED_DUPLICATE; overlapping authority does not create a weaker sender branch.
+CC1 LPWallet receive storage-floor notification order: PRE_KILLED_DUPLICATE; working precredit is not persisted across a failed notification/floor boundary.
+DD4 LPWallet receive response after notification: PRE_KILLED_DUPLICATE; delayed save preserves atomic receive semantics.
+DE5 LPWallet bounce notification opcode partition: PRE_KILLED_DUPLICATE; rejected bounce opcodes do not mutate balance.
+DF1 Router notification wallet-code identity: PRE_KILLED_DUPLICATE; fake sender derives an isolated Pool key.
+
+DF2_CHECK: Fresh source and model audit covers the exact order balance += amount, sender authorization, storage/gas/forward deductions, notification/excess sends, and delayed storage::save. Invalid sender, malformed body, and underfunded forward paths revert the provisional credit; valid master and deterministic source-wallet paths save exact amounts.
+CONCLUSION: DF2 is a duplicate LPWallet precredit/exception atomicity family. No prior audit supplies a contrary persistent balance path.

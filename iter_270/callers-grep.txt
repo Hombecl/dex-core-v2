@@ -1,0 +1,25 @@
+CALLERS_GREP_DONE=true
+COMMAND: rg -n "receive_tokens|balance \\+=|throw_unless\\(707|calculate_user_jetton_lp_wallet_address|forward_ton_amount|msg_value -=|send_raw_message|storage::save|op::internal_transfer|transfer_notification|handle_lp_wallet_messages|invalid_caller|should provide lp" contracts/lp_wallet.fc contracts/lp_wallet/op.fc contracts/lp_wallet/storage.fc contracts/common/contracts.fc contracts/common/op.fc contracts/pool/msgs/lp_wallet.fc contracts/pool/msgs/lp_account.fc tests/ConstProduct.spec.ts tests/ConstSum.spec.ts tests/WeightedCPI.spec.ts
+WORKDIR: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon
+RESULT: 49 precredit, sender, forwarding, save, and provide-flow anchors across 10 files.
+KEY_CALLERS:
+contracts/lp_wallet.fc:54:() receive_tokens (slice in_msg_body, slice sender_address, int my_ton_balance, int fwd_fee, int msg_value) impure {
+contracts/lp_wallet.fc:58:    balance += jetton_amount;
+contracts/lp_wallet.fc:62:    throw_unless(707, equal_slices(jetton_master_address, sender_address)
+contracts/lp_wallet.fc:63:        | equal_slices(calculate_user_jetton_lp_wallet_address(from_address, jetton_master_address, jetton_wallet_code), sender_address));
+contracts/lp_wallet.fc:65:    int forward_ton_amount = in_msg_body~load_coins();
+contracts/lp_wallet.fc:68:    msg_value -= (storage_fee + REQUIRED_GAS);
+contracts/lp_wallet.fc:71:        msg_value -= (forward_ton_amount + fwd_fee);
+contracts/lp_wallet.fc:74:            .store_uint(op::transfer_notification, 32)
+contracts/lp_wallet.fc:86:        send_raw_message(msg.end_cell(), 1);
+contracts/lp_wallet.fc:97:        send_raw_message(msg.end_cell(), 2);
+contracts/lp_wallet.fc:100:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:174:    if (op == op::internal_transfer) {
+contracts/lp_wallet.fc:175:        receive_tokens(in_msg_body, sender_address, my_balance, fwd_fee, msg_value);
+contracts/pool/msgs/lp_wallet.fc:20:        throw_unless(error::invalid_caller, equal_slices(lp_wallet~address(params::workchain), ctx.at(SENDER)));
+contracts/common/contracts.fc:213:    return begin_message(op::internal_transfer)
+contracts/lp_wallet/op.fc:2:const op::transfer_notification = 0x7362d09c;
+contracts/lp_wallet/op.fc:3:const op::internal_transfer = 0x178d4519;
+tests/ConstProduct.spec.ts:1488:        it('should provide lp', async () => {
+tests/ConstSum.spec.ts:1319:        it('should provide lp', async () => {
+tests/WeightedCPI.spec.ts:1405:        it('should provide lp', async () => {
