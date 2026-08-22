@@ -1,0 +1,33 @@
+COMMAND: rg -n -H 'protocol_fee_address|router_address|handle_protocolfee_messages|handle_router_messages|handle_lp_wallet_messages|handle_lp_account_messages|admin_address|set_fees|internal_set_fees|should set fees|should reset pool gas' contracts/pool.fc contracts/pool/msgs/protocolfee.fc contracts/pool/msgs/router.fc contracts/router.fc contracts/router/msgs/admin.fc contracts/common/contracts.fc contracts/common/op.fc contracts/test/pool_dummy.fc tests/System.spec.ts tests/ConstProduct.spec.ts
+SOURCE_ROOT: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon
+CALLER_UNIQUE_FILES: 10
+contracts/common/op.fc:12:const op::set_fees = ... new_protocol_fee_address:MsgAddress ...
+contracts/common/op.fc:13:const op::internal_set_fees = ... new_protocol_fee_address:MsgAddress ...
+contracts/pool/msgs/protocolfee.fc:1:() handle_protocolfee_messages() impure inline {
+contracts/pool/msgs/protocolfee.fc:24:storage::router_address,
+contracts/pool/msgs/protocolfee.fc:26:storage::protocol_fee_address,
+contracts/pool/msgs/protocolfee.fc:41:storage::router_address,
+contracts/pool/msgs/protocolfee.fc:43:storage::protocol_fee_address,
+contracts/pool.fc:22:if equal_slices(ctx.at(SENDER), storage::protocol_fee_address) {
+contracts/pool.fc:23:handle_protocolfee_messages();
+contracts/pool.fc:28:if equal_slices(ctx.at(SENDER), storage::router_address) {
+contracts/pool.fc:29:handle_router_messages();
+contracts/pool.fc:33:if handle_lp_wallet_messages() {
+contracts/pool.fc:37:if handle_lp_account_messages() {
+contracts/router/msgs/admin.fc:6:if ctx.at(OPCODE) == op::set_fees {
+contracts/router/msgs/admin.fc:14:slice new_protocol_fee_address = in_msg_body~load_msg_addr();
+contracts/router/msgs/admin.fc:44:pool::internal_set_fees(
+contracts/router/msgs/admin.fc:47:new_protocol_fee_address,
+contracts/router.fc:28:if equal_slices(ctx.at(SENDER), storage::admin_address) {
+contracts/common/contracts.fc:248:(cell) pool::internal_set_fees(
+contracts/common/contracts.fc:254:return begin_message(op::internal_set_fees)
+contracts/pool/msgs/router.fc:1:() handle_router_messages() impure inline {
+contracts/pool/msgs/router.fc:308:if ctx.at(OPCODE) == op::internal_set_fees {
+contracts/pool/msgs/router.fc:315:storage::protocol_fee_address = new_protocol_fee_address;
+contracts/test/pool_dummy.fc:95:if equal_slices(ctx.at(SENDER), storage::protocol_fee_address) {
+contracts/test/pool_dummy.fc:100:if equal_slices(ctx.at(SENDER), storage::router_address) {
+tests/System.spec.ts:352:it('should reset pool gas', async () => {
+tests/System.spec.ts:420:it('should set fees', async () => {
+tests/ConstProduct.spec.ts:1335:it('should set fees', async () => {
+CASCADE: Pool recv_internal -> protocol-fee sender comparison -> handle_protocolfee_messages; Router sender comparison is second -> handle_router_messages; admin set_fees -> pool::internal_set_fees -> Pool storage::protocol_fee_address update.
+SCOPE: only listed source assets and their in-repo callers/tests were inspected; no OOS candidate is emitted.

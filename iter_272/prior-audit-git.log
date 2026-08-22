@@ -1,0 +1,15 @@
+COMMAND: git log --all --format='%h %ad %s' --date=short --max-count=32 -- CHAIN_HYPOTHESIS_TABLE.md
+LATEST_COMMITS:
+0dfbb6b shadow: complete iter271 DF3
+36a83d2 shadow: complete iter270 DF2
+00de8ed shadow: complete iter269 DF1
+0fb6990 shadow: complete iter268 DE5
+e508e14 shadow: complete iter267 DE1
+
+PRIOR_RELEVANT_AUDITS:
+AF3 and AF4 dispatcher/authentication branches were closed as trusted/configuration or deterministic-identity families.
+AP2, BB1, CC1, DD4, DE1-DE5, DF1-DF3 were closed as duplicate lifecycle, atomicity, identity, gas, or exact-leg families.
+The prior audits do not cover the exact protocol_fee_address-before-router_address collision predicate; that predicate is tested here.
+
+DF4_CHECK: Pool compares protocol_fee_address before router_address. Router set_fees is accepted only from storage::admin_address and forwards internal_set_fees to Pool, which stores the new protocol fee address. A collision equal to the Router address therefore requires an admin-selected trusted configuration. In that state Router-originated messages enter the protocol-fee handler first, but the initiating identity is still the trusted Router and the state change is an operator-controlled configuration effect. No external attacker-positive token or persistent-state delta is reachable.
+CONCLUSION: classify as KILLED_TRUSTED_ON_TRUSTED after source/model and live governance regression checks.

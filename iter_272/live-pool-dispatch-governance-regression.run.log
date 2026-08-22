@@ -1,0 +1,11 @@
+COMMAND: npm test -- --runInBand tests/System.spec.ts -t 'should set fees|should reset pool gas'
+SOURCE_ROOT: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon
+EXIT: 0
+PASS tests/System.spec.ts
+  Governance
+    ✓ should reset pool gas (333 ms)
+    ✓ should reset pool gas (different address) (165 ms)
+    ✓ should set fees (177 ms)
+Test Suites: 1 passed, 1 total
+Tests:       8 skipped, 3 passed, 11 total
+Time:        5.158 s

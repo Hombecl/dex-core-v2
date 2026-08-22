@@ -1,0 +1,4 @@
+COMMAND: node iter_272/poc_pool_dispatch_protocol_router_opcode_precedence.test.js
+EXIT: 0
+OUTPUT:
+{"result":"PASS","classification":"KILLED_TRUSTED_ON_TRUSTED","cell":"DF4","cross_file_anchors":14,"caller_unique_files":10,"normal_protocol_route":"protocol_fee_handler","normal_router_route":"router_handler","collision_router_set_fees_route":"protocol_fee_handler_wrong_op","collision_collect_route":"protocol_fee_handler","outsider_route":"downstream_identity_handlers_or_wrong_op","collision_requires_admin_selected_identity":true,"persistent_attacker_delta":0,"reason":"Pool protocol-fee precedence is real, but protocol_fee_address == router_address is an admin-selected trusted configuration. The collision changes which trusted handler sees Router-originated messages; no external sender can create the collision or gain a persistent token/state delta."}
