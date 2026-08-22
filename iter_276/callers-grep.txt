@@ -1,0 +1,36 @@
+COMMAND: rg -n -H 'IS_BOUNCED|empty_not_allowed|handle_protocolfee_messages|handle_router_messages|handle_lp_wallet_messages|handle_lp_account_messages|wrong_workchain|on_bounce|should bounce|expectBounced' contracts/pool.fc contracts/router.fc contracts/pool/msgs/router.fc contracts/pool/msgs/lp_wallet.fc contracts/pool/msgs/lp_account.fc contracts/pool/msgs/protocolfee.fc contracts/common/op.fc tests/System.spec.ts tests/ConstProduct.spec.ts
+SOURCE_ROOT: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon
+CALLER_MATCH_COUNT: 30
+CALLER_UNIQUE_FILES: 8
+contracts/pool/msgs/protocolfee.fc:1:() handle_protocolfee_messages() impure inline {
+contracts/pool.fc:7:    throw_if(error::empty_not_allowed, in_msg_body.slice_empty?());
+contracts/pool.fc:11:    if ctx.at(IS_BOUNCED) {
+contracts/pool.fc:16:    throw_unless(error::wrong_workchain, ctx.at(SENDER).address::check_workchain(params::workchain));
+contracts/pool.fc:23:        handle_protocolfee_messages();
+contracts/pool.fc:29:        handle_router_messages();
+contracts/pool.fc:33:    if handle_lp_wallet_messages() {
+contracts/pool.fc:37:    if handle_lp_account_messages() {
+contracts/pool/msgs/lp_wallet.fc:1:(int) handle_lp_wallet_messages() impure inline {
+contracts/router.fc:7:    throw_if(error::empty_not_allowed, in_msg_body.slice_empty?());
+contracts/router.fc:11:    if ctx.at(IS_BOUNCED) {
+contracts/router.fc:15:    throw_unless(error::wrong_workchain, ctx.at(SENDER).address::check_workchain(params::workchain));
+contracts/common/op.fc:65:const op::provide_refund_wrong_workchain  = "provide_refund_wrong_workchain"c;
+contracts/pool/msgs/router.fc:1:() handle_router_messages() impure inline {
+contracts/pool/msgs/router.fc:44:            throw_arg_unless(error::wrong_workchain, 1,
+contracts/pool/msgs/router.fc:211:            throw_arg_unless(op::provide_refund_wrong_workchain, 1, to_user.address::check_workchain(params::workchain));
+contracts/pool/msgs/lp_account.fc:1:(int) handle_lp_account_messages() impure inline {
+tests/ConstProduct.spec.ts:9:import { expectBounced, expectEqAddress, expectNotBounced, getWalletContract, SLIM_CONFIG_LEGACY } from '../libs/src/test-helpers';
+tests/ConstProduct.spec.ts:381:                    expectBounced(msgResult.events);
+tests/ConstProduct.spec.ts:523:                    expectBounced(msgResult.events);
+tests/ConstProduct.spec.ts:669:                        expectBounced(msgResult.events);
+tests/ConstProduct.spec.ts:715:                        expectBounced(msgResult.events);
+tests/ConstProduct.spec.ts:810:                        expectBounced(msgResult.events);
+tests/ConstProduct.spec.ts:933:                        expectBounced(msgResult.events);
+tests/ConstProduct.spec.ts:1001:                expectBounced(msgResult.events);
+tests/ConstProduct.spec.ts:1055:                expectBounced(msgResult.events);
+tests/ConstProduct.spec.ts:1298:                expectBounced(msgResult.events)
+tests/ConstProduct.spec.ts:1329:                expectBounced(msgResult.events)
+tests/ConstProduct.spec.ts:2357:        it('should bounce set fees if not admin', async () => {
+tests/ConstProduct.spec.ts:2389:        it('should bounce collect fees if no fee', async () => {
+CASCADE: Pool root -> ctx::init -> IS_BOUNCED early return; normal messages alone continue to workchain check, storage load, sender-role dispatch, and opcode handlers. The root does not parse a bounced opcode or body fields after the early return.
+SCOPE: only selected production contracts and in-repo tests were inspected; no out-of-scope candidate is emitted.

@@ -1,0 +1,22 @@
+COMMAND: git log --all --format='%h %ad %s' --date=short --max-count=42 -- CHAIN_HYPOTHESIS_TABLE.md
+LATEST_COMMITS:
+ba71501 2026-08-22 shadow: complete iter275 DG2
+695e60e 2026-08-22 shadow: complete iter274 DG1
+a1e7798 2026-08-22 shadow: complete iter273 DF5
+691ea4c 2026-08-22 shadow: complete iter272 DF4
+0fb6990 2026-08-22 shadow: complete iter268 DE5
+8518247 2026-08-22 shadow: complete iter259 DD1
+
+PRIOR_RELEVANT_AUDITS:
+P1xC4/P2xC4/P3xC4/P4xC4/P5xC4/P6xC4 and P7xC1-P7xC5 previously covered bounce reversal, sender binding, replay, amount conservation, and dispatch-order families. R5 and BB2 covered unknown-op bounce typing and truncated bounce-body parsing. BA2 covered the LPAccount empty-body-before-bounce ordering. DE5 covered LPWallet bounced-notification opcode partitioning. DF4 covered Pool protocol-fee versus Router sender-role precedence.
+DG3 is a root-level Pool check, but the early bounced return performs no storage load, sender-role dispatch, opcode parse, outbound message, or state save. It therefore has no attacker-controlled state or value delta to promote beyond the already closed bounce families.
+CONCLUSION: classify as PRE_KILLED_DUPLICATE unless a live root-bounce boundary creates a persistent state/value delta.
+*** Add File: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-flash-wt/blind-test-vps/ston-dot-fi-dex-smart-contracts-v2-flash/iter_276/r15-pool-root-bounce-issue.json
+{
+  "query": "repo:ston-fi/dex-core-v2 IS_BOUNCED pool.fc handle_router_messages is:issue",
+  "endpoint": "https://api.github.com/search/issues",
+  "searched_at": "2026-08-22",
+  "total_count": 0,
+  "incomplete_results": false,
+  "items": []
+}

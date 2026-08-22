@@ -1,0 +1,5 @@
+COMMAND: node iter_276/poc_pool_root_bounce_dispatch_precedence.test.js
+SOURCE_MODEL: contracts/pool.fc lines 7-38 and handlers contracts/pool/msgs/{router,lp_wallet,lp_account,protocolfee}.fc
+EXIT: 0
+PASS 6 Pool root dispatch cases; bounced persistent attacker delta = 0
+RESULT: bounced messages return before sender-role/opcode/state handling; empty body is rejected first. No persistent attacker-positive state or value delta.

@@ -1,0 +1,17 @@
+COMMAND: npm test -- --runInBand tests/System.spec.ts -t 'should handle invalid transfers|should reset pool gas|should set fees'
+SOURCE_ROOT: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon
+EXIT: 0
+PASS tests/System.spec.ts (5.337 s)
+  System / Dex / should handle invalid transfers
+  System / Governance / should reset pool gas
+  System / Governance / should reset pool gas (different address)
+  System / Governance / should set fees
+Tests: 7 skipped, 4 passed, 11 total
+
+COMMAND: npm test -- --runInBand tests/ConstProduct.spec.ts -t 'should bounce set fees if not admin|should bounce collect fees if no fee'
+SOURCE_ROOT: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon
+EXIT: 0
+PASS tests/ConstProduct.spec.ts (6.486 s)
+  Const Product / Bounce / should bounce set fees if not admin
+  Const Product / Bounce / should bounce collect fees if no fee
+Tests: 34 skipped, 2 passed, 36 total
