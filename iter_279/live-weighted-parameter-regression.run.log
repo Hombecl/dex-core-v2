@@ -1,0 +1,7 @@
+COMMAND: npm test -- --runInBand tests/WeightedCPI.spec.ts -t 'should set params|should swap with different ratio'
+SOURCE_ROOT: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon
+EXIT: 0
+PASS tests/WeightedCPI.spec.ts (6.593 s)
+  Weighted CPI / Params / should set params
+  Weighted CPI / Params / should swap with different ratio
+Tests: 23 skipped, 2 passed, 25 total

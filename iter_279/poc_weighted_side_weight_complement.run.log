@@ -1,0 +1,5 @@
+COMMAND: node iter_279/poc_weighted_side_weight_complement.test.js
+SOURCE_MODEL: contracts/router/pools/weighted_const_product/ext_admin.fc lines 6-48; contracts/pool/pools/weighted_const_product/ext_router.fc lines 6-24
+EXIT: 0
+PASS 7 weighted side/domain/sender cases; external attacker delta = 0; valid effect is one trusted w0 parameter save
+RESULT: token0 side stores new_w, token1 side stores ONE_DEC-new_w, repeated writes are ignored after w0 initialization, invalid boundaries/side/tail/admin/sender cases do not reach the Pool save.

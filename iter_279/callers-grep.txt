@@ -1,0 +1,36 @@
+COMMAND: rg -n -H 'handle_ext_admin_messages|handle_ext_router_messages|set_params|internal_set_params|new_w|side_wallet|math::fp::complement|storage::w0|storage::save|should set params|should swap with different ratio|sendSetParams|admin_address' contracts/router.fc contracts/router/msgs/admin.fc contracts/router/pools/weighted_const_product/ext_admin.fc contracts/pool.fc contracts/pool/msgs/router.fc contracts/pool/pools/weighted_const_product/ext_router.fc contracts/pool/pools/weighted_const_product/pool.fc contracts/pool/pools/weighted_const_product/storage.fc contracts/common/op.fc tests/WeightedCPI.spec.ts wrappers/Router.ts
+SOURCE_ROOT: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon
+CALLER_MATCH_COUNT: 63
+CALLER_UNIQUE_FILES: 10
+contracts/router.fc:28:    if equal_slices(ctx.at(SENDER), storage::admin_address) {
+contracts/router/msgs/admin.fc:271:        print(`if handle_ext_admin_messages() { return (true); }`);
+contracts/router/pools/weighted_const_product/ext_admin.fc:3:(int) handle_ext_admin_messages() impure inline {
+contracts/router/pools/weighted_const_product/ext_admin.fc:6:    if ctx.at(OPCODE) == op::set_params {
+contracts/router/pools/weighted_const_product/ext_admin.fc:7:        (int new_w, slice side_wallet) = (in_msg_body~load_uint128(), in_msg_body~load_msg_addr());
+contracts/router/pools/weighted_const_product/ext_admin.fc:9:        in_msg_body.end_parse();
+contracts/router/pools/weighted_const_product/ext_admin.fc:12:        slice excesses_recipient = get_excesses_address(ref_data~load_msg_addr());
+contracts/router/pools/weighted_const_product/ext_admin.fc:13:        ref_data.end_parse();
+contracts/router/pools/weighted_const_product/ext_admin.fc:22:        throw_unless(error::invalid_amount, (0 < new_w) & (new_w < math::ONE_DEC));
+contracts/router/pools/weighted_const_product/ext_admin.fc:30:        throw_unless(error::invalid_call, equal_slices(side_wallet, left_jetton_wallet)
+contracts/router/pools/weighted_const_product/ext_admin.fc:43:            pool::internal_set_params(
+contracts/router/pools/weighted_const_product/ext_admin.fc:45:                side_wallet,
+contracts/router/pools/weighted_const_product/ext_admin.fc:46:                new_w
+contracts/pool/msgs/router.fc:326:        print(`if handle_ext_router_messages() { return (); }`);
+contracts/pool/pools/weighted_const_product/ext_router.fc:3:(int) handle_ext_router_messages() impure inline {
+contracts/pool/pools/weighted_const_product/ext_router.fc:6:    if ctx.at(OPCODE) == op::internal_set_params {
+contracts/pool/pools/weighted_const_product/ext_router.fc:12:        if storage::w0 == 0 {
+contracts/pool/pools/weighted_const_product/ext_router.fc:16:                storage::w0 = new_w;
+contracts/pool/pools/weighted_const_product/ext_router.fc:18:                storage::w0 = new_w.math::fp::complement();
+contracts/pool/pools/weighted_const_product/ext_router.fc:21:        storage::save();
+contracts/pool/pools/weighted_const_product/pool.fc:9:        base_out = calc_out_given_in(_reserve_in, storage::w0, base_in_without_fee, _reserve_out);
+contracts/pool/pools/weighted_const_product/pool.fc:11:        base_out = calc_out_given_in(_reserve_in, storage::w0.math::fp::complement(), base_in_without_fee, _reserve_out);
+contracts/pool/pools/weighted_const_product/storage.fc:39:        .store_uint(storage::w0, 64)
+contracts/common/op.fc:43:const op::internal_set_params             = "internal_set_params"c;
+tests/WeightedCPI.spec.ts:1115:            let msgResult = await router.sendSetParams(sender.getSender(), {
+tests/WeightedCPI.spec.ts:1138:                expect(poolData.w0).toEqual(sideWallet.equals(poolData.leftJettonAddress) ? params.newW : ONE_DEC - params.newW);
+tests/WeightedCPI.spec.ts:1327:        it('should set params', async () => {
+tests/WeightedCPI.spec.ts:1344:        it('should swap with different ratio', async () => {
+wrappers/Router.ts:564:    async sendSetParams(provider: ContractProvider, via: Sender, opts: {
+wrappers/Router.ts:608:                .storeUint(opts.newW, 128)
+CASCADE: admin -> Router weighted_const_product ext_admin -> root/ref terminal parses and domain/side validation -> deterministic Pool StateInit -> Pool Router-only internal_set_params -> one-time w0 write as side-orientation or fixed-point complement -> storage save -> weighted swap/provide math reads w0 and complement.
+SCOPE: only selected production contracts, wrapper, and in-repo tests were inspected; no out-of-scope candidate is emitted.

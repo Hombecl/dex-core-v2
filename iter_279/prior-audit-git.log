@@ -1,0 +1,12 @@
+COMMAND: git log --all --format='%h %ad %s' --date=short --max-count=42 -- CHAIN_HYPOTHESIS_TABLE.md
+LATEST_COMMITS:
+841e0ab 2026-08-22 shadow: complete iter278 DG5
+fccb543 2026-08-22 shadow: complete iter277 DG4
+be54e4f 2026-08-22 shadow: complete iter276 DG3
+ba71501 2026-08-22 shadow: complete iter275 DG2
+8518247 2026-08-22 shadow: complete iter259 DD1
+
+PRIOR_RELEVANT_AUDITS:
+AI5 weighted_setter_ref_forwarding and U5 weighted_rate_setter_domain_boundary covered weighted parameter references, setter authority, fixed-point domains, and variant-specific invariant arithmetic. P10 governance sender binding and AH3/DF4 Pool sender precedence covered privileged Router-to-Pool state transitions. Existing weighted CPI tests cover the side-token orientation and subsequent ratio-sensitive swap behavior.
+DH1 is a fresh source-level restatement of the weighted constant-product orientation boundary: Router validates the selected side wallet and weight before deriving the Pool; Pool writes w0 only when empty, using complement only for token1-side orientation. Any effect is an admin-selected parameter update, not an external caller path.
+CONCLUSION: classify as KILLED_TRUSTED_ON_TRUSTED unless an external sender can enter the admin extension or forge the stored Router sender.
