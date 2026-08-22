@@ -1,0 +1,21 @@
+COMMAND: git log --all --oneline -- CHAIN_HYPOTHESIS_TABLE.md | head -n 12
+LATEST_COMMITS:
+f086c75 shadow: complete iter262 DD4
+cd3613b shadow: complete iter261 DD3
+730c8fb shadow: complete iter260 DD2
+8518247 shadow: complete iter259 DD1
+eba2cc6 shadow: complete iter258 CC5
+
+COMMAND: rg -n -i 'cell_label:.*(direct_add|redeploy|callback|destroy)|duplicate_family:.*(direct_add|redeploy|callback|destroy)|source_conclusion:.*(Direct-add|direct-add|redeploy|DESTROY_IF_ZERO|callback)' selected prior STATUS.yaml files
+PRIOR_MATCHES:
+iter_71 direct_add_liquidity_identity_clearance: closed; zero selectors consume stored legs, residual is saved, and failed callbacks use a fresh refund account.
+iter_123 lp_account_refund_then_direct_add_lifecycle: closed; direct-add subtracts selected legs, full consumption destroys, partial residual saves, and zero-minimum failure fallback cannot mint.
+iter_130 lp_account_mint_destroy_save_order: closed; DESTROY_IF_ZERO and callback ordering do not resurrect stale amounts.
+iter_172 lp_account_callback_replay_query_identity: closed; tuple permutations and replay cases did not duplicate callback or LP mint.
+iter_198 lp_account_direct_add_zero_selector_residual: closed; all/partial/one-sided/overdraw models preserve exact residuals.
+iter_202 lp_account_refund_destroy_redeploy_identity: closed; redeployment is only the zero-minimum failure fallback.
+iter_221 lp_account_direct_add_post_send_commit_order: closed; queued child execution cannot re-enter before the LPAccount save.
+iter_244 callback additional-fields tail alias: closed; callback field boundaries do not change sender identity or residual state.
+iter_256 lp_account_callback_mint_carry_stateinit_order: PRE_KILLED_DUPLICATE; deterministic LPWallet identity and exact LP amount persist across carry/StateInit paths.
+
+CONCLUSION: DD5 is a direct-add lifecycle duplicate of zero-selector residual, callback save ordering, DESTROY_IF_ZERO, and failure redeploy audits. The fresh six-case proof checks full/partial/one-sided/overdraw/success/failure paths together.

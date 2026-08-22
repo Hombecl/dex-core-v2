@@ -1,0 +1,11 @@
+COMMAND: npm test -- --runInBand tests/ConstProduct.spec.ts -t 'should direct add liquidity \\(all\\)|should direct add liquidity \\(partial\\)'
+
+PASS tests/ConstProduct.spec.ts (6.809 s)
+  Dex
+    ✓ should direct add liquidity (all) (1292 ms)
+    ✓ should direct add liquidity (partial) (930 ms)
+
+Test Suites: 1 passed, 1 total
+Tests: 34 skipped, 2 passed, 36 total
+Time: 6.995 s
+Result: PASS

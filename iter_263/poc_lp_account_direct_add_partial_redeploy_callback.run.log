@@ -1,0 +1,13 @@
+{
+  "result": "PASS",
+  "classification": "PRE_KILLED_DUPLICATE",
+  "cell": "DD5",
+  "cross_file_anchors": 28,
+  "cases": 6,
+  "branches": ["callback_success", "callback_success", "callback_success", "reject_overdraw", "partial_residual_plus_zero_minimum_redeploy_refund", "destroy_then_zero_minimum_redeploy_refund"],
+  "residuals": [{"amount0":0,"amount1":0},{"amount0":5,"amount1":10},{"amount0":0,"amount1":15},{"amount0":10,"amount1":20},{"amount0":5,"amount1":10},{"amount0":0,"amount1":0}],
+  "callback_amounts": [[10,20],[5,10],[10,5],null,[5,10],[10,20]],
+  "destroyed_flags": [true,false,false,false,false,true],
+  "redeployed_amounts": [null,null,null,null,{"amount0":0,"amount1":0},{"amount0":0,"amount1":0}],
+  "reason": "Direct-add resolves zero selectors to the stored legs, validates positive selected amounts, subtracts them with nonnegative residual checks, queues one deterministic Pool callback, and saves the residual. Full consumption may destroy the old LPAccount; a failed Pool callback redeploys or reuses a deterministic account with min_lp_out zero, adds only the exact failed callback amounts, and refunds them without minting or replaying stale residual state. Partial residuals remain isolated and attacker senders fail the root gates."
+}
