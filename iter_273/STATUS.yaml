@@ -1,0 +1,155 @@
+final_verdict: KILLED_SINGLE_BY_DESIGN
+schema_version: shadow-v1
+iteration: 273
+phase: completed
+cell_id: DF5
+cell_label: router_pay_to_zero_side_payload_split
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: DF5
+  final_verdict: KILLED_SINGLE_BY_DESIGN
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/common/contracts.fc
+        line: 222
+        text: '(cell) pool::$route('
+      - file: contracts/common/contracts.fc
+        line: 229
+        text: 'if _sender_jetton_address.slice_hash() > _other_jetton_address.slice_hash() {'
+      - file: contracts/common/contracts.fc
+        line: 233
+        text: '.store_coins(0);'
+      - file: contracts/common/contracts.fc
+        line: 238
+        text: '.store_coins(0)'
+      - file: contracts/router/dex.fc
+        line: 88
+        text: 'pool::$route(transferred_op, _caller, _sent_amount, _jetton_address, token_wallet1, _dex_payload)'
+      - file: contracts/router/msgs/pool.fc
+        line: 43
+        text: ';; no need to check: ((amount0_out > 0) & (amount1_out == 0)) ^ ((amount0_out == 0) & (amount1_out > 0))'
+      - file: contracts/router/msgs/pool.fc
+        line: 50
+        text: 'slice sent_jetton_address = amount0_out > 0 ? token0_address : token1_address;'
+      - file: contracts/router/msgs/pool.fc
+        line: 70
+        text: 'if amount0_out > 0 {'
+      - file: contracts/pool/msgs/router.fc
+        line: 107
+        text: ';; one side will always be zero, so we can sum'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 62
+        text: 'router::pay_to('
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 162
+        text: 'router::pay_to('
+      - file: contracts/pool/msgs/protocolfee.fc
+        line: 25
+        text: 'router::pay_to('
+      - file: tests/ConstProduct.spec.ts
+        line: 619
+        text: 'if ((typeof params.amount1 !== "undefined") && (typeof params.amount2 !== "undefined")) {'
+      - file: tests/ConstSum.spec.ts
+        line: 659
+        text: 'if ((typeof params.amount1 !== "undefined") && (typeof params.amount2 !== "undefined")) {'
+  source_scope_restricted: true
+  scope_assets_only: true
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  methodology_audit_exit: NOT_AVAILABLE
+  required_evidence_complete: true
+  no_fabrication: true
+  shippable: false
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_KILL
+  rejection_reason: 'Router pay_to would omit token1 for a dual-positive payload and would emit no token amount for zero/zero, but the producer cascade creates one positive leg and one zero leg. Two-sided liquidity and burns split legs across separate messages.'
+  kill_reason: single_by_design_three_layer_producer_invariant
+  caller_match_count: 202
+  caller_unique_files: 10
+  cascade_verbatim_hit_count: 14
+  cross_file_anchor_count: 14
+  caller_paths:
+    - contracts/common/contracts.fc
+    - contracts/common/op.fc
+    - contracts/router/dex.fc
+    - contracts/router/msgs/pool.fc
+    - contracts/pool/msgs/router.fc
+    - contracts/pool/msgs/lp_wallet.fc
+    - contracts/pool/msgs/lp_account.fc
+    - contracts/pool/msgs/protocolfee.fc
+    - tests/ConstProduct.spec.ts
+    - tests/ConstSum.spec.ts
+  callers_grep_artifact: iter_273/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_273/poc_router_payto_zero_side_payload_split.test.js
+    poc_run_log: iter_273/poc_router_payto_zero_side_payload_split.run.log
+    live_regression_log: iter_273/live-router-payto-producer-regression.run.log
+    prior_audit: iter_273/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_273/poc_router_payto_zero_side_payload_split.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_273/poc_router_payto_zero_side_payload_split.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.1s static; 8.03s integration'
+    result: 'PASS; 14 cross-file anchors, ten caller files, 12 producer cases, zero/dual boundary, two-sided split, and zero persistent attacker delta'
+  prior_art_check:
+    queries:
+      - 'git history and prior STATUS.yaml scan for Router pay_to branch selection, one-sided output invariants, dual-leg burns, refunds, and protocol-fee sends'
+      - 'GitHub API R15 issue and PR searches for amount0_out/amount1_out/one side is zero/pay_to and router::pay_to/if amount0_out > 0'
+    results:
+      - 'AF2, DE2-DE5, DF1-DF4: adjacent output-leg, callback, identity, gas, and dispatch families closed'
+      - 'Fresh exact dual-output branch issue/PR searches returned zero hits'
+    r15_disclosure_check:
+      gh_search_terms_used:
+        - 'repo:ston-fi/dex-core-v2 "amount0_out" "amount1_out" "one side is zero" "pay_to" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "amount0_out" "amount1_out" "one side is zero" "pay_to" is:pr'
+        - 'repo:ston-fi/dex-core-v2 "router::pay_to" "if amount0_out > 0" "amount1_out" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "router::pay_to" "if amount0_out > 0" "amount1_out" is:pr'
+      gh_search_hits: 0
+      evidence_files:
+        - iter_273/r15-router-payto-dual-output-issue.json
+        - iter_273/r15-router-payto-dual-output-pr.json
+        - iter_273/r15-router-payto-branch-issue.json
+        - iter_273/r15-router-payto-branch-pr.json
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: KILLED_SINGLE_BY_DESIGN
+  shadow_mode: true
+  caller_path: iter_273/callers-grep.txt
+  caller_match_count: 202
+  caller_unique_files: 10
+  prior_audit_path: iter_273/prior-audit-git.log
+  prior_family_matches: [AF2, DE2, DE3, DE4, DE5, DF1, DF2, DF3, DF4]
+  r15_evidence_files:
+    - iter_273/r15-router-payto-dual-output-issue.json
+    - iter_273/r15-router-payto-dual-output-pr.json
+    - iter_273/r15-router-payto-branch-issue.json
+    - iter_273/r15-router-payto-branch-pr.json
+  source_conclusion: 'The Router branch has a theoretical dual-positive loss shape, but the three-layer in-scope producer cascade makes all messages one-sided. Zero/zero emits no token amount. Live provide, burn, and direct-liquidity regressions pass.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_273/poc_router_payto_zero_side_payload_split.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_273/poc_router_payto_zero_side_payload_split.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_273/live-router-payto-producer-regression.run.log
+    result: PASS

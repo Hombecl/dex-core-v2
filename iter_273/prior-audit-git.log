@@ -1,0 +1,13 @@
+COMMAND: git log --all --format='%h %ad %s' --date=short --max-count=34 -- CHAIN_HYPOTHESIS_TABLE.md
+LATEST_COMMITS:
+691ea4c shadow: complete iter272 DF4
+0dfbb6b shadow: complete iter271 DF3
+36a83d2 shadow: complete iter270 DF2
+00de8ed shadow: complete iter269 DF1
+
+PRIOR_RELEVANT_AUDITS:
+AF2 LP burn payload leg split: closed; burn outputs are two separate Router pay_to messages, each with exactly one positive leg.
+DE2-DE5 and DF1-DF4: adjacent callback, identity, gas, and dispatcher families closed.
+The prior audits do not cover the Router pay_to dual-positive/zero branch as a standalone producer-invariant cell; DF5 tests the branch and every in-scope producer.
+DF5_CHECK: Router handle_pool_messages uses amount0_out > 0 to choose token0 and otherwise sends amount1_out through token1. Both-zero therefore creates a zero transfer; dual-positive would omit token1. However, route_dex_messages rejects nonpositive incoming transfers, pool::$route writes one positive amount and one zero amount by address-hash ordering, swap output has one side zero, and burn/refund/protocol-fee paths split two legs into separate messages. Two-sided liquidity uses two separate jetton notifications and two Pool messages, not one dual-positive pay_to payload.
+CONCLUSION: the dual-positive loss shape is unreachable through the in-scope producer cascade; classify as KILLED_SINGLE_BY_DESIGN with zero attacker-positive delta.

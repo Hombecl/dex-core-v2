@@ -1,0 +1,11 @@
+COMMAND: npm test -- --runInBand tests/ConstProduct.spec.ts -t 'should provide lp$|should burn liquidity$|should direct add liquidity \\(all\\)$'
+SOURCE_ROOT: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon
+EXIT: 0
+PASS tests/ConstProduct.spec.ts (7.84 s)
+  Dex
+    ✓ should provide lp (1302 ms)
+    ✓ should burn liquidity (933 ms)
+    ✓ should direct add liquidity (all) (1010 ms)
+Test Suites: 1 passed, 1 total
+Tests:       33 skipped, 3 passed, 36 total
+Time:        8.03 s

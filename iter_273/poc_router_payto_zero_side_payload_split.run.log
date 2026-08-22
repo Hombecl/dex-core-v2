@@ -1,0 +1,4 @@
+COMMAND: node iter_273/poc_router_payto_zero_side_payload_split.test.js
+EXIT: 0
+OUTPUT:
+{"result":"PASS","classification":"KILLED_SINGLE_BY_DESIGN","cell":"DF5","cross_file_anchors":14,"caller_unique_files":10,"zero_payload_output":{"token0":0,"token1":0},"dual_payload_output":{"token0":17,"token1":0},"dual_payload_theoretical_dropped_token1":23,"producer_cases_checked":12,"two_sided_liquidity_representation":"two separate one-sided pool messages","three_layer_cascade":"Router notification -> Pool -> Router pay_to","persistent_attacker_delta":0,"reason":"The Router branch would omit token1 for a dual-positive payload, but every in-scope producer emits one positive leg and one zero leg; two-sided liquidity and burns use separate messages. The three-layer dual-positive shape is unreachable from the producer cascade, and zero/zero emits no token amount."}

@@ -1,0 +1,50 @@
+COMMAND: rg -n -H 'router::pay_to|if amount0_out > 0|one side will always be zero|one side is zero|pool::\$route|route_dex_messages|amount0|amount1|pay_to' contracts/common/contracts.fc contracts/common/op.fc contracts/router/dex.fc contracts/router/msgs/pool.fc contracts/pool/msgs/router.fc contracts/pool/msgs/lp_wallet.fc contracts/pool/msgs/lp_account.fc contracts/pool/msgs/protocolfee.fc tests/ConstProduct.spec.ts tests/ConstSum.spec.ts
+SOURCE_ROOT: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon
+CALLER_UNIQUE_FILES: 10
+contracts/common/contracts.fc:146:(cell) router::pay_to(
+contracts/common/contracts.fc:158:return begin_message(op::pay_to)
+contracts/common/contracts.fc:166:.store_coins(_amount0_out)
+contracts/common/contracts.fc:168:.store_coins(_amount1_out)
+contracts/common/contracts.fc:222:(cell) pool::$route(
+contracts/common/contracts.fc:229:if _sender_jetton_address.slice_hash() > _other_jetton_address.slice_hash() {
+contracts/common/contracts.fc:233:.store_coins(0);
+contracts/common/contracts.fc:238:.store_coins(0)
+contracts/common/op.fc:10:const op::pay_to = ... amount0_out:Coins ... amount1_out:Coins ...
+contracts/router/dex.fc:5:throw_unless(error::invalid_amount, _sent_amount > 0);
+contracts/router/dex.fc:77:var pool = contracts::from_sources(
+contracts/router/dex.fc:88:pool::$route(transferred_op, _caller, _sent_amount, _jetton_address, token_wallet1, _dex_payload)
+contracts/router/msgs/pool.fc:43:;; no need to check: ((amount0_out > 0) & (amount1_out == 0)) ^ ((amount0_out == 0) & (amount1_out > 0))
+contracts/router/msgs/pool.fc:50:slice sent_jetton_address = amount0_out > 0 ? token0_address : token1_address;
+contracts/router/msgs/pool.fc:52:int swap_amount = amount0_out + amount1_out;
+contracts/router/msgs/pool.fc:70:if amount0_out > 0 {
+contracts/router/msgs/pool.fc:79:} else {
+contracts/router/msgs/pool.fc:82:token1_address,
+contracts/pool/msgs/router.fc:9:int amount0 = in_msg_body~load_coins();
+contracts/pool/msgs/router.fc:10:int amount1 = in_msg_body~load_coins();
+contracts/pool/msgs/router.fc:58:router::pay_to(
+contracts/pool/msgs/router.fc:65:amount0,
+contracts/pool/msgs/router.fc:67:amount1,
+contracts/pool/msgs/router.fc:107:;; one side will always be zero, so we can sum
+contracts/pool/msgs/router.fc:138:router::pay_to(
+contracts/pool/msgs/router.fc:145:out0,
+contracts/pool/msgs/router.fc:147:out1,
+contracts/pool/msgs/router.fc:160:router::pay_to(
+contracts/pool/msgs/router.fc:167:amount0,
+contracts/pool/msgs/router.fc:169:amount1,
+contracts/pool/msgs/router.fc:219:router::pay_to(
+contracts/pool/msgs/router.fc:226:amount0,
+contracts/pool/msgs/router.fc:228:amount1,
+contracts/pool/msgs/router.fc:250:lp_account::add_liquidity(amount0, amount1, ...)
+contracts/pool/msgs/router.fc:270:router::pay_to(
+contracts/pool/msgs/router.fc:277:amount0,
+contracts/pool/msgs/router.fc:279:amount1,
+contracts/pool/msgs/lp_wallet.fc:62:router::pay_to(... amount0_out, token0, 0, token1)
+contracts/pool/msgs/lp_wallet.fc:80:router::pay_to(... 0, token0, amount1_out, token1)
+contracts/pool/msgs/lp_account.fc:162:router::pay_to(... tot_am0, token0, 0, token1)
+contracts/pool/msgs/lp_account.fc:182:router::pay_to(... 0, token0, tot_am1, token1)
+contracts/pool/msgs/protocolfee.fc:25:router::pay_to(... collected_token0_protocol_fee, token0, 0, token1)
+contracts/pool/msgs/protocolfee.fc:42:router::pay_to(... 0, token0, collected_token1_protocol_fee, token1)
+tests/ConstProduct.spec.ts:619:two-sided provide sends token1 and token2 as separate Router transfers
+tests/ConstSum.spec.ts:659:two-sided provide sends token1 and token2 as separate Router transfers
+CASCADE: Router jetton notification -> route_dex_messages -> pool::$route selects exactly one output leg -> Pool -> Router pay_to; swap/refund, LP burn, LPAccount refund, and protocol-fee collection likewise emit separate one-sided pay_to messages.
+SCOPE: only listed production contracts plus in-repo caller/regression tests were inspected; no OOS file candidate is emitted.
