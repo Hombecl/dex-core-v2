@@ -1,0 +1,5 @@
+COMMAND: node iter_281/poc_stableswap_internal_set_params_ref_tail.test.js
+SOURCE_MODEL: contracts/router/pools/stableswap/ext_admin.fc lines 9-51; contracts/pool/pools/stableswap/ext_router.fc lines 6-16
+EXIT: 0
+PASS 8 stableswap tail/amp/sender cases; external attacker delta = 0; valid effect is trusted amp save plus TON excess
+RESULT: Router tail/address/amp/admin cases stop before Pool; direct non-Router Pool calls stop at sender binding; the valid path saves the validated amp and carries residual TON to the selected recipient.

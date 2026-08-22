@@ -1,0 +1,12 @@
+COMMAND: git log --all --format='%h %ad %s' --date=short --max-count=42 -- CHAIN_HYPOTHESIS_TABLE.md
+LATEST_COMMITS:
+bbc91d0 2026-08-22 shadow: complete iter280 DH2
+e585e2d 2026-08-22 shadow: complete iter279 DH1
+841e0ab 2026-08-22 shadow: complete iter278 DG5
+fccb543 2026-08-22 shadow: complete iter277 DG4
+8518247 2026-08-22 shadow: complete iter259 DD1
+
+PRIOR_RELEVANT_AUDITS:
+AF3/AF4 and AX2 closed Router-admin Pool carry and internal-update tail shapes as trusted-admin TON/state behavior. AI5/U5/DH2 closed variant parameter forwarding, domain checks, and Pool sender authority. P10 governance and AH3/DF4 covered the Router admin gate and Pool Router-only dispatch.
+DH3 is the base stableswap sibling: Router parses the complete set_params body and checks amp 1..2000, while Pool's internal extension loads only response and amp without end_parse, saves amp, and sends residual TON. Direct Pool tail injection lacks the stored Router sender and stops before the extension.
+CONCLUSION: classify as KILLED_TRUSTED_ON_TRUSTED unless an external caller can enter the Router admin branch or forge the stored Router sender.

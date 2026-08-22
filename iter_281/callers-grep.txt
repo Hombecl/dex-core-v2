@@ -1,0 +1,27 @@
+COMMAND: rg -n -H 'handle_ext_admin_messages|handle_ext_router_messages|set_params|internal_set_params|new_amp|storage::amp|storage::save|CARRY_ALL_BALANCE|QCARRY_ALL_BALANCE|in_msg_body\.end_parse|should set params|should swap with different amp|sendSetParams|admin_address|excesses_recipient' contracts/router.fc contracts/router/msgs/admin.fc contracts/router/pools/stableswap/ext_admin.fc contracts/pool.fc contracts/pool/msgs/router.fc contracts/pool/pools/stableswap/ext_router.fc contracts/pool/pools/stableswap/storage.fc contracts/pool/pools/stableswap/pool.fc contracts/common/op.fc contracts/common/utils.fc tests/Stableswap.spec.ts wrappers/Router.ts
+SOURCE_ROOT: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon
+CALLER_MATCH_COUNT: 97
+CALLER_UNIQUE_FILES: 10
+contracts/router.fc:28:    if equal_slices(ctx.at(SENDER), storage::admin_address) {
+contracts/router/msgs/admin.fc:271:        print(`if handle_ext_admin_messages() { return (true); }`);
+contracts/router/pools/stableswap/ext_admin.fc:6:    if ctx.at(OPCODE) == op::set_params {
+contracts/router/pools/stableswap/ext_admin.fc:10:        int new_amp = in_msg_body~load_uint32();
+contracts/router/pools/stableswap/ext_admin.fc:14:        in_msg_body.end_parse();
+contracts/router/pools/stableswap/ext_admin.fc:23:        throw_unless(error::invalid_amount, (_MIN_AMP <= new_amp) & (new_amp <= _MAX_AMP));
+contracts/router/pools/stableswap/ext_admin.fc:43:        msgs::send_with_stateinit(
+contracts/router/pools/stableswap/ext_admin.fc:47:            pool::internal_set_params(
+contracts/pool/msgs/router.fc:326:        print(`if handle_ext_router_messages() { return (); }`);
+contracts/pool/pools/stableswap/ext_router.fc:6:    if ctx.at(OPCODE) == op::internal_set_params {
+contracts/pool/pools/stableswap/ext_router.fc:7:        slice resp = in_msg_body~load_msg_addr();
+contracts/pool/pools/stableswap/ext_router.fc:8:        int new_amp = in_msg_body~load_uint32();
+contracts/pool/pools/stableswap/ext_router.fc:11:        storage::amp = new_amp;
+contracts/pool/pools/stableswap/ext_router.fc:13:        storage::save();
+contracts/pool/pools/stableswap/ext_router.fc:16:        utils::send_excesses(0, resp, QCARRY_ALL_BALANCE);
+contracts/pool/pools/stableswap/storage.fc:14:    storage::amp = ds~load_uint32();
+contracts/pool/pools/stableswap/storage.fc:39:        .store_uint32(storage::amp)
+contracts/common/op.fc:43:const op::internal_set_params             = "internal_set_params"c;
+tests/Stableswap.spec.ts:1315:        it('should set params', async () => {
+tests/Stableswap.spec.ts:1634:        it('should swap with different amp', async () => {
+wrappers/Router.ts:635:                .storeUint(routerOpcodes.setParams, 32)
+CASCADE: admin -> Router stableswap ext_admin -> exact root end_parse/workchain/amp validation -> deterministic Pool StateInit -> Pool Router-only internal_set_params -> loads response and amp, saves amp, then QCARRY_ALL_BALANCE excess to response. Pool ignores any residual tail only after the trusted Router gate.
+SCOPE: only selected production contracts, wrapper, and in-repo tests were inspected; no out-of-scope candidate is emitted.
