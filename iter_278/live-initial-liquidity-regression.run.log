@@ -1,0 +1,15 @@
+COMMAND: npm test -- --runInBand tests/System.spec.ts -t 'should handle mint & burn liquidity'
+SOURCE_ROOT: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon
+EXIT: 0
+PASS tests/System.spec.ts (7.013 s)
+  System / Dex / should handle mint & burn liquidity
+Tests: 10 skipped, 1 passed, 11 total
+
+COMMAND: npm test -- --runInBand tests/ConstProduct.spec.ts -t 'should provide lp$|should provide lp (single side)$|should refund partial liquidity$'
+SOURCE_ROOT: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon
+EXIT: 0
+PASS tests/ConstProduct.spec.ts (7.935 s)
+  Const Product / Dex / should provide lp
+  Const Product / Dex / should provide lp (single side)
+  Const Product / Refund / should refund partial liquidity
+Tests: 33 skipped, 3 passed, 36 total

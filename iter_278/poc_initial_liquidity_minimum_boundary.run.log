@@ -1,0 +1,5 @@
+COMMAND: node iter_278/poc_initial_liquidity_minimum_boundary.test.js
+SOURCE_MODEL: contracts/pool/msgs/lp_account.fc lines 31-132; contracts/pool/pools/constant_product/pool.fc lines 20-23; contracts/common/params.fc line 10
+EXIT: 0
+PASS 6 initial-liquidity boundary cases; failed branches save no Pool state and successful mint is invariant - 1001
+RESULT: zero-side/math-zero and below-minimum cases enter the fallback without Pool storage::save; exactly 1001 persists only the locked minimum and mints zero; higher values mint invariant minus 1001; forged callback sender is rejected.

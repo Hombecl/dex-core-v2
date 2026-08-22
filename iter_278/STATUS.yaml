@@ -1,0 +1,182 @@
+final_verdict: PRE_KILLED_DUPLICATE
+schema_version: shadow-v1
+iteration: 278
+phase: completed
+cell_id: DG5
+cell_label: lp_account_initial_callback_minimum_supply_commit
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: DG5
+  final_verdict: PRE_KILLED_DUPLICATE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/common/params.fc
+        line: 10
+        text: 'const params::required_min_liquidity = 1001;'
+      - file: contracts/common/op.fc
+        line: 16
+        text: 'const op::cb_add_liquidity                = "cb_add_liquidity query_id:uint64 tot_am0:Coins tot_am1:Coins user_address:MsgAddress min_lp_out:Coins fwd_amount:Coins custom_payload:(Maybe ^Cell) additional_fields:^[to_user_address:MsgAddress refund_address:MsgAddress excess_address:MsgAddress] = InternalMsgBody"c & 0x7fffffff;'
+      - file: contracts/lp_account/msgs/pool.fc
+        line: 6
+        text: 'if ctx.at(OPCODE) == op::add_liquidity {'
+      - file: contracts/lp_account/msgs/pool.fc
+        line: 34
+        text: 'pool::cb_add_liquidity('
+      - file: contracts/lp_account/msgs/pool.fc
+        line: 45
+        text: 'CARRY_ALL_BALANCE | DESTROY_IF_ZERO'
+      - file: contracts/lp_account/msgs/pool.fc
+        line: 55
+        text: 'storage::save();'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 4
+        text: 'if ctx.at(OPCODE) == op::cb_add_liquidity {'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 31
+        text: 'if storage::total_supply_lp == 0 {'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 36
+        text: 'liquidity = pool::get_lp_provide_init_out(tot_am0, tot_am1);'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 39
+        text: 'storage::total_supply_lp = liquidity;'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 43
+        text: 'liquidity -= params::required_min_liquidity;'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 45
+        text: 'storage::reserve0 += tot_am0;'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 69
+        text: '| (liquidity < min_lp_out)'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 84
+        text: 'msgs::send_with_stateinit('
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 88
+        text: 'lp_account::add_liquidity('
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 99
+        text: 'CARRY_ALL_BALANCE'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 123
+        text: 'jetton_wallet::mint('
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 132
+        text: 'storage::save();'
+      - file: contracts/pool/pools/constant_product/pool.fc
+        line: 20
+        text: '(int) pool::get_lp_provide_init_out(int _left_amount, int _right_amount) inline {'
+      - file: contracts/pool/pools/constant_product/pool.fc
+        line: 21
+        text: 'int inv0 = norm_invariant(_left_amount, _right_amount);'
+      - file: contracts/pool/pools/constant_product/math.fc
+        line: 48
+        text: 'return oz_sqrt(left_balance * right_balance);'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 70
+        text: 'throw_unless(error::zero_output, (min_lp_out > 0) & ((am0 > 0) & (am1 > 0)));'
+      - file: tests/ConstProduct.spec.ts
+        line: 1769
+        text: 'it(''should provide lp (single side)'', async () => {'
+      - file: tests/ConstProduct.spec.ts
+        line: 2145
+        text: 'it(''should refund partial liquidity'', async () => {'
+  source_scope_restricted: true
+  scope_assets_only: true
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  methodology_audit_exit: NOT_AVAILABLE
+  required_evidence_complete: true
+  no_fabrication: true
+  shippable: false
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_DEADEND
+  rejection_reason: 'The initial branch uses working-state assignments before the outcome check, but the under-minimum/zero-liquidity/failure branch does not call storage::save and sends the input through deterministic LPAccount refund logic. The success boundary persists total supply including the 1001 locked minimum and mints exactly invariant minus 1001; the derived LPAccount sender is authenticated.'
+  duplicate_family: 'T4 initial minimum boundary, AB2 locked minimum supply, AM1/AM3/AM5 LP mint and zero-LP conservation, AQ1/AQ3/AQ4/AQ5 callback arithmetic, AT4 minimum selector, CC3 mint carry/save, and DE2/DE3 callback failure/math catch families'
+  caller_match_count: 94
+  caller_unique_files: 11
+  cascade_verbatim_hit_count: 23
+  cross_file_anchor_count: 18
+  caller_paths:
+    - contracts/lp_account/msgs/pool.fc
+    - contracts/lp_account/msgs/user.fc
+    - contracts/pool/msgs/lp_account.fc
+    - contracts/pool/pools/constant_product/pool.fc
+    - contracts/pool/pools/constant_sum/pool.fc
+    - contracts/pool/pools/stableswap/pool.fc
+    - contracts/pool/pools/weighted_const_product/pool.fc
+    - contracts/common/params.fc
+    - contracts/common/op.fc
+    - tests/System.spec.ts
+    - tests/ConstProduct.spec.ts
+  callers_grep_artifact: iter_278/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_278/poc_initial_liquidity_minimum_boundary.test.js
+    poc_run_log: iter_278/poc_initial_liquidity_minimum_boundary.run.log
+    live_regression_log: iter_278/live-initial-liquidity-regression.run.log
+    prior_audit: iter_278/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_278/poc_initial_liquidity_minimum_boundary.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_278/poc_initial_liquidity_minimum_boundary.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.4s static; 7.231s and 8.114s integration'
+    result: 'PASS; six exact initial-liquidity cases, 11 caller files, 18 cross-file anchors, no-save refund cases, exact 1001 lock case, positive mint case, and derived-sender rejection'
+  prior_art_check:
+    queries:
+      - 'git history and prior STATUS.yaml scan for initial liquidity minimum subtraction, zero-LP donation, callback math exceptions, mint carry/save order, and failure redeploy'
+      - 'GitHub API R15 issue and PR searches for get_lp_provide_init_out/required_min_liquidity and cb_add_liquidity/total_supply_lp/min_lp_out'
+    results:
+      - 'T4, AB2, AM1, AM3, AM5, AQ1, AQ3, AQ4, AQ5, AT4, CC3, DE2, and DE3 cover the same minimum, zero, math-catch, mint, and callback rollback surfaces'
+      - 'Fresh exact initial-liquidity and callback-supply issue/PR searches returned zero hits'
+    r15_disclosure_check:
+      gh_search_terms_used:
+        - 'repo:ston-fi/dex-core-v2 "get_lp_provide_init_out" "required_min_liquidity" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "get_lp_provide_init_out" "required_min_liquidity" is:pr'
+        - 'repo:ston-fi/dex-core-v2 "cb_add_liquidity" "total_supply_lp" "min_lp_out" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "cb_add_liquidity" "total_supply_lp" "min_lp_out" is:pr'
+      gh_search_hits: 0
+      evidence_files:
+        - iter_278/r15-initial-liquidity-issue.json
+        - iter_278/r15-initial-liquidity-pr.json
+        - iter_278/r15-callback-supply-issue.json
+        - iter_278/r15-callback-supply-pr.json
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+evidence:
+  status: PRE_KILLED_DUPLICATE
+  shadow_mode: true
+  caller_path: iter_278/callers-grep.txt
+  caller_match_count: 94
+  caller_unique_files: 11
+  prior_audit_path: iter_278/prior-audit-git.log
+  prior_family_matches: [T4, AB2, AM1, AM3, AM5, AQ1, AQ3, AQ4, AQ5, AT4, CC3, DE2, DE3]
+  r15_evidence_files:
+    - iter_278/r15-initial-liquidity-issue.json
+    - iter_278/r15-initial-liquidity-pr.json
+    - iter_278/r15-callback-supply-issue.json
+    - iter_278/r15-callback-supply-pr.json
+  source_conclusion: 'For initial invariant I, the Pool working state becomes total_supply_lp=I, reserves=(amount0,amount1), and effective mint=I-1001. If effective mint is below min_lp_out, zero/negative from a low or one-sided input, or another guard fails, the function sends a deterministic LPAccount add_liquidity refund and omits storage::save. If successful, it sends exactly effective mint and saves the supply/reserves; I=1001 is the intended all-locked minimum. No attacker-positive reserve/supply mismatch was found.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_278/poc_initial_liquidity_minimum_boundary.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_278/poc_initial_liquidity_minimum_boundary.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_278/live-initial-liquidity-regression.run.log
+    result: PASS

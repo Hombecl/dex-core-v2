@@ -1,0 +1,12 @@
+COMMAND: git log --all --format='%h %ad %s' --date=short --max-count=42 -- CHAIN_HYPOTHESIS_TABLE.md
+LATEST_COMMITS:
+fccb543 2026-08-22 shadow: complete iter277 DG4
+be54e4f 2026-08-22 shadow: complete iter276 DG3
+ba71501 2026-08-22 shadow: complete iter275 DG2
+0fb6990 2026-08-22 shadow: complete iter268 DE5
+8518247 2026-08-22 shadow: complete iter259 DD1
+
+PRIOR_RELEVANT_AUDITS:
+T4 initial_liquidity_minimum_boundary and AB2 pool_lp_supply_minimum_lock_boundary previously checked the required minimum subtraction, near-empty supply, and zero/negative effective LP conditions. AM3 covered zero-minimum zero-LP donation and price/invariant effects. AQ1/AQ3/AQ4/AQ5 covered caught math exceptions, zero-mint saves, caller-controlled minimum/branch flags, and max-input boundaries. AT4 covered the zero-minimum/one-sided callback selector. CC3 covered LPAccount StateInit mint carry/save ordering. DE2/DE3 rechecked the Pool failure redeploy and caught zero-liquidity path.
+DG5 narrows the initial branch to exact invariant values around 1001: values below the minimum enter the fallback without storage::save; exactly 1001 persists only the locked minimum and mints zero; values above it mint invariant-minus-1001 and save. Pool sender binding remains the derived LPAccount check.
+CONCLUSION: classify as PRE_KILLED_DUPLICATE unless a fresh exact boundary produces a persistent reserve/supply delta without the corresponding refund or LP credit.
