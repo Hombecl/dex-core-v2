@@ -1,0 +1,41 @@
+COMMAND: rg -n -H 'handle_ext_admin_messages|handle_ext_router_messages|set_params|internal_set_params|new_amp|new_rate|new_w|new_setter|rate_setter_address|storage::amp|storage::rate|storage::w0|storage::save|check_wc_nofail|should set params|should set new rate|should bounce set new rate|sendSetParams|admin_address' contracts/router.fc contracts/router/msgs/admin.fc contracts/router/pools/weighted_stableswap/ext_admin.fc contracts/pool.fc contracts/pool/msgs/router.fc contracts/pool/pools/weighted_stableswap/ext_router.fc contracts/pool/pools/weighted_stableswap/storage.fc contracts/pool/pools/weighted_stableswap/pool.fc contracts/common/op.fc contracts/common/utils.fc tests/WeightedStableswap.spec.ts wrappers/Router.ts
+SOURCE_ROOT: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon
+CALLER_MATCH_COUNT: 83
+CALLER_UNIQUE_FILES: 12
+contracts/router.fc:28:    if equal_slices(ctx.at(SENDER), storage::admin_address) {
+contracts/router/msgs/admin.fc:271:        print(`if handle_ext_admin_messages() { return (true); }`);
+contracts/router/pools/weighted_stableswap/ext_admin.fc:3:(int) handle_ext_admin_messages() impure inline {
+contracts/router/pools/weighted_stableswap/ext_admin.fc:6:    if ctx.at(OPCODE) == op::set_params {
+contracts/router/pools/weighted_stableswap/ext_admin.fc:7:        (int new_amp, int new_rate, int new_w) = (in_msg_body~load_uint128(), in_msg_body~load_uint128(), in_msg_body~load_uint128());
+contracts/router/pools/weighted_stableswap/ext_admin.fc:8:        (slice side_wallet, slice new_setter) = (in_msg_body~load_msg_addr(), in_msg_body~load_msg_addr());
+contracts/router/pools/weighted_stableswap/ext_admin.fc:10:        in_msg_body.end_parse();
+contracts/router/pools/weighted_stableswap/ext_admin.fc:13:        slice excesses_recipient = get_excesses_address(ref_data~load_msg_addr());
+contracts/router/pools/weighted_stableswap/ext_admin.fc:14:        ref_data.end_parse();
+contracts/router/pools/weighted_stableswap/ext_admin.fc:25:        throw_unless(error::invalid_amount, (0 < new_w) & (new_w < math::ONE_DEC));
+contracts/router/pools/weighted_stableswap/ext_admin.fc:26:        throw_unless(error::math_error, (new_amp <= (2000 * math::ONE_DEC)));
+contracts/router/pools/weighted_stableswap/ext_admin.fc:28:        throw_unless(error::invalid_call, equal_slices(side_wallet, left_jetton_wallet)
+contracts/router/pools/weighted_stableswap/ext_admin.fc:33:        throw_unless(error::wrong_workchain, left_jetton_wallet.address::check_workchain(params::workchain)
+contracts/router/pools/weighted_stableswap/ext_admin.fc:36:            & new_setter.check_wc_nofail(params::workchain));
+contracts/router/pools/weighted_stableswap/ext_admin.fc:48:            pool::internal_set_params(
+contracts/pool/msgs/router.fc:326:        print(`if handle_ext_router_messages() { return (); }`);
+contracts/pool/pools/weighted_stableswap/ext_router.fc:6:    if ctx.at(OPCODE) == op::internal_set_params {
+contracts/pool/pools/weighted_stableswap/ext_router.fc:7:        (slice resp, slice side) = (in_msg_body~load_msg_addr(), in_msg_body~load_msg_addr());
+contracts/pool/pools/weighted_stableswap/ext_router.fc:8:        (int new_amp, int new_rate, int new_w) = (in_msg_body~load_uint128(), in_msg_body~load_uint128(), in_msg_body~load_uint128());
+contracts/pool/pools/weighted_stableswap/ext_router.fc:10:        slice new_setter = additional_data~load_msg_addr();
+contracts/pool/pools/weighted_stableswap/ext_router.fc:13:        storage::amp = new_amp;
+contracts/pool/pools/weighted_stableswap/ext_router.fc:14:        storage::rate = new_rate ? new_rate : storage::rate;
+contracts/pool/pools/weighted_stableswap/ext_router.fc:15:        storage::rate_setter_address = new_setter;
+contracts/pool/pools/weighted_stableswap/ext_router.fc:26:        storage::save();
+contracts/pool/pools/weighted_stableswap/setter.fc:7:        throw_unless(error::invalid_amount, new_rate > 0);
+contracts/pool/pools/weighted_stableswap/setter.fc:10:        storage::save();
+contracts/common/utils.fc:8:        return _addr.address::get_workchain() == _wc;
+tests/WeightedStableswap.spec.ts:1353:        it('should set params', async () => {
+tests/WeightedStableswap.spec.ts:1375:        it('should set params (no setter)', async () => {
+tests/WeightedStableswap.spec.ts:1427:        it('should set new rate with setter call', async () => {
+tests/WeightedStableswap.spec.ts:2036:        it('should bounce set new rate by non-setter', async () => {
+wrappers/Router.ts:564:    async sendSetParams(provider: ContractProvider, via: Sender, opts: {
+wrappers/Router.ts:578:                .storeUint(opts.newAmp, 128)
+wrappers/Router.ts:579:                .storeUint(opts.newRate, 128)
+wrappers/Router.ts:582:                .storeAddress(opts.setterAddress ?? null)
+CASCADE: admin -> weighted_stableswap Router ext_admin -> root/ref end_parse and amp/weight/side/workchain/setter validation -> deterministic Pool StateInit -> Pool Router-only ext_router -> amp write, zero-rate preserve, setter write, optional one-time w0 orientation, save -> rate-setter sender gate for later positive rate updates.
+SCOPE: only selected production contracts, wrapper, and in-repo tests were inspected; no out-of-scope candidate is emitted.

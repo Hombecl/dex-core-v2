@@ -1,0 +1,166 @@
+final_verdict: KILLED_TRUSTED_ON_TRUSTED
+schema_version: shadow-v1
+iteration: 280
+phase: completed
+cell_id: DH2
+cell_label: weighted_stableswap_amp_rate_setter_tuple
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: DH2
+  final_verdict: KILLED_TRUSTED_ON_TRUSTED
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/router.fc
+        line: 28
+        text: 'if equal_slices(ctx.at(SENDER), storage::admin_address) {'
+      - file: contracts/router/pools/weighted_stableswap/ext_admin.fc
+        line: 6
+        text: 'if ctx.at(OPCODE) == op::set_params {'
+      - file: contracts/router/pools/weighted_stableswap/ext_admin.fc
+        line: 7
+        text: '(int new_amp, int new_rate, int new_w) = (in_msg_body~load_uint128(), in_msg_body~load_uint128(), in_msg_body~load_uint128());'
+      - file: contracts/router/pools/weighted_stableswap/ext_admin.fc
+        line: 10
+        text: 'in_msg_body.end_parse();'
+      - file: contracts/router/pools/weighted_stableswap/ext_admin.fc
+        line: 13
+        text: 'slice excesses_recipient = get_excesses_address(ref_data~load_msg_addr());'
+      - file: contracts/router/pools/weighted_stableswap/ext_admin.fc
+        line: 14
+        text: 'ref_data.end_parse();'
+      - file: contracts/router/pools/weighted_stableswap/ext_admin.fc
+        line: 25
+        text: 'throw_unless(error::invalid_amount, (0 < new_w) & (new_w < math::ONE_DEC));'
+      - file: contracts/router/pools/weighted_stableswap/ext_admin.fc
+        line: 26
+        text: 'throw_unless(error::math_error, (new_amp <= (2000 * math::ONE_DEC)));'
+      - file: contracts/router/pools/weighted_stableswap/ext_admin.fc
+        line: 28
+        text: 'throw_unless(error::invalid_call, equal_slices(side_wallet, left_jetton_wallet)'
+      - file: contracts/router/pools/weighted_stableswap/ext_admin.fc
+        line: 36
+        text: '& new_setter.check_wc_nofail(params::workchain));'
+      - file: contracts/pool/msgs/router.fc
+        line: 326
+        text: 'print(`if handle_ext_router_messages() { return (); }`);'
+      - file: contracts/pool/pools/weighted_stableswap/ext_router.fc
+        line: 6
+        text: 'if ctx.at(OPCODE) == op::internal_set_params {'
+      - file: contracts/pool/pools/weighted_stableswap/ext_router.fc
+        line: 13
+        text: 'storage::amp = new_amp;'
+      - file: contracts/pool/pools/weighted_stableswap/ext_router.fc
+        line: 14
+        text: 'storage::rate = new_rate ? new_rate : storage::rate;'
+      - file: contracts/pool/pools/weighted_stableswap/ext_router.fc
+        line: 15
+        text: 'storage::rate_setter_address = new_setter;'
+      - file: contracts/pool/pools/weighted_stableswap/ext_router.fc
+        line: 26
+        text: 'storage::save();'
+      - file: contracts/pool/pools/weighted_stableswap/setter.fc
+        line: 7
+        text: 'throw_unless(error::invalid_amount, new_rate > 0);'
+      - file: tests/WeightedStableswap.spec.ts
+        line: 2036
+        text: 'it(''should bounce set new rate by non-setter'', async () => {'
+  source_scope_restricted: true
+  scope_assets_only: true
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  methodology_audit_exit: NOT_AVAILABLE
+  required_evidence_complete: true
+  no_fabrication: true
+  shippable: false
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_KILL
+  rejection_reason: 'The tuple is accepted only through the Router admin branch, terminal-parsed and validated for weight, amp upper bound, side, pair identity, workchains, and optional setter workchain. Pool accepts the internal tuple only from its stored Router, saves the fields, and later rate updates require the exact stored setter plus positive rate. Zero-rate preservation and addr_none setter behavior are explicit privileged configuration.'
+  duplicate_family: 'AI5 weighted setter forwarding, U5 weighted setter/rate domain, P10 governance sender binding, AH3/DF4 Pool sender precedence, and DH1 weighted orientation complement'
+  kill_rule_applied: trusted_on_trusted_griefing_filter
+  caller_match_count: 83
+  caller_unique_files: 12
+  cascade_verbatim_hit_count: 18
+  cross_file_anchor_count: 15
+  caller_paths:
+    - contracts/router.fc
+    - contracts/router/msgs/admin.fc
+    - contracts/router/pools/weighted_stableswap/ext_admin.fc
+    - contracts/pool/msgs/router.fc
+    - contracts/pool/pools/weighted_stableswap/ext_router.fc
+    - contracts/pool/pools/weighted_stableswap/storage.fc
+    - contracts/pool/pools/weighted_stableswap/pool.fc
+    - contracts/pool/pools/weighted_stableswap/setter.fc
+    - contracts/common/op.fc
+    - contracts/common/utils.fc
+    - tests/WeightedStableswap.spec.ts
+    - wrappers/Router.ts
+  callers_grep_artifact: iter_280/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_280/poc_weighted_stableswap_amp_rate_setter_tuple.test.js
+    poc_run_log: iter_280/poc_weighted_stableswap_amp_rate_setter_tuple.run.log
+    live_regression_log: iter_280/live-weighted-stableswap-parameter-regression.run.log
+    prior_audit: iter_280/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_280/poc_weighted_stableswap_amp_rate_setter_tuple.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_280/poc_weighted_stableswap_amp_rate_setter_tuple.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.3s static; 8.543s integration'
+    result: 'PASS; nine amp/rate/weight/setter cases, 12 caller files, 15 cross-file anchors, zero-rate preserve, optional setter, exact setter gate, and zero external attacker delta'
+  prior_art_check:
+    queries:
+      - 'git history and prior STATUS.yaml scan for weighted setter forwarding, fixed-point domains, variant parameter authority, Pool sender binding, and weighted orientation'
+      - 'GitHub API R15 issue and PR searches for new_rate/storage::rate/new_setter and check_wc_nofail/new_setter/internal_set_params'
+    results:
+      - 'AI5, U5, P10, AH3, DF4, and DH1 cover the same weighted parameter and authority surfaces'
+      - 'Fresh exact rate/setter issue/PR searches returned zero hits'
+    r15_disclosure_check:
+      gh_search_terms_used:
+        - 'repo:ston-fi/dex-core-v2 "new_rate" "storage::rate" "new_setter" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "new_rate" "storage::rate" "new_setter" is:pr'
+        - 'repo:ston-fi/dex-core-v2 "check_wc_nofail" "new_setter" "internal_set_params" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "check_wc_nofail" "new_setter" "internal_set_params" is:pr'
+      gh_search_hits: 0
+      evidence_files:
+        - iter_280/r15-weighted-stableswap-rate-issue.json
+        - iter_280/r15-weighted-stableswap-rate-pr.json
+        - iter_280/r15-weighted-stableswap-setter-issue.json
+        - iter_280/r15-weighted-stableswap-setter-pr.json
+  attacker_privilege:
+    privilege_required: admin
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+evidence:
+  status: KILLED_TRUSTED_ON_TRUSTED
+  shadow_mode: true
+  caller_path: iter_280/callers-grep.txt
+  caller_match_count: 83
+  caller_unique_files: 12
+  prior_audit_path: iter_280/prior-audit-git.log
+  prior_family_matches: [AI5, U5, P10, AH3, DF4, DH1]
+  r15_evidence_files:
+    - iter_280/r15-weighted-stableswap-rate-issue.json
+    - iter_280/r15-weighted-stableswap-rate-pr.json
+    - iter_280/r15-weighted-stableswap-setter-issue.json
+    - iter_280/r15-weighted-stableswap-setter-pr.json
+  source_conclusion: 'Zero new_rate preserves the existing rate by design; a positive rate and optional setter are saved only after Router admin validation. Later rate changes require the exact stored setter and a positive new rate. All state changes are privileged tuple updates with no external attacker-positive token or balance delta.'
+  attacker_privilege:
+    privilege_required: admin
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_280/poc_weighted_stableswap_amp_rate_setter_tuple.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_280/poc_weighted_stableswap_amp_rate_setter_tuple.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_280/live-weighted-stableswap-parameter-regression.run.log
+    result: PASS

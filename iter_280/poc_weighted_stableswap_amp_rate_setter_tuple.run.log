@@ -1,0 +1,5 @@
+COMMAND: node iter_280/poc_weighted_stableswap_amp_rate_setter_tuple.test.js
+SOURCE_MODEL: contracts/router/pools/weighted_stableswap/ext_admin.fc lines 6-56; contracts/pool/pools/weighted_stableswap/ext_router.fc lines 6-29; contracts/pool/pools/weighted_stableswap/setter.fc lines 1-16
+EXIT: 0
+PASS 9 amp/rate/weight/setter cases; external attacker delta = 0; valid effects are trusted parameter saves
+RESULT: zero-rate preserves the prior rate, explicit rate and setter commit through the Router-only Pool branch, non-setter/zero-rate setter calls reject, and invalid amp/weight/workchain/admin cases stop before Pool save.

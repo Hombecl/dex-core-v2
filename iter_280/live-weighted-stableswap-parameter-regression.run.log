@@ -1,0 +1,9 @@
+COMMAND: npm test -- --runInBand tests/WeightedStableswap.spec.ts -t 'should set params|should set params (no setter)|should set new rate with setter call|should bounce set new rate by non-setter'
+SOURCE_ROOT: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon
+EXIT: 0
+PASS tests/WeightedStableswap.spec.ts (8.355 s)
+  Weighted Stableswap / Params / should set params
+  Weighted Stableswap / Params / should set params (no setter)
+  Weighted Stableswap / Params / should set new rate with setter call
+  Weighted Stableswap / Bounce / should bounce set new rate by non-setter
+Tests: 24 skipped, 4 passed, 28 total

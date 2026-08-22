@@ -1,0 +1,12 @@
+COMMAND: git log --all --format='%h %ad %s' --date=short --max-count=42 -- CHAIN_HYPOTHESIS_TABLE.md
+LATEST_COMMITS:
+e585e2d 2026-08-22 shadow: complete iter279 DH1
+841e0ab 2026-08-22 shadow: complete iter278 DG5
+fccb543 2026-08-22 shadow: complete iter277 DG4
+be54e4f 2026-08-22 shadow: complete iter276 DG3
+8518247 2026-08-22 shadow: complete iter259 DD1
+
+PRIOR_RELEVANT_AUDITS:
+AI5 weighted setter reference forwarding and U5 weighted setter/rate domain covered variant parameter references, fixed-point bounds, and setter authority. P10 governance sender binding and AH3/DF4 Pool sender precedence covered Router-admin to Pool privileged transitions. Existing weighted-stableswap tests cover set params with and without a setter, later positive rate updates by the setter, and bounce by a non-setter.
+DH2 narrows the tuple semantics: zero new_rate intentionally preserves the old rate; new_setter may be addr_none to disable future setter calls; the Pool extension saves the validated admin tuple. The direct rate setter separately requires new_rate > 0 and exact stored setter identity.
+CONCLUSION: classify as KILLED_TRUSTED_ON_TRUSTED unless an external caller can enter the admin extension or bypass the stored setter identity.
