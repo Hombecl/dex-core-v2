@@ -1,0 +1,26 @@
+CALLERS_GREP_DONE=true
+COMMAND: rg -n "get_lp_provide_(init_)?out|handle_lp_account_messages|add_liquidity|storage::save|state_init|liquidity < min_lp_out|try \\{|catch" contracts/pool/pools/constant_product/pool.fc contracts/pool/pools/constant_sum/pool.fc contracts/pool/pools/stableswap/pool.fc contracts/pool/pools/weighted_const_product/pool.fc contracts/pool/pools/weighted_stableswap/pool.fc contracts/pool/msgs/lp_account.fc contracts/pool.fc contracts/common/contracts.fc tests/ConstProduct.spec.ts tests/ConstSum.spec.ts
+WORKDIR: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon
+RESULT: 29 cross-file anchors across 10 source/test files.
+KEY_CALLERS:
+contracts/pool.fc:37:    if handle_lp_account_messages() {
+contracts/pool/msgs/lp_account.fc:1:(int) handle_lp_account_messages() impure inline {
+contracts/pool/msgs/lp_account.fc:34:            try {
+contracts/pool/msgs/lp_account.fc:36:                liquidity = pool::get_lp_provide_init_out(tot_am0, tot_am1);
+contracts/pool/msgs/lp_account.fc:51:            try { ;; catch math errors
+contracts/pool/msgs/lp_account.fc:52:                (liquidity, new_collected_protocol_fees0, new_collected_protocol_fees1) = pool::get_lp_provide_out(tot_am0, tot_am1);
+contracts/pool/msgs/lp_account.fc:69:            | (liquidity < min_lp_out)
+contracts/pool/msgs/lp_account.fc:87:                lp_account_new~state_init(),
+contracts/pool/msgs/lp_account.fc:88:                lp_account::add_liquidity(
+contracts/pool/msgs/lp_account.fc:132:            storage::save();
+contracts/common/contracts.fc:39:(cell) pool::cb_add_liquidity(
+contracts/common/contracts.fc:120:(cell) lp_account::add_liquidity(
+contracts/pool/pools/constant_product/pool.fc:25:(int, int, int) pool::get_lp_provide_out(int _left_amount, int _right_amount) inline {
+contracts/pool/pools/constant_sum/pool.fc:24:(int, int, int) pool::get_lp_provide_out(int _left_amount, int _right_amount) inline {
+contracts/pool/pools/stableswap/pool.fc:39:(int, int, int) pool::get_lp_provide_out(int _left_amount, int _right_amount) inline {
+contracts/pool/pools/weighted_const_product/pool.fc:38:(int, int, int) pool::get_lp_provide_out(int _left_amount, int _right_amount) inline {
+contracts/pool/pools/weighted_stableswap/pool.fc:44:(int, int, int) pool::get_lp_provide_out(int _left_amount, int _right_amount) inline {
+tests/ConstProduct.spec.ts:2005:        it('should direct add liquidity (all)', async () => {
+tests/ConstProduct.spec.ts:2043:        it('should direct add liquidity (partial)', async () => {
+tests/ConstSum.spec.ts:1476:        it('should direct add liquidity (all)', async () => {
+tests/ConstSum.spec.ts:1515:        it('should direct add liquidity (partial)', async () => {

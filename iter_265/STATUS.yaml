@@ -1,0 +1,181 @@
+schema_version: shadow-v1
+iteration: 265
+phase: completed
+cell_id: DE3
+cell_label: pool_cb_add_liquidity_math_catch_zero_liquidity
+final_verdict: PRE_KILLED_DUPLICATE
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: DE3
+  final_verdict: PRE_KILLED_DUPLICATE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 34
+        text: 'try {'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 36
+        text: 'liquidity = pool::get_lp_provide_init_out(tot_am0, tot_am1);'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 37
+        text: '} catch(_, _) { }'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 51
+        text: 'try { ;; catch math errors'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 52
+        text: '(liquidity, new_collected_protocol_fees0, new_collected_protocol_fees1) = pool::get_lp_provide_out(tot_am0, tot_am1);'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 53
+        text: '} catch(_, _) { }'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 69
+        text: '| (liquidity < min_lp_out)'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 87
+        text: 'lp_account_new~state_init(),'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 88
+        text: 'lp_account::add_liquidity('
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 132
+        text: 'storage::save();'
+      - file: contracts/pool.fc
+        line: 37
+        text: 'if handle_lp_account_messages() {'
+      - file: contracts/common/contracts.fc
+        line: 50
+        text: 'return begin_message(op::cb_add_liquidity)'
+      - file: contracts/pool/pools/constant_product/pool.fc
+        line: 25
+        text: '(int, int, int) pool::get_lp_provide_out(int _left_amount, int _right_amount) inline {'
+      - file: contracts/pool/pools/constant_sum/pool.fc
+        line: 24
+        text: '(int, int, int) pool::get_lp_provide_out(int _left_amount, int _right_amount) inline {'
+      - file: contracts/pool/pools/stableswap/pool.fc
+        line: 39
+        text: '(int, int, int) pool::get_lp_provide_out(int _left_amount, int _right_amount) inline {'
+      - file: contracts/pool/pools/weighted_const_product/pool.fc
+        line: 38
+        text: '(int, int, int) pool::get_lp_provide_out(int _left_amount, int _right_amount) inline {'
+      - file: contracts/pool/pools/weighted_stableswap/pool.fc
+        line: 44
+        text: '(int, int, int) pool::get_lp_provide_out(int _left_amount, int _right_amount) inline {'
+      - file: tests/ConstProduct.spec.ts
+        line: 2043
+        text: "it('should direct add liquidity (partial)', async () => {"
+      - file: tests/ConstSum.spec.ts
+        line: 1515
+        text: "it('should direct add liquidity (partial)', async () => {"
+  source_scope_restricted: true
+  scope_assets_only: true
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  methodology_audit_exit: NOT_AVAILABLE
+  required_evidence_complete: true
+  no_fabrication: true
+  shippable: false
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_DEADEND
+  rejection_reason: 'Each of the five in-scope pool math variants either returns zero LP output at the no-growth boundary or throws into the callback catch. Provisional supply/reserve arithmetic is discarded on failure because the failure branch sends the exact token legs to the deterministic zero-minimum LPAccount StateInit and does not call Pool storage::save. Only valid liquidity reaches LPWallet mint and Pool save; no attacker-positive persistent reserve or supply delta is reachable.'
+  duplicate_family: 'iter_67 callback rollback, iter_71 direct-add clearance, iter_123 refund/direct-add lifecycle, iter_130 zero-minimum/destroy ordering, iter_172 callback replay identity, iter_198 zero-selector residual, iter_199 callback minimum-zero selector, iter_202 destroy/redeploy identity, iter_221 post-send commit order, iter_256 callback mint StateInit/carry, iter_263 direct-add partial/redeploy, and iter_264 failure redeploy into partial account'
+  caller_match_count: 29
+  caller_unique_files: 10
+  cascade_verbatim_hit_count: 19
+  cross_file_anchor_count: 29
+  caller_paths:
+    - contracts/common/contracts.fc
+    - contracts/pool/pools/constant_product/pool.fc
+    - contracts/pool/pools/constant_sum/pool.fc
+    - contracts/pool/pools/stableswap/pool.fc
+    - contracts/pool/pools/weighted_const_product/pool.fc
+    - contracts/pool/pools/weighted_stableswap/pool.fc
+    - contracts/pool/msgs/lp_account.fc
+    - contracts/pool.fc
+    - tests/ConstProduct.spec.ts
+    - tests/ConstSum.spec.ts
+  callers_grep_artifact: iter_265/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_265/poc_pool_cb_add_liquidity_math_catch_zero_liquidity.test.js
+    poc_run_log: iter_265/poc_pool_cb_add_liquidity_math_catch_zero_liquidity.run.log
+    live_regression_log: iter_265/live-pool-direct-add-regression.run.log
+    prior_audit: iter_265/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_265/poc_pool_cb_add_liquidity_math_catch_zero_liquidity.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_265/poc_pool_cb_add_liquidity_math_catch_zero_liquidity.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.1s static; 12.944s integration'
+    result: 'PASS; five pool math variants, 20 modeled cases, 15 failure cases, 29 cross-file anchors, zero persisted failure deltas, and four live direct-add regressions'
+  prior_art_check:
+    queries:
+      - 'git history and prior STATUS.yaml scan for callback math catches, zero LP output, minimum checks, failure StateInit redeploy, direct-add residual, and Pool save ordering'
+      - 'GitHub API R15 issue and PR searches for callback math-catch and liquidity-minimum/Pool-save combinations'
+    results:
+      - 'iter_67, iter_71, iter_123, iter_130, iter_172, iter_198, iter_199, iter_202, iter_221, iter_256, iter_263, and iter_264: adjacent callback/redeploy/residual families closed'
+    r15_disclosure_check:
+      gh_search_terms_used:
+        - 'repo:ston-fi/dex-core-v2 "cb_add_liquidity" "pool::get_lp_provide_out" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "cb_add_liquidity" "pool::get_lp_provide_out" is:pr'
+        - 'repo:ston-fi/dex-core-v2 "liquidity < min_lp_out" "storage::save" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "liquidity < min_lp_out" "storage::save" is:pr'
+      gh_search_hits: 0
+      evidence_files:
+        - iter_265/r15-callback-math-catch-issue.json
+        - iter_265/r15-callback-math-catch-pr.json
+        - iter_265/r15-callback-save-issue.json
+        - iter_265/r15-callback-save-pr.json
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "cb_add_liquidity" "pool::get_lp_provide_out" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "cb_add_liquidity" "pool::get_lp_provide_out" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "liquidity < min_lp_out" "storage::save" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "liquidity < min_lp_out" "storage::save" is:pr'
+    gh_search_hits: 0
+    evidence_files:
+      - iter_265/r15-callback-math-catch-issue.json
+      - iter_265/r15-callback-math-catch-pr.json
+      - iter_265/r15-callback-save-issue.json
+      - iter_265/r15-callback-save-pr.json
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: PRE_KILLED_DUPLICATE
+  shadow_mode: true
+  caller_path: iter_265/callers-grep.txt
+  caller_match_count: 29
+  caller_unique_files: 10
+  prior_audit_path: iter_265/prior-audit-git.log
+  prior_family_matches: [iter67, iter71, iter123, iter130, iter172, iter198, iter199, iter202, iter221, iter256, iter263, iter264]
+  r15_evidence_files:
+    - iter_265/r15-callback-math-catch-issue.json
+    - iter_265/r15-callback-math-catch-pr.json
+    - iter_265/r15-callback-save-issue.json
+    - iter_265/r15-callback-save-pr.json
+  source_conclusion: 'DE3 is a duplicate of the established callback math-catch and zero-minimum rollback family. A thrown or zero-liquidity computation only reaches the failure refund StateInit; the provisional Pool mutation is not persisted. The four live direct-add regressions pass, and no attacker-positive token, LP, reserve, or supply delta was demonstrated.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_265/poc_pool_cb_add_liquidity_math_catch_zero_liquidity.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_265/poc_pool_cb_add_liquidity_math_catch_zero_liquidity.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_265/live-pool-direct-add-regression.run.log
+    result: PASS

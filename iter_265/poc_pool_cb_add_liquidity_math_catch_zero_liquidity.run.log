@@ -1,0 +1,10 @@
+COMMAND: node iter_265/poc_pool_cb_add_liquidity_math_catch_zero_liquidity.test.js
+WORKDIR: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-flash-wt/blind-test-vps/ston-dot-fi-dex-smart-contracts-v2-flash
+EXIT: 0
+OUTPUT:
+{"result":"PASS","classification":"PRE_KILLED_DUPLICATE","cell":"DE3","variant_count":5,"cross_file_anchors":29,"cases":20,"failure_cases":15,"persisted_failure_deltas":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"fallback_amounts_exact":false,"reason":"All five in-scope pool math variants return a zero LP result at the no-growth boundary or throw into the callback catch. The callback may mutate supply/reserves in working state, but the failure condition sends exact token legs to the deterministic LPAccount zero-minimum refund StateInit and never calls storage::save on Pool. Only a valid liquidity result reaches LPWallet mint and Pool save; no attacker-positive persistent reserve/supply delta is reachable."}
+
+LIVE_REGRESSION_COMMAND: npm test -- --runInBand tests/ConstProduct.spec.ts tests/ConstSum.spec.ts -t 'should direct add liquidity'
+LIVE_REGRESSION_WORKDIR: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon
+LIVE_REGRESSION_EXIT: 0
+LIVE_REGRESSION_RESULT: 2 suites passed; 4 tests passed; 55 skipped; 12.944 s

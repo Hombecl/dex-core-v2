@@ -1,0 +1,13 @@
+COMMAND: npm test -- --runInBand tests/ConstProduct.spec.ts tests/ConstSum.spec.ts -t 'should direct add liquidity'
+WORKDIR: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon
+EXIT: 0
+RESULT:
+PASS tests/ConstProduct.spec.ts (7.274 s)
+  should direct add liquidity (all)
+  should direct add liquidity (partial)
+PASS tests/ConstSum.spec.ts (5.424 s)
+  should direct add liquidity (all)
+  should direct add liquidity (partial)
+Test Suites: 2 passed, 2 total
+Tests: 55 skipped, 4 passed, 59 total
+Time: 12.944 s

@@ -1,0 +1,26 @@
+COMMAND: git log --all --oneline -- CHAIN_HYPOTHESIS_TABLE.md | head -n 25
+LATEST_COMMITS:
+04fa4eb shadow: complete iter264 DE2
+e909e01 shadow: complete iter263 DD5
+f086c75 shadow: complete iter262 DD4
+cd3613b shadow: complete iter261 DD3
+730c8fb shadow: complete iter260 DD2
+8518247 shadow: complete iter259 DD1
+610be24 shadow: complete iter256 CC3
+c55c739 shadow: complete iter130 AD5 deadend
+3b2a767 shadow: complete iter123 AC3 deadend
+
+PRIOR_RELEVANT_AUDITS:
+iter_71 direct_add_liquidity_identity_clearance: closed; zero selectors consume stored legs, residual is saved, and failed callbacks use a fresh refund account.
+iter_123 lp_account_refund_then_direct_add_lifecycle: closed; direct-add subtracts selected legs, full consumption destroys, partial residual saves, and zero-minimum failure fallback cannot mint.
+iter_130 lp_account_mint_destroy_save_order: closed; DESTROY_IF_ZERO and callback ordering do not resurrect stale amounts.
+iter_172 lp_account_callback_replay_query_identity: closed; tuple permutations and replay cases did not duplicate callback or LP mint.
+iter_198 lp_account_direct_add_zero_selector_residual: closed; all/partial/one-sided/overdraw models preserve exact residuals.
+iter_199 pool_callback_minimum_zero_selector: closed; callback minimum checks and zero selector do not create a persistent Pool delta.
+iter_202 lp_account_refund_destroy_redeploy_identity: closed; redeployment is only the zero-minimum failure fallback.
+iter_221 lp_account_direct_add_post_send_commit_order: closed; queued child execution cannot re-enter before the LPAccount save.
+iter_256 lp_account_callback_mint_carry_stateinit_order: PRE_KILLED_DUPLICATE; deterministic LPWallet identity and exact LP amount persist across carry/StateInit paths.
+iter_263 lp_account_direct_add_partial_redeploy_callback: PRE_KILLED_DUPLICATE; direct-add partial/redeploy callback lifecycle is already covered.
+iter_264 pool_cb_add_failure_redeploy_into_partial_account: PRE_KILLED_DUPLICATE; failure fallback stores exact failed legs for user-gated refund and does not save a Pool mutation.
+
+CONCLUSION: DE3 is a duplicate of the existing callback math-catch, zero-LP, minimum-check, failure-redeploy, and Pool-save ordering audit family. No prior audit supplies a contrary persistent-impact path.
