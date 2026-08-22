@@ -1,0 +1,177 @@
+final_verdict: PRE_KILLED_DUPLICATE
+schema_version: shadow-v1
+iteration: 269
+phase: completed
+cell_id: DF1
+cell_label: router_notification_wallet_code_identity
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: DF1
+  final_verdict: PRE_KILLED_DUPLICATE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/router.fc
+        line: 18
+        text: 'if handle_jetton_messages() {'
+      - file: contracts/router/msgs/jetton.fc
+        line: 5
+        text: 'if ctx.at(OPCODE) == op::ft::transfer_notification {'
+      - file: contracts/router/msgs/jetton.fc
+        line: 14
+        text: 'ctx.at(SENDER),'
+      - file: contracts/router/msgs/jetton.fc
+        line: 24
+        text: 'route_dex_messages('
+      - file: contracts/router/dex.fc
+        line: 5
+        text: 'throw_unless(error::invalid_amount, _sent_amount > 0);'
+      - file: contracts/router/dex.fc
+        line: 47
+        text: 'throw_arg_if(op::transfer_bounce_invalid_pool, 1, equal_slices(_jetton_address, token_wallet1));'
+      - file: contracts/router/dex.fc
+        line: 78
+        text: 'var pool = contracts::from_sources('
+      - file: contracts/router/dex.fc
+        line: 79
+        text: 'pool_idata(my_address(), _jetton_address, token_wallet1, storage::jetton_lp_wallet_code,  storage::lp_account_code),'
+      - file: contracts/router/dex.fc
+        line: 84
+        text: 'msgs::send_with_stateinit('
+      - file: contracts/router/dex.fc
+        line: 88
+        text: 'pool::$route(transferred_op, _caller, _sent_amount, _jetton_address, token_wallet1, _dex_payload),'
+      - file: contracts/router/msgs/pool.fc
+        line: 28
+        text: 'throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER)));'
+      - file: contracts/router/msgs/pool.fc
+        line: 113
+        text: 'throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER)));'
+      - file: contracts/pool.fc
+        line: 28
+        text: 'if equal_slices(ctx.at(SENDER), storage::router_address) {'
+      - file: contracts/pool/pools/constant_product/state_init.fc
+        line: 18
+        text: '(cell) pool_idata(slice _router_address, slice _first_jetton_address, slice _second_jetton_address, cell _jetton_lp_wallet_code, cell _lp_account_code) inline {'
+      - file: contracts/pool/pools/constant_product/state_init.fc
+        line: 21
+        text: 'if _first_jetton_address.slice_hash() > _second_jetton_address.slice_hash() {'
+      - file: contracts/common/contracts.fc
+        line: 158
+        text: 'return begin_message(op::pay_to)'
+      - file: tests/ConstProduct.spec.ts
+        line: 1469
+        text: "it('should swap', async () => {"
+      - file: tests/ConstSum.spec.ts
+        line: 1301
+        text: "it('should swap', async () => {"
+  source_scope_restricted: true
+  scope_assets_only: true
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  methodology_audit_exit: NOT_AVAILABLE
+  required_evidence_complete: true
+  no_fabrication: true
+  shippable: false
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_DEADEND
+  rejection_reason: 'Notification entry does not inspect wallet code identity, but the sender address is embedded into the deterministic Router/Pool StateInit key. A noncanonical wallet therefore derives an isolated pool, while a real pool requires the exact real wallet address and deterministic key. No fake notification can alias a real Pool or move a real token leg; no-reference notifications refund through the notifying wallet.'
+  duplicate_family: 'Q1 notification owner binding, Y2 untrusted notification binding, AE3 no-reference refund source, AR1 notification pair mixing, AR5 existing-wallet collision, AT1 no-ref wallet refund, AV3 ref-forward boundary, AX8 empty-ref bounce payload, CC2 notification root depth, CC3 callback StateInit/carry, DD2 pay_to split, and DE1-DE5 lifecycle spiral'
+  caller_match_count: 39
+  caller_unique_files: 9
+  cascade_verbatim_hit_count: 19
+  cross_file_anchor_count: 19
+  caller_paths:
+    - contracts/router/msgs/jetton.fc
+    - contracts/router/dex.fc
+    - contracts/router/msgs/pool.fc
+    - contracts/router.fc
+    - contracts/pool.fc
+    - contracts/common/contracts.fc
+    - contracts/pool/pools/constant_product/state_init.fc
+    - tests/ConstProduct.spec.ts
+    - tests/ConstSum.spec.ts
+  callers_grep_artifact: iter_269/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_269/poc_router_notification_wallet_code_identity.test.js
+    poc_run_log: iter_269/poc_router_notification_wallet_code_identity.run.log
+    live_regression_log: iter_269/live-router-notification-swap-regression.run.log
+    prior_audit: iter_269/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_269/poc_router_notification_wallet_code_identity.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_269/poc_router_notification_wallet_code_identity.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.1s static; 16.273s integration'
+    result: 'PASS; 19 cross-file anchors, five notification/pool-key cases, fake-pair isolation, no-ref refund conservation, same-wallet and malformed-amount rejection, three live swap regressions, and zero persistent attacker delta'
+  prior_art_check:
+    queries:
+      - 'git history and prior STATUS.yaml scan for notification sender binding, no-ref refunds, fake/real pair mixing, pool StateInit collision, and Router pay_to routing'
+      - 'GitHub API R15 issue and PR searches for handle_jetton_messages/pool_idata/transfer_notification and route_dex_messages/_jetton_address/pool_idata combinations'
+    results:
+      - 'Q1, Y2, AE3, AR1, AR5, AT1, AV3, AX8, CC2, CC3, DD2, and DE1-DE5: adjacent notification, identity, carry, and lifecycle families closed'
+    r15_disclosure_check:
+      gh_search_terms_used:
+        - 'repo:ston-fi/dex-core-v2 "handle_jetton_messages" "pool_idata" "transfer_notification" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "handle_jetton_messages" "pool_idata" "transfer_notification" is:pr'
+        - 'repo:ston-fi/dex-core-v2 "route_dex_messages" "_jetton_address" "pool_idata" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "route_dex_messages" "_jetton_address" "pool_idata" is:pr'
+      gh_search_hits: 0
+      evidence_files:
+        - iter_269/r15-router-notification-pool-key-issue.json
+        - iter_269/r15-router-notification-pool-key-pr.json
+        - iter_269/r15-router-notification-route-key-issue.json
+        - iter_269/r15-router-notification-route-key-pr.json
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "handle_jetton_messages" "pool_idata" "transfer_notification" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "handle_jetton_messages" "pool_idata" "transfer_notification" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "route_dex_messages" "_jetton_address" "pool_idata" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "route_dex_messages" "_jetton_address" "pool_idata" is:pr'
+    gh_search_hits: 0
+    evidence_files:
+      - iter_269/r15-router-notification-pool-key-issue.json
+      - iter_269/r15-router-notification-pool-key-pr.json
+      - iter_269/r15-router-notification-route-key-issue.json
+      - iter_269/r15-router-notification-route-key-pr.json
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: PRE_KILLED_DUPLICATE
+  shadow_mode: true
+  caller_path: iter_269/callers-grep.txt
+  caller_match_count: 39
+  caller_unique_files: 9
+  prior_audit_path: iter_269/prior-audit-git.log
+  prior_family_matches: [Q1, Y2, AE3, AR1, AR5, AT1, AV3, AX8, CC2, CC3, DD2, DE1, DE2, DE3, DE4, DE5]
+  r15_evidence_files:
+    - iter_269/r15-router-notification-pool-key-issue.json
+    - iter_269/r15-router-notification-pool-key-pr.json
+    - iter_269/r15-router-notification-route-key-issue.json
+    - iter_269/r15-router-notification-route-key-pr.json
+  source_conclusion: 'DF1 is a duplicate Router notification and deterministic Pool-key family. The missing wallet-code check does not create a real-pool collision because the immediate sender address is part of the StateInit key; fake pairs remain isolated and no-ref refunds stay within the notifying wallet. Three live swap regressions pass; no attacker-positive token, pool, or persistent-state delta was demonstrated.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_269/poc_router_notification_wallet_code_identity.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_269/poc_router_notification_wallet_code_identity.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_269/live-router-notification-swap-regression.run.log
+    result: PASS

@@ -1,0 +1,13 @@
+COMMAND: npm test -- --runInBand tests/ConstProduct.spec.ts tests/ConstSum.spec.ts tests/WeightedCPI.spec.ts -t 'should swap$'
+WORKDIR: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon
+EXIT: 0
+RESULT:
+PASS tests/ConstSum.spec.ts (7.708 s)
+  should swap (1172 ms)
+PASS tests/ConstProduct.spec.ts
+  should swap (905 ms)
+PASS tests/WeightedCPI.spec.ts
+  should swap (1155 ms)
+Test Suites: 3 passed, 3 total
+Tests: 81 skipped, 3 passed, 84 total
+Time: 16.273 s

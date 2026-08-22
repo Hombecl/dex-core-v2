@@ -1,0 +1,5 @@
+COMMAND: node iter_269/poc_router_notification_wallet_code_identity.test.js
+WORKDIR: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-flash-wt/blind-test-vps/ston-dot-fi-dex-smart-contracts-v2-flash
+EXIT: 0
+OUTPUT:
+{"result":"PASS","classification":"PRE_KILLED_DUPLICATE","cell":"DF1","cross_file_anchors":19,"cases":5,"legitimate_pool_collision":true,"forged_pair_isolated":true,"no_ref_refund_delta":0,"same_wallet_rejected":true,"malformed_amount_rejected":true,"persistent_attacker_delta":0,"reason":"Router does not inspect wallet code identity at the notification boundary, but the notification sender is included as a token address in the deterministic Router/Pool StateInit key. A noncanonical sender therefore derives a distinct pool, while an existing real pool requires the exact real wallet address and its deterministic key. No fake pair can alias the real pool or move a real token leg; no-ref notifications refund through the notifying wallet."}

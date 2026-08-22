@@ -350,3 +350,13 @@ Iter 1 executes only `P1xC2`. A surviving candidate needs a production-reachable
 | DE3 | pool_cb_add_liquidity_math_catch_zero_liquidity | math_failure / rollback | The Pool callback catches LP-liquidity math errors after provisional supply/reserve updates; a zero or negative liquidity result at the failure boundary could persist a partial pool tuple before the LPAccount refund path. | 3 | PRE_KILLED_DUPLICATE |
 | DE4 | router_pay_vault_withdraw_after_zero_stateinit | lifecycle / identity | A Vault destroyed or zeroed after withdrawal could be recreated by a later pay_vault StateInit with a mismatched owner/token tuple while residual carry or response routing remains from the prior instance. | 4 | PRE_KILLED_DUPLICATE |
 | DE5 | lp_wallet_bounce_notification_opcode_partition | bounce_accounting / dispatch_order | A bounced transfer_notification or excess body returning to LPWallet could meet the generic bounce path with an unrecognized opcode and alter receive/bounce persistence around a previously saved credit. | 5 | PRE_KILLED_DUPLICATE |
+
+## DF fresh spiral clusters
+
+| Cell | Production mechanism P | Failure class C | Initial hypothesis | Priority | Status |
+|---|---|---|---|---:|---|
+| DF1 | router_notification_wallet_code_identity | sender_binding / code_identity | Router authenticates a transfer notification only by the immediate sender/body tuple; a valid-looking notification from a noncanonical wallet code could enter pool derivation and move a real token leg across a forged pair. | 1 | PRE_KILLED_DUPLICATE |
+| DF2 | lp_wallet_receive_precredit_sender_exception | exception_atomicity / sender_binding | LPWallet increments balance before validating master/derived-wallet sender; an exception or bounce boundary could preserve the precredit despite rejected provenance. | 2 | pending |
+| DF3 | pool_cb_refund_msg_value_negative_split | gas_accounting / dual_leg | Two-sided callback refunds divide remaining message value while one-sided refunds carry all remaining gas; a low-value boundary could send one leg while retaining or duplicating the other. | 3 | pending |
+| DF4 | pool_dispatch_protocol_router_opcode_precedence | dispatcher_order / caller_binding | Pool checks protocol-fee sender before Router and LPWallet handlers; a sender/address collision or opcode overlap could route a legitimate callback into the wrong state mutation branch. | 4 | pending |
+| DF5 | router_pay_to_zero_side_payload_split | branch_selection / amount_conservation | Router `pay_to` chooses token0 when amount0 is positive and token1 otherwise; a zero/zero or dual-output payload could select a wrong wallet while carrying a fixed amount tuple. | 5 | pending |

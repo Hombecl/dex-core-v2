@@ -1,0 +1,26 @@
+COMMAND: git log --all --format='%h %ad %s' --date=short --max-count=24 -- CHAIN_HYPOTHESIS_TABLE.md
+LATEST_COMMITS:
+0fb6990 shadow: complete iter268 DE5
+e508e14 shadow: complete iter267 DE1
+1e28530 shadow: complete iter266 DE4
+7fba5e8 shadow: complete iter265 DE3
+04fa4eb shadow: complete iter264 DE2
+e909e01 shadow: complete iter263 DD5
+610be24 shadow: complete iter256 CC3
+
+PRIOR_RELEVANT_AUDITS:
+Q1 notification identity owner binding: closed; body owner and notifying-wallet relationship did not move real value through an existing pool.
+Y2 Router untrusted notification binding: closed; arbitrary sender/from tuples derive isolated pools or route back through the notifying wallet.
+AE3 no-reference notification refund source: closed; the no-ref branch refunds through the immediate notifying wallet with fixed amount.
+AR1 notification pair mixing: closed; a fake/real pair does not alias an existing real Pool StateInit.
+AR5 notification existing-wallet collision: closed; sender/from/wallet combinations did not reach a selected real wallet.
+AT1 no-ref wallet refund: closed; no-reference refund remains bounded by the notifying wallet.
+AV3 notification ref-forward boundary: closed; empty/truncated/nested refs do not change wallet/pool identity.
+AX8 empty-ref bounce payload tail: PRE_KILLED_DUPLICATE; fixed refund body preserves amount and destination.
+CC2 notification ref-root depth: PRE_KILLED_DUPLICATE; parser boundary does not change the authenticated route identity.
+CC3 callback mint StateInit/carry order: PRE_KILLED_DUPLICATE; deterministic child identity persists across carry paths.
+DD2 pay_to normal forward/excess split: PRE_KILLED_DUPLICATE; fixed token and excess destinations remain separated.
+DE1-DE5 fresh lifecycle spiral: PRE_KILLED_DUPLICATE; reset, vault, callback, and bounce branches had no attacker-positive delta.
+
+DF1_CHECK: Fresh code-identity check confirms the Router does not require a wallet code hash at notification entry, but includes the immediate sender address in the deterministic Pool key and requires the derived Pool as the caller of Router pay_to/pay_vault handlers. A fake sender therefore creates an isolated pair; it does not alias a real pair.
+CONCLUSION: DF1 is a duplicate of the broader notification sender-binding and deterministic Pool StateInit family. No prior audit supplies a contrary real-asset collision path.

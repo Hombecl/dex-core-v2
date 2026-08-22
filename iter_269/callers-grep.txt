@@ -1,0 +1,24 @@
+CALLERS_GREP_DONE=true
+COMMAND: rg -n "handle_jetton_messages|transfer_notification|route_dex_messages|ctx\\.at\\(SENDER\\)|token_wallet1|from_sources|pool_idata|send_with_stateinit|pool~address|storage::pool_code|invalid_caller|equal_slices\\(_jetton_address|_sent_amount > 0|should swap" contracts/router/msgs/jetton.fc contracts/router/dex.fc contracts/router/msgs/pool.fc contracts/router.fc contracts/pool.fc contracts/common/contracts.fc contracts/pool/pools/constant_product/state_init.fc tests/ConstProduct.spec.ts tests/ConstSum.spec.ts
+WORKDIR: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon
+RESULT: 39 Router/Pool identity and swap-flow anchors across 9 files.
+KEY_CALLERS:
+contracts/router.fc:18:    if handle_jetton_messages() {
+contracts/router/msgs/jetton.fc:5:    if ctx.at(OPCODE) == op::ft::transfer_notification {
+contracts/router/msgs/jetton.fc:14:                ctx.at(SENDER),
+contracts/router/msgs/jetton.fc:24:        route_dex_messages(
+contracts/router/msgs/jetton.fc:25:            ctx.at(SENDER),
+contracts/router/dex.fc:5:    throw_unless(error::invalid_amount, _sent_amount > 0);
+contracts/router/dex.fc:16:        token_wallet1 = dex_payload~load_msg_addr();
+contracts/router/dex.fc:47:        throw_arg_if(op::transfer_bounce_invalid_pool, 1, equal_slices(_jetton_address, token_wallet1));
+contracts/router/dex.fc:78:        var pool = contracts::from_sources(
+contracts/router/dex.fc:79:            pool_idata(my_address(), _jetton_address, token_wallet1, storage::jetton_lp_wallet_code, storage::lp_account_code),
+contracts/router/dex.fc:84:        msgs::send_with_stateinit(
+contracts/router/dex.fc:88:            pool::$route(transferred_op, _caller, _sent_amount, _jetton_address, token_wallet1, _dex_payload),
+contracts/router/msgs/pool.fc:28:        throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER)));
+contracts/router/msgs/pool.fc:113:        throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER)));
+contracts/pool.fc:28:    if equal_slices(ctx.at(SENDER), storage::router_address) {
+contracts/pool/pools/constant_product/state_init.fc:18:(cell) pool_idata(slice _router_address, slice _first_jetton_address, slice _second_jetton_address, cell _jetton_lp_wallet_code, cell _lp_account_code) inline {
+contracts/pool/pools/constant_product/state_init.fc:21:    if _first_jetton_address.slice_hash() > _second_jetton_address.slice_hash() {
+tests/ConstProduct.spec.ts:1469:        it('should swap', async () => {
+tests/ConstSum.spec.ts:1301:        it('should swap', async () => {
