@@ -1,0 +1,29 @@
+CALLERS_GREP_DONE=true
+COMMAND: rg -n "on_bounce|skip_bits\\(32\\)|internal_transfer|burn_notification_ext|transfer_notification|excesses|balance \\+=|storage::save|flags & 1|recv_internal|receive_tokens|send_tokens|burn_tokens|should burn liquidity" contracts/lp_wallet.fc contracts/lp_wallet/op.fc contracts/lp_wallet/storage.fc contracts/common/contracts.fc contracts/common/op.fc contracts/pool/msgs/lp_wallet.fc tests/ConstProduct.spec.ts tests/ConstSum.spec.ts tests/WeightedCPI.spec.ts
+WORKDIR: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon
+RESULT: 49+ opcode, bounce, save, sender, and burn-flow anchors across 9 files.
+KEY_CALLERS:
+contracts/lp_wallet.fc:136:() on_bounce (slice in_msg_body) impure {
+contracts/lp_wallet.fc:137:    in_msg_body~skip_bits(32);
+contracts/lp_wallet.fc:141:    throw_unless(709, (op == op::internal_transfer) | (op == op::burn_notification_ext));
+contracts/lp_wallet.fc:145:    balance += jetton_amount;
+contracts/lp_wallet.fc:146:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:149:() recv_internal(int my_balance, int msg_value, cell in_msg_full, slice in_msg_body) impure {
+contracts/lp_wallet.fc:156:    if (flags & 1) {
+contracts/lp_wallet.fc:157:        on_bounce(in_msg_body);
+contracts/lp_wallet.fc:174:    if (op == op::internal_transfer) {
+contracts/lp_wallet.fc:180:        burn_tokens(in_msg_body, sender_address, msg_value, fwd_fee);
+contracts/lp_wallet/op.fc:2:const op::transfer_notification = 0x7362d09c;
+contracts/lp_wallet/op.fc:3:const op::internal_transfer = 0x178d4519;
+contracts/lp_wallet/op.fc:4:const op::excesses = 0xd53276db;
+contracts/lp_wallet.fc:74:        .store_uint(op::transfer_notification, 32)
+contracts/lp_wallet.fc:95:        .store_uint(op::excesses, 32)
+contracts/lp_wallet.fc:100:    storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);
+contracts/lp_wallet.fc:116:        .store_uint(op::burn_notification_ext, 32)
+contracts/common/contracts.fc:213:    return begin_message(op::internal_transfer)
+contracts/common/op.fc:7:const op::burn_notification_ext
+contracts/pool/msgs/lp_wallet.fc:4:    if ctx.at(OPCODE) == op::burn_notification_ext {
+contracts/pool/msgs/lp_wallet.fc:95:        storage::save();
+tests/ConstProduct.spec.ts:1904:        it('should burn liquidity', async () => {
+tests/ConstSum.spec.ts:1378:        it('should burn liquidity', async () => {
+tests/WeightedCPI.spec.ts:1473:        it('should burn liquidity', async () => {

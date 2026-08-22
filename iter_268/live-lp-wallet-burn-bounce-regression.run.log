@@ -1,0 +1,13 @@
+COMMAND: npm test -- --runInBand tests/ConstProduct.spec.ts tests/ConstSum.spec.ts tests/WeightedCPI.spec.ts -t 'should burn liquidity'
+WORKDIR: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon
+EXIT: 0
+RESULT:
+PASS tests/ConstProduct.spec.ts (5.854 s)
+  should burn liquidity (1189 ms)
+PASS tests/WeightedCPI.spec.ts
+  should burn liquidity (1293 ms)
+PASS tests/ConstSum.spec.ts (6.233 s)
+  should burn liquidity (1903 ms)
+Test Suites: 3 passed, 3 total
+Tests: 81 skipped, 3 passed, 84 total
+Time: 16.559 s

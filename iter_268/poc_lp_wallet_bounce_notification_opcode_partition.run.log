@@ -1,0 +1,5 @@
+COMMAND: node iter_268/poc_lp_wallet_bounce_notification_opcode_partition.test.js
+WORKDIR: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-flash-wt/blind-test-vps/ston-dot-fi-dex-smart-contracts-v2-flash
+EXIT: 0
+OUTPUT:
+{"result":"PASS","classification":"PRE_KILLED_DUPLICATE","cell":"DE5","cross_file_anchors":21,"cases":7,"accepted_bounce_ops":["internal_transfer","burn_notification_ext"],"rejected_bounce_ops":["transfer_notification","excesses"],"invalid_sender_rejected":true,"conserved_balance":151,"persistent_attacker_delta":0,"reason":"LPWallet accepts bounced balance restoration only for internal_transfer and burn_notification_ext, each restoring the encoded jetton amount before storage::save. transfer_notification and excesses are ordinary outbound-recipient opcodes and are rejected by the bounce partition without balance mutation. Invalid non-bounce senders fail the receive authorization before persistence; no attacker-positive wallet delta is reachable."}

@@ -1,0 +1,195 @@
+final_verdict: PRE_KILLED_DUPLICATE
+schema_version: shadow-v1
+iteration: 268
+phase: completed
+cell_id: DE5
+cell_label: lp_wallet_bounce_notification_opcode_partition
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: DE5
+  final_verdict: PRE_KILLED_DUPLICATE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/lp_wallet.fc
+        line: 136
+        text: '() on_bounce (slice in_msg_body) impure {'
+      - file: contracts/lp_wallet.fc
+        line: 137
+        text: 'in_msg_body~skip_bits(32);'
+      - file: contracts/lp_wallet.fc
+        line: 141
+        text: 'throw_unless(709, (op == op::internal_transfer) | (op == op::burn_notification_ext));'
+      - file: contracts/lp_wallet.fc
+        line: 145
+        text: 'balance += jetton_amount;'
+      - file: contracts/lp_wallet.fc
+        line: 146
+        text: 'storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);'
+      - file: contracts/lp_wallet.fc
+        line: 149
+        text: '() recv_internal(int my_balance, int msg_value, cell in_msg_full, slice in_msg_body) impure {'
+      - file: contracts/lp_wallet.fc
+        line: 156
+        text: 'if (flags & 1) {'
+      - file: contracts/lp_wallet.fc
+        line: 157
+        text: 'on_bounce(in_msg_body);'
+      - file: contracts/lp_wallet.fc
+        line: 174
+        text: 'if (op == op::internal_transfer) {'
+      - file: contracts/lp_wallet.fc
+        line: 180
+        text: 'burn_tokens(in_msg_body, sender_address, msg_value, fwd_fee);'
+      - file: contracts/lp_wallet/op.fc
+        line: 2
+        text: 'const op::transfer_notification = 0x7362d09c;'
+      - file: contracts/lp_wallet/op.fc
+        line: 3
+        text: 'const op::internal_transfer = 0x178d4519;'
+      - file: contracts/lp_wallet/op.fc
+        line: 4
+        text: 'const op::excesses = 0xd53276db;'
+      - file: contracts/lp_wallet.fc
+        line: 74
+        text: '.store_uint(op::transfer_notification, 32)'
+      - file: contracts/lp_wallet.fc
+        line: 95
+        text: '.store_uint(op::excesses, 32)'
+      - file: contracts/lp_wallet.fc
+        line: 100
+        text: 'storage::save(balance, owner_address, jetton_master_address, jetton_wallet_code);'
+      - file: contracts/lp_wallet.fc
+        line: 116
+        text: '.store_uint(op::burn_notification_ext, 32)'
+      - file: contracts/common/contracts.fc
+        line: 213
+        text: 'return begin_message(op::internal_transfer)'
+      - file: contracts/common/op.fc
+        line: 7
+        text: 'const op::burn_notification_ext'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 4
+        text: 'if ctx.at(OPCODE) == op::burn_notification_ext {'
+      - file: contracts/pool/msgs/lp_wallet.fc
+        line: 95
+        text: 'storage::save();'
+      - file: tests/ConstProduct.spec.ts
+        line: 1904
+        text: "it('should burn liquidity', async () => {"
+      - file: tests/ConstSum.spec.ts
+        line: 1378
+        text: "it('should burn liquidity', async () => {"
+      - file: tests/WeightedCPI.spec.ts
+        line: 1473
+        text: "it('should burn liquidity', async () => {"
+  source_scope_restricted: true
+  scope_assets_only: true
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  methodology_audit_exit: NOT_AVAILABLE
+  required_evidence_complete: true
+  no_fabrication: true
+  shippable: false
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_DEADEND
+  rejection_reason: 'LPWallet restores balance only for the two protocol bounce opcodes internal_transfer and burn_notification_ext, then persists the exact encoded amount. transfer_notification and excesses are ordinary outbound-recipient bodies and are rejected by the bounce partition without save; invalid normal senders fail before persistence. No attacker-positive balance or persistent-state delta is reachable.'
+  duplicate_family: 'iter_67 callback rollback, iter_71 direct-add identity clearance, iter_123 refund/direct-add lifecycle, iter_130 DESTROY_IF_ZERO ordering, iter_172 callback replay identity, iter_198 zero-selector residual, iter_199 callback minimum-zero selector, iter_202 destroy/redeploy identity, iter_221 post-send commit order, iter_256 callback StateInit/carry, iter_263 partial/redeploy callback, iter_264 failure redeploy partial account, iter_265 callback math catch, iter_266 Vault destroy/redeploy identity, and iter_267 LPAccount reset-gas floor'
+  caller_match_count: 49
+  caller_unique_files: 9
+  cascade_verbatim_hit_count: 25
+  cross_file_anchor_count: 21
+  caller_paths:
+    - contracts/lp_wallet.fc
+    - contracts/lp_wallet/op.fc
+    - contracts/lp_wallet/storage.fc
+    - contracts/common/contracts.fc
+    - contracts/common/op.fc
+    - contracts/pool/msgs/lp_wallet.fc
+    - tests/ConstProduct.spec.ts
+    - tests/ConstSum.spec.ts
+    - tests/WeightedCPI.spec.ts
+  callers_grep_artifact: iter_268/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_268/poc_lp_wallet_bounce_notification_opcode_partition.test.js
+    poc_run_log: iter_268/poc_lp_wallet_bounce_notification_opcode_partition.run.log
+    live_regression_log: iter_268/live-lp-wallet-burn-bounce-regression.run.log
+    prior_audit: iter_268/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_268/poc_lp_wallet_bounce_notification_opcode_partition.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_268/poc_lp_wallet_bounce_notification_opcode_partition.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.1s static; 16.559s integration'
+    result: 'PASS; 21 cross-file anchors, seven opcode/sender cases, exact accepted bounce restoration, rejected notification/excess paths, three live burn regressions, and zero persistent attacker delta'
+  prior_art_check:
+    queries:
+      - 'git history and prior STATUS.yaml scan for bounce accounting, child-token restoration, save ordering, and notification/excess dispatch'
+      - 'GitHub API R15 issue and PR searches for on_bounce/transfer_notification/excesses and burn_notification_ext/internal_transfer balance restoration'
+    results:
+      - 'iter_67, iter_71, iter_123, iter_130, iter_172, iter_198, iter_199, iter_202, iter_221, iter_256, iter_263, iter_264, iter_265, iter_266, and iter_267: adjacent lifecycle, balance, and identity families closed'
+    r15_disclosure_check:
+      gh_search_terms_used:
+        - 'repo:ston-fi/dex-core-v2 "on_bounce" "transfer_notification" "excesses" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "on_bounce" "transfer_notification" "excesses" is:pr'
+        - 'repo:ston-fi/dex-core-v2 "burn_notification_ext" "internal_transfer" "balance +=" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "burn_notification_ext" "internal_transfer" "balance +=" is:pr'
+      gh_search_hits: 0
+      evidence_files:
+        - iter_268/r15-wallet-bounce-opcode-issue.json
+        - iter_268/r15-wallet-bounce-opcode-pr.json
+        - iter_268/r15-wallet-bounce-balance-issue.json
+        - iter_268/r15-wallet-bounce-balance-pr.json
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "on_bounce" "transfer_notification" "excesses" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "on_bounce" "transfer_notification" "excesses" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "burn_notification_ext" "internal_transfer" "balance +=" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "burn_notification_ext" "internal_transfer" "balance +=" is:pr'
+    gh_search_hits: 0
+    evidence_files:
+      - iter_268/r15-wallet-bounce-opcode-issue.json
+      - iter_268/r15-wallet-bounce-opcode-pr.json
+      - iter_268/r15-wallet-bounce-balance-issue.json
+      - iter_268/r15-wallet-bounce-balance-pr.json
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: PRE_KILLED_DUPLICATE
+  shadow_mode: true
+  caller_path: iter_268/callers-grep.txt
+  caller_match_count: 49
+  caller_unique_files: 9
+  prior_audit_path: iter_268/prior-audit-git.log
+  prior_family_matches: [iter67, iter71, iter123, iter130, iter172, iter198, iter199, iter202, iter221, iter256, iter263, iter264, iter265, iter266, iter267]
+  r15_evidence_files:
+    - iter_268/r15-wallet-bounce-opcode-issue.json
+    - iter_268/r15-wallet-bounce-opcode-pr.json
+    - iter_268/r15-wallet-bounce-balance-issue.json
+    - iter_268/r15-wallet-bounce-balance-pr.json
+  source_conclusion: 'DE5 is a duplicate LPWallet bounce-accounting and opcode-dispatch family. Only recognized protocol bounce bodies restore exact jetton amounts; notification and excess bodies are not accepted by the bounce handler, and invalid normal senders do not persist. Three live burn regressions pass; no attacker-positive token, balance, or persistent-state delta was demonstrated.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_268/poc_lp_wallet_bounce_notification_opcode_partition.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_268/poc_lp_wallet_bounce_notification_opcode_partition.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_268/live-lp-wallet-burn-bounce-regression.run.log
+    result: PASS

@@ -1,0 +1,30 @@
+COMMAND: git log --all --format='%h %ad %s' --date=short --max-count=22 -- CHAIN_HYPOTHESIS_TABLE.md
+LATEST_COMMITS:
+e508e14 shadow: complete iter267 DE1
+1e28530 shadow: complete iter266 DE4
+7fba5e8 shadow: complete iter265 DE3
+04fa4eb shadow: complete iter264 DE2
+e909e01 shadow: complete iter263 DD5
+610be24 shadow: complete iter256 CC3
+c55c739 shadow: complete iter130 AD5 deadend
+3b2a767 shadow: complete iter123 AC3 deadend
+
+PRIOR_RELEVANT_AUDITS:
+iter_67 callback rollback and deterministic child identity: closed; refund routing and child lifecycle were preserved.
+iter_71 direct-add identity clearance: closed; full consumption and residual boundaries do not resurrect stale LPAccount state.
+iter_123 refund/direct-add lifecycle: closed; full consumption destroys, partial residual saves, and failure fallback does not mint.
+iter_130 mint/destroy/save order: closed; DESTROY_IF_ZERO and save ordering do not resurrect stale amounts.
+iter_172 callback replay/query identity: closed; replay and tuple permutations do not duplicate callback or LP mint.
+iter_198 direct-add zero-selector residual: closed; all/partial/one-sided/overdraw models conserve stored legs.
+iter_199 callback minimum-zero selector: closed; zero-minimum failure does not create a persistent Pool delta.
+iter_202 refund destroy/redeploy identity: closed; failure StateInit redeployment preserves the user/pool tuple.
+iter_221 direct-add post-send commit order: closed; queued child execution does not re-enter before save.
+iter_256 callback mint StateInit/carry order: PRE_KILLED_DUPLICATE; deterministic child identity persists across carry paths.
+iter_263 direct-add partial/redeploy callback: PRE_KILLED_DUPLICATE; redeploy lifecycle already covered.
+iter_264 callback failure redeploy into partial account: PRE_KILLED_DUPLICATE; failed legs remain exact and user-gated.
+iter_265 callback math catch/zero liquidity: PRE_KILLED_DUPLICATE; provisional Pool state is not persisted on failure.
+iter_266 Vault destroy/redeploy identity: PRE_KILLED_DUPLICATE; exact owner/token/router tuple is reused after zero-state destruction.
+iter_267 LPAccount reset-gas destroy/redeploy floor: PRE_KILLED_DUPLICATE; caller, storage floor, and exact failure amounts are preserved.
+
+DE5_CHECK: Fresh source audit of LPWallet bounce parsing, accepted restoration opcodes, normal receive sender checks, transfer_notification/excesses construction, and burn-flow callers shows a complete opcode partition. Only protocol bounce bodies for internal_transfer and burn_notification_ext mutate balance; ordinary notification/excess bodies take the unknown-op path without save.
+CONCLUSION: DE5 is a duplicate LPWallet bounce-accounting and opcode-dispatch family. No prior audit supplies a contrary balance or attacker-positive path.
