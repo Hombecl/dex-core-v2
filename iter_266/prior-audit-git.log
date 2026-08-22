@@ -1,0 +1,26 @@
+COMMAND: git log --all --format='%h %ad %s' --date=short --max-count=18 -- CHAIN_HYPOTHESIS_TABLE.md
+LATEST_COMMITS:
+7fba5e8 shadow: complete iter265 DE3
+04fa4eb shadow: complete iter264 DE2
+e909e01 shadow: complete iter263 DD5
+610be24 shadow: complete iter256 CC3
+c55c739 shadow: complete iter130 AD5 deadend
+3b2a767 shadow: complete iter123 AC3 deadend
+
+PRIOR_RELEVANT_AUDITS:
+iter_67 callback rollback and direct-add identity: closed; deterministic child-account ownership and refund routing were preserved.
+iter_71 direct-add lifecycle: closed; callback and residual state do not cross the deterministic account identity boundary.
+iter_123 refund/direct-add lifecycle: closed; full consumption destroys, partial state saves, and failure fallback cannot mint.
+iter_130 mint/destroy/save order: closed; DESTROY_IF_ZERO ordering does not resurrect stale state.
+iter_172 callback replay/query identity: closed; replay and tuple permutations do not duplicate callback or LP mint.
+iter_198 zero-selector residual: closed; all/partial/one-sided/overdraw paths conserve selected legs.
+iter_199 callback minimum-zero selector: closed; zero-minimum failure does not create a persistent Pool delta.
+iter_202 refund destroy/redeploy identity: closed; StateInit redeployment preserves deterministic owner/pool tuple.
+iter_221 direct-add post-send commit order: closed; queued child execution cannot re-enter before save.
+iter_256 callback mint StateInit/carry order: PRE_KILLED_DUPLICATE; deterministic child identity persists across StateInit.
+iter_263 direct-add partial/redeploy callback: PRE_KILLED_DUPLICATE; redeploy lifecycle already covered.
+iter_264 callback failure redeploy into partial account: PRE_KILLED_DUPLICATE; stored failed legs remain exact and user-gated.
+iter_265 callback math catch/zero liquidity: PRE_KILLED_DUPLICATE; provisional Pool state is not persisted on failure.
+
+DE4_CHECK: Fresh source audit of vault_idata(owner, token, router), pay_vault, vault_pay_to, deposit_ref_fee, withdraw_fee, DESTROY_IF_ZERO, and getter identity shows the same tuple is used before and after zero-state destruction. Existing ConstProduct and ConstSum vault tests cover two withdrawal cycles at the same deterministic address.
+CONCLUSION: DE4 is a duplicate lifecycle/identity family. No prior audit supplies a contrary recipient, ownership, or persistent-balance path.

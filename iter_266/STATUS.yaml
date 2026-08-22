@@ -1,0 +1,210 @@
+final_verdict: PRE_KILLED_DUPLICATE
+schema_version: shadow-v1
+iteration: 266
+phase: completed
+cell_id: DE4
+cell_label: router_pay_vault_withdraw_after_zero_stateinit
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: DE4
+  final_verdict: PRE_KILLED_DUPLICATE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/common/contracts.fc
+        line: 1
+        text: '(cell) vault_idata(slice _user_address, slice _token_address, slice _router_address) inline {'
+      - file: contracts/common/contracts.fc
+        line: 194
+        text: 'return begin_message(op::pay_vault)'
+      - file: contracts/common/contracts.fc
+        line: 293
+        text: 'return begin_message(op::deposit_ref_fee)'
+      - file: contracts/common/op.fc
+        line: 25
+        text: 'const op::pay_vault'
+      - file: contracts/common/op.fc
+        line: 26
+        text: 'const op::vault_pay_to'
+      - file: contracts/common/op.fc
+        line: 27
+        text: 'const op::deposit_ref_fee'
+      - file: contracts/common/op.fc
+        line: 28
+        text: 'const op::withdraw_fee'
+      - file: contracts/router.fc
+        line: 23
+        text: 'if handle_pool_messages() {'
+      - file: contracts/router.fc
+        line: 40
+        text: 'if handle_vault_messages() {'
+      - file: contracts/router/get.fc
+        line: 25
+        text: 'vault_idata(user, token, my_address()),'
+      - file: contracts/router/msgs/pool.fc
+        line: 94
+        text: 'if ctx.at(OPCODE) == op::pay_vault {'
+      - file: contracts/router/msgs/pool.fc
+        line: 113
+        text: 'throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER)));'
+      - file: contracts/router/msgs/pool.fc
+        line: 119
+        text: 'vault_idata('
+      - file: contracts/router/msgs/pool.fc
+        line: 127
+        text: 'msgs::send_with_stateinit('
+      - file: contracts/router/msgs/pool.fc
+        line: 131
+        text: 'vault::deposit_ref_fee('
+      - file: contracts/router/msgs/vault.fc
+        line: 3
+        text: 'if ctx.at(OPCODE) == op::vault_pay_to {'
+      - file: contracts/router/msgs/vault.fc
+        line: 10
+        text: 'vault_idata(to_address, token_address, my_address()),'
+      - file: contracts/router/msgs/vault.fc
+        line: 13
+        text: 'throw_unless(error::invalid_caller, equal_slices(vault~address(params::workchain), ctx.at(SENDER)));'
+      - file: contracts/vault.fc
+        line: 40
+        text: 'if (ctx.at(OPCODE) == op::deposit_ref_fee) & equal_slices(ctx.at(SENDER), storage::router_address) {'
+      - file: contracts/vault.fc
+        line: 43
+        text: 'storage::deposited_amount += in_msg_body~load_coins();'
+      - file: contracts/vault.fc
+        line: 51
+        text: 'if ctx.at(OPCODE) == op::withdraw_fee {'
+      - file: contracts/vault.fc
+        line: 62
+        text: 'router::vault_pay_to('
+      - file: contracts/vault.fc
+        line: 66
+        text: 'CARRY_ALL_BALANCE | DESTROY_IF_ZERO);'
+      - file: contracts/vault.fc
+        line: 68
+        text: 'storage::deposited_amount = 0;'
+      - file: contracts/vault.fc
+        line: 69
+        text: 'storage::save();'
+      - file: tests/ConstProduct.spec.ts
+        line: 1390
+        text: "it('should collect ref fee from vault', async () => {"
+      - file: tests/ConstProduct.spec.ts
+        line: 1415
+        text: 'let msgResult = await vault.sendWithdrawFee(deployer.getSender());'
+      - file: tests/ConstSum.spec.ts
+        line: 1224
+        text: "it('should collect ref fee from vault', async () => {"
+      - file: tests/ConstSum.spec.ts
+        line: 1249
+        text: 'let msgResult = await vault.sendWithdrawFee(deployer.getSender());'
+  source_scope_restricted: true
+  scope_assets_only: true
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  methodology_audit_exit: NOT_AVAILABLE
+  required_evidence_complete: true
+  no_fabrication: true
+  shippable: false
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_DEADEND
+  rejection_reason: 'Vault derivation, deposit, withdrawal routing, and getter all bind owner, token, and router into the same StateInit tuple. Anyone may trigger withdraw_fee, but the exact stored owner receives the exact stored token amount through a router identity check. DESTROY_IF_ZERO clears only the zeroed instance; later pay_vault recreates the same address and tuple, so no recipient substitution, stale carry, or attacker-positive balance delta is reachable.'
+  duplicate_family: 'iter_67 callback rollback, iter_71 direct-add identity clearance, iter_123 refund/direct-add lifecycle, iter_130 DESTROY_IF_ZERO ordering, iter_172 callback replay identity, iter_198 zero-selector residual, iter_199 callback minimum-zero selector, iter_202 destroy/redeploy identity, iter_221 post-send commit order, iter_256 callback StateInit/carry, iter_263 partial/redeploy callback, iter_264 failure redeploy partial account, and iter_265 callback math catch'
+  caller_match_count: 39
+  caller_unique_files: 9
+  cascade_verbatim_hit_count: 29
+  cross_file_anchor_count: 25
+  caller_paths:
+    - contracts/common/contracts.fc
+    - contracts/common/op.fc
+    - contracts/router.fc
+    - contracts/router/get.fc
+    - contracts/router/msgs/pool.fc
+    - contracts/router/msgs/vault.fc
+    - contracts/vault.fc
+    - tests/ConstProduct.spec.ts
+    - tests/ConstSum.spec.ts
+  callers_grep_artifact: iter_266/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_266/poc_router_pay_vault_withdraw_after_zero_stateinit.test.js
+    poc_run_log: iter_266/poc_router_pay_vault_withdraw_after_zero_stateinit.run.log
+    live_regression_log: iter_266/live-referral-vault-regression.run.log
+    prior_audit: iter_266/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_266/poc_router_pay_vault_withdraw_after_zero_stateinit.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_266/poc_router_pay_vault_withdraw_after_zero_stateinit.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.1s static; 10.418s integration'
+    result: 'PASS; 25 cross-file anchors, six lifecycle cases, two StateInit recreation cases, two identity-rejection cases, exact token conservation, and zero persistent attacker delta'
+  prior_art_check:
+    queries:
+      - 'git history and prior STATUS.yaml scan for DESTROY_IF_ZERO, StateInit redeploy, callback identity, recipient routing, and saved-balance lifecycle'
+      - 'GitHub API R15 issue and PR searches for DESTROY_IF_ZERO/withdraw_fee/vault_idata and pay_vault/vault_pay_to/deposited_amount combinations'
+    results:
+      - 'iter_67, iter_71, iter_123, iter_130, iter_172, iter_198, iter_199, iter_202, iter_221, iter_256, iter_263, iter_264, and iter_265: adjacent lifecycle and deterministic-identity families closed'
+    r15_disclosure_check:
+      gh_search_terms_used:
+        - 'repo:ston-fi/dex-core-v2 "DESTROY_IF_ZERO" "withdraw_fee" "vault_idata" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "DESTROY_IF_ZERO" "withdraw_fee" "vault_idata" is:pr'
+        - 'repo:ston-fi/dex-core-v2 "pay_vault" "vault_pay_to" "deposited_amount" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "pay_vault" "vault_pay_to" "deposited_amount" is:pr'
+      gh_search_hits: 0
+      evidence_files:
+        - iter_266/r15-vault-destroy-withdraw-issue.json
+        - iter_266/r15-vault-destroy-withdraw-pr.json
+        - iter_266/r15-vault-pay-deposit-issue.json
+        - iter_266/r15-vault-pay-deposit-pr.json
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "DESTROY_IF_ZERO" "withdraw_fee" "vault_idata" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "DESTROY_IF_ZERO" "withdraw_fee" "vault_idata" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "pay_vault" "vault_pay_to" "deposited_amount" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "pay_vault" "vault_pay_to" "deposited_amount" is:pr'
+    gh_search_hits: 0
+    evidence_files:
+      - iter_266/r15-vault-destroy-withdraw-issue.json
+      - iter_266/r15-vault-destroy-withdraw-pr.json
+      - iter_266/r15-vault-pay-deposit-issue.json
+      - iter_266/r15-vault-pay-deposit-pr.json
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: PRE_KILLED_DUPLICATE
+  shadow_mode: true
+  caller_path: iter_266/callers-grep.txt
+  caller_match_count: 39
+  caller_unique_files: 9
+  prior_audit_path: iter_266/prior-audit-git.log
+  prior_family_matches: [iter67, iter71, iter123, iter130, iter172, iter198, iter199, iter202, iter221, iter256, iter263, iter264, iter265]
+  r15_evidence_files:
+    - iter_266/r15-vault-destroy-withdraw-issue.json
+    - iter_266/r15-vault-destroy-withdraw-pr.json
+    - iter_266/r15-vault-pay-deposit-issue.json
+    - iter_266/r15-vault-pay-deposit-pr.json
+  source_conclusion: 'DE4 is a duplicate deterministic-vault lifecycle family. The public withdrawal trigger does not choose the recipient: Vault storage supplies owner and token, Router recomputes the same StateInit identity, and zero-state destruction is followed by exact-tuple recreation. The two live referral-vault regressions pass; no attacker-positive token, ownership, or persistent-state delta was demonstrated.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_266/poc_router_pay_vault_withdraw_after_zero_stateinit.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_266/poc_router_pay_vault_withdraw_after_zero_stateinit.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_266/live-referral-vault-regression.run.log
+    result: PASS

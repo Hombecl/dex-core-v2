@@ -1,0 +1,11 @@
+COMMAND: npm test -- --runInBand tests/ConstProduct.spec.ts tests/ConstSum.spec.ts -t 'should collect ref fee from vault'
+WORKDIR: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon
+EXIT: 0
+RESULT:
+PASS tests/ConstProduct.spec.ts (6.207 s)
+  should collect ref fee from vault (1387 ms)
+PASS tests/ConstSum.spec.ts
+  should collect ref fee from vault (1139 ms)
+Test Suites: 2 passed, 2 total
+Tests: 57 skipped, 2 passed, 59 total
+Time: 10.418 s

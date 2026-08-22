@@ -1,0 +1,34 @@
+CALLERS_GREP_DONE=true
+COMMAND: rg -n "vault_idata|op::pay_vault|op::vault_pay_to|op::deposit_ref_fee|op::withdraw_fee|handle_pool_messages|handle_vault_messages|DESTROY_IF_ZERO|deposited_amount|storage::save|send_with_stateinit|router::vault_pay_to|vault::deposit_ref_fee|vault~address" contracts/common/contracts.fc contracts/common/op.fc contracts/router.fc contracts/router/get.fc contracts/router/msgs/pool.fc contracts/router/msgs/vault.fc contracts/vault.fc tests/ConstProduct.spec.ts tests/ConstSum.spec.ts
+WORKDIR: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon
+RESULT: 39 implementation anchors across 7 implementation files; test lifecycle anchors are included in the PoC across 9 total evidence files.
+KEY_CALLERS:
+contracts/router.fc:23:    if handle_pool_messages() {
+contracts/router.fc:40:    if handle_vault_messages() {
+contracts/common/contracts.fc:1:(cell) vault_idata(slice _user_address, slice _token_address, slice _router_address) inline {
+contracts/common/contracts.fc:194:    return begin_message(op::pay_vault)
+contracts/common/contracts.fc:293:    return begin_message(op::deposit_ref_fee)
+contracts/router/get.fc:25:        vault_idata(user, token, my_address()),
+contracts/router/get.fc:29:    return vault~address(params::workchain);
+contracts/router/msgs/pool.fc:94:    if ctx.at(OPCODE) == op::pay_vault {
+contracts/router/msgs/pool.fc:118:        var vault = contracts::from_sources(
+contracts/router/msgs/pool.fc:119:            vault_idata(
+contracts/router/msgs/pool.fc:127:        msgs::send_with_stateinit(
+contracts/router/msgs/pool.fc:131:            vault::deposit_ref_fee(
+contracts/router/msgs/vault.fc:3:    if ctx.at(OPCODE) == op::vault_pay_to {
+contracts/router/msgs/vault.fc:10:            vault_idata(to_address, token_address, my_address()),
+contracts/router/msgs/vault.fc:13:        throw_unless(error::invalid_caller, equal_slices(vault~address(params::workchain), ctx.at(SENDER)));
+contracts/vault.fc:40:    if (ctx.at(OPCODE) == op::deposit_ref_fee) & equal_slices(ctx.at(SENDER), storage::router_address) {
+contracts/vault.fc:43:        storage::deposited_amount += in_msg_body~load_coins();
+contracts/vault.fc:44:        storage::save();
+contracts/vault.fc:51:    if ctx.at(OPCODE) == op::withdraw_fee {
+contracts/vault.fc:62:            router::vault_pay_to(
+contracts/vault.fc:66:            CARRY_ALL_BALANCE | DESTROY_IF_ZERO);
+contracts/vault.fc:68:        storage::deposited_amount = 0;
+contracts/vault.fc:69:        storage::save();
+tests/ConstProduct.spec.ts:1390:        it('should collect ref fee from vault', async () => {
+tests/ConstProduct.spec.ts:1415:        let msgResult = await vault.sendWithdrawFee(deployer.getSender());
+tests/ConstProduct.spec.ts:1437:        msgResult = await vault.sendWithdrawFee(alice.getSender());
+tests/ConstSum.spec.ts:1224:        it('should collect ref fee from vault', async () => {
+tests/ConstSum.spec.ts:1249:        let msgResult = await vault.sendWithdrawFee(deployer.getSender());
+tests/ConstSum.spec.ts:1270:        msgResult = await vault.sendWithdrawFee(alice.getSender());

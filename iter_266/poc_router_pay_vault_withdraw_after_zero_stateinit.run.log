@@ -1,0 +1,5 @@
+COMMAND: node iter_266/poc_router_pay_vault_withdraw_after_zero_stateinit.test.js
+WORKDIR: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-flash-wt/blind-test-vps/ston-dot-fi-dex-smart-contracts-v2-flash
+EXIT: 0
+OUTPUT:
+{"result":"PASS","classification":"PRE_KILLED_DUPLICATE","cell":"DE4","cross_file_anchors":25,"cases":6,"stateinit_redeploy_cases":2,"identity_rejection_cases":2,"conservation":{"TOKEN0":18,"TOKEN1":13},"persistent_attacker_delta":0,"reason":"Vault address derivation includes owner, token, and router in every deposit, withdrawal, getter, and router identity check. Anyone may trigger withdrawal, but the exact stored owner/token tuple receives the exact deposited amount. DESTROY_IF_ZERO removes only the zeroed Vault instance; a later pay_vault recreates the same deterministic address and tuple, so no mismatched recipient or attacker-positive persistent delta is reachable."}
