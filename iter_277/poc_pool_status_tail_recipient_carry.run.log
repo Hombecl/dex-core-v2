@@ -1,0 +1,5 @@
+COMMAND: node iter_277/poc_pool_status_tail_recipient_carry.test.js
+SOURCE_MODEL: contracts/router/msgs/admin.fc lines 86-114; contracts/common/utils.fc lines 1-4; contracts/pool/msgs/router.fc lines 294-300
+EXIT: 0
+PASS 6 status/recipient cases; external attacker delta = 0; recipient selection is admin-controlled TON carry only
+RESULT: Router tail, outsider, wrong-workchain, and direct-Pool sender cases do not reach the Pool state mutation. The valid path toggles the lock and sends only residual TON to the trusted admin-selected recipient.

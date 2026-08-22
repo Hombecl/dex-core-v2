@@ -1,0 +1,8 @@
+{
+  "query": "repo:ston-fi/dex-core-v2 internal_update_status excesses_recipient is:pr",
+  "endpoint": "https://api.github.com/search/issues",
+  "searched_at": "2026-08-22",
+  "total_count": 0,
+  "incomplete_results": false,
+  "items": []
+}

@@ -1,0 +1,42 @@
+COMMAND: rg -n -H 'internal_update_status|update_pool_status|get_excesses_address|excesses_recipient|CARRY_ALL_BALANCE|QCARRY_ALL_BALANCE|in_msg_body\.end_parse|is_locked|sendUpdatePoolStatus|should lock & unlock pool|should reset pool gas' contracts/router/msgs/admin.fc contracts/pool/msgs/router.fc contracts/common/utils.fc contracts/common/contracts.fc contracts/common/op.fc contracts/pool.fc contracts/router.fc wrappers/Router.ts tests/System.spec.ts tests/ConstProduct.spec.ts
+SOURCE_ROOT: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon
+CALLER_MATCH_COUNT: 66
+CALLER_UNIQUE_FILES: 8
+contracts/common/contracts.fc:274:(cell) pool::internal_update_status(slice _excesses_recipient) inline {
+contracts/common/contracts.fc:275:    return begin_message(op::internal_update_status)
+contracts/common/contracts.fc:276:        .store_slice(_excesses_recipient)
+contracts/router/msgs/admin.fc:18:        slice excesses_recipient = get_excesses_address(jetton_info~load_msg_addr());
+contracts/router/msgs/admin.fc:20:        in_msg_body.end_parse();
+contracts/router/msgs/admin.fc:63:        slice excesses_recipient = get_excesses_address(in_msg_body~load_msg_addr());
+contracts/router/msgs/admin.fc:64:        in_msg_body.end_parse();
+contracts/router/msgs/admin.fc:80:        pool::reset_gas(excesses_recipient),
+contracts/router/msgs/admin.fc:86:    if ctx.at(OPCODE) == op::update_pool_status {
+contracts/router/msgs/admin.fc:94:        slice excesses_recipient = get_excesses_address(in_msg_body~load_msg_addr());
+contracts/router/msgs/admin.fc:95:        in_msg_body.end_parse();
+contracts/router/msgs/admin.fc:111:        pool::internal_update_status(excesses_recipient),
+contracts/router/msgs/admin.fc:112:        CARRY_ALL_BALANCE
+contracts/router/msgs/admin.fc:149:        storage::is_locked = storage::is_locked ? false : true;
+contracts/pool/msgs/router.fc:80:            throw_arg_if(op::swap_pool_locked, 1, storage::is_locked);
+contracts/pool/msgs/router.fc:288:    if ctx.at(OPCODE) == op::reset_gas {
+contracts/pool/msgs/router.fc:290:        utils::send_excesses(0, in_msg_body~load_msg_addr(), QCARRY_ALL_BALANCE);
+contracts/pool/msgs/router.fc:294:    if ctx.at(OPCODE) == op::internal_update_status {
+contracts/pool/msgs/router.fc:295:        storage::is_locked = storage::is_locked ? false : true;
+contracts/pool/msgs/router.fc:296:        storage::save();
+contracts/pool/msgs/router.fc:298:        utils::send_excesses(0, in_msg_body~load_msg_addr(), QCARRY_ALL_BALANCE);
+contracts/common/utils.fc:1:slice get_excesses_address(slice _addr) impure inline {
+contracts/common/utils.fc:2:    _addr = _addr.address::is_none() ? ctx.at(SENDER) : _addr;
+contracts/common/utils.fc:3:    throw_unless(error::wrong_workchain, _addr.address::check_workchain(params::workchain));
+contracts/common/op.fc:24:const op::update_pool_status              = "update_pool_status query_id:uint64 jetton_wallet0:MsgAddress jetton_wallet1:MsgAddress excesses_recipient:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+contracts/common/op.fc:30:const op::internal_update_status          = "internal_update_status query_id:uint64 excesses_recipient:MsgAddress = InternalMsgBody"c & 0x7fffffff;
+wrappers/Router.ts:218:    async sendUpdatePoolStatus(provider: ContractProvider, via: Sender, opts: {
+wrappers/Router.ts:226:            body: beginMessage(routerOpcodes.updatePoolStatus)
+wrappers/Router.ts:229:                .storeAddress(opts.excessesAddress)
+tests/System.spec.ts:394:        it('should lock & unlock pool', async () => {
+tests/System.spec.ts:398:            const sendUpdatePoolStatusResult = await router.sendUpdatePoolStatus(admin.getSender(), {
+tests/System.spec.ts:402:            expect(sendUpdatePoolStatusResult.transactions).toHaveTransaction({
+tests/System.spec.ts:411:            const _ = await router.sendUpdatePoolStatus(admin.getSender(), {
+tests/System.spec.ts:352:        it('should reset pool gas', async () => {
+tests/System.spec.ts:366:        it('should reset pool gas (different address)', async () => {
+tests/ConstProduct.spec.ts:1286:            msgResult = await router.sendUpdatePoolStatus(deployer.getSender(), {
+CASCADE: admin -> Router update_pool_status -> get_excesses_address/workchain check -> deterministic Pool StateInit -> Pool internal_update_status -> lock toggle/storage save -> QCARRY_ALL_BALANCE excess to the supplied recipient. The Pool sender gate and Router admin gate prevent an external caller from entering this chain.
+SCOPE: only selected production contracts, wrappers, and in-repo tests were inspected; no out-of-scope candidate is emitted.

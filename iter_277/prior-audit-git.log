@@ -1,0 +1,13 @@
+COMMAND: git log --all --format='%h %ad %s' --date=short --max-count=42 -- CHAIN_HYPOTHESIS_TABLE.md
+LATEST_COMMITS:
+be54e4f 2026-08-22 shadow: complete iter276 DG3
+ba71501 2026-08-22 shadow: complete iter275 DG2
+695e60e shadow: complete iter274 DG1
+a1e7798 shadow: complete iter273 DF5
+0fb6990 2026-08-22 shadow: complete iter268 DE5
+8518247 2026-08-22 shadow: complete iter259 DD1
+
+PRIOR_RELEVANT_AUDITS:
+AF3 router_admin_reset_pool_gas_recipient and AF4 pool_reset_gas_body_tail_parse established that the Router admin handler validates the wallet/excess tuple, derives the deterministic Pool, and that Pool accepts the internal reset only from its stored Router. They closed recipient selection and trailing-body concerns as trusted-admin TON-only behavior. AX2 pool_internal_set_fees_tail_excess_address closed the same Router-to-Pool no-terminal-parse shape for the fee update under trusted sender control. P10 governance families and AH3/DF4 sender-precedence families also covered privileged state transitions and role binding.
+DG4 is the status-toggle sibling: Router terminal-parses update_pool_status before emitting pool::internal_update_status; Pool toggles is_locked only after the Router sender gate, saves, and sends excess using the body recipient. The only actor selecting that recipient is the trusted admin path.
+CONCLUSION: classify as KILLED_TRUSTED_ON_TRUSTED unless an external caller can enter the Router admin branch or forge the stored Router sender.

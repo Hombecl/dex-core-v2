@@ -1,0 +1,162 @@
+final_verdict: KILLED_TRUSTED_ON_TRUSTED
+schema_version: shadow-v1
+iteration: 277
+phase: completed
+cell_id: DG4
+cell_label: pool_internal_update_status_tail_recipient_carry
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: DG4
+  final_verdict: KILLED_TRUSTED_ON_TRUSTED
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/common/op.fc
+        line: 24
+        text: 'const op::update_pool_status              = "update_pool_status query_id:uint64 jetton_wallet0:MsgAddress jetton_wallet1:MsgAddress excesses_recipient:MsgAddress = InternalMsgBody"c & 0x7fffffff;'
+      - file: contracts/common/op.fc
+        line: 30
+        text: 'const op::internal_update_status          = "internal_update_status query_id:uint64 excesses_recipient:MsgAddress = InternalMsgBody"c & 0x7fffffff;'
+      - file: contracts/common/utils.fc
+        line: 1
+        text: 'slice get_excesses_address(slice _addr) impure inline {'
+      - file: contracts/common/utils.fc
+        line: 2
+        text: '_addr = _addr.address::is_none() ? ctx.at(SENDER) : _addr;'
+      - file: contracts/common/utils.fc
+        line: 3
+        text: 'throw_unless(error::wrong_workchain, _addr.address::check_workchain(params::workchain));'
+      - file: contracts/router/msgs/admin.fc
+        line: 86
+        text: 'if ctx.at(OPCODE) == op::update_pool_status {'
+      - file: contracts/router/msgs/admin.fc
+        line: 94
+        text: 'slice excesses_recipient = get_excesses_address(in_msg_body~load_msg_addr());'
+      - file: contracts/router/msgs/admin.fc
+        line: 95
+        text: 'in_msg_body.end_parse();'
+      - file: contracts/router/msgs/admin.fc
+        line: 111
+        text: 'pool::internal_update_status(excesses_recipient),'
+      - file: contracts/router/msgs/admin.fc
+        line: 112
+        text: 'CARRY_ALL_BALANCE'
+      - file: contracts/common/contracts.fc
+        line: 274
+        text: '(cell) pool::internal_update_status(slice _excesses_recipient) inline {'
+      - file: contracts/common/contracts.fc
+        line: 276
+        text: '.store_slice(_excesses_recipient)'
+      - file: contracts/pool/msgs/router.fc
+        line: 294
+        text: 'if ctx.at(OPCODE) == op::internal_update_status {'
+      - file: contracts/pool/msgs/router.fc
+        line: 295
+        text: 'storage::is_locked = storage::is_locked ? false : true;'
+      - file: contracts/pool/msgs/router.fc
+        line: 296
+        text: 'storage::save();'
+      - file: contracts/pool/msgs/router.fc
+        line: 298
+        text: 'utils::send_excesses(0, in_msg_body~load_msg_addr(), QCARRY_ALL_BALANCE);'
+      - file: tests/System.spec.ts
+        line: 394
+        text: 'it(''should lock & unlock pool'', async () => {'
+      - file: tests/System.spec.ts
+        line: 398
+        text: 'const sendUpdatePoolStatusResult = await router.sendUpdatePoolStatus(admin.getSender(), {'
+  source_scope_restricted: true
+  scope_assets_only: true
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  methodology_audit_exit: NOT_AVAILABLE
+  required_evidence_complete: true
+  no_fabrication: true
+  shippable: false
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_KILL
+  rejection_reason: 'The candidate requires the trusted admin to enter Router update_pool_status and choose the excess recipient. Router terminal-parses and workchain-checks the message before sending a Pool-only opcode; Pool authenticates the stored Router, toggles is_locked, saves, and sends only residual TON. No external caller can inject the tail or forge the sender.'
+  duplicate_family: 'AF3 router admin reset-pool-gas recipient, AF4 Pool reset-gas body-tail parse, AX2 Pool internal-set-fees tail/excess, P10 governance, and AH3/DF4 sender-precedence families'
+  kill_rule_applied: trusted_on_trusted_griefing_filter
+  caller_match_count: 66
+  caller_unique_files: 8
+  cascade_verbatim_hit_count: 17
+  cross_file_anchor_count: 14
+  caller_paths:
+    - contracts/router/msgs/admin.fc
+    - contracts/pool/msgs/router.fc
+    - contracts/common/utils.fc
+    - contracts/common/contracts.fc
+    - contracts/common/op.fc
+    - wrappers/Router.ts
+    - tests/System.spec.ts
+    - tests/ConstProduct.spec.ts
+  callers_grep_artifact: iter_277/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_277/poc_pool_status_tail_recipient_carry.test.js
+    poc_run_log: iter_277/poc_pool_status_tail_recipient_carry.run.log
+    live_regression_log: iter_277/live-pool-status-recipient-regression.run.log
+    prior_audit: iter_277/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_277/poc_pool_status_tail_recipient_carry.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_277/poc_pool_status_tail_recipient_carry.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.5s static; 5.424s integration'
+    result: 'PASS; six status/recipient cases, eight caller files, 14 cross-file anchors, Router tail/admin/workchain gates, Pool sender gate, and zero external attacker delta'
+  prior_art_check:
+    queries:
+      - 'git history and prior STATUS.yaml scan for admin recipient carry, Pool reset-gas tail parsing, internal fee-update tails, governance sender binding, and Pool dispatch precedence'
+      - 'GitHub API R15 issue and PR searches for internal_update_status/excesses_recipient and update_pool_status/get_excesses_address'
+    results:
+      - 'AF3 and AF4 closed the same admin-to-Pool recipient/carry and tail shapes as trusted-admin TON-only behavior; AX2 closed the sibling internal update tail'
+      - 'Fresh exact status and recipient issue/PR searches returned zero hits'
+    r15_disclosure_check:
+      gh_search_terms_used:
+        - 'repo:ston-fi/dex-core-v2 "internal_update_status" "excesses_recipient" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "internal_update_status" "excesses_recipient" is:pr'
+        - 'repo:ston-fi/dex-core-v2 "update_pool_status" "get_excesses_address" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "update_pool_status" "get_excesses_address" is:pr'
+      gh_search_hits: 0
+      evidence_files:
+        - iter_277/r15-pool-status-issue.json
+        - iter_277/r15-pool-status-pr.json
+        - iter_277/r15-pool-status-recipient-issue.json
+        - iter_277/r15-pool-status-recipient-pr.json
+  attacker_privilege:
+    privilege_required: admin
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+evidence:
+  status: KILLED_TRUSTED_ON_TRUSTED
+  shadow_mode: true
+  caller_path: iter_277/callers-grep.txt
+  caller_match_count: 66
+  caller_unique_files: 8
+  prior_audit_path: iter_277/prior-audit-git.log
+  prior_family_matches: [AF3, AF4, AX2, P10, AH3, DF4]
+  r15_evidence_files:
+    - iter_277/r15-pool-status-issue.json
+    - iter_277/r15-pool-status-pr.json
+    - iter_277/r15-pool-status-recipient-issue.json
+    - iter_277/r15-pool-status-recipient-pr.json
+  source_conclusion: 'The status path is a trusted admin operation. Router rejects outsiders and tails, normalizes/validates the excess recipient, and derives the Pool; Pool rejects non-Router senders before toggling and saving. Valid execution changes only the intended lock flag and sends residual TON to the admin-selected address, so the trusted-on-trusted filter kills it.'
+  attacker_privilege:
+    privilege_required: admin
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_277/poc_pool_status_tail_recipient_carry.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_277/poc_pool_status_tail_recipient_carry.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_277/live-pool-status-recipient-regression.run.log
+    result: PASS
