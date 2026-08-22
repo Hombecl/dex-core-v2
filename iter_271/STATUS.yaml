@@ -1,0 +1,190 @@
+final_verdict: PRE_KILLED_DUPLICATE
+schema_version: shadow-v1
+iteration: 271
+phase: completed
+cell_id: DF3
+cell_label: pool_cb_refund_msg_value_negative_split
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: DF3
+  final_verdict: PRE_KILLED_DUPLICATE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/lp_account/msgs/user.fc
+        line: 4
+        text: 'if ctx.at(OPCODE) == op::refund_me {'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 14
+        text: 'throw_unless(error::insufficient_gas, ctx.at(MSG_VALUE) > ctx.at(FWD_FEE) * 7'
+      - file: contracts/lp_account/msgs/user.fc
+        line: 24
+        text: 'pool::cb_refund_me('
+      - file: contracts/lp_account/msgs/user.fc
+        line: 30
+        text: 'CARRY_ALL_BALANCE | DESTROY_IF_ZERO'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 138
+        text: 'if ctx.at(OPCODE) == op::cb_refund_me {'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 153
+        text: '(int gas, int mode) = (0, CARRY_REMAINING_GAS);'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 154
+        text: 'if (tot_am0 > 0) & (tot_am1 > 0){'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 155
+        text: '(gas, mode) = ((ctx.at(MSG_VALUE) - (ctx.at(FWD_FEE) + storage_fee::pool + gas::pool::cb_refund)) / 2, NORMAL);'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 158
+        text: 'if tot_am0 > 0 {'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 162
+        text: 'router::pay_to('
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 178
+        text: 'if tot_am1 > 0 {'
+      - file: contracts/pool/msgs/lp_account.fc
+        line: 182
+        text: 'router::pay_to('
+      - file: contracts/common/contracts.fc
+        line: 29
+        text: '(cell) pool::cb_refund_me('
+      - file: contracts/common/contracts.fc
+        line: 30
+        text: 'return begin_message(op::cb_refund_me)'
+      - file: contracts/common/gas.fc
+        line: 12
+        text: 'const gas::pool::cb_refund = 15000000;'
+      - file: contracts/common/gas.fc
+        line: 25
+        text: 'const gas::lp_account::refund = 10000000;'
+      - file: contracts/common/op.fc
+        line: 17
+        text: 'const op::cb_refund_me'
+      - file: contracts/pool/msgs/router.fc
+        line: 58
+        text: 'router::pay_to('
+      - file: contracts/router/msgs/pool.fc
+        line: 94
+        text: 'if ctx.at(OPCODE) == op::pay_vault {'
+      - file: tests/ConstProduct.spec.ts
+        line: 2145
+        text: "it('should refund partial liquidity', async () => {"
+      - file: tests/ConstSum.spec.ts
+        line: 1597
+        text: "it('should refund partial liquidity', async () => {"
+      - file: tests/WeightedCPI.spec.ts
+        line: 1700
+        text: "it('should refund partial liquidity', async () => {"
+  source_scope_restricted: true
+  scope_assets_only: true
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  methodology_audit_exit: NOT_AVAILABLE
+  required_evidence_complete: true
+  no_fabrication: true
+  shippable: false
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_DEADEND
+  rejection_reason: 'The LPAccount upstream inequality rejects low message value before cb_refund_me. Above the gate, two positive legs receive a positive equal NORMAL gas split and exact amounts; one-sided paths send one exact leg with CARRY_REMAINING_GAS. The Pool callback only emits Router pay_to messages and does not mutate reserves, so no retained or duplicated token leg is reachable.'
+  duplicate_family: 'AP2 dual-leg refund mode split, R2 LP burn refund, P3xC2 refund conservation, AC3 refund/direct-add lifecycle, AF2 burn payload leg split, BB1 burn gas gate, CC1 LPWallet storage floor, DD4 delayed save, and DE1-DE5 lifecycle spiral'
+  caller_match_count: 53
+  caller_unique_files: 10
+  cascade_verbatim_hit_count: 22
+  cross_file_anchor_count: 19
+  caller_paths:
+    - contracts/lp_account/msgs/user.fc
+    - contracts/pool/msgs/lp_account.fc
+    - contracts/common/contracts.fc
+    - contracts/common/gas.fc
+    - contracts/common/op.fc
+    - contracts/pool/msgs/router.fc
+    - contracts/router/msgs/pool.fc
+    - tests/ConstProduct.spec.ts
+    - tests/ConstSum.spec.ts
+    - tests/WeightedCPI.spec.ts
+  callers_grep_artifact: iter_271/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_271/poc_pool_cb_refund_msg_value_negative_split.test.js
+    poc_run_log: iter_271/poc_pool_cb_refund_msg_value_negative_split.run.log
+    live_regression_log: iter_271/live-pool-refund-gas-regression.run.log
+    prior_audit: iter_271/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_271/poc_pool_cb_refund_msg_value_negative_split.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_271/poc_pool_cb_refund_msg_value_negative_split.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.1s static; 13.945s integration'
+    result: 'PASS; 19 cross-file anchors, six gate/mode/leg cases, exact dual and one-sided amounts, three live partial-refund regressions, and zero persistent attacker delta'
+  prior_art_check:
+    queries:
+      - 'git history and prior STATUS.yaml scan for cb_refund_me, LPAccount gas inequality, dual-leg NORMAL split, one-sided CARRY_REMAINING_GAS, and Router pay_to output'
+      - 'GitHub API R15 issue and PR searches for cb_refund_me/CARRY_REMAINING_GAS/NORMAL and insufficient_gas/cb_refund_me/DESTROY_IF_ZERO combinations'
+    results:
+      - 'AP2, R2, P3xC2, AC3, AF2, BB1, CC1, DD4, DE1-DE5, DF1, and DF2: adjacent refund, burn, carry, and identity families closed'
+    r15_disclosure_check:
+      gh_search_terms_used:
+        - 'repo:ston-fi/dex-core-v2 "cb_refund_me" "CARRY_REMAINING_GAS" "NORMAL" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "cb_refund_me" "CARRY_REMAINING_GAS" "NORMAL" is:pr'
+        - 'repo:ston-fi/dex-core-v2 "insufficient_gas" "cb_refund_me" "DESTROY_IF_ZERO" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "insufficient_gas" "cb_refund_me" "DESTROY_IF_ZERO" is:pr'
+      gh_search_hits: 0
+      evidence_files:
+        - iter_271/r15-pool-refund-mode-split-issue.json
+        - iter_271/r15-pool-refund-mode-split-pr.json
+        - iter_271/r15-pool-refund-gate-issue.json
+        - iter_271/r15-pool-refund-gate-pr.json
+  r15_disclosure_check:
+    gh_search_terms_used:
+      - 'repo:ston-fi/dex-core-v2 "cb_refund_me" "CARRY_REMAINING_GAS" "NORMAL" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "cb_refund_me" "CARRY_REMAINING_GAS" "NORMAL" is:pr'
+      - 'repo:ston-fi/dex-core-v2 "insufficient_gas" "cb_refund_me" "DESTROY_IF_ZERO" is:issue'
+      - 'repo:ston-fi/dex-core-v2 "insufficient_gas" "cb_refund_me" "DESTROY_IF_ZERO" is:pr'
+    gh_search_hits: 0
+    evidence_files:
+      - iter_271/r15-pool-refund-mode-split-issue.json
+      - iter_271/r15-pool-refund-mode-split-pr.json
+      - iter_271/r15-pool-refund-gate-issue.json
+      - iter_271/r15-pool-refund-gate-pr.json
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+audit:
+  methodology_audit_path: null
+  methodology_audit_exit: NOT_AVAILABLE
+  redrill_count: 0
+evidence:
+  status: PRE_KILLED_DUPLICATE
+  shadow_mode: true
+  caller_path: iter_271/callers-grep.txt
+  caller_match_count: 53
+  caller_unique_files: 10
+  prior_audit_path: iter_271/prior-audit-git.log
+  prior_family_matches: [AP2, R2, P3xC2, AC3, AF2, BB1, CC1, DD4, DE1, DE2, DE3, DE4, DE5, DF1, DF2]
+  r15_evidence_files:
+    - iter_271/r15-pool-refund-mode-split-issue.json
+    - iter_271/r15-pool-refund-mode-split-pr.json
+    - iter_271/r15-pool-refund-gate-issue.json
+    - iter_271/r15-pool-refund-gate-pr.json
+  source_conclusion: 'DF3 is a duplicate Pool refund gas-mode and exact-leg conservation family. The upstream gate blocks the low boundary; above it, dual and one-sided output modes conserve exact token legs and the Pool callback has no reserve mutation. Three live partial-refund regressions pass; no attacker-positive token, TON, or persistent-state delta was demonstrated.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_271/poc_pool_cb_refund_msg_value_negative_split.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_271/poc_pool_cb_refund_msg_value_negative_split.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_271/live-pool-refund-gas-regression.run.log
+    result: PASS

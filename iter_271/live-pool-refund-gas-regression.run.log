@@ -1,0 +1,13 @@
+COMMAND: npm test -- --runInBand tests/ConstProduct.spec.ts tests/ConstSum.spec.ts tests/WeightedCPI.spec.ts -t 'should refund partial liquidity$'
+WORKDIR: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon
+EXIT: 0
+RESULT:
+PASS tests/WeightedCPI.spec.ts (5.306 s)
+  should refund partial liquidity (1204 ms)
+PASS tests/ConstSum.spec.ts
+  should refund partial liquidity (917 ms)
+PASS tests/ConstProduct.spec.ts
+  should refund partial liquidity (1172 ms)
+Test Suites: 3 passed, 3 total
+Tests: 81 skipped, 3 passed, 84 total
+Time: 13.945 s

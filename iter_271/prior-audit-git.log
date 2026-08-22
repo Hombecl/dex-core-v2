@@ -1,0 +1,25 @@
+COMMAND: git log --all --format='%h %ad %s' --date=short --max-count=28 -- CHAIN_HYPOTHESIS_TABLE.md
+LATEST_COMMITS:
+36a83d2 shadow: complete iter270 DF2
+00de8ed shadow: complete iter269 DF1
+0fb6990 shadow: complete iter268 DE5
+e508e14 shadow: complete iter267 DE1
+1e28530 shadow: complete iter266 DE4
+7fba5e8 shadow: complete iter265 DE3
+04fa4eb shadow: complete iter264 DE2
+
+PRIOR_RELEVANT_AUDITS:
+AP2 LPAccount dual-leg refund mode split: closed; NORMAL two-leg and CARRY_REMAINING_GAS one-leg paths conserve exact token legs.
+R2 LP burn notification refund: closed; accepted LPWallet sender and Pool refund legs match reserve/supply changes.
+P3xC2 withdraw/refund amount conservation: closed; refund paths do not release more than the stored LP amount.
+AC3 refund/direct-add lifecycle: closed; failure callbacks and direct-add transitions preserve stored legs.
+AF2 LP burn payload wrapper leg split: closed; payload refs do not alter two output amounts.
+BB1 burn insufficient-gas working state: PRE_KILLED_DUPLICATE; upstream gas checks prevent persistent provisional mutation.
+CC1 LPWallet storage-floor notification order: PRE_KILLED_DUPLICATE; low funding reverts before save.
+DD4 LPWallet response after notification: PRE_KILLED_DUPLICATE; delayed save remains atomic.
+DE1 LPAccount reset-gas floor: PRE_KILLED_DUPLICATE; exact storage floor and caller gate preserve carry value.
+DE2-DE5 callback/redeploy/vault/bounce families: PRE_KILLED_DUPLICATE; adjacent async branches conserve value.
+DF1-DF2 Router notification and LPWallet precredit families: PRE_KILLED_DUPLICATE; deterministic identities and transaction atomicity hold.
+
+DF3_CHECK: Fresh source and model audit covers the upstream LPAccount insufficient-gas inequality, callback sender gate, dual-leg gas division, one-sided carry mode, exact token amounts, and no Pool reserve mutation. Low message value never reaches the Pool callback; positive above-gate gas split is sufficient for both sends.
+CONCLUSION: DF3 is a duplicate of the established LPAccount refund gas-mode and exact-leg conservation family. No prior audit supplies a contrary persistent or attacker-positive path.

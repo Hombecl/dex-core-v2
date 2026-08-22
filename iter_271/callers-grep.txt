@@ -1,0 +1,22 @@
+CALLERS_GREP_DONE=true
+COMMAND: rg -n "refund_me|insufficient_gas|cb_refund_me|CARRY_ALL_BALANCE|CARRY_REMAINING_GAS|NORMAL|ctx\\.at\\(MSG_VALUE\\)|gas::pool::cb_refund|gas::lp_account::refund|router::pay_to|storage::save|should refund partial liquidity" contracts/lp_account/msgs/user.fc contracts/pool/msgs/lp_account.fc contracts/common/contracts.fc contracts/common/gas.fc contracts/common/op.fc contracts/pool/msgs/router.fc contracts/router/msgs/pool.fc tests/ConstProduct.spec.ts tests/ConstSum.spec.ts tests/WeightedCPI.spec.ts
+WORKDIR: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon
+RESULT: 53 refund-gate, gas-mode, send, save, and partial-refund anchors across 10 files.
+KEY_CALLERS:
+contracts/lp_account/msgs/user.fc:4:    if ctx.at(OPCODE) == op::refund_me {
+contracts/lp_account/msgs/user.fc:14:        throw_unless(error::insufficient_gas, ctx.at(MSG_VALUE) > ctx.at(FWD_FEE) * 7
+contracts/lp_account/msgs/user.fc:24:            pool::cb_refund_me(
+contracts/lp_account/msgs/user.fc:30:            CARRY_ALL_BALANCE | DESTROY_IF_ZERO
+contracts/pool/msgs/lp_account.fc:138:    if ctx.at(OPCODE) == op::cb_refund_me {
+contracts/pool/msgs/lp_account.fc:153:        (int gas, int mode) = (0, CARRY_REMAINING_GAS);
+contracts/pool/msgs/lp_account.fc:155:            (gas, mode) = ((ctx.at(MSG_VALUE) - (ctx.at(FWD_FEE) + storage_fee::pool + gas::pool::cb_refund)) / 2, NORMAL);
+contracts/pool/msgs/lp_account.fc:162:                router::pay_to(
+contracts/pool/msgs/lp_account.fc:182:                router::pay_to(
+contracts/pool/msgs/lp_account.fc:132:            storage::save();
+contracts/common/gas.fc:12:const gas::pool::cb_refund = 15000000;
+contracts/common/gas.fc:25:const gas::lp_account::refund = 10000000;
+contracts/pool/msgs/router.fc:131:                    NORMAL
+contracts/pool/msgs/router.fc:150:                CARRY_ALL_BALANCE
+tests/ConstProduct.spec.ts:2145:        it('should refund partial liquidity', async () => {
+tests/ConstSum.spec.ts:1597:        it('should refund partial liquidity', async () => {
+tests/WeightedCPI.spec.ts:1700:        it('should refund partial liquidity', async () => {

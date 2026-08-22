@@ -1,0 +1,5 @@
+COMMAND: node iter_271/poc_pool_cb_refund_msg_value_negative_split.test.js
+WORKDIR: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-flash-wt/blind-test-vps/ston-dot-fi-dex-smart-contracts-v2-flash
+EXIT: 0
+OUTPUT:
+{"result":"PASS","classification":"PRE_KILLED_DUPLICATE","cell":"DF3","cross_file_anchors":19,"cases":6,"dual_leg":{"total":40,"gas_per_leg":200,"mode":"NORMAL"},"one_sided":{"left":17,"right":23,"mode":"CARRY_REMAINING_GAS"},"low_gate_rejected":true,"sender_rejected":true,"persistent_attacker_delta":0,"reason":"The LPAccount refund gate rejects the low-value boundary before cb_refund_me. Above the gate, two positive legs receive equal positive NORMAL gas and exact token amounts; one-sided paths use CARRY_REMAINING_GAS for the sole output. There is no second leg to duplicate or retain, and the Pool callback does not mutate reserves. No attacker-positive refund delta is reachable."}
