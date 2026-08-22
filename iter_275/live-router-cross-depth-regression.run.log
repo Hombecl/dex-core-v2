@@ -1,0 +1,12 @@
+COMMAND: npm test -- --runInBand tests/ConstProduct.spec.ts -t 'should cross-swap on the same router$|should cross-swap on 2 routers$|should refund cross-swap on the same router$'
+SOURCE_ROOT: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon
+EXIT: 0
+PASS tests/ConstProduct.spec.ts (9.139 s)
+  Dex
+    ✓ should cross-swap on the same router (1586 ms)
+    ✓ should cross-swap on 2 routers (1553 ms)
+  Refund
+    ✓ should refund cross-swap on the same router (1415 ms)
+Test Suites: 1 passed, 1 total
+Tests:       33 skipped, 3 passed, 36 total
+Time:        9.346 s

@@ -1,0 +1,11 @@
+COMMAND: git log --all --format='%h %ad %s' --date=short --max-count=38 -- CHAIN_HYPOTHESIS_TABLE.md
+LATEST_COMMITS:
+695e60e shadow: complete iter274 DG1
+a1e7798 shadow: complete iter273 DF5
+691ea4c shadow: complete iter272 DF4
+8518247 shadow: complete iter259 DD1
+
+PRIOR_RELEVANT_AUDITS:
+BB3 Router pay_to 32-bit cutoff, V5 pay_to custom-payload dispatch, AT5 empty custom payload ref, AD3 nested route payload tail, T1 nested refund binding, and DG1 cross-hop Pool StateInit identity were previously closed.
+DG2 rechecks the exact boundary with a fresh producer model: 32 bits never enters cross_swap; greater than 32 bits only enters when the first 32 bits equal op::cross_swap. The route parser validates its root fields and returns the sent token amount through the parsed refund/excess path when the root is malformed. Pool call-payload parsing uses end_parse for both nested call and outer dex payload.
+CONCLUSION: classify as PRE_KILLED_DUPLICATE unless a live boundary or malformed nested payload produces an attacker-positive token/state delta.

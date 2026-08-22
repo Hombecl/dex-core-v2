@@ -1,0 +1,38 @@
+COMMAND: rg -n -H 'slice_bits\(\) > 32|cross_swap|route_dex_messages|custom_payload|load_opcode|load_slice_ref|load_maybe_ref|end_parse|crossSwapPayload|should cross-swap|refund cross-swap' contracts/common/contracts.fc contracts/common/op.fc contracts/router/dex.fc contracts/router/msgs/pool.fc contracts/router/msgs/jetton.fc contracts/pool/msgs/router.fc tests/ConstProduct.spec.ts tests/System.spec.ts wrappers/Router.ts
+SOURCE_ROOT: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon
+CALLER_UNIQUE_FILES: 9
+contracts/router/msgs/pool.fc:10:cell custom_payload = in_msg_body~load_maybe_ref();
+contracts/router/msgs/pool.fc:31:ifnot(custom_payload.null?()) {
+contracts/router/msgs/pool.fc:33:if (tmp_custom_payload_ds.slice_bits() > 32) { ;; cross_swap = 32 + address
+contracts/router/msgs/pool.fc:46:if (fwd_opcode == op::cross_swap)
+contracts/router/msgs/pool.fc:55:route_dex_messages(sent_jetton_address, gas, swap_amount, original_caller, custom_payload);
+contracts/router/msgs/jetton.fc:5:if ctx.at(OPCODE) == op::ft::transfer_notification
+contracts/router/msgs/jetton.fc:24:route_dex_messages(
+contracts/router/dex.fc:14:slice dex_payload = _dex_payload.begin_parse();
+contracts/router/dex.fc:15:transferred_op = dex_payload~load_opcode();
+contracts/router/dex.fc:44:transferred_op = transferred_op == op::cross_swap ? op::swap : transferred_op;
+contracts/router/dex.fc:49:throw_arg_unless(op::transfer_bounce_wrong_wc, 1, _caller.address::check_workchain(params::workchain));
+contracts/router/dex.fc:91:} catch(err_arg, err_code) {
+contracts/router/dex.fc:95:var out_msg_body = jetton_wallet::transfer(0, _sent_amount, refund_address, excesses_address)
+contracts/pool/msgs/router.fc:12:slice dex_payload = in_msg_body~load_slice_ref();
+contracts/pool/msgs/router.fc:24:cell custom_payload_cs = null();
+contracts/pool/msgs/router.fc:31:slice call_payload = dex_payload~load_slice_ref();
+contracts/pool/msgs/router.fc:36:custom_payload_cs = call_payload~load_maybe_ref();
+contracts/pool/msgs/router.fc:49:call_payload.end_parse();
+contracts/pool/msgs/router.fc:50:dex_payload.end_parse();
+contracts/common/contracts.fc:161:.store_slice(_original_caller)
+contracts/common/op.fc:4:const op::cross_swap = ...
+contracts/common/op.fc:5:const op::swap = ...
+contracts/common/op.fc:10:const op::pay_to = ... custom_payload ...
+tests/ConstProduct.spec.ts:13:import { crossSwapPayload, provideLpPayload, Router, routerStorageParser, swapPayload } from '../wrappers/Router';
+tests/ConstProduct.spec.ts:1735:customPayload: crossSwapPayload({
+tests/ConstProduct.spec.ts:1937:it('should cross-swap on the same router', async () => {
+tests/ConstProduct.spec.ts:1975:it('should cross-swap on 2 routers', async () => {
+tests/ConstProduct.spec.ts:2232:it('should refund cross-swap on the same router', async () => {
+tests/ConstProduct.spec.ts:2271:it('should refund cross-swap on 2 routers (in)', async () => {
+tests/ConstProduct.spec.ts:2303:it('should refund cross-swap on 2 routers (mid)', async () => {
+tests/System.spec.ts:301:customPayload: crossSwapPayload({
+contracts/common/contracts.fc:146:(cell) router::pay_to(
+wrappers/Router.ts:158:export function crossSwapPayload(opts: {
+CASCADE: Pool pay_to -> custom_payload ref -> >32-bit opcode probe -> Router cross_swap branch -> route_dex_messages root parser -> nested Pool route; exact 32-bit payloads stay ordinary transfer, malformed >32-bit roots enter the route parser catch/refund path.
+SCOPE: only selected production contracts plus in-repo wrappers/tests were inspected; no OOS candidate is emitted.
