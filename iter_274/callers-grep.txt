@@ -1,0 +1,30 @@
+COMMAND: rg -n -H 'cross_swap|route_dex_messages|original_caller|sent_jetton_address|pool_idata|pool::\$route|throw_unless\(error::invalid_caller|transfer_notification|crossSwapPayload|should cross-swap|refund cross-swap' contracts/common/contracts.fc contracts/common/op.fc contracts/router/dex.fc contracts/router/msgs/pool.fc contracts/router/msgs/jetton.fc tests/ConstProduct.spec.ts tests/System.spec.ts wrappers/Router.ts
+SOURCE_ROOT: /Users/homanyeungmac/bounty-hunt-work/gpt-hackenproof/ston-dot-fi-dex-smart-contracts-v2-recon
+CALLER_UNIQUE_FILES: 8
+contracts/common/contracts.fc:147:slice _original_caller,
+contracts/common/contracts.fc:161:.store_slice(_original_caller)
+contracts/common/contracts.fc:222:(cell) pool::$route(
+contracts/common/op.fc:4:const op::cross_swap = ...
+contracts/common/op.fc:10:const op::pay_to = ... original_caller ...
+contracts/router/dex.fc:1:() route_dex_messages(...)
+contracts/router/dex.fc:44:transferred_op = transferred_op == op::cross_swap ? op::swap : transferred_op;
+contracts/router/dex.fc:79:pool_idata(my_address(), _jetton_address, token_wallet1, ...)
+contracts/router/dex.fc:88:pool::$route(transferred_op, _caller, _sent_amount, _jetton_address, token_wallet1, _dex_payload)
+contracts/router/msgs/pool.fc:8:slice original_caller = in_msg_body~load_msg_addr();
+contracts/router/msgs/pool.fc:19:pool_idata(...)
+contracts/router/msgs/pool.fc:28:throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER)));
+contracts/router/msgs/pool.fc:33:if (tmp_custom_payload_ds.slice_bits() > 32) { ;; cross_swap = 32 + address
+contracts/router/msgs/pool.fc:46:if (fwd_opcode == op::cross_swap)
+contracts/router/msgs/pool.fc:50:slice sent_jetton_address = amount0_out > 0 ? token0_address : token1_address;
+contracts/router/msgs/pool.fc:55:route_dex_messages(sent_jetton_address, gas, swap_amount, original_caller, custom_payload);
+contracts/router/msgs/jetton.fc:5:if ctx.at(OPCODE) == op::ft::transfer_notification
+contracts/router/msgs/jetton.fc:24:route_dex_messages(ctx.at(SENDER), ctx.at(MSG_VALUE), jetton_amount, from_address, in_msg_body~load_ref())
+tests/ConstProduct.spec.ts:13:import { crossSwapPayload, provideLpPayload, Router, routerStorageParser, swapPayload } from '../wrappers/Router';
+tests/ConstProduct.spec.ts:1937:it('should cross-swap on the same router', async () => {
+tests/ConstProduct.spec.ts:1975:it('should cross-swap on 2 routers', async () => {
+tests/ConstProduct.spec.ts:2232:it('should refund cross-swap on the same router', async () => {
+tests/ConstProduct.spec.ts:2271:it('should refund cross-swap on 2 routers (in)', async () => {
+tests/System.spec.ts:301:customPayload: crossSwapPayload({
+tests/System.spec.ts:313:output: "cross_swap_system",
+CASCADE: same-router Pool pay_to -> Router cross_swap branch -> route_dex_messages -> derived second Pool; cross-router Pool pay_to -> Router token wallet transfer -> Router2 transfer_notification -> route_dex_messages -> Router2-derived second Pool. Both branches require the derived Pool StateInit address and preserve the original caller only as a refund/receiver field.
+SCOPE: only selected production contracts plus in-repo wrappers/tests were inspected; no OOS candidate is emitted.

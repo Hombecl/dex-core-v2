@@ -1,0 +1,12 @@
+COMMAND: git log --all --format='%h %ad %s' --date=short --max-count=36 -- CHAIN_HYPOTHESIS_TABLE.md
+LATEST_COMMITS:
+a1e7798 shadow: complete iter273 DF5
+691ea4c shadow: complete iter272 DF4
+8518247 shadow: complete iter259 DD1
+e909e01 shadow: complete iter263 DD5
+
+PRIOR_RELEVANT_AUDITS:
+T1 nested cross-swap refund binding, V1 cross-swap gas threshold, V5 pay_to custom-payload dispatch, AB3 cross-router original-caller binding, AD3 nested route payload tail, AS1 recursion/amount conservation, and AX3 route gas boundary were previously closed as deadend families.
+DG1 rechecks the hop-specific Pool StateInit derivation and the separate same-router versus cross-router entry paths with fresh source anchors and live tests.
+DG1_CHECK: Same-router forwarding passes the first output token wallet and custom payload to route_dex_messages, which derives pool_idata from the current Router and the payload token wallet. Cross-router forwarding pays the output JettonWallet to Router2; Router2 receives a transfer_notification and re-derives its own Pool. In both paths the Router payout handler requires ctx.at(SENDER) equal the derived Pool address. A mismatched wallet pair yields a different deterministic Pool with no existing reserves; an existing reserve-bearing pair is the intended hop.
+CONCLUSION: classify as PRE_KILLED_DUPLICATE unless live tests expose a persistent attacker-positive cross-hop delta.

@@ -1,0 +1,137 @@
+final_verdict: PRE_KILLED_DUPLICATE
+schema_version: shadow-v1
+iteration: 274
+phase: completed
+cell_id: DG1
+cell_label: router_cross_swap_hop_pool_stateinit_rebind
+scope:
+  program_slug: ston-dot-fi-dex-smart-contracts-v2
+  scope_snapshot: /tmp/ston-dot-fi-dex-smart-contract-v2-flash/scope.json
+  selected_assets:
+    - contracts/lp_account.fc
+    - contracts/lp_wallet.fc
+    - contracts/pool.fc
+    - contracts/router.fc
+    - contracts/vault.fc
+  program_category: null
+methodology_compliance:
+  cell_id: DG1
+  final_verdict: PRE_KILLED_DUPLICATE
+  callers_grep_done: true
+  cascade:
+    verbatim_hits:
+      - file: contracts/router/msgs/pool.fc
+        line: 33
+        text: 'if (tmp_custom_payload_ds.slice_bits() > 32) { ;; cross_swap = 32 + address'
+      - file: contracts/router/msgs/pool.fc
+        line: 46
+        text: 'if (fwd_opcode == op::cross_swap)'
+      - file: contracts/router/msgs/pool.fc
+        line: 50
+        text: 'slice sent_jetton_address = amount0_out > 0 ? token0_address : token1_address;'
+      - file: contracts/router/msgs/pool.fc
+        line: 55
+        text: 'route_dex_messages(sent_jetton_address, gas, swap_amount, original_caller, custom_payload);'
+      - file: contracts/router/dex.fc
+        line: 79
+        text: 'pool_idata(my_address(), _jetton_address, token_wallet1, storage::jetton_lp_wallet_code, storage::lp_account_code)'
+      - file: contracts/router/dex.fc
+        line: 88
+        text: 'pool::$route(transferred_op, _caller, _sent_amount, _jetton_address, token_wallet1, _dex_payload),'
+      - file: contracts/router/msgs/pool.fc
+        line: 28
+        text: 'throw_unless(error::invalid_caller, equal_slices(pool~address(params::workchain), ctx.at(SENDER)));'
+      - file: contracts/router/msgs/jetton.fc
+        line: 24
+        text: 'route_dex_messages('
+      - file: tests/ConstProduct.spec.ts
+        line: 1975
+        text: 'it(''should cross-swap on 2 routers'', async () => {'
+      - file: wrappers/Router.ts
+        line: 158
+        text: 'export function crossSwapPayload(opts: {'
+  source_scope_restricted: true
+  scope_assets_only: true
+  audit_result: NOT_AVAILABLE_SHADOW_MODE
+  methodology_audit_exit: NOT_AVAILABLE
+  required_evidence_complete: true
+  no_fabrication: true
+  shippable: false
+  status_schema_validated: true
+  evidence_gate: PASS_FOR_DEADEND
+  rejection_reason: 'Same-router and cross-router cross-swap hops derive the next Pool from the active Router and token-wallet pair, then require the derived Pool sender. A mismatched pair has no existing reserves; a reserve-bearing pair is the intended hop.'
+  duplicate_family: 'T1 nested cross-swap refund binding, V1 gas threshold, V5 pay_to custom-payload dispatch, AB3 cross-router original-caller binding, AD3 nested route payload tail, AS1 recursion/amount conservation, AX3 route gas boundary, and DF1/DF5 identity/branch families'
+  caller_match_count: 43
+  caller_unique_files: 8
+  cascade_verbatim_hit_count: 10
+  cross_file_anchor_count: 14
+  caller_paths:
+    - contracts/common/contracts.fc
+    - contracts/common/op.fc
+    - contracts/router/dex.fc
+    - contracts/router/msgs/pool.fc
+    - contracts/router/msgs/jetton.fc
+    - tests/ConstProduct.spec.ts
+    - tests/System.spec.ts
+    - wrappers/Router.ts
+  callers_grep_artifact: iter_274/callers-grep.txt
+  evidence_paths:
+    poc_test: iter_274/poc_router_cross_swap_hop_pool_stateinit_rebind.test.js
+    poc_run_log: iter_274/poc_router_cross_swap_hop_pool_stateinit_rebind.run.log
+    live_regression_log: iter_274/live-router-cross-hop-regression.run.log
+    prior_audit: iter_274/prior-audit-git.log
+  poc_execution:
+    test_file_path: iter_274/poc_router_cross_swap_hop_pool_stateinit_rebind.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_274/poc_router_cross_swap_hop_pool_stateinit_rebind.run.log
+    run_log_exists_on_disk: true
+    runtime: '0.4s static; 10.61s integration'
+    result: 'PASS; 14 cross-file anchors, eight caller files, same-/cross-router valid and mismatched pairs, and zero persistent attacker delta'
+  prior_art_check:
+    queries:
+      - 'git history and prior STATUS.yaml scan for nested cross-swap identity, Pool StateInit derivation, original-caller binding, and route gas boundaries'
+      - 'GitHub API R15 issue and PR searches for route_dex_messages/custom_payload/original_caller and cross_swap/pool_idata/sent_jetton_address'
+    results:
+      - 'T1, V1, V5, AB3, AD3, AS1, AX3, DF1, and DF5: adjacent cross-hop, payload, identity, gas, and branch families closed'
+      - 'Fresh exact cross-hop issue/PR searches returned zero hits'
+    r15_disclosure_check:
+      gh_search_terms_used:
+        - 'repo:ston-fi/dex-core-v2 "route_dex_messages" "custom_payload" "original_caller" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "route_dex_messages" "custom_payload" "original_caller" is:pr'
+        - 'repo:ston-fi/dex-core-v2 "cross_swap" "pool_idata" "sent_jetton_address" is:issue'
+        - 'repo:ston-fi/dex-core-v2 "cross_swap" "pool_idata" "sent_jetton_address" is:pr'
+      gh_search_hits: 0
+      evidence_files:
+        - iter_274/r15-cross-hop-stateinit-issue.json
+        - iter_274/r15-cross-hop-stateinit-pr.json
+        - iter_274/r15-cross-hop-pool-identity-issue.json
+        - iter_274/r15-cross-hop-pool-identity-pr.json
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+evidence:
+  status: PRE_KILLED_DUPLICATE
+  shadow_mode: true
+  caller_path: iter_274/callers-grep.txt
+  caller_match_count: 43
+  caller_unique_files: 8
+  prior_audit_path: iter_274/prior-audit-git.log
+  prior_family_matches: [T1, V1, V5, AB3, AD3, AS1, AX3, DF1, DF5]
+  r15_evidence_files:
+    - iter_274/r15-cross-hop-stateinit-issue.json
+    - iter_274/r15-cross-hop-stateinit-pr.json
+    - iter_274/r15-cross-hop-pool-identity-issue.json
+    - iter_274/r15-cross-hop-pool-identity-pr.json
+  source_conclusion: 'Cross-hop forwarding is deterministic in both same-router and cross-router modes. The next Pool sender check binds the hop to the derived Router/token-wallet pair; invalid pairs have no reserves and valid pairs are intended routing. No attacker-positive token, TON, or persistent-state delta was demonstrated.'
+  attacker_privilege:
+    privilege_required: external_unauth
+  fund_loss_demonstrated: false
+  concrete_impact_demonstrated: false
+  poc_execution:
+    test_file_path: iter_274/poc_router_cross_swap_hop_pool_stateinit_rebind.test.js
+    test_file_exists_on_disk: true
+    run_log_path: iter_274/poc_router_cross_swap_hop_pool_stateinit_rebind.run.log
+    run_log_exists_on_disk: true
+    live_regression_log: iter_274/live-router-cross-hop-regression.run.log
+    result: PASS
