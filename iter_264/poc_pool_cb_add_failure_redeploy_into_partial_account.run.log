@@ -1,0 +1,13 @@
+{
+  "result": "PASS",
+  "classification": "PRE_KILLED_DUPLICATE",
+  "cell": "DE2",
+  "cross_file_anchors": 25,
+  "cases": 5,
+  "branches": ["partial_account_restored_then_refunded", "fresh_account_exact_refund", "partial_account_restored_then_refunded", "reject_overdraw", "callback_success"],
+  "source_residuals": [{"amount0":20,"amount1":20},{"amount0":0,"amount1":0},{"amount0":50,"amount1":50},{"amount0":30,"amount1":40},{"amount0":20,"amount1":20}],
+  "fallback_stored_amounts": [{"amount0":30,"amount1":40},{"amount0":30,"amount1":40},{"amount0":100,"amount1":100},null,null],
+  "fallback_refund_amounts": [{"amount0":30,"amount1":40},{"amount0":30,"amount1":40},{"amount0":100,"amount1":100},null,null],
+  "persistent_deltas": [0,0,0,0,0],
+  "reason": "Pool failure fallback adds exactly the failed callback legs to the deterministic LPAccount, sets min_lp_out to zero so the LPAccount cannot mint, routes only TON excess, and saves the token amounts for the user-gated refund path. When a partial residual exists, residual plus failed legs reconstructs the original snapshot; when the old account was destroyed, StateInit recreates only the exact failed legs. Coins-bound and overdraw cases reject without mutation, so no duplicate or attacker-positive delta is reachable."
+}

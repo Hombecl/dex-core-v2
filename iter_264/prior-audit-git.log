@@ -1,0 +1,23 @@
+COMMAND: git log --all --oneline -- CHAIN_HYPOTHESIS_TABLE.md | head -n 12
+LATEST_COMMITS:
+e909e01 shadow: complete iter263 DD5
+f086c75 shadow: complete iter262 DD4
+cd3613b shadow: complete iter261 DD3
+730c8fb shadow: complete iter260 DD2
+8518247 shadow: complete iter259 DD1
+
+COMMAND: rg -n -i 'cell_label:.*(direct_add|minimum_zero|redeploy|callback|destroy)|duplicate_family:.*(direct_add|minimum|redeploy|callback|destroy)|source_conclusion:.*(direct-add|direct add|fallback|redeploy|zero-minimum)' selected prior STATUS.yaml files
+PRIOR_MATCHES:
+iter_67 callback failure rollback: closed; failed Pool callback does not save tentative Pool globals.
+iter_71 direct_add_liquidity_identity_clearance: closed; selected legs are subtracted and residual saved.
+iter_123 refund_then_direct_add_lifecycle: closed; zero selectors, partial residuals, DESTROY_IF_ZERO, and zero-minimum fallback are exact.
+iter_130 lp_account_mint_destroy_save_order: closed; failure StateInit carries exact amounts and min_lp_out zero prevents a loop.
+iter_172 callback replay identity: closed; no duplicate callback or mint path.
+iter_198 direct_add_zero_selector_residual: closed; mixed/all/one-sided/overdraw cases preserve residuals.
+iter_199 pool_callback_minimum_zero_selector: closed; fallback accumulates exact legs, does not mint, sends TON excess, and saves for refund.
+iter_202 refund_destroy_redeploy_identity: closed; redeployment is only the zero-minimum failure fallback.
+iter_221 direct_add_post_send_commit_order: closed; child callback executes after source save.
+iter_256 callback mint carry/StateInit order: PRE_KILLED_DUPLICATE.
+iter_263 direct_add partial/redeploy callback: PRE_KILLED_DUPLICATE.
+
+CONCLUSION: DE2 is the corrected stateful view of the Pool failure fallback: token legs remain stored until the user-gated refund, while only TON excess is sent immediately. Residual plus failed callback legs reconstructs the original snapshot, so the apparent accumulation is conservation rather than duplicate credit.

@@ -1,0 +1,17 @@
+COMMAND: rg -n --no-heading 'add_liquidity|refund_me|storage::amount0|storage::amount1|mint?|min_lp_out|send_excesses|DESTROY_IF_ZERO|lp_account_new|state_init|cb_add_liquidity|should direct add liquidity|should refund partial liquidity' contracts/lp_account.fc contracts/lp_account/storage.fc contracts/lp_account/msgs/user.fc contracts/lp_account/msgs/pool.fc contracts/pool/msgs/lp_account.fc contracts/pool.fc contracts/common/contracts.fc tests/ConstProduct.spec.ts
+MATCH_COUNT: 71
+UNIQUE_FILE_COUNT: 6
+contracts/common/contracts.fc
+contracts/lp_account/msgs/pool.fc
+contracts/lp_account/msgs/user.fc
+contracts/lp_account/storage.fc
+contracts/pool/msgs/lp_account.fc
+tests/ConstProduct.spec.ts
+KEY_CALLER_HITS:
+contracts/lp_account/msgs/pool.fc:18-55: fallback adds exact new legs, gates mint on positive minimum, routes TON excess, and saves stored token amounts.
+contracts/lp_account/msgs/user.fc:4-36: refund is user-gated, sends current stored legs, clears both, and saves.
+contracts/pool/msgs/lp_account.fc:68-100: Pool failure path derives a fresh LPAccount StateInit and invokes zero-minimum add_liquidity with exact callback legs.
+contracts/pool/msgs/lp_account.fc:26: Pool authenticates the callback against the deterministic LPAccount.
+contracts/common/contracts.fc:39-62: cb_add_liquidity serializer preserves exact legs and refund/excess fields.
+tests/ConstProduct.spec.ts:2043: direct-add partial regression.
+tests/ConstProduct.spec.ts:2145: partial-refund regression.
